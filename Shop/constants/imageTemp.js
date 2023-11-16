@@ -1,0 +1,1 @@
+export const url = 'https://png.pngtree.com/png-clipart/20210227/ourmi…ning-shoes-everyday-clipart-png-image_2965548.jpg'
