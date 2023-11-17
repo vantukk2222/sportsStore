@@ -13,9 +13,9 @@ import { images } from '../../constants';
 import { TextInput } from 'react-native-paper';
 import { isValidEmail } from '../../utilies/validation'
 import Icon from 'react-native-vector-icons/Ionicons';
-import { connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import { useDispatch, useSelector } from  'react-redux';
-import axios from 'axios';
+// import axios from 'axios';
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loginUser } from '../../redux/reducers/Login/authActions';
 import { asyncStorage } from '../../utilies/asyncStorage';
@@ -26,7 +26,7 @@ function Login(props) {
     navigation,
     loginState,
     loginUser
-  }= props;
+  } = props;
   const [valueEmail, setValueEmail] = useState('');
   const [valuePassword, setValuePassword] = useState('');
   const [errorValueEmail, setErrorValueEmail] = useState('');
@@ -37,50 +37,30 @@ function Login(props) {
   const clearAuthToken = async () => {
     await asyncStorage.removeAuthToken("authToken")
     console.log("auth token cleared");
-    // navigation.replace("Login");
   };
 
-  // useEffect(()=> {
-
-  // },[])
-  // useEffect(() => {
-  //   clearAuthToken()
-  //     try {
-  //       const token = asyncStorage.getAuthToken("authToken");
-
-  //       if (token) {
-  //         // navigation.navigate('Register')
-  //         Alert.alert("AuthToken is already exist", "Navigate to MAIN Screen")
-  //         console.log("token ne em" + token);
-  //         // clearAuthToken()
-  //         navigation.navigate('Home')
-  //       }
-  //     } catch (err) {
-  //       console.log("error message", err);
-  //     }
-  //   // checkLoginStatus();
-  // }, [loginState]);
   const handlePress = async () => {
-    // clearAuthToken()
+    clearAuthToken()
     setButtonDisabled(true);
-      setButtonDisabled(false);
-        // navigation.replace("Main");
-        await loginUser("test65","test").then((data)=> {
-          if(data) {
-            navigation.navigate('Home') 
-          } else {
-            
-            Alert.alert("AuthToken is not exist", "Loading login")
-          }
-        })
-        // dispatch()
+    // navigation.replace("Main");
+    setTimeout(() => {
+      (
 
-        // handleLogin()
-        // navigation.navigate("Register")
+        setButtonDisabled(false),
+        loginUser(valueEmail, valuePassword).then((data) => {
+          if (data) {
+
+            setValueEmail('')
+            setValuePassword('')
+            navigation.navigate('Cart')
+          } else {
+
+            Alert.alert("Lỗi đăng nhập", "Không thể đăng nhập")
+          }
+        }))
+    }, 1000)
+
   };
-  function validPassword(password) {
-    password.length >= 6
-  }
 
   return (
     <ScrollView
@@ -130,18 +110,25 @@ function Login(props) {
         <TextInput
           value={valueEmail}
           onChangeText={text => {
-            setErrorValueEmail(isValidEmail(text) == true ? '' : 'Sai định dạng email')
+            setErrorValueEmail(isValidEmail(text) ? '' : 'Sai định dạng email')
             setValueEmail(text)
           }}
-
           style={{
-            borderWidth: 1,
-            borderColor: 'orange',
-            color: 'black',
+            marginTop: 10,
+            backgroundColor: '#f1f4ff',
+            borderRadius: 20,
+            color: "#616161",
+            fontSize: 16,
+            textAlign: 'center',
+            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
+            underlineColorAndroid: 'transparent', // Cho Android
+            borderBottomWidth: 0, // Cho iOS
           }}
-
+          placeholderTextColor="gray"
+          underlineColor="transparent" // Cho React Native Paper
           placeholder="example@gmail.com"
-          placeholderTextColor="gray"></TextInput>
+        ></TextInput>
+
         < Text style={{ color: 'red' }}>{errorValueEmail}</Text>
       </View>
       <View
@@ -161,17 +148,26 @@ function Login(props) {
           value={valuePassword}
           onChangeText={text => setValuePassword(text)}
           style={{
-            borderWidth: 1,
-            borderColor: 'orange',
-            color: 'black',
-            marginBottom: 30,
+            marginTop: 10,
+            backgroundColor: '#f1f4ff',
+            borderRadius: 20,
+            color: "#616161",
+            fontSize: 16,
+            textAlign: 'center',
+            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
+            underlineColorAndroid: 'transparent', // Cho Android
+            borderBottomWidth: 0, // Cho iOS
           }}
           secureTextEntry={true}
           placeholder="Nhập mật khẩu của bạn"
-          placeholderTextColor="gray"></TextInput>
+          placeholderTextColor="gray"
+          underlineColor="transparent"></TextInput>
       </View>
       <TouchableOpacity
-        onPress={handlePress} disabled={isButtonDisabled}
+        onPress={handlePress} disabled={
+          isButtonDisabled 
+          // || errorValueEmail !== ''
+        }
         // onPress={() => {
 
         // alert('Email : ' + valueEmail + '\nPassword : ' + valuePassword);
@@ -199,8 +195,8 @@ function Login(props) {
           paddingTop: 10
         }}>
         <TouchableOpacity
-        onPress={() => navigation.navigate('Đăng ký')}>
-        
+          onPress={() => navigation.navigate('Đăng ký')}>
+
           <Text
             style={{
               textAlign: 'center',
@@ -265,10 +261,10 @@ function Login(props) {
     </ScrollView>
   );
 }
-const mapStateToProps = (state) =>( {
-  loginState : state.auth
+const mapStateToProps = (state) => ({
+  loginState: state.auth
 })
 const mapDispatchToProps = {
-  loginUser 
+  loginUser
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
