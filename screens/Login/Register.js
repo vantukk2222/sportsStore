@@ -14,9 +14,16 @@ import { TextInput } from 'react-native-paper';
 import { isValidEmail, isValidPassword } from '../../utilies/validation'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { combineTransition } from 'react-native-reanimated';
+import { signupUser } from '../../redux/reducers/Register/signUpActions';
+import { connect } from 'react-redux';
 
 
-function Register({ navigation }) {
+function Register(props) {
+  const {
+    navigation,
+    signupState,
+    signupUser
+  } = props;
   const [valueEmail, setValueEmail] = useState('');
   const [valuePassword, setValuePassword] = useState('');
   const [retypevaluePassword, setRetypevaluePassword] = useState('');
@@ -24,35 +31,36 @@ function Register({ navigation }) {
   const [errorValueEmail, setErrorValueEmail] = useState('');
   const [errorValuePassword, setErrorValuePassword] = useState('');
   const [isButtonDisabled, setButtonDisabled] = React.useState(false);
-
-  const handleRegister = () => {
-    axios.post('https://project-pbl6-production.up.railway.app/api/v1/auth/signin', {
-      username: valueEmail,
-      password: valuePassword
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': '*/*'
-      }
-    })
-      .then(response => {
-        // Lưu token từ phản hồi vào state
-        const { token } = response.data; // Giả sử token được trả về từ response
-        console.log(token)
-        AsyncStorage.setItem("authToken", token);
-      })
-      .catch(error => {
-        Alert.alert(valueEmail, valuePassword);
-        console.log(error);
-      });
+  const userData = {
+    username: valueEmail,
+    password: valuePassword,
+    roles: ['ROLE_CUSTOMER'],
+    name: 'string',
+    email: valueEmail+"@gmail.com",
+    phone: valuePassword+"12929",
+    cic: valueEmail+"1234",
+    address: 'string',
   };
+  
   const handlePress = () => {
     setButtonDisabled(true);
     setTimeout(() => {
       setButtonDisabled(false);
-      navigation.navigate('Home')
+      signupUser(userData).then(data=>{
+        if(data.includes("Error"))
+        {
+          Alert.alert(JSON.stringify(data))
+        }
+        else{
+          console.log("OK nha em oi: " + data)
+        }
+      })
+
     }, 1000);
   };
+  useEffect(() => {
+    console.log(userData)
+  },[valueEmail, valuePassword])
   // useEffect(() => {
   //   isValidEmail(valueEmail) ? (setErrorValueEmail('Email không hợp lệ'),setButtonDisabled(false) ): "",
   //   isValidPassword(valuePassword) ? (setErrorValuePassword('Password không hợp lệ')) :''
@@ -113,13 +121,19 @@ function Register({ navigation }) {
           }}
 
           style={{
-            borderWidth: 1,
-            borderColor: 'orange',
-            color: 'black',
+            marginTop: 10,
+            backgroundColor: '#f1f4ff',
+            borderRadius: 20,
+            color: "#616161",
+            fontSize: 16,
+            textAlign: 'center',
+            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
+            underlineColorAndroid: 'transparent', // Cho Android
+            borderBottomWidth: 0, // Cho iOS
           }}
-
-          placeholder="example@gmail.com"
-          placeholderTextColor="gray"></TextInput>
+          placeholderTextColor="gray"
+          underlineColor="transparent"
+          placeholder="example@gmail.com"></TextInput>
         {valueEmail !== '' && < Text style={{ color: 'red' }}>{errorValueEmail}</Text>}
       </View>
       <View
@@ -143,14 +157,20 @@ function Register({ navigation }) {
             setValuePassword(text)
           }}
           style={{
-            borderWidth: 1,
-            borderColor: 'orange',
-            color: 'black',
-            marginBottom: 5,
+            marginTop: 10,
+            backgroundColor: '#f1f4ff',
+            borderRadius: 20,
+            color: "#616161",
+            fontSize: 16,
+            textAlign: 'center',
+            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
+            underlineColorAndroid: 'transparent', // Cho Android
+            borderBottomWidth: 0, // Cho iOS
           }}
+          placeholderTextColor="gray"
+          underlineColor="transparent"
           secureTextEntry={true}
-          placeholder="Nhập mật khẩu của bạn"
-          placeholderTextColor="gray"></TextInput>
+          placeholder="Nhập mật khẩu của bạn"></TextInput>
         {valuePassword !== '' && < Text style={{ color: 'red', paddingBottom: 10 }}>{errorValuePassword}</Text>}
 
         <Text
@@ -166,14 +186,20 @@ function Register({ navigation }) {
           value={retypevaluePassword}
           onChangeText={text => setRetypevaluePassword(text)}
           style={{
-            borderWidth: 1,
-            borderColor: 'orange',
-            color: 'black',
-            marginBottom: 5,
+            marginTop: 10,
+            backgroundColor: '#f1f4ff',
+            borderRadius: 20,
+            color: "#616161",
+            fontSize: 16,
+            textAlign: 'center',
+            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
+            underlineColorAndroid: 'transparent', // Cho Android
+            borderBottomWidth: 0, // Cho iOS
           }}
+          placeholderTextColor="gray"
+          underlineColor="transparent"
           secureTextEntry={true}
-          placeholder="Nhập lại mật khẩu của bạn"
-          placeholderTextColor="gray"></TextInput>
+          placeholder="Nhập lại mật khẩu của bạn"></TextInput>
         {valuePassword !== '' && retypevaluePassword !== '' && valuePassword !== retypevaluePassword && (
           <Text style={{ color: 'red' }}>Mật khẩu không trùng nhau</Text>
         )}
@@ -181,10 +207,10 @@ function Register({ navigation }) {
       </View>
       <TouchableOpacity
         onPress={handlePress} disabled={
-          isButtonDisabled ||
-          errorValueEmail !== '' ||
-          errorValuePassword !== '' ||
-          (retypevaluePassword !== '' && retypevaluePassword !== valuePassword)
+          isButtonDisabled 
+          // ||errorValueEmail !== '' ||
+          // errorValuePassword !== '' ||
+          // (retypevaluePassword !== '' && retypevaluePassword !== valuePassword)
         }
         // onPress={() => {
 
@@ -198,6 +224,7 @@ function Register({ navigation }) {
           alignItems: 'center',
           alignSelf: 'center',
           borderRadius: 12,
+          marginTop:10
         }}>
         <Text
           style={{
@@ -258,9 +285,13 @@ function Register({ navigation }) {
         </View>
 
       </View>
-
     </ScrollView>
   );
 }
-
-export default Register;
+const mapStateToProps = (state) => ({
+  signupState: state.signup
+})
+const mapDispatchToProps = {
+  signupUser
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
