@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
     View,
     ScrollView,
@@ -19,17 +19,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducer/productReducer/product';
 import Loading from "../../component/loading";
 import { useNavigation } from '@react-navigation/native';
+import ProductList from '../Product/ProductList';
+
 
 const Start = (props) => {
-    const { navigation, route } = props
-    const { navigate, goBack } = navigation
+    // const { navigation, route } = props
+    // const { navigate, goBack } = navigation
+    const navigation = useNavigation();
 
-    //const navigation = useNavigation();
-    const handleGoDetail = (id) => {
+    const handleGoDetail = (id, img) => {
         navigation.navigate('ProductDetail', {
-            id: id
+            id: id,
+            img: img
         });
     };
+
     const dispatch = useDispatch();
     const products = useSelector((state) => state.product.data);
     const loading = useSelector((state) => state.product.loading);
@@ -51,7 +55,6 @@ const Start = (props) => {
     if (error) {
         return <Text style={{ color: 'red' }}>Error: {error}</Text>;
     }
-    console.log(products)
     return (
         <ScrollView>
             <StatusBar backgroundColor="#828282" />
@@ -199,7 +202,7 @@ const Start = (props) => {
                         See all
                     </Text>
                 </View>
-                <ScrollView
+                <View
                     style={{
                         backgroundColor: 'white'
                     }}>
@@ -211,26 +214,25 @@ const Start = (props) => {
                         numColumns={2}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => handleGoDetail(item.id)}>
+                                onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
                                 < ProductItem
                                     imageSource={item.imageSet[0].url}
                                     productName={item.name}
                                     productPrice={item.price}
                                 />
                             </TouchableOpacity>
-
                         )}
                     />
+                    {/* <ProductList /> */}
 
-                </ScrollView>
+                </View>
             </View>
-            <Text style={{
-                color: 'black'
-            }}> Start</Text>
+
 
             <TouchableOpacity
                 onPress={() => {
-                    navigate('UITab')
+                    navigation.navigate('UITab');
+                    //navigate('UITab')
                 }}
                 style={{
                     justifyContent: 'center',
@@ -246,8 +248,8 @@ const Start = (props) => {
             </TouchableOpacity>
         </ScrollView >
     );
-};
 
+};
 const styles = StyleSheet.create({
     headerContainer: {
         width: '100%',

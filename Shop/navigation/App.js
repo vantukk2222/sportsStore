@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import ProductItem from '../screens/Product/ProductItem';
@@ -9,7 +9,8 @@ import ProductDetail from '../screens/Product/ProductDetail';
 import Start from '../screens/Home/Start';
 import Information from '../screens/User/Information';
 import UITab from './UITab';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
+
 function App(props) {
     return <NavigationContainer>
         <Stack.Navigator initialRouteName='Start' screenOptions={{

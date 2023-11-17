@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductById } from "../../../API/Product";
+import { getProductById } from "../../../API/Product/getProductById";
 
 const initialState = {
     data: '',
@@ -11,12 +11,13 @@ const productDetailSlice = createSlice({
     initialState,
     reducers: {
         getStart: (state) => {
+            console.log(state);
             state.loading = true;
             state.error = null;
         },
         getSuccess: (state, action) => {
-            state.loading = false;
             state.data = action.payload;
+            state.loading = false;
         },
         getFailure: (state, action) => {
             state.error = action.payload;
@@ -26,9 +27,11 @@ const productDetailSlice = createSlice({
 });
 export const { getStart, getSuccess, getFailure } = productDetailSlice.actions;
 export const fetchProductbyId = (id) => async (dispatch) => {
+
     try {
         dispatch(getStart());
         const data = await getProductById(id);
+        console.log(data);
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data';

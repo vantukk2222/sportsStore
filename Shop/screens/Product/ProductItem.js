@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
 
 const ProductItem = ({ imageSource, productName, productPrice }) => {
-    console.log(imageSource, productName, productPrice);
+
     return (
         <View style={styles.productItem}>
             <View style={styles.imageContainer}>
