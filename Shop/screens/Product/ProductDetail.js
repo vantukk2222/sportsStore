@@ -10,27 +10,30 @@ import {
 import { getProductById } from '../../API/Product';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../constants';
-import { useFocusEffect } from '@react-navigation/native';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProductbyId } from '../../redux/reducer/productReducer/getDetailProduct';
 const ProductDetail = ({ route, navigation }) => {
 
     const { id, img } = route.params;
     const [quantity, setQuantity] = useState(0);
-    const [urlImage, seturlImage] = useState('');
     const [product, setProduct] = useState(null);
 
-    console.log(id)
-    const fetchData = async () => {
-        try {
-            const productData = await getProductById(id);
-            setProduct(productData);
-            console.log(product);
-            //seturlImage(img);
-            seturlImage({ uri: product.imageSet[0].url });
-        } catch (error) {
-            // Xử lý lỗi nếu có
-            console.error("Error fetching product data:", error);
-        }
-    };
+
+    const dispatch = useDispatch();
+    const { data, loading, error } = useSelector((state) => state.productDetail);
+    // const fetchData = async (id) => {
+    //     try {
+    //         const productData = await getProductById(id);
+    //         setProduct(productData);
+    //         console.log(product);
+    //         //seturlImage(img);
+    //         seturlImage({ uri: productData?.imageSet[0].url });
+    //     } catch (error) {
+    //         // Xử lý lỗi nếu có
+    //         console.error("Error fetching product data:", error);
+    //     }
+    // };
     const cleanup = () => {
         // Thực hiện công việc clean-up ở đây, chẳng hạn như đặt lại giá trị của quantity và product
         setQuantity(0);
@@ -42,17 +45,22 @@ const ProductDetail = ({ route, navigation }) => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
         cleanup();
     });
+    // useEffect(() => {
+
+    //     // React.useCallback(() => {
+    //     fetchData(id);
+    //     return () => {
+    //         unsubscribe();
+    //     }
+    // }, [id]);
+
     useEffect(() => {
-        React.useCallback(() => {
-            fetchData();
-            return () => {
-                //cleanup();
-                unsubscribe();
-            };
-        }, [id])
+        dispatch(fetchProductbyId(id));
     }, [id]);
 
-
+    useEffect(() => {
+        setProduct(data);
+    }, [data])
     return (
         <View style={styles.container}>
             <View>
@@ -64,6 +72,7 @@ const ProductDetail = ({ route, navigation }) => {
                         <Icon name="heart" size={25} color="#F33A63" />
                     </View>
                 </View>
+
                 <View
                     style={{
                         display: 'flex',
@@ -74,7 +83,7 @@ const ProductDetail = ({ route, navigation }) => {
 
                     <Image
                         style={styles.image}
-                        source={urlImage} // Đường dẫn tới hình ảnh
+                        source={product?.imgUrl} // Đường dẫn tới hình ảnh
                     />
                 </View>
             </View>
@@ -101,7 +110,7 @@ const ProductDetail = ({ route, navigation }) => {
                         </TouchableOpacity>
                         <Text style={{ fontSize: 20, color: 'black' }}>{quantity}</Text>
                         <TouchableOpacity onPress={() => {
-                            if (quantity < product.quantity) {
+                            if (quantity < product?.quantity) {
                                 setQuantity(quantity + 1)
                             }
                         }}>
@@ -130,20 +139,20 @@ const ProductDetail = ({ route, navigation }) => {
                         marginTop: 10,
                         color: colors.primary
                     }}>
-                    {product.price}
+                    {product?.price}
                 </Text>
 
                 {/* description */}
                 <View style={styles.productAbout}>
                     <Text style={{ color: '#16162E', fontSize: 20 }}>Mô tả</Text>
                     <Text style={{ color: '#6A6A79', marginTop: 8 }}>
-                        {product.detail}
+                        {product?.detail}
                     </Text>
                 </View>
                 <View style={styles.productAbout}>
                     <Text style={{ color: '#16162E', fontSize: 20 }}>Hãng </Text>
                     <Text style={{ color: colors.accent, marginTop: 8 }}>
-                        {product.brand}
+                        {product?.brand}
                     </Text>
                 </View>
                 {/* san pham tuong tu */}

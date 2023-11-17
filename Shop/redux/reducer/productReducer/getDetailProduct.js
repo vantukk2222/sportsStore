@@ -16,7 +16,7 @@ const productDetailSlice = createSlice({
             state.error = null;
         },
         getSuccess: (state, action) => {
-            state.data = action.payload;
+            state.data = { ...action.payload, imgUrl: action.payload?.imageSet[0].url };
             state.loading = false;
         },
         getFailure: (state, action) => {

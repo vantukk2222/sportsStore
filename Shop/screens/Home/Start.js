@@ -33,6 +33,10 @@ const Start = (props) => {
             img: img
         });
     };
+    const handleGoList = () => {
+        navigation.navigate('ProductList');
+    };
+
 
     const dispatch = useDispatch();
     const products = useSelector((state) => state.product.data);
@@ -140,9 +144,7 @@ const Start = (props) => {
 
 
                     <TouchableOpacity
-                        onPress={() => {
-                            navigate('UITab')
-                        }}
+                        onPress={() => handleGoList()}
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center'
@@ -198,9 +200,16 @@ const Start = (props) => {
                     <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
                         Popular product
                     </Text>
-                    <Text style={{ color: '#F33A63', fontSize: 14, fontWeight: 'bold' }}>
-                        See all
-                    </Text>
+                    <TouchableOpacity
+                        onPress={() => handleGoList()}
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Text style={{
+                            color: '#F33A63', fontSize: 14, fontWeight: 'bold'
+                        }}>More</Text>
+                    </TouchableOpacity>
                 </View>
                 <View
                     style={{
