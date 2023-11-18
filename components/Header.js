@@ -2,10 +2,12 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import { asyncStorage } from '../utilies/asyncStorage';
+// {asyncStorage}
 const HeaderComp = () => {
     return (
         <View style={styles.headerContainer}>
-            <Icon name="buffer" size={25} style={{ color: 'black' }} />
+            <Icon name="buffer" size={25} style={{ color: 'blue' }} onPress ={() =>asyncStorage.removeAuthToken()} />
             <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <Icon name="align-left" size={25} style={{ marginTop: 10, color: 'black' }} />
                 <View style={styles.location}>
