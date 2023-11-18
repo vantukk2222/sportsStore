@@ -8,19 +8,20 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import fontSizes from '../../constants/fontSizes';
-import { images } from '../../constants';
+import fontSizes from '../../constants_Tu/fontSizes';
+import { images } from '../../constants_Tu';
 import { TextInput } from 'react-native-paper';
 import { isValidEmail } from '../../utilies/validation'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-// import { useDispatch, useSelector } from  'react-redux';
-// import axios from 'axios';
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-import { loginUser } from '../../redux/reducers/Login/authActions';
+import { useDispatch, useSelector } from  'react-redux';
+import { useNavigation } from '@react-navigation/native';
+
+// import { loginUser } from '../../redux/reducers/Login/authActions';
 import { asyncStorage } from '../../utilies/asyncStorage';
+import { loginUser } from '../../redux/reducers/Login/signinReducer';
 
-
+// {loginUser}
 function Login(props) {
   const {
     navigation,
@@ -40,7 +41,7 @@ function Login(props) {
   };
 
   const handlePress = async () => {
-    clearAuthToken()
+    // clearAuthToken()
     setButtonDisabled(true);
     // navigation.replace("Main");
     setTimeout(() => {
@@ -49,10 +50,10 @@ function Login(props) {
         setButtonDisabled(false),
         loginUser(valueEmail, valuePassword).then((data) => {
           if (data) {
-
+            console.log("login: "+data)
             setValueEmail('')
             setValuePassword('')
-            navigation.navigate('Cart')
+            navigation.navigate('Start')
           } else {
 
             Alert.alert("Lỗi đăng nhập", "Không thể đăng nhập")
@@ -195,7 +196,7 @@ function Login(props) {
           paddingTop: 10
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Đăng ký')}>
+          onPress={() => navigation.navigate('Register')}>
 
           <Text
             style={{
@@ -262,7 +263,7 @@ function Login(props) {
   );
 }
 const mapStateToProps = (state) => ({
-  loginState: state.auth
+  loginState: state.login
 })
 const mapDispatchToProps = {
   loginUser

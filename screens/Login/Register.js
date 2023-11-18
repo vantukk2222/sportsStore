@@ -8,13 +8,13 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import fontSizes from '../../constants/fontSizes';
-import { images } from '../../constants';
+import fontSizes from '../../constants_Tu/fontSizes';
+import { images } from '../../constants_Tu';
 import { TextInput } from 'react-native-paper';
 import { isValidEmail, isValidPassword } from '../../utilies/validation'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { combineTransition } from 'react-native-reanimated';
-import { signupUser } from '../../redux/reducers/Register/signUpActions';
+import { signupUser } from '../../redux/reducers/Register/signupReducer';
 import { connect } from 'react-redux';
 
 
