@@ -181,7 +181,7 @@ const ProductDetail = ({ route, navigation }) => {
                 </View> */}
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('cart')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
                         <View style={styles.cart}>
                             <Text
                                 style={{
