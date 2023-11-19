@@ -8,8 +8,10 @@ const getAuthToken = async()=> {
     return await AsyncStorage.getItem("authToken")
 }
 const removeAuthToken = async ()=> {
+    console.log(getAuthToken())
     console.log("Remove Token");
     await AsyncStorage.removeItem("authToken");
+    console.log(getAuthToken())
 }
 export const  asyncStorage = {
     setAuthToken,

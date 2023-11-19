@@ -27,13 +27,10 @@ const Start = (props) => {
     // const { navigation, route } = props
     // const { navigate, goBack } = navigation
     const navigation = useNavigation();
-    const clearAuthToken = async () => {
-        await asyncStorage.removeAuthToken("authToken")
-        console.log("auth token cleared");
-      };
+    
     
     const handleGoDetail = (id, img) => {
-        clearAuthToken(),
+        // asyncStorage.removeAuthToken()
         navigation.navigate('ProductDetail', {
             id: id,
             img: img

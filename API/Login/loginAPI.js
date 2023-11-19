@@ -1,9 +1,6 @@
 import axios from "axios"
 import { asyncStorage } from "../../utilies/asyncStorage";
-const clearAuthToken = async () => {
-  await asyncStorage.removeAuthToken("authToken")
-  console.log("auth token cleared");
-};
+
 const loginPage = async (email, password) => {
     try {
         const response = await axios.post('https://project-pbl6-production.up.railway.app/api/v1/auth/signin', {
@@ -16,7 +13,7 @@ const loginPage = async (email, password) => {
           }
         });
         const { token } = response.data;
-        clearAuthToken()
+        // await asyncStorage.removeAuthToken()
         await asyncStorage.setAuthToken(token)
         console.log("API signin storage: " +await asyncStorage.getAuthToken())
         return token;

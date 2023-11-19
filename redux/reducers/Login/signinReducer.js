@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import loginPage from "../../../API/Login/login";
-
+import loginPage from "../../../API/Login/loginAPI";
+import { asyncStorage } from "../../../utilies/asyncStorage";
+// {asyncStorage}
 const initialState = {
-  authToken: null,
+  authToken: 
+  null,
   isLoading: false,
   error: null,
 };
@@ -23,17 +25,23 @@ const loginSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload.error;
     },
+    setToken: (state,action)=> {
+      state.isLoading = false;
+      // console.log(action);
+      state.authToken = action.payload;
+    },
   },
 });
 
-export const loginUser = (username, password) => async (dispatch) => {
+export const loginUser = (username, password) => async (dispatch, getState) => {
   try {
     dispatch(loginSlice.actions.loginRequest()); // Dispatch loginRequest action
 
     const data = await loginPage(username, password); // Call loginPage API
-    console.log("data: ", data); // Log received data
+    // console.log("data: ", data); // Log received data
 
     dispatch(loginSlice.actions.loginSuccess({ authToken: data })); // Dispatch loginSuccess with received data
+    // console.log("state reducerLogin: " + JSON.stringify(getState()));
     return data
   } catch (error) {
     let errorMessage = 'Error fetching data';
@@ -45,5 +53,5 @@ export const loginUser = (username, password) => async (dispatch) => {
   }
 };
 
-export const { loginRequest, loginSuccess, loginFailure } = loginSlice.actions;
+export const { loginRequest, loginSuccess, loginFailure,setToken } = loginSlice.actions;
 export default loginSlice.reducer;
