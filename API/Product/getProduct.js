@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const getProduct = async (page, pageSize, sort, desc) => {
+
     try {
         const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product', {
             params: {
@@ -10,7 +11,8 @@ const getProduct = async (page, pageSize, sort, desc) => {
                 desc: desc
             },
         });
-        return response.data.content;
+        console.log('call API get ');
+        return response.data;
     } catch (error) {
         console.error('Error fetching data: ', error);
         throw error;
