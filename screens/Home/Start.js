@@ -29,7 +29,6 @@ const Start = (props) => {
     // const { navigation, route } = props
     // const { navigate, goBack } = navigation
     const navigation = useNavigation();
-<<<<<<< HEAD
 
     const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories);
     const [categories, setCategories] = useState([])
@@ -49,22 +48,13 @@ const Start = (props) => {
         console.log("auth token cleared");
     };
 
-    const handleGoDetail = (id, img) => {
-        clearAuthToken(),
-            navigation.navigate('ProductDetail', {
-                id: id,
-                img: img
-            });
-=======
-    
-    
+
     const handleGoDetail = (id, img) => {
         // asyncStorage.removeAuthToken()
         navigation.navigate('ProductDetail', {
             id: id,
             img: img
         });
->>>>>>> ca9ae7ce449cf2d8fb4d2ca4cd595b62936f6c59
     };
     const handleGoList = () => {
         navigation.navigate('ProductList');

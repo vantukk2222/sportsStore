@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -23,42 +23,15 @@ import * as Navigation from './stackNavigation';
 const Stack = createStackNavigator();
 
 const App = ({ loggedIn, loginUser }) => {
-<<<<<<< HEAD
-    return <NavigationContainer>
-        <Stack.Navigator initialRouteName={loggedIn ? 'Login' : 'Cart'} screenOptions={{
-            headerShown: false
-        }}>
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-            {/* <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/> */}
-            <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
-            <Stack.Screen name='Start' component={Start} />
-            <Stack.Screen name='ProductList' component={ProductList} />
-            <Stack.Screen name='ProductDetail' component={ProductDetail} />
-            <Stack.Screen name='ProductItem' component={ProductItem} />
-            <Stack.Screen name='Information' component={Information} />
-            <Stack.Screen name='UITab' component={UITab} />
-        </Stack.Navigator>
-    </NavigationContainer>
-}
-
-const mapStateToProps = state => ({
-    loggedIn: state.login.authToken !== null, // Assuming authToken indicates user logged in
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({ loginUser }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-=======
     const [isLogged, setisLogged] = useState(false)
     // const dispatch = useDispatch();
     const getData = async () => {
         try {
             const token = await asyncStorage.getAuthToken();
             setisLogged(token)
-        } catch(error){}
+        } catch (error) { }
     }
-    
+
     //  useEffect(() => {
     //     const checkToken = async () => {
     //     try {
@@ -77,24 +50,24 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
     //     checkToken();
     //  }, [loggedIn]);
     const [loading, setloading] = useState(true)
-    useEffect(()=>{
+    useEffect(() => {
         getData();
         setTimeout(() => {
-            
-        }, setloading(false),1000);
-    },[])
+
+        }, setloading(false), 1000);
+    }, [])
 
     return (
         <>
-        {loading?(
-            <Loading />
-        ) : (
-            <>
-            <NavigationContainer>
-            {isLogged ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator/>)}
-                </NavigationContainer>
+            {loading ? (
+                <Loading />
+            ) : (
+                <>
+                    <NavigationContainer>
+                        {isLogged ? (<Navigation.MainScreenNavigator />) : (<Navigation.LoginScreenNavigator />)}
+                    </NavigationContainer>
                 </>
-        )}
+            )}
         </>
     )
     // return  (
@@ -111,12 +84,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 }
 
 const mapStateToProps = state => ({
-    
+
     loggedIn: state.login.authToken, // Assuming authToken indicates user logged in
-  });
-  
-  const mapDispatchToProps = {loginUser};
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(App);
-  
->>>>>>> ca9ae7ce449cf2d8fb4d2ca4cd595b62936f6c59
+});
+
+const mapDispatchToProps = { loginUser };
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
