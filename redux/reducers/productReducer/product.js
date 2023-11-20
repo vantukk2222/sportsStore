@@ -15,6 +15,7 @@ const productSlice = createSlice({
             state.error = null;
         },
         getAllsuccess: (state, action) => {
+            console.log(action.payload);
             state.loading = false;
             state.data = action.payload;
         },

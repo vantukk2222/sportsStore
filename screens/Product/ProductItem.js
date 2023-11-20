@@ -42,12 +42,14 @@ const styles = StyleSheet.create({
         width: 180,
         height: 270,
         alignItems: 'center',
-        flex: 0.5
+        flex: 100,
+        backgroundColor: 'white'
     },
     imageContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         position: 'relative',
+        flex: 60
     },
     productImage: {
         width: '80%', // Chiếm 80% của imageContainer
@@ -64,12 +66,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         marginTop: 10,
+        flex: 25
+
     },
     productNameContainer: {
         flex: 1,
         flexDirection: 'column', // Thay đổi từ 'column' thành 'row'
         alignItems: 'flex-start', // Căn trên cùng theo chiều dọc
         marginLeft: 15,
+        flex: 15
         //flexWrap: 'wrap', // Cho phép tự động xuống dòng
     },
     productName: {
@@ -111,6 +116,7 @@ const styles = StyleSheet.create({
         marginLeft: 25,
         padding: 5,
         borderRadius: 5,
+        marginBottom: 10
     },
 });
 

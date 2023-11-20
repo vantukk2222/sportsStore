@@ -11,7 +11,7 @@ import * as React from 'react'
 
 import ProductList from '../screens/Product/ProductList';
 import Start from '../screens/Home/Start';
-import Information from '../screens/User/Information';
+import Cart from '../screens/Home/Cart';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { fontSize, colors } from '../constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -40,7 +40,7 @@ function UITab(props) {
     return <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen name='ProductList' component={ProductList}
             options={{ tabBarLabel: 'Products' }} />
-        <Tab.Screen name='Information' component={Information}
+        <Tab.Screen name='Cart' component={Cart}
             options={{ headerShown: false }} />
     </Tab.Navigator>
 }

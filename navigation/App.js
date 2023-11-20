@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -21,6 +21,7 @@ import * as Navigation from './stackNavigation';
 // {useEffect}
 // {useCallBack}
 const Stack = createStackNavigator();
+
 
 const App = ({ loggedIn, loginUser,auth }) => {
   
