@@ -22,70 +22,19 @@ import * as Navigation from './stackNavigation';
 // {useCallBack}
 const Stack = createStackNavigator();
 
-const App = ({ loggedIn, loginUser }) => {
-    const [isLogged, setisLogged] = useState(false)
-    // const dispatch = useDispatch();
-    const getData = async () => {
-        try {
-            const token = await asyncStorage.getAuthToken();
-            setisLogged(token)
-        } catch(error){}
-    }
-    
-    //  useEffect(() => {
-    //     const checkToken = async () => {
-    //     try {
-    //         const token = await getToken();
-    //         if (token) {
-    //             console.log("ok vao day: "+token);
-    //         dispatch(setToken(token)); // Dispatch action để cập nhật trạng thái login với token đã có
-    //         }
-    //     } catch (error) {
-    //         console.log("ok vao da11y");
-
-    //         console.error('Error retrieving token:', error);
-    //     }
-    //     };
-
-    //     checkToken();
-    //  }, [loggedIn]);
-    const [loading, setloading] = useState(true)
-    useEffect(()=>{
-        getData();
-        setTimeout(() => {
-            
-        }, setloading(false),1000);
-    },[])
-
+const App = ({ loggedIn, loginUser,auth }) => {
+  
     return (
-        <>
-        {loading?(
-            <Loading />
-        ) : (
             <>
             <NavigationContainer>
-            {isLogged ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator/>)}
+            {loggedIn ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator/>)}
                 </NavigationContainer>
-                </>
-        )}
-        </>
-    )
-    // return  (
-    //     <>
-    //     {loading? (<Loading/>):(
-    //         <>
-    //             <NavigationContainer>
-    //             {isLogged? (<mainScreenNavigator/>) : (<loginScreenNavigator/>)}
-    //         </NavigationContainer>
-    //         </>
-    //     )}
-    //     </>
-    // )
+                </>)
 }
 
 const mapStateToProps = state => ({
-    
-    loggedIn: state.login.authToken, // Assuming authToken indicates user logged in
+    auth :state.login,
+    loggedIn: state.login.authToken !== null , // Assuming authToken indicates user logged in
   });
   
   const mapDispatchToProps = {loginUser};
