@@ -1,10 +1,7 @@
 import axios from "axios"
 import { asyncStorage } from "../../utilies/asyncStorage";
 
-const clearAuthToken = async () => {
-  await asyncStorage.removeAuthToken("authToken")
-  console.log("auth token cleared");
-};
+
 
 const registerPage = async (userData) => {
   try {
@@ -16,7 +13,7 @@ const registerPage = async (userData) => {
       }
     });
     const { token } = response.data;
-    clearAuthToken()
+    await asyncStorage.removeAuthToken()
     await asyncStorage.setAuthToken(token)
 
     console.log("signUp Token: " + token);

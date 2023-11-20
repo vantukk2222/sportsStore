@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 // import { loginUser } from '../../redux/reducers/Login/authActions';
 import { asyncStorage } from '../../utilies/asyncStorage';
 import { loginUser } from '../../redux/reducers/Login/signinReducer';
+import Loading from '../../components/loading';
 
 // {loginUser}
 function Login(props) {
@@ -32,25 +33,32 @@ function Login(props) {
   const [valuePassword, setValuePassword] = useState('');
   const [errorValueEmail, setErrorValueEmail] = useState('');
   const [isButtonDisabled, setButtonDisabled] = useState(false);
-  // const dispatch = useDispatch();
-  // const { isLoading, error } = useSelector((state) => state.auth);
+  const errorLoad = loginState.error;
 
-  const clearAuthToken = async () => {
-    await asyncStorage.removeAuthToken("authToken")
-    console.log("auth token cleared");
-  };
+  // useEffect(() => {
+  //   const timeLogin = setInterval(async() => { 
+  //      await getToken() ? navigation.replace("Start") : navigation.replace("Login")
+  //   },1000);
+  //   timeLogin
+  //   return clearInterval(timeLogin)
+  // });
 
+     const getToken = useCallback(async()=> {
+        return await asyncStorage.getAuthToken();
+    },[])
   const handlePress = async () => {
-    // clearAuthToken()
     setButtonDisabled(true);
     // navigation.replace("Main");
     setTimeout(() => {
       (
 
         setButtonDisabled(false),
-        loginUser(valueEmail, valuePassword).then((data) => {
+        loginUser(valueEmail, valuePassword)
+        .then(async(data) => {
           if (data) {
-            console.log("login: "+data)
+            // await asyncStorage.setAuthToken(data)
+            console.log("state: " + loginState)
+            console.log("login: "+ await asyncStorage.getAuthToken())
             setValueEmail('')
             setValuePassword('')
             navigation.navigate('Start')
@@ -58,13 +66,15 @@ function Login(props) {
 
             Alert.alert("Lỗi đăng nhập", "Không thể đăng nhập")
           }
-        }))
-    }, 1000)
-
+        })
+        )
+    }, 500)
   };
-
+ if(!getToken()) return <Loading/>
+ if(errorLoad){ return <Text style={{ color: 'red' }}>Error: {error}</Text>;}
   return (
-    <ScrollView
+
+      <ScrollView
       keyboardShouldPersistTaps='always'
       style={{
         backgroundColor: 'white',
@@ -87,6 +97,7 @@ function Login(props) {
         </Text>
         <Image
           source={images.fire}
+          
           resizeMode="cover"
           style={{
             width: 100,
@@ -247,6 +258,7 @@ function Login(props) {
             marginVertical: 10
           }}>
           <Icon name='logo-facebook' size={45} color='blue'
+          onPress={async ()=>{console.log("API: " + await asyncStorage.getAuthToken())}}
             style={{
               paddingHorizontal: 8
             }}></Icon>
@@ -260,6 +272,7 @@ function Login(props) {
 
 
     </ScrollView>
+    
   );
 }
 const mapStateToProps = (state) => ({
