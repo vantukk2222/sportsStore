@@ -43,9 +43,9 @@ function Login(props) {
   //   return clearInterval(timeLogin)
   // });
 
-     const getToken = useCallback(async()=> {
-        return await asyncStorage.getAuthToken();
-    },[])
+    //  const getToken = useCallback(async()=> {
+    //     return await asyncStorage.getAuthToken();
+    // },[])
   const handlePress = async () => {
     setButtonDisabled(true);
     // navigation.replace("Main");
@@ -58,7 +58,7 @@ function Login(props) {
           if (data) {
             // await asyncStorage.setAuthToken(data)
             console.log("state: " + loginState)
-            console.log("login: "+ await asyncStorage.getAuthToken())
+            // console.log("login: "+ await asyncStorage.getAuthToken())
             setValueEmail('')
             setValuePassword('')
             navigation.navigate('Start')
@@ -70,7 +70,7 @@ function Login(props) {
         )
     }, 500)
   };
- if(!getToken()) return <Loading/>
+//  if(!getToken()) return <Loading/>
  if(errorLoad){ return <Text style={{ color: 'red' }}>Error: {error}</Text>;}
   return (
 

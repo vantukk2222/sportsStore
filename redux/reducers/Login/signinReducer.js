@@ -30,6 +30,11 @@ const loginSlice = createSlice({
       // console.log(action);
       state.authToken = action.payload;
     },
+    logout: (state,action) => {
+      state.authToken = null;
+      state.isLoading = false;
+      state.error = null;
+    }
   },
 });
 
@@ -53,5 +58,5 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
   }
 };
 
-export const { loginRequest, loginSuccess, loginFailure,setToken } = loginSlice.actions;
+export const { loginRequest, loginSuccess, loginFailure,setToken,logout } = loginSlice.actions;
 export default loginSlice.reducer;
