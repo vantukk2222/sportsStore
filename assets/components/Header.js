@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import { asyncStorage } from '../utilies/asyncStorage';
+// import { asyncStorage } from '../utilies/asyncStorage';
 import { useDispatch } from 'react-redux';
-import { logout } from '../redux/reducers/Login/signinReducer';
+import { logout } from '../../redux/reducers/Login/signinReducer';
 // {asyncStorage}
 const HeaderComp = () => {
     const dispatch = useDispatch();

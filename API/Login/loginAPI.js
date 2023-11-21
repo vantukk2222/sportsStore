@@ -1,21 +1,18 @@
-import axios from "axios"
-import { asyncStorage } from "../../utilies/asyncStorage";
+import axiosInstance, { setHeaderToken } from "../axiosConfig";
+// import { asyncStorage } from "../../utilies/asyncStorage";
 
 const loginPage = async (email, password) => {
     try {
-        const response = await axios.post('https://project-pbl6-production.up.railway.app/api/v1/auth/signin', {
+        const response = await axiosInstance.post('/auth/signin', {
           username: email,
           password: password,
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'accept': '*/*'
-          }
         });
         const { token } = response.data;
+        console.log("tokem apilogin: ",token);
+        setHeaderToken(token);
         // await asyncStorage.removeAuthToken()
-        await asyncStorage.setAuthToken(token)
-        console.log("API signin storage: " +await asyncStorage.getAuthToken())
+        // await asyncStorage.setAuthToken(token)
+        // console.log("API signin storage: " +await asyncStorage.getAuthToken())
         return token;
       } catch (error) {
 

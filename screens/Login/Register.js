@@ -7,6 +7,7 @@ import {
   ImageBackground,
   ScrollView,
   Alert,
+  ToastAndroid,
 } from 'react-native';
 import fontSizes from '../../constants_Tu/fontSizes';
 import { images } from '../../constants_Tu';
@@ -14,15 +15,19 @@ import { TextInput } from 'react-native-paper';
 import { isValidEmail, isValidPassword } from '../../utilies/validation'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { combineTransition } from 'react-native-reanimated';
-import { signupUser } from '../../redux/reducers/Register/signupReducer';
+import { signupDone, signupUser } from '../../redux/reducers/Register/signupReducer';
 import { connect } from 'react-redux';
+import { toastsuccess } from '../../assets/components/toastCustom';
+// import Toast from 'react-native-toast-message';
 
+// {signupDone}
 
 function Register(props) {
   const {
     navigation,
     signupState,
-    signupUser
+    signupUser,
+    signupDone,
   } = props;
   const [valueEmail, setValueEmail] = useState('');
   const [valuePassword, setValuePassword] = useState('');
@@ -41,18 +46,31 @@ function Register(props) {
     cic: valueEmail+"1234",
     address: 'string',
   };
-  
+  // const showToast = () => {
+  //   Toast.show({
+  //     type: 'error',
+  //     text1: 'Cảm ơn',
+  //     text2: 'Đăng ký thành công 👋',
+  //     position: 'top',
+  //     onPress: () => Toast.hide(),
+  //   });
+  // }
   const handlePress = () => {
+    // showToast()
     setButtonDisabled(true);
     setTimeout(() => {
       setButtonDisabled(false);
       signupUser(userData).then(data=>{
         if(data.includes("Error"))
         {
-          Alert.alert(JSON.stringify(data))
+          // Alert.alert(JSON.stringify(data))
+          toastError('Xin lỗi', 'Đăng ký bị lỗi')
         }
         else{
-          console.log("OK nha em oi: " + data)
+          console.log("Đăng ký thành công: " + data)
+          signupDone()
+          toastsuccess('Chúc mừng', 'Đăng ký thành công')
+          navigation.navigate("Login")
         }
       })
 
@@ -292,6 +310,7 @@ const mapStateToProps = (state) => ({
   signupState: state.signup
 })
 const mapDispatchToProps = {
-  signupUser
+  signupUser,
+  signupDone
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -3,6 +3,7 @@ import { View, ScrollView, Text, FlatList, TextInput, TouchableOpacity, StyleShe
 import ProductItem from './ProductItem'; // Đảm bảo đường dẫn đến file ProductItem là chính xác
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducers/productReducer/product';
+import Loading from "../../assets/components/loading";
 import { fetchProductbySearch } from '../../redux/reducers/productReducer/searchProducts';
 import Loading from "../../components/loading";
 import { useNavigation } from '@react-navigation/native';

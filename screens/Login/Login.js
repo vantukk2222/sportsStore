@@ -18,10 +18,12 @@ import { useDispatch, useSelector } from  'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 // import { loginUser } from '../../redux/reducers/Login/authActions';
-import { asyncStorage } from '../../utilies/asyncStorage';
+// import { asyncStorage } from '../../utilies/asyncStorage';
 import { loginUser } from '../../redux/reducers/Login/signinReducer';
-import Loading from '../../components/loading';
-
+import Loading from '../../assets/components/loading';
+import  Toast  from 'react-native-toast-message';
+import { toastError, toastsuccess } from '../../assets/components/toastCustom';
+// {Toast}
 // {loginUser}
 function Login(props) {
   const {
@@ -46,25 +48,28 @@ function Login(props) {
     //  const getToken = useCallback(async()=> {
     //     return await asyncStorage.getAuthToken();
     // },[])
+  
   const handlePress = async () => {
+    
     setButtonDisabled(true);
-    // navigation.replace("Main");
     setTimeout(() => {
       (
 
         setButtonDisabled(false),
         loginUser(valueEmail, valuePassword)
         .then(async(data) => {
+          console.log("Data Login 1:  " + JSON.stringify(data))
           if (data) {
             // await asyncStorage.setAuthToken(data)
-            console.log("state: " + loginState)
+            console.log("Data Login: " + JSON.stringify(data))
+            toastsuccess('Xin chào','Đăng nhập thành công')
             // console.log("login: "+ await asyncStorage.getAuthToken())
             setValueEmail('')
             setValuePassword('')
             navigation.navigate('Start')
           } else {
-
-            Alert.alert("Lỗi đăng nhập", "Không thể đăng nhập")
+            toastError('Xin lỗi', 'Đăng nhập không thành công')
+            // Alert.alert("Lỗi đăng nhập", "Không thể đăng nhập")
           }
         })
         )
@@ -258,7 +263,7 @@ function Login(props) {
             marginVertical: 10
           }}>
           <Icon name='logo-facebook' size={45} color='blue'
-          onPress={async ()=>{console.log("API: " + await asyncStorage.getAuthToken())}}
+          // onPress={async ()=>{console.log("API: " + await asyncStorage.getAuthToken())}}
             style={{
               paddingHorizontal: 8
             }}></Icon>

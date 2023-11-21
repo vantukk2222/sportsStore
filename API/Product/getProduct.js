@@ -1,21 +1,24 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import axiosInstance from "../axiosConfig";
 
 const getProduct = async (page, pageSize, sort, desc) => {
-
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product', {
+        const response = await axiosInstance.get('/product', {
             params: {
                 page: page,
                 page_size: pageSize,
                 sort: sort,
                 desc: desc
-            },
+            }
         });
         console.log('call API get ');
         return response.data;
     } catch (error) {
         console.error('Error fetching data: ', error);
         throw error;
+        // return "Error login"
     }
 };
 
