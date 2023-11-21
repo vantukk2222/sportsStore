@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
 
 
 const data = [
@@ -21,7 +22,7 @@ const ItemCard = () => {
     const pricePerUnit = 10; // Giá của mỗi sản phẩm
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
-
+    const productState = useSelector(state => state.product)
 
     // Hàm tính toán giá tổng
     const totalPrice = pricePerUnit * quantity;
@@ -46,7 +47,7 @@ const ItemCard = () => {
             <View style={{ flexDirection: 'row' }}>
                 <View style={{
                     // backgroundColor:'red',
-                    paddingRight:40
+                    paddingRight: 40
                 }}>
                     <Text style={{
 
@@ -54,7 +55,7 @@ const ItemCard = () => {
                         fontWeight: 'bold',
                         paddingVertical: 10,
                         marginStart: 10
-                        
+
                     }}>
                         Tên sản phẩm
                     </Text>
@@ -109,12 +110,12 @@ const ItemCard = () => {
                 {/* Tăng/giảm số lượng */}
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
                     <TouchableOpacity onPress={() => setQuantity(quantity - 1)} disabled={quantity === 1}>
-                    <Icon name ='minus' style={{ fontSize: 12, marginRight: 10,padding:3,paddingRight:1, borderWidth:1}}></Icon>
+                        <Icon name='minus' style={{ fontSize: 12, marginRight: 10, padding: 3, paddingRight: 1, borderWidth: 1 }}></Icon>
                         {/* <Text style={{ fontSize: 20, marginRight: 10 }}> - </Text> */}
                     </TouchableOpacity>
                     <Text style={{ fontSize: 12 }}>{quantity}</Text>
                     <TouchableOpacity onPress={() => setQuantity(quantity + 1)}>
-                        <Icon name ='plus' style={{ fontSize: 12, marginLeft: 10,padding:3,paddingRight:1, borderWidth:1}}></Icon>
+                        <Icon name='plus' style={{ fontSize: 12, marginLeft: 10, padding: 3, paddingRight: 1, borderWidth: 1 }}></Icon>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -127,7 +128,7 @@ export default ItemCard;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        
+
         // backgroundColor:'red',
         padding: 16,
     },
@@ -166,5 +167,5 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
     },
-    
+
 });

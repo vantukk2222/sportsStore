@@ -4,9 +4,6 @@ import { useSelector } from "react-redux";
 import axiosInstance from "../axiosConfig";
 
 const getProduct = async (page, pageSize, sort, desc) => {
-    
-    // const token = 
-
     try {
         const response = await axiosInstance.get('/product', {
             params: {
@@ -16,7 +13,8 @@ const getProduct = async (page, pageSize, sort, desc) => {
                 desc: desc
             }
         });
-        return response.data.content;
+        console.log('call API get ');
+        return response.data;
     } catch (error) {
         console.error('Error fetching data: ', error);
         throw error;

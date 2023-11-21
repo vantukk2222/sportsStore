@@ -20,15 +20,33 @@ import { fetchProducts } from '../../redux/reducers/productReducer/product';
 import Loading from "../../assets/components/loading";
 import { useNavigation } from '@react-navigation/native';
 import ProductList from '../Product/ProductList';
-// import { asyncStorage } from '../../utilies/asyncStorage';
+import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 
 
 const Start = (props) => {
     // const { navigation, route } = props
     // const { navigate, goBack } = navigation
     const navigation = useNavigation();
-    
-    
+
+    const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories);
+    const [categories, setCategories] = useState([])
+
+    const [pageSizCate, setPageSizeCate] = useState(5);
+    const [sortCate, setSortCate] = useState('name');
+    const [descCate, setDescCate] = useState(true);
+    useEffect(() => {
+        dispatch(fetchCategories(pageSizCate, sortCate, descCate));
+    }, [pageSizCate, sortCate, descCate]);
+    useEffect(() => {
+        setCategories(dataCate.content);
+    }, [dataCate])
+
+    const clearAuthToken = async () => {
+        await asyncStorage.removeAuthToken("authToken")
+        console.log("auth token cleared");
+    };
+
+
     const handleGoDetail = (id, img) => {
         // asyncStorage.removeAuthToken()
         navigation.navigate('ProductDetail', {
@@ -40,31 +58,43 @@ const Start = (props) => {
         navigation.navigate('ProductList');
     };
 
+    // const handleRenderCategory = categories.map((item, index) => (
+    //     <View style={styles.categoryBox}>
+    //         <Text key={index} style={{ color: '#16162E', fontSize: 10 }}>{item.name}</Text>
+    //     </View>
+    // ));
+
+
 
     const dispatch = useDispatch();
-    const products = useSelector((state) => state.product.data);
-    const loading = useSelector((state) => state.product.loading);
-    const error = useSelector((state) => state.product.error);
+
+    const { data, loading, error } = useSelector((state) => state.product);
+    const [products, setProducts] = useState([]);
 
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [sort, setSort] = useState('name');
     const [desc, setDesc] = useState(false);
-
     useEffect(() => {
         dispatch(fetchProducts(page, pageSize, sort, desc));
     }, [page, pageSize, sort, desc]);
+
+    useEffect(() => {
+        setProducts(data.content);
+    }, [data]);
+
 
     if (loading) {
         return <Loading />;
     }
 
-    if (error) {
+    if (error || errorCate) {
         return <Text style={{ color: 'red' }}>Error: {error}</Text>;
     }
+
     return (
         <ScrollView>
-            <StatusBar backgroundColor="#828282" />
+            <StatusBar backgroundColor={colors.accent} />
             <Header />
             <View
                 style={{
@@ -110,18 +140,11 @@ const Start = (props) => {
 
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={styles.slider}>
-                        <View style={styles.categoryBox}>
-                            {/* <Image source={require('../../assets/Carrot.png')} /> */}
-                            <Text style={{ color: '#16162E', fontSize: 10 }}>Vegetables</Text>
-                        </View>
-                        <View style={styles.categoryBox}>
-                            {/* <Image source={require('../../assets/Fish.png')} /> */}
-                            <Text style={{ color: '#16162E', fontSize: 10 }}>Fish</Text>
-                        </View>
-                        <View style={styles.categoryBox}>
-                            {/* <Image source={require('../../assets/Drink.png')} /> */}
-                            <Text style={{ color: '#16162E', fontSize: 10 }}>Drinks</Text>
-                        </View>
+
+
+                        {/* <Image source={require('../../assets/Carrot.png')} /> */}
+                        {/* {handleRenderCategory} */}
+
                     </View>
                 </ScrollView>
             </View>

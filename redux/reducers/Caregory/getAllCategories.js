@@ -1,23 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import getProductById from "../../../API/Product/getProductById";
+import getCategory from "../../../API/Category/getCategory";
 
 const initialState = {
-    data: '',
-    loading: false,
-    error: null
+    dataCate: '',
+    loadingCate: false,
+    errorCate: null
 }
 
-const productDetailSlice = createSlice({
-    name: 'productDetail',
+const categorySlice = createSlice({
+    name: 'categories',
     initialState,
     reducers: {
         getStart: (state) => {
-            //console.log("state details:", state)
             state.loading = true;
             state.error = null;
         },
         getSuccess: (state, action) => {
-            state.data = { ...action.payload, imgUrl: action.payload?.imageSet[0].url };
+            state.data = action.payload;
             state.loading = false;
         },
         getFailure: (state, action) => {
@@ -26,15 +25,15 @@ const productDetailSlice = createSlice({
         }
     }
 });
-export const fetchProductbyId = (id) => async (dispatch) => {
+export const fetchCategories = (pageSize, sort, desc) => async (dispatch) => {
 
     try {
         dispatch(getStart());
-        const data = await getProductById(id);
-        console.log(id + data);
+        const data = await getCategory(pageSize, sort, desc);
+        // console.log(data);
         dispatch(getSuccess(data));
     } catch (error) {
-        let errorMessage = 'Error fetching data';
+        let errorMessage = 'Error fetching data of categories';
 
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
@@ -43,5 +42,5 @@ export const fetchProductbyId = (id) => async (dispatch) => {
         dispatch(getFailure(errorMessage));
     }
 };
-export const { getStart, getSuccess, getFailure } = productDetailSlice.actions;
-export default productDetailSlice.reducer;
+export const { getStart, getSuccess, getFailure } = categorySlice.actions;
+export default categorySlice.reducer;

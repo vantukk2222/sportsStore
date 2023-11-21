@@ -17,7 +17,9 @@ const ProductDetail = ({ route, navigation }) => {
 
     const dispatch = useDispatch();
     const { id, img } = route.params;
+    // console.log(id);
     const { data, loading, error } = useSelector((state) => state.productDetail);
+
     const [quantity, setQuantity] = useState(0);
     const [product, setProduct] = useState(null);
 
@@ -55,7 +57,7 @@ const ProductDetail = ({ route, navigation }) => {
     // }, [id]);
 
     useEffect(() => {
-        if(id) {
+        if (id) {
             dispatch(fetchProductbyId(id));
         }
     }, [id]);
@@ -65,7 +67,7 @@ const ProductDetail = ({ route, navigation }) => {
         setProduct(data);
     }, [data])
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View>
                 <View style={styles.iconTop}>
                     <View style={styles.iconBack}>
@@ -88,7 +90,7 @@ const ProductDetail = ({ route, navigation }) => {
                         style={styles.image}
                         source={{
                             uri: product?.imgUrl,
-                          }} // Đường dẫn tới hình ảnh
+                        }} // Đường dẫn tới hình ảnh
                     />
                 </View>
             </View>
@@ -211,7 +213,7 @@ const ProductDetail = ({ route, navigation }) => {
                 </View>
             </View>
 
-        </View>
+        </ScrollView>
         // <View>
         //     <Text>Product Detail Screen</Text>
         //     {product ? (
@@ -230,7 +232,7 @@ const ProductDetail = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         backgroundColor: '#FFFFFF',
     },
     image: {
@@ -276,11 +278,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     productInfo: {
+
         backgroundColor: '#F7F7F7',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         marginTop: 80,
-        height: '60%',
+        // height: '60%',
+        flex: 1,
         marginBottom: 0,
         paddingBottom: 0,
     },
