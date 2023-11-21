@@ -1,0 +1,117 @@
+/* Container styling */
+
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    margin: 80px auto;
+    padding: 30px;
+    max-width: 400px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+}
+
+/* Title styling */
+.title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+/* Text styling */
+.text {
+    font-weight: 600;
+    padding-bottom: 5px;
+    color: #555555;
+}
+
+/* Input styling */
+.input {
+    padding: 12px;
+    outline: none;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    width: 100%;
+
+    &:hover,
+    &:focus {
+        border-color: #9c9c9c;
+    }
+}
+
+/* Password input and eye icon styling */
+.input-2 {
+    position: relative;
+
+    i {
+
+
+        cursor: pointer;
+        position: absolute;
+        top: 17px;
+        right: 10px;
+    }
+
+}
+
+/* Button styling */
+button {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:disabled {
+        background-color: #cccccc;
+        color: #666666;
+        cursor: not-allowed;
+    }
+}
+
+.button-1 {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: #fe2c55;
+    transition: background-color 0.3s;
+}
+
+/* Back link styling */
+.back {
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    margin: 10px auto;
+
+
+    i {
+        margin-right: 5px;
+    }
+}
+
+/* Forgot password text styling */
+.p {
+    color: #777777;
+    font-weight: 600;
+    font-size: 12px;
+    margin-top: 10px;
+
+}

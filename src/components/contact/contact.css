@@ -1,0 +1,60 @@
+/* Contact.css */
+
+/* CSS for the wrapper section */
+.wrapper {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+/* CSS for the heading */
+.common-heading {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* CSS for the iframe */
+iframe {
+    display: block;
+    margin: 0 auto;
+    border: 0;
+    width: 100%;
+    height: 450px;
+}
+
+/* CSS for the container */
+
+/* CSS for the contact form */
+.contact-form {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    padding: 0 20px;
+    margin: 5rem auto;
+}
+
+/* CSS for the contact inputs */
+.contact-inputs input,
+.contact-inputs textarea {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* CSS for the submit button */
+.contact-inputs input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.contact-inputs input[type="submit"]:hover {
+    background-color: #0056b3;
+}
