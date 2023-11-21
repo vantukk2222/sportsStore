@@ -13,9 +13,10 @@ import { Cart, Login, Register } from '../screens';
 import { connect, useDispatch } from 'react-redux';
 import { loginUser, setToken } from '../redux/reducers/Login/signinReducer';
 // import { bindActionCreators } from 'redux';
-import { asyncStorage } from '../utilies/asyncStorage';
-import Loading from '../components/loading';
+// import { asyncStorage } from '../utilies/asyncStorage';
+import Loading from '../assets/components/loading';
 import * as Navigation from './stackNavigation';
+import axiosInstance, { setHeaderToken } from '../API/axiosConfig';
 // {loginScreenNavigator}
 // {loginUser}
 // {useEffect}
@@ -23,7 +24,9 @@ import * as Navigation from './stackNavigation';
 const Stack = createStackNavigator();
 
 const App = ({ loggedIn, loginUser,auth }) => {
-  
+useEffect(()=>{
+    setHeaderToken(loggedIn??'')
+},[])
     return (
             <>
             <NavigationContainer>

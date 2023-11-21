@@ -27,6 +27,7 @@ const productSlice = createSlice({
 export const fetchProducts = (page, pageSize, sort, desc) => async (dispatch) => {
     try {
         dispatch(getAllStart());
+        console.log("List product error: ", 1);
         const data = await getProduct(page, pageSize, sort, desc);
         dispatch(getAllsuccess(data));
     } catch (error) {

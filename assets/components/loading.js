@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors } from '../constants/index'
+import { colors } from '../../constants/index'
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 const Loading = () => (

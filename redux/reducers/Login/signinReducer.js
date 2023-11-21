@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import loginPage from "../../../API/Login/loginAPI";
-import { asyncStorage } from "../../../utilies/asyncStorage";
+// import { asyncStorage } from "../../../utilies/asyncStorage";
 // {asyncStorage}
 const initialState = {
-  authToken: 
-  null,
+  authToken: null,
   isLoading: false,
   error: null,
 };
@@ -40,13 +39,14 @@ const loginSlice = createSlice({
 
 export const loginUser = (username, password) => async (dispatch, getState) => {
   try {
-    dispatch(loginSlice.actions.loginRequest()); // Dispatch loginRequest action
+    dispatch(loginRequest()); // Dispatch loginRequest action
 
     const data = await loginPage(username, password); // Call loginPage API
-    // console.log("data: ", data); // Log received data
+    console.log("data redux login: ", data); // Log received data
 
-    dispatch(loginSlice.actions.loginSuccess({ authToken: data })); // Dispatch loginSuccess with received data
+    dispatch(loginSuccess({ authToken: data })); // Dispatch loginSuccess with received data
     // console.log("state reducerLogin: " + JSON.stringify(getState()));
+    // console.log("Token login: ", await AsyncStorage.getItem("authToken"));
     return data
   } catch (error) {
     let errorMessage = 'Error fetching data';
@@ -54,7 +54,7 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
     if (error.response && error.response.data) {
       errorMessage = error.response.data.message || errorMessage;
     }
-    dispatch(loginSlice.actions.loginFailure({ error: errorMessage })); // Dispatch loginFailure with error message
+    dispatch(loginFailure({ error: errorMessage })); // Dispatch loginFailure with error message
   }
 };
 
