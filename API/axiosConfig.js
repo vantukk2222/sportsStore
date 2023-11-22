@@ -23,9 +23,10 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    toastError("Thời gian đăng nhập hết hạn", "Vui lòng đăng nhập lại")
-    setHeaderToken();
+    
     store.dispatch(logout())
+    toastError("Thời gian đăng nhập hết hạn", "Vui lòng đăng nhập lại")
+    setHeaderToken('');
     // Xử lý lỗi nếu cần
     return Promise.reject(error);
   }

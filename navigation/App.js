@@ -3,13 +3,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import ProductItem from '../screens/Product/ProductItem';
-import ProductList from '../screens/Product/ProductList';
-import ProductDetail from '../screens/Product/ProductDetail';
-import Start from '../screens/Home/Start';
-import Information from '../screens/User/Information';
-import UITab from './UITab';
-import { Cart, Login, Register } from '../screens';
+// import ProductItem from '../screens/Product/ProductItem';
+// import ProductList from '../screens/Product/ProductList';
+// import ProductDetail from '../screens/Product/ProductDetail';
+// import Start from '../screens/Home/Start';
+// import Information from '../screens/User/Information';
+// import UITab from './UITab';
+// import { Cart, Login, Register } from '../screens';
 import { connect, useDispatch } from 'react-redux';
 import { loginUser, setToken } from '../redux/reducers/Login/signinReducer';
 // import { bindActionCreators } from 'redux';
@@ -27,7 +27,7 @@ const Stack = createStackNavigator();
 const App = ({ loggedIn, loginUser,auth }) => {
 useEffect(()=>{
     setHeaderToken(loggedIn??'')
-},[])
+},[loggedIn])
     return (
             <>
             <NavigationContainer>

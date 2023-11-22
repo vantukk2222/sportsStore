@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducers/productReducer/product';
 import Loading from "../../assets/components/loading";
 import { fetchProductbySearch } from '../../redux/reducers/productReducer/searchProducts';
-import Loading from "../../components/loading";
+// import Loading from "../../components/loading";
 import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';

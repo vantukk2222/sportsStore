@@ -40,7 +40,9 @@ const Start = (props) => {
     useEffect(() => {
         setCategories(dataCate.content);
     }, [dataCate])
-
+    // useEffect(()=>{
+    //    const  
+    // },[])
     const clearAuthToken = async () => {
         await asyncStorage.removeAuthToken("authToken")
         console.log("auth token cleared");

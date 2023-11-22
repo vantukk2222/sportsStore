@@ -1,8 +1,9 @@
 import axios from "axios";
+import axiosInstance from "../axiosConfig";
 
 const searchProduct = async (name, state) => {
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product/search', {
+        const response = await axiosInstance.get('product/search', {
             params: {
                 name: name,
                 state: state

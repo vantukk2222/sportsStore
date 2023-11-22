@@ -5,7 +5,7 @@ import loginSlice from './reducers/Login/signinReducer'
 import registerSlice from './reducers/Register/signupReducer';
 import productSearchSlice from './reducers/productReducer/searchProducts';
 import categorySlice from './reducers/Caregory/getAllCategories';
-import registerSlice from './reducers/Register/signupReducer'
+// import registerSlice from './reducers/Register/signupReducer'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
