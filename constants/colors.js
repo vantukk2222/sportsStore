@@ -12,4 +12,11 @@ export default {
     success: 'rgb(7,161,79)',
     alert: 'rgb(236,69,90)',
 
+    denNhe: '#333333',
+    nauNhe: '#8D6E63',
+    vangNhat: '#FFEB3B',
+    xam: '#9E9E9E',
+    trangXam: '#F5F5F5',
+
+
 }

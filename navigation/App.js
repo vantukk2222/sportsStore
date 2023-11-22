@@ -3,25 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-// import ProductItem from '../screens/Product/ProductItem';
-// import ProductList from '../screens/Product/ProductList';
-// import ProductDetail from '../screens/Product/ProductDetail';
-// import Start from '../screens/Home/Start';
-// import Information from '../screens/User/Information';
-// import UITab from './UITab';
-// import { Cart, Login, Register } from '../screens';
 import { connect, useDispatch } from 'react-redux';
 import { loginUser, setToken } from '../redux/reducers/Login/signinReducer';
-// import { bindActionCreators } from 'redux';
-// import { asyncStorage } from '../utilies/asyncStorage';
 import Loading from '../assets/components/loading';
 import * as Navigation from './stackNavigation';
-import axiosInstance, { setHeaderToken } from '../API/axiosConfig';
-// {loginScreenNavigator}
-// {loginUser}
-// {useEffect}
-// {useCallBack}
-const Stack = createStackNavigator();
+import  { setHeaderToken } from '../API/axiosConfig';
+
 
 
 const App = ({ loggedIn, loginUser,auth }) => {
@@ -29,19 +16,19 @@ useEffect(()=>{
     setHeaderToken(loggedIn??'')
 },[loggedIn])
     return (
-            <>
+        <>
             <NavigationContainer>
-            {loggedIn ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator/>)}
-                </NavigationContainer>
-                </>)
+                {loggedIn ? (<Navigation.MainScreenNavigator />) : (<Navigation.LoginScreenNavigator />)}
+            </NavigationContainer>
+        </>)
 }
 
 const mapStateToProps = state => ({
-    auth :state.login,
-    loggedIn: state.login.authToken !== null , // Assuming authToken indicates user logged in
-  });
-  
-  const mapDispatchToProps = {loginUser};
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(App);
-  
+    auth: state.login,
+    loggedIn: state.login.authToken !== null, // Assuming authToken indicates user logged in
+});
+
+const mapDispatchToProps = { loginUser };
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+

@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+
 import { useSelector } from "react-redux";
 import axiosInstance from "../axiosConfig";
 
@@ -11,12 +12,15 @@ const getProduct = async (page, pageSize, sort, desc) => {
                 page_size: pageSize,
                 sort: sort,
                 desc: desc
+
             }
         });
-        console.log('call API get ');
+
+        // console.log('call API get product ', response);
         return response.data;
     } catch (error) {
         console.error('Error fetching data: ', error);
+        console.log(error.response);
         throw error;
         // return "Error login"
     }
