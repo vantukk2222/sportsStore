@@ -6,6 +6,6 @@ module.exports = function (app) {
         createProxyMiddleware({
             target: 'https://project-pbl6-production.up.railway.app',
             changeOrigin: true,
-        }),
+        })
     );
 };
