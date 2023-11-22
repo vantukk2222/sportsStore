@@ -5,27 +5,21 @@ import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons'
 import { asyncStorage } from '../utilies/asyncStorage';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/reducers/Login/signinReducer';
+import { colors } from '../constants';
 // {asyncStorage}
 const HeaderComp = () => {
     const dispatch = useDispatch();
     return (
         <View style={styles.headerContainer}>
-            <Icon name="buffer" size={25} style={{ color: 'blue' }} onPress ={ () => {dispatch(logout())}} />
+            <Icon name="buffer" size={30} style={styles.iconBuffer} onPress={() => { dispatch(logout()) }} />
             <View style={{ display: 'flex', flexDirection: 'row' }}>
-                <Icon name="align-left" size={25} style={{ marginTop: 10, color: 'black' }} />
-                <View style={styles.location}>
-                    <Text style={{ fontWeight: 'bold', marginLeft: 20, color: 'black' }}>
-                        Delivery To :
+                {/* <View style={styles.location}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 25 }}>
+                        HOME
                     </Text>
-                    <View style={{ display: 'flex', flexDirection: 'row' }}>
-                        <Text style={{ color: 'black' }}>Mohali, Punjab</Text>
-                        <MaterialCommunity name="menu-down" size={25} style={{ color: 'black' }} />
-                    </View>
-                </View>
+                </View> */}
             </View>
-            <Icon name="shopping-cart" size={25} style={{
-                color: 'black'
-            }} />
+            <Icon name="shopping-cart" size={30} style={styles.iconShopping} />
         </View>
     );
 };
@@ -33,9 +27,22 @@ const styles = StyleSheet.create({
     headerContainer: {
         width: '100%',
         display: 'flex',
-        justifyContent: 'space-around',
         flexDirection: 'row',
-        marginTop: 20,
+        marginTop: 5,
+        justifyContent: 'space-between',
+    },
+    iconBuffer:
+    {
+        color: colors.denNhe,
+        alignItems: 'flex-end',
+        marginLeft: 15,
+
+    },
+    iconShopping:
+    {
+        color: '#333333',
+        alignItems: 'flex-start',
+        marginRight: 15
     },
     location: {
         display: 'flex',

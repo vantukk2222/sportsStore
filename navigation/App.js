@@ -8,7 +8,7 @@ import ProductList from '../screens/Product/ProductList';
 import ProductDetail from '../screens/Product/ProductDetail';
 import Start from '../screens/Home/Start';
 import Information from '../screens/User/Information';
-import UITab from './UITab';
+import UITab from './UserTab';
 import { Cart, Login, Register } from '../screens';
 import { connect, useDispatch } from 'react-redux';
 import { loginUser, setToken } from '../redux/reducers/Login/signinReducer';
@@ -20,25 +20,26 @@ import * as Navigation from './stackNavigation';
 // {loginUser}
 // {useEffect}
 // {useCallBack}
+
 const Stack = createStackNavigator();
 
 
-const App = ({ loggedIn, loginUser,auth }) => {
-  
+const App = ({ loggedIn, loginUser, auth }) => {
+
     return (
-            <>
+        <>
             <NavigationContainer>
-            {loggedIn ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator/>)}
-                </NavigationContainer>
-                </>)
+                {loggedIn ? (<Navigation.MainScreenNavigator />) : (<Navigation.LoginScreenNavigator />)}
+            </NavigationContainer>
+        </>)
 }
 
 const mapStateToProps = state => ({
-    auth :state.login,
-    loggedIn: state.login.authToken !== null , // Assuming authToken indicates user logged in
-  });
-  
-  const mapDispatchToProps = {loginUser};
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(App);
-  
+    auth: state.login,
+    loggedIn: state.login.authToken !== null, // Assuming authToken indicates user logged in
+});
+
+const mapDispatchToProps = { loginUser };
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
