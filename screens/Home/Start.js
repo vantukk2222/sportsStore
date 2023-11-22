@@ -10,21 +10,19 @@ import {
     TextInput,
     Image,
 } from 'react-native';
-import Header from '../../components/Header'
+import Header from '../../assets/components/Header'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize, images } from '../../constants/index';
 
 import ProductItem from '../Product/ProductItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducers/productReducer/product';
-import Loading from "../../components/loading";
+import Loading from "../../assets/components/loading";
 import { useNavigation } from '@react-navigation/native';
 import ProductList from '../Product/ProductList';
-import { asyncStorage } from '../../utilies/asyncStorage';
-
-import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
-//import DataTableCell from 'react-native-paper/lib/typescript/components/DataTable/DataTableCell';
 import ListCategory from '../Category/ListCategory';
+import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
+
 
 
 const Start = (props) => {
@@ -45,6 +43,7 @@ const Start = (props) => {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
+// <<<<<<< HEAD
         dispatch(fetchCategories());
     }, []);
 
@@ -53,6 +52,16 @@ const Start = (props) => {
 
     }, [dataCate])
     //console.log(categories);
+// =======
+//         dispatch(fetchCategories(pageSizCate, sortCate, descCate));
+//     }, [pageSizCate, sortCate, descCate]);
+//     useEffect(() => {
+//         setCategories(dataCate.content);
+//     }, [dataCate])
+//     // useEffect(()=>{
+//     //    const  
+//     // },[])
+// >>>>>>> master
     const clearAuthToken = async () => {
         await asyncStorage.removeAuthToken("authToken")
         console.log("auth token cleared");
@@ -287,11 +296,11 @@ const Start = (props) => {
                         numColumns={2}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
+                                onPress={() => handleGoDetail(item?.id, item.imageSet[0]?.url)}>
                                 < ProductItem
-                                    imageSource={item.imageSet[0].url}
-                                    productName={item.name}
-                                    productPrice={item.price}
+                                    imageSource={item?.imageSet[0]?.url}
+                                    productName={item?.name}
+                                    productPrice={item?.price}
                                 />
                             </TouchableOpacity>
                         )}

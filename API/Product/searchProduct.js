@@ -1,9 +1,11 @@
 import axios from "axios";
-import { asyncStorage } from "../../utilies/asyncStorage";
+
+import axiosInstance from "../axiosConfig";
+
 const searchProduct = async (name, state) => {
     var authToken = await asyncStorage.getAuthToken();
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product/search', {
+        const response = await axiosInstance.get('product/search', {
             params: {
                 name: name,
                 state: state
