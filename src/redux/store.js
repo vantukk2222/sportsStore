@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 
 const rootReducer = combineReducers({
     categories: groupCategorySlice,
+    
 });
 const persistConfig = {
     key: 'root',
