@@ -1,4 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories } from "~/redux/reducers/Caregory/getAllCategories";
 
 const Categories = () => {
   const data = [
@@ -47,15 +49,24 @@ const Categories = () => {
       cateName: "Sách sức khỏe",
     },
   ]
+  const dispatch=useDispatch();
+  const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories);
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    dispatch(fetchCategories());
+}, []);
+useEffect(() => {
+  setCategories(dataCate);
+  console.log(dataCate);
+}, [dataCate])
 
   return (
     <>
       <div className='category'>
-        {data.map((value, index) => {
+        {dataCate.map((value, index) => {
           return (
             <div className='box f_flex' key={index}>
-              <img src={value.cateImg} alt='' />
-              <span>{value.cateName}</span>
+              <span>{value.name}</span>
             </div>
           )
         })}
