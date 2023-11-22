@@ -2,8 +2,12 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
-import { logout } from '../redux/reducers/Login/signinReducer';
-import { colors } from '../constants';
+// import { logout } from '../../redux/reducers/Login/signinReducer';
+// logout
+// import { colors } from '../constants';
+// colors
+import { logout } from '../../redux/reducers/Login/signinReducer';
+import { colors } from '../../constants';
 // {asyncStorage}
 const HeaderComp = () => {
     const dispatch = useDispatch();

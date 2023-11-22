@@ -8,7 +8,7 @@ const loginPage = async (email, password) => {
           password: password,
         });
         const { token } = response.data;
-        console.log("tokem apilogin: ",token);
+        console.log("token api login: ",token);
         setHeaderToken(token);
         // await asyncStorage.removeAuthToken()
         // await asyncStorage.setAuthToken(token)
@@ -16,7 +16,7 @@ const loginPage = async (email, password) => {
         return token;
       } catch (error) {
 
-        console.log("error sign in"+error.message)
+        console.log("error sign in: "+error.message)
       }
 }
 

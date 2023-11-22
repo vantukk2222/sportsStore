@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import loginPage from "../../../API/Login/loginAPI";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { asyncStorage } from "../../../utilies/asyncStorage";
 // {asyncStorage}
 const initialState = {
@@ -33,6 +34,9 @@ const loginSlice = createSlice({
       state.authToken = null;
       state.isLoading = false;
       state.error = null;
+      
+      // {}
+      // {console.log();}
     }
   },
 });
@@ -45,6 +49,7 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
     console.log("data redux login: ", data); // Log received data
 
     dispatch(loginSuccess({ authToken: data })); // Dispatch loginSuccess with received data
+    // console.log("data");
     // console.log("state reducerLogin: " + JSON.stringify(getState()));
     // console.log("Token login: ", await AsyncStorage.getItem("authToken"));
     return data
@@ -55,6 +60,7 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
       errorMessage = error.response.data.message || errorMessage;
     }
     dispatch(loginFailure({ error: errorMessage })); // Dispatch loginFailure with error message
+    throw error.response.message
   }
 };
 

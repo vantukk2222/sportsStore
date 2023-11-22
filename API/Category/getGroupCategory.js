@@ -1,17 +1,13 @@
 import axios from "axios";
 import { asyncStorage } from "../../utilies/asyncStorage";
+import axiosInstance from "../axiosConfig";
 
 const getGroupCategory = async () => {
     var authToken = await asyncStorage.getAuthToken();
     console.log(authToken);
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/category/get-group', {
-            headers: {
-                'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json',
-            },
-        });
-        //console.log('Get data : group category', response)
+        const response = await axiosInstance.get('/category/get-group');
+        console.log('Get data : group category', response)
         return response.data;
     } catch (error) {
         console.error('Error fetching data - Get group category: ', error);

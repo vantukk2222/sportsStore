@@ -30,7 +30,7 @@ export const fetchCategories = () => async (dispatch) => {
     try {
         dispatch(getStart());
         const data = await getGroupCategory();
-        // console.log(data);
+        console.log("Data category: ",data);
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data of categories';

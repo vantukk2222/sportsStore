@@ -23,16 +23,20 @@ const productSlice = createSlice({
             state.error = action.payload;
             state.loading = false;
         }
+        // removeAll(state,action) =>{
+
+        // }
     }
 });
 export const fetchProducts = (page, pageSize, sort, desc) => async (dispatch) => {
     try {
         dispatch(getAllStart());
-        console.log("List product error: ", 1);
         const data = await getProduct(page, pageSize, sort, desc);
+        console.log("List product error: ", 1);
         dispatch(getAllsuccess(data));
     } catch (error) {
         dispatch(getAllFailure(error.message))
+        throw error.response.message
     }
 }
 export const { getAllStart, getAllsuccess, getAllFailure } = productSlice.actions;

@@ -13,12 +13,20 @@ import { colors } from '../../constants';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductbyId } from '../../redux/reducers/productReducer/getDetailProduct';
+// import axios from 'axios';
 const ProductDetail = ({ route, navigation }) => {
 
     const dispatch = useDispatch();
     const { id, img } = route.params;
+    // const [data, setData] = useState([]);
     // console.log(id);
     const { data, loading, error } = useSelector((state) => state.productDetail);
+    // const fetchUser = async () => {
+    //     const url = 'https://project-pbl6-production.up.railway.app/api/v1/product/'+id;
+    //     const response = await axios.get(url);
+    //     // console.log(response.data);
+    //     setData(response)
+    //   };
 
     const [quantity, setQuantity] = useState(0);
     const [product, setProduct] = useState(null);
@@ -63,7 +71,7 @@ const ProductDetail = ({ route, navigation }) => {
     }, [id]);
 
     useEffect(() => {
-        console.log(data);
+        // console.log("data detail: ",data);
         setProduct(data);
     }, [data])
     return (

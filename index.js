@@ -6,6 +6,8 @@ import {AppRegistry} from 'react-native';
 import { Login } from './screens';
 import {name as appName} from './app.json';
 import Main from './Main';
+import MyCart from './screens/Home/MyCart';
+// {MyCart}
 // import DropProductToCart from './dropItemtoCart';
 // DropProductToCart
 // import Main from './Main';

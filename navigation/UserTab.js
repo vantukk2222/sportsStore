@@ -11,7 +11,7 @@ import * as React from 'react'
 
 import ProductList from '../screens/Product/ProductList';
 import Start from '../screens/Home/Start';
-import Cart from '../screens/Home/Cart';
+import Cart from '../screens/Home/MyCart';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { fontSize, colors } from '../constants';
 import Icon from 'react-native-vector-icons/FontAwesome';

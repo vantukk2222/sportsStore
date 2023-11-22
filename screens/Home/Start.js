@@ -31,6 +31,7 @@ const Start = (props) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
+    // const token = useSelector((state) => state.login.authToken) OK
     const { data, loading, error } = useSelector((state) => state.product);
     const [products, setProducts] = useState([]);
 
@@ -43,7 +44,7 @@ const Start = (props) => {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
-// <<<<<<< HEAD
+        // console.log("Token Start: ", token); OK 
         dispatch(fetchCategories());
     }, []);
 
@@ -61,13 +62,6 @@ const Start = (props) => {
 //     // useEffect(()=>{
 //     //    const  
 //     // },[])
-// >>>>>>> master
-    const clearAuthToken = async () => {
-        await asyncStorage.removeAuthToken("authToken")
-        console.log("auth token cleared");
-    };
-
-
     const handleGoDetail = (id, img) => {
         // asyncStorage.removeAuthToken()
         navigation.navigate('ProductDetail', {
@@ -93,27 +87,28 @@ const Start = (props) => {
     }, [page, pageSize, sort, desc]);
 
     useEffect(() => {
+        
         setProducts(data.content);
     }, [data]);
 
-    const renderCatetory = ({ item }) => {
-        { console.log(item) }
-        <View style={{
-            width: 80,
-            height: 80,
-            margin: 10,
-            backgroundColor: 'lightblue',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 8,
-            borderWidth: 1,
-            borderColor: 'black',
-            backgroundColor: 'black'
-        }}>
+    // const renderCatetory = ({ item }) => {
+    //     { console.log(item) }
+    //     <View style={{
+    //         width: 80,
+    //         height: 80,
+    //         margin: 10,
+    //         backgroundColor: 'lightblue',
+    //         justifyContent: 'center',
+    //         alignItems: 'center',
+    //         borderRadius: 8,
+    //         borderWidth: 1,
+    //         borderColor: 'black',
+    //         backgroundColor: 'black'
+    //     }}>
 
-            <Text style={{ color: 'black' }}>{item.name}</Text>
-        </View>
-    }
+    //         <Text style={{ color: 'black' }}>{item.name}</Text>
+    //     </View>
+    // }
 
 
     const renderProductEvent = ({ item }) => {
@@ -140,7 +135,7 @@ const Start = (props) => {
             <View style={styles.searchContainer}>
                 <TextInput style={styles.input}
                     placeholder="Search Product"
-                    // placeholderTextColor="gray"
+                    placeholderTextColor="white"
                     underlineColorAndroid={colors.alert}
                 />
                 <View style={styles.filter}>
@@ -166,6 +161,7 @@ const Start = (props) => {
                     {/* <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
                         Menu :
                     </Text> */}
+                    {/* {renderCatetory} */}
                 </View>
                 <ListCategory />
                 {/* <View
@@ -373,7 +369,7 @@ const styles = StyleSheet.create({
         color: colors.trangXam,//'#424242',
         borderRadius: 15,
         backgroundColor: colors.disable,
-        placeholderTextColor: colors.alert,
+        // placeholderTextColor: colors.alert,
         fontSize: 15
     },
     filter: {

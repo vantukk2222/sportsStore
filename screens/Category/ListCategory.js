@@ -9,8 +9,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize, images } from '../../constants/index';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from "../../components/loading";
+// import Loading from "../../components/loading";
+// Loading
 import { useNavigation } from '@react-navigation/native';
+import Loading from '../../assets/components/loading';
 
 const { width, height } = Dimensions.get('screen');
 

@@ -23,6 +23,7 @@ import { loginUser } from '../../redux/reducers/Login/signinReducer';
 import Loading from '../../assets/components/loading';
 import  Toast  from 'react-native-toast-message';
 import { toastError, toastsuccess } from '../../assets/components/toastCustom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // {Toast}
 // {loginUser}
 function Login(props) {
@@ -37,18 +38,22 @@ function Login(props) {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const errorLoad = loginState.error;
 
-  // useEffect(() => {
-  //   const timeLogin = setInterval(async() => { 
-  //      await getToken() ? navigation.replace("Start") : navigation.replace("Login")
-  //   },1000);
-  //   timeLogin
-  //   return clearInterval(timeLogin)
-  // });
-
-    //  const getToken = useCallback(async()=> {
-    //     return await asyncStorage.getAuthToken();
-    // },[])
-  
+    const removeRoot = useCallback(async () => {
+    try {
+      await AsyncStorage.removeItem('persist:root');
+      console.log('Dữ liệu Redux Persist đã được xóa.');
+    } catch (error) {
+      console.error('Lỗi khi xóa dữ liệu Redux Persist:', error);
+    }
+  }, []);
+  useEffect(() => {
+    const clearData = async () => {
+      setTimeout(() => {
+        removeRoot();
+      }, 100);
+    };
+    clearData();
+  }, [removeRoot]);
   const handlePress = async () => {
     
     setButtonDisabled(true);

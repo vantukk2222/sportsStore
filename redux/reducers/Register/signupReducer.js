@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import  registerPage  from "../../../API/Register/register";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 // registerPage
 const initialState = {
   token: null,
@@ -43,7 +43,7 @@ export const signupUser = (userData) => async (dispatch) => {
     // console.log("data: ", data); // Log received data
 
     dispatch(registerSlice.actions.signupSuccess({ token: data })); // Dispatch registerSuccess with received data
-    console.log("Token reg : ", AsyncStorage.getItem("token"));
+    // console.log("Token reg : ", AsyncStorage.getItem("token"));
     return data
   } catch (error) {
     let errorMessage = 'Error fetching data';

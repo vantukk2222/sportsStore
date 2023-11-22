@@ -12,7 +12,6 @@ const productDetailSlice = createSlice({
     initialState,
     reducers: {
         getStart: (state) => {
-            //console.log("state details:", state)
             state.loading = true;
             state.error = null;
         },
@@ -29,18 +28,19 @@ const productDetailSlice = createSlice({
 export const fetchProductbyId = (id) => async (dispatch) => {
 
     try {
+        // console.log("ID detail: "+ id +"\n data detail: "+ 1);
         dispatch(getStart());
         const data = await getProductById(id);
-        console.log(id + data);
         dispatch(getSuccess(data));
     } catch (error) {
-        let errorMessage = 'Error fetching data';
+        let errorMessage = 'Error fetching data nha';
 
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
         }
 
         dispatch(getFailure(errorMessage));
+        throw error.response.message
     }
 };
 export const { getStart, getSuccess, getFailure } = productDetailSlice.actions;
