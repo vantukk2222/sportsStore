@@ -1,7 +1,7 @@
 import axios from "axios";
-const getGroupCategory=async ()=>{
+const getUnAuth=async (prop)=>{
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/category/get-group')  
+        const response = await axios.get(`https://project-pbl6-production.up.railway.app/api/v1/${prop}`)  
         return response.data
     } catch (error) {
         console.error('Error fetching data - Get group category: ', error);
@@ -10,4 +10,4 @@ const getGroupCategory=async ()=>{
         throw error;
     }
 }
-export default getGroupCategory
+export default getUnAuth

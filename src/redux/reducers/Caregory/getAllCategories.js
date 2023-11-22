@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import getGroupCategory from "~/API/getGroupCategory";
+import { createSlice } from '@reduxjs/toolkit';
+import getUnAuth from '~/API/getUnAuth';
 
 const initialState = {
     dataCate: [],
     loadingCate: false,
-    errorCate: null
-}
+    errorCate: null,
+};
 
 const groupCategorySlice = createSlice({
     name: 'categories',
@@ -22,14 +22,13 @@ const groupCategorySlice = createSlice({
         getFailure: (state, action) => {
             state.error = action.payload;
             state.loading = false;
-        }
-    }
+        },
+    },
 });
 export const fetchCategories = () => async (dispatch) => {
-
     try {
         dispatch(getStart());
-        const data = await getGroupCategory();
+        const data = await getUnAuth('category/get-group');
         // console.log(data);
         dispatch(getSuccess(data));
     } catch (error) {
