@@ -70,7 +70,7 @@ const ListCategory = () => {
                 initialScrollIndex={index}
                 style={{ flexGrow: 0 }}
                 data={categories}
-                keyExtractor={(item) => item.key}
+                keyExtractor={(item) => item.id}
                 contentContainerStyle={{ paddingLeft: _spacing }}
                 showsHorizontalScrollIndicator={false}
                 horizontal
