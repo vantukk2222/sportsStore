@@ -11,13 +11,12 @@ const Categories = () => {
     }, []);
     useEffect(() => {
         setCategories(dataCate);
-        console.log(dataCate);
     }, [dataCate]);
 
     return (
         <>
             <div className="category">
-                {dataCate.map((value, index) => {
+                {categories.map((value, index) => {
                     return (
                         <div className="box f_flex" key={index}>
                             <span>{value.name}</span>

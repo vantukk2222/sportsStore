@@ -1,14 +1,12 @@
 import React from 'react';
-import Categories from './Categories';
 import './Home.css';
 import SliderHome from './Slider';
 
 const MainPage = () => {
     return (
         <>
-            <section className="home">
-                <div className="container d_flex">
-                    <Categories/>
+            <section className="home slide">
+                <div className="container d_flex slide">
                     <SliderHome />
                 </div>
             </section>

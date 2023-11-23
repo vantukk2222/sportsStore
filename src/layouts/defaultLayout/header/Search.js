@@ -17,7 +17,6 @@ const Search = () => {
                         <span>Tìm kiếm</span>
                     </div>
                     <div className="icon f_flex width">
-                        <i className="fa fa-user icon-circle"></i>
                         <div className="cart">
                             <Link to="/cart">
                                 <i className="fa fa-shopping-bag icon-circle"></i>

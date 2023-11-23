@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from 'react';
-//import { loginApi } from '../services/UserService';
+import React, { useState } from 'react';
 import './style.css';
 import { Link } from 'react-router-dom';
-//import { UserContext } from '../context/UserContext';
+
 const Register = () => {
-    //const { loginContext } = useContext(UserContext);
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
     const [isShowPassword, setIsShowPassword] = useState(false);
-
-    const [loadingApi, setloadingApi] = useState(false);
-
-    const handleLogin = async () => {};
 
     return (
         <div className="login-container col-12 col-sm-4">
@@ -58,12 +52,8 @@ const Register = () => {
                 <input className="input" type="file" id="profileImage" />
             </div>
             <p className="p">forgot password?</p>
-            <button
-                className={email && password ? 'button-1' : ''}
-                disabled={email && password ? false : true}
-                onClick={() => handleLogin()}
-            >
-                {loadingApi && <i class="fas fa-sync fa-spin"></i>}
+            <button className={email && password ? 'button-1' : ''} disabled={email && password ? false : true}>
+                <i class="fas fa-sync fa-spin"></i>
                 &nbsp;Đăng ký
             </button>
 

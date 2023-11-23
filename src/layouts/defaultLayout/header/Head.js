@@ -1,24 +1,29 @@
 import { Link } from 'react-router-dom';
+import React, { useState, memo, useEffect } from 'react';
 const Head = () => {
+    const [login, setLogin] = useState(false);
+    useEffect(() => setLogin(false), []);
     return (
         <>
             <section className="head">
                 <div className="container d_flex">
-                    <div className="left row">
-                        <i className="fa fa-phone"></i>
-                        <label> +03 99 23 52 54</label>
-                        <i className="fa fa-envelope"></i>
-                        <label> dt5@gmail.com</label>
-                    </div>
+                    <div className="left row"></div>
                     <div className="right row RText">
-                        <label>Thông báo</label>
-                        <label>Hỗ trợ</label>
                         <label>
-                            <Link to="/login">Đăng nhập</Link>
+                            <Link to="/contact">Liên hệ</Link>
                         </label>
-                        <label>
-                            <Link to="/register">Đăng ký</Link>
-                        </label>
+                        {login ? (
+                            <i className="fa fa-user icon-circle"></i>
+                        ) : (
+                            <>
+                                <label>
+                                    <Link to="/login">Đăng nhập</Link>
+                                </label>
+                                <label>
+                                    <Link to="/register">Đăng ký</Link>
+                                </label>
+                            </>
+                        )}
                     </div>
                 </div>
             </section>
@@ -26,4 +31,4 @@ const Head = () => {
     );
 };
 
-export default Head;
+export default memo(Head);
