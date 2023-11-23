@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
-    const [isShowPassword,setIsShowPassword]=useState(false)
+    const [isShowPassword, setIsShowPassword] = useState(false);
     return (
         <div className="login-container col-12 col-sm-4">
             <div className="title">Log in</div>
-            <div className="text">Email or Username </div>
+            <div className="text">Email or Username</div>
             <input
                 className="input"
                 type="text"
@@ -32,10 +32,7 @@ const Login = () => {
                 ></i>
             </div>
             {/* <p className="p">forgot password?</p> */}
-            <button
-                className={username && password ? 'button-1' : ''}
-                disabled={username && password ? false : true}
-            >
+            <button className={username && password ? 'button-1' : ''} disabled={username && password ? false : true}>
                 {/* {loadingApi && <i class="fas fa-sync fa-spin"></i>} */}
                 &nbsp;Login
             </button>
