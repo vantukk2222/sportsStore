@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { useState, memo, useEffect } from 'react';
 const Head = () => {
     const [login, setLogin] = useState(false);
-    useEffect(() => setLogin(true), []);
+    useEffect(() => setLogin(false), []);
     return (
         <>
             <section className="head">
