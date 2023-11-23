@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import './style.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '~/redux/reducers/Login/signinReducer';
+import { useDispatch, useSelector } from 'react-redux';
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
+    const [login, setLogin] = useState(false);
+    const { authToken, isLoading, error } = useSelector((state) => state.loginUser);
     const [isShowPassword, setIsShowPassword] = useState(false);
+    function handleLogin(un, pw) {
+        dispatch(loginUser(un, pw));
+    }
+    useLayoutEffect(() => {
+        setLogin(authToken ? navigate('/') : false);
+    }, [authToken]);
     return (
         <div className="login-container col-12 col-sm-4">
             <div className="title">Log in</div>
@@ -32,7 +44,11 @@ const Login = () => {
                 ></i>
             </div>
             {/* <p className="p">forgot password?</p> */}
-            <button className={username && password ? 'button-1' : ''} disabled={username && password ? false : true}>
+            <button
+                className={username && password ? 'button-1' : ''}
+                disabled={username && password ? false : true}
+                onClick={() => handleLogin(username, password)}
+            >
                 {/* {loadingApi && <i class="fas fa-sync fa-spin"></i>} */}
                 &nbsp;Login
             </button>

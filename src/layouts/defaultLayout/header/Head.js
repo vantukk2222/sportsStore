@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 const Head = () => {
     const [login, setLogin] = useState(false);
-    useEffect(() => setLogin(false), []);
+    const storage = localStorage.getItem('authToken');
+    useEffect(() => {
+        if (storage) setLogin(true);
+    }, [storage]);
     return (
         <>
             <section className="head">
@@ -31,4 +34,4 @@ const Head = () => {
     );
 };
 
-export default memo(Head);
+export default Head;

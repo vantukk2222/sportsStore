@@ -1,15 +1,26 @@
 import './App.css';
-import { publicRoutes } from '~/routes';
+import { publicRoutes, privateRoutes } from '~/routes';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState, useRef } from 'react';
 function App() {
+    const [login, setLogin] = useState(false);
+    const [routers, setRouters] = useState(publicRoutes);
+    const storage = useRef(localStorage.getItem('authToken'));
+    useEffect(() => {
+        if (storage.current) {
+            setLogin(true);
+        }
+    }, [storage.current]);
+    useEffect(() => {
+        login ? setRouters(privateRoutes) : setRouters(publicRoutes);
+    }, [login]);
     return (
         <Router>
             <div className="App">
                 <Routes>
-                    {publicRoutes.map((route, index) => {
+                    {routers.map((route, index) => {
                         const Page = route.component;
-                        let Layout = !route.layout ? Fragment : route.layout; 
+                        let Layout = !route.layout ? Fragment : route.layout;
                         return (
                             <Route
                                 key={index}
