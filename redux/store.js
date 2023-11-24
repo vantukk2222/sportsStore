@@ -8,6 +8,7 @@ import registerSlice from './reducers/Register/signupReducer'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import productByCategorySlice from './reducers/Caregory/getProductByCategory';
+import quantitySlice from './reducers/Size/getQuantityReducer';
 
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   register: registerSlice,
   categories: groupCategorySlice,
   productsByCategory: productByCategorySlice,
+  quantity: quantitySlice,
 })
 const persistConfig = {
   key: 'root',

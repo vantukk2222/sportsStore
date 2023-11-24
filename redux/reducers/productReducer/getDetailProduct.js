@@ -23,7 +23,10 @@ const productDetailSlice = createSlice({
         getFailure: (state, action) => {
             state.error = action.payload;
             state.loading = false;
-        }
+        },
+        resetProductDetail: (state) => {
+            return initialState; // Reset the productDetail state to its initial state
+        },
     }
 });
 export const fetchProductbyId = (id) => async (dispatch) => {
@@ -31,7 +34,7 @@ export const fetchProductbyId = (id) => async (dispatch) => {
     try {
         dispatch(getStart());
         const data = await getProductById(id);
-        console.log(id + data);
+        console.log("getproductbyid\n", id + data);
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data';
@@ -43,5 +46,5 @@ export const fetchProductbyId = (id) => async (dispatch) => {
         dispatch(getFailure(errorMessage));
     }
 };
-export const { getStart, getSuccess, getFailure } = productDetailSlice.actions;
+export const { getStart, getSuccess, getFailure, resetProductDetail } = productDetailSlice.actions;
 export default productDetailSlice.reducer;

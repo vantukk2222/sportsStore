@@ -64,7 +64,7 @@ const ListCategory = () => {
 
 
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginVertical: 5 }}>
-            {console.log(categories.length)}
+
             <FlatList
                 ref={ref}
                 initialScrollIndex={index}
