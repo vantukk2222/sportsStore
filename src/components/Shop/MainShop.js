@@ -1,7 +1,7 @@
 import React from 'react'
 import logoImage from "./shop.png";
 
-const HeaderShop = () => {
+const MainShop = () => {
     return (
         <div className="shop-container">
             <div className="store-header">
@@ -41,4 +41,4 @@ const HeaderShop = () => {
     )
 }
 
-export default HeaderShop
+export default MainShop

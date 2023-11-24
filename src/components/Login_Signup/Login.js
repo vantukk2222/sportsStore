@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '~/redux/reducers/Login/signinReducer';
@@ -14,7 +14,7 @@ const Login = () => {
     function handleLogin(un, pw) {
         dispatch(loginUser(un, pw));
     }
-    useLayoutEffect(() => {
+    useEffect(() => {
         setLogin(authToken ? navigate('/') : false);
     }, [authToken]);
     return (

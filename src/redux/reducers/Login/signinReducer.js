@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import loginPage from '~/API/getAuth';
+import loginPage from '~/API/postAuth';
 const initialState = {
     authToken: null,
     isLoading: false,
