@@ -56,10 +56,7 @@ const FlashCard = () => {
             <div className='box' key={productItems.id}>
               <div className='product mtop'>
                 <div className='img'>
-                  <img src={productItems.imageSet.find((e)=>
-                  {if(e.url)
-                    return e.url
-                       }).url} alt='' />
+                  <img src={productItems.imageSet.find((e)=>e.url).url} alt='' />
                 </div>
                 <div className='product-details'>
                   <h3>{productItems.name}</h3>
