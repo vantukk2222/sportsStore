@@ -14,7 +14,7 @@ const vistorRoutes= [
     { path: '*', component: notFound },
 ]
 const publicRoutes = [
-    { path: '/login', component: Login, layout: layout_login },
+    { path: '/login', component: Login, },
     { path: '/register', component: Register },
     { path: '/contact', component: Contact, layout: defaultLayout },
    

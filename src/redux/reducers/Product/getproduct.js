@@ -2,25 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 import getUnAuth from "~/API/getUnAuth";
 
 const initialState = {
-    data: [],
-    loading: false,
-    error: null
+    dataProduct: [],
+    loadingProduct: false,
+    errorProduct: null
 }
 const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
         getAllStart: (state) => {
-            state.loading = true;
-            state.error = null;
+            state.loadingProduct = true;
+            state.errorProduct = null;
         },
         getAllsuccess: (state, action) => {
-            state.loading = false;
-            state.data = action.payload;
+            state.loadingProduct = false;
+            state.dataProduct = action.payload;
         },
         getAllFailure: (state, action) => {
-            state.error = action.payload;
-            state.loading = false;
+            state.errorProduct = action.payload;
+            state.loadingProduct = false;
         }
     }
 });

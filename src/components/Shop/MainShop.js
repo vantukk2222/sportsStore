@@ -1,13 +1,14 @@
 import React from 'react'
 import logoImage from "./shop.png";
 
-const MainShop = () => {
+const MainShop = ({shopItem}) => {
+  //  console.log(shopItem);
     return (
         <div className="shop-container">
             <div className="store-header">
                 <div className="store-header-info">
                     <div className='shop-name'>
-                        <h1>DT5Sport</h1>&nbsp;&nbsp;&nbsp;
+                        <h1>{shopItem.name}</h1>&nbsp;&nbsp;&nbsp;
                         <img src={logoImage} alt="DT5 SPORT" />&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='b'>Theo dõi</button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='b'>Nhắn tin</button>

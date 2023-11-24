@@ -12,16 +12,16 @@ const groupCategorySlice = createSlice({
     initialState,
     reducers: {
         getStart: (state) => {
-            state.loading = true;
-            state.error = null;
+            state.loadingCate = true;
+            state.errorCate = null;
         },
         getSuccess: (state, action) => {
             state.dataCate = action.payload;
-            state.loading = false;
+            state.loadingCate = false;
         },
         getFailure: (state, action) => {
-            state.error = action.payload;
-            state.loading = false;
+            state.errorCate = action.payload;
+            state.loadingCate = false;
         },
     },
 });

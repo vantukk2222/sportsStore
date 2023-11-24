@@ -5,11 +5,13 @@ import { persistReducer, persistStore } from 'redux-persist';
 import loginSlice from './reducers/Login/signinReducer';
 import productSlice from './reducers/Product/getproduct';
 import saleSlice from './reducers/Sale/sale'
+import shop from './reducers/Business/shop';
 const rootReducer = combineReducers({
     categories: groupCategorySlice,
     loginUser: loginSlice,
     products:productSlice,
     sales: saleSlice,
+    shops:shop,
 });
 const persistConfig = {
     key: 'root',

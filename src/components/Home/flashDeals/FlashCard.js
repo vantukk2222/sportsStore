@@ -26,19 +26,18 @@ const SamplePrevArrow = (props) => {
 };
 const FlashCard = () => {
     const dispatch = useDispatch();
-    const { data, loading, error } = useSelector((state) => state.products);
+    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.products);
     const [productItems, setProductItems] = useState([]);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [sort, setSort] = useState('name');
-    const [desc, setDesc] = useState(false);
     useEffect(() => {
         dispatch(fetchGetProducts(page, pageSize));
-    }, [page, pageSize, sort, desc]);
+        
+    }, [page, pageSize]);
     useEffect(() => {
-        setProductItems(data.content)
-        console.log(productItems);
-    }, [data])
+        setProductItems(dataProduct.content)
+      
+    }, [dataProduct])
     const settings = {
         dots: false,
         infinite: true,
