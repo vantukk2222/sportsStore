@@ -172,8 +172,17 @@ button {
 .product h3 {
   font-weight: 400;
   font-size: 17px;
+  text-overflow: ellipsis;
+  overflow:hidden;
+  white-space: no-wrap;
 }
-
+.product span {
+  font-weight: 400;
+  font-size: 17px;
+  text-overflow: ellipsis;
+  overflow:hidden;
+  white-space: no-wrap;
+}
 .product .rate i {
   font-size: 15px;
   color: #ffcd4e;
@@ -233,6 +242,9 @@ button {
 /*----- control btn -------*/
 .control-btn .next,
 .control-btn .prev {
+  display: flex;
+  align-items:center ;
+  justify-content: center;
   position: absolute;
   top: 40%;
   width: 50px;
@@ -257,6 +269,8 @@ button {
   font-size: 20px;
   transition: 0.5s;
   color: #fff;
+  justify-content: center;
+  align-items: center;
 }
 
 .control-btn .prev:hover,
