@@ -1,7 +1,9 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { fetchProducts } from '~/redux/reducers/Product/product';
 const SampleNextArrow = (props) => {
     const { onClick } = props;
     return (
@@ -23,6 +25,20 @@ const SamplePrevArrow = (props) => {
     );
 };
 const FlashCard = () => {
+    const dispatch = useDispatch();
+    const { data, loading, error } = useSelector((state) => state.products);
+    const [productItems, setProductItems] = useState([]);
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [sort, setSort] = useState('name');
+    const [desc, setDesc] = useState(false);
+    useEffect(() => {
+        dispatch(fetchProducts(page, pageSize, sort, desc));
+    }, [page, pageSize, sort, desc]);
+    useEffect(() => {
+        setProductItems(data.content)
+        console.log(productItems);
+    }, [data])
     const settings = {
         dots: false,
         infinite: true,
@@ -35,7 +51,36 @@ const FlashCard = () => {
 
     return (
         <>
-            <Slider {...settings}></Slider>
+            <Slider {...settings}> {productItems.map((productItems) => {
+          return (
+            <div className='box' key={productItems.id}>
+              <div className='product mtop'>
+                <div className='img'>
+                  <img src={productItems.imageSet.find((e)=>
+                  {if(e.url)
+                    return e.url
+                       }).url} alt='' />
+                </div>
+                <div className='product-details'>
+                  <h3>{productItems.name}</h3>
+                  <div className='rate'>
+                    <i className='fa fa-star'></i>
+                    <i className='fa fa-star'></i>
+                    <i className='fa fa-star'></i>
+                    <i className='fa fa-star'></i>
+                    <i className='fa fa-star'></i>
+                  </div>
+                  <div className='price'>
+                    <h4>${productItems.price}.00 </h4>
+                    {/* step : 3  
+                     if hami le button ma click garryo bahne 
+                    */}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}</Slider>
         </>
     );
 };

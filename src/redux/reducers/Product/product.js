@@ -27,6 +27,7 @@ const productSlice = createSlice({
 export const fetchProducts = (page, pageSize, sort, desc) => async (dispatch) => {
     try {
         dispatch(getAllStart());
+        
         const data = await getUnAuth(`product?page=${page}&page_size=${pageSize}&sort=${sort}&desc=${desc}`);
         dispatch(getAllsuccess(data));
     } catch (error) {
