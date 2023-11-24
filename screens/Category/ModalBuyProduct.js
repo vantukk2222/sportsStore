@@ -100,28 +100,34 @@ const ModalBuyProduct = ({ route }) => {
                         </TouchableOpacity>
                     ))}
                 </View> */}
-                <Text style={styles.label}>Số lượng :</Text>
-                {loadingQuality === true ? <View /> :
-                    <View style={styles.quantityContainer}>
 
-                        <TouchableOpacity
-                            style={styles.quantityButton}
-                            onPress={() => setQuantity(quantity - 1)}
-                            disabled={quantity <= 1}
-                        >
-                            <Text style={styles.quantityButtonText}>-</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.quantityText}>{quantity}</Text>
-                        <TouchableOpacity
-                            style={styles.quantityButton}
-                            onPress={() => {
-                                if (quantity < total)
-                                    setQuantity(quantity + 1)
-                            }}
-                        >
-                            <Text style={styles.quantityButtonText}>+</Text>
-                        </TouchableOpacity>
-                    </View>}
+                {selectedSize === null ? <Text /> :
+                    loadingQuality === true ? <Text /> :
+                        <View>
+                            <Text style={styles.label}>Số lượng :</Text>
+                            <View style={styles.quantityContainer}>
+
+                                <TouchableOpacity
+                                    style={styles.quantityButton}
+                                    onPress={() => setQuantity(quantity - 1)}
+                                    disabled={quantity <= 1}
+                                >
+                                    <Text style={styles.quantityButtonText}>-</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.quantityText}>{quantity}</Text>
+                                <TouchableOpacity
+                                    style={styles.quantityButton}
+                                    onPress={() => {
+                                        if (quantity < total)
+                                            setQuantity(quantity + 1)
+                                    }}
+                                >
+                                    <Text style={styles.quantityButtonText}>+</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                }
 
 
             </View>
