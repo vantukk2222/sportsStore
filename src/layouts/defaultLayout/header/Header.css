@@ -1,7 +1,7 @@
 /*------head-----------*/
 .head {
   background-color: #606eca;
-  padding: 10px 0;
+  padding: 20px 0;
   color: black;
 }
 
@@ -12,7 +12,9 @@
 .head label {
   margin-right: 30px;
   font-size: 13px;
+  color: black;
 }
+
 
 .head button {
   margin-right: 30px;

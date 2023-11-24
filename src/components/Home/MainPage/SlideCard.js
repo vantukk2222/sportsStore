@@ -27,7 +27,7 @@ const SlideCard = () => {
                                     <p>{value.desc}</p>
                                     <button className="btn-primary">Xem sản phẩm</button>
                                 </div>
-                                <div className="right" style={{ position: 'absolute', left: '1300px' }}>
+                                <div className="right" style={{  }}>
                                     <img src={value.cover} alt="" />
                                 </div>
                             </div>
