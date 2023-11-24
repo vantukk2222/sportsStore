@@ -3,7 +3,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { fetchProducts } from '~/redux/reducers/Product/product';
+import { fetchGetProducts } from '~/redux/reducers/Product/getproduct';
 const SampleNextArrow = (props) => {
     const { onClick } = props;
     return (
@@ -33,7 +33,7 @@ const FlashCard = () => {
     const [sort, setSort] = useState('name');
     const [desc, setDesc] = useState(false);
     useEffect(() => {
-        dispatch(fetchProducts(page, pageSize, sort, desc));
+        dispatch(fetchGetProducts(page, pageSize));
     }, [page, pageSize, sort, desc]);
     useEffect(() => {
         setProductItems(data.content)
