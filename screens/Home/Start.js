@@ -9,6 +9,7 @@ import {
     FlatList,
     TextInput,
     Image,
+    Alert,
 } from 'react-native';
 import Header from '../../components/Header'
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -25,15 +26,26 @@ import { asyncStorage } from '../../utilies/asyncStorage';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 //import DataTableCell from 'react-native-paper/lib/typescript/components/DataTable/DataTableCell';
 import ListCategory from '../Category/ListCategory';
+import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
+import { formatMoneyVND } from '../../utilies/validation';
+import { logout } from '../../redux/reducers/Login/signinReducer';
+import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
+// import { fetchUserByID } from '../../redux/reducers/User/userInfor';
 
 
-const Start = (props) => {
+const Start = () => {
     // const { navigation, route } = props
     // const { navigate, goBack } = navigation
+    // const userName = route.params
+    // Alert.alert("username: ", userName)
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    // const [userName, setUserName] = useState('')
 
     const { data, loading, error } = useSelector((state) => state.product);
+    const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
+    const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
+    // const {dataUsre, loading}
     const [products, setProducts] = useState([]);
 
     const [page, setPage] = useState(1);
@@ -44,15 +56,30 @@ const Start = (props) => {
     const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories);
     const [categories, setCategories] = useState([])
 
+
+    
+
+
     useEffect(() => {
+       try{ dispatch(fetchUserByUserName(userName))
         dispatch(fetchCategories());
+       } catch(error)
+       {
+        dispatch(logout())
+       }
     }, []);
+
+
+    // useEffect(()=>{
+    //     console.log("Data User in Start: ", dataUser.id);
+    // },[])
+
 
     useEffect(() => {
         setCategories(dataCate);
-
+        // console.log("cate in start:", categories);
     }, [dataCate])
-    //console.log(categories);
+
     const clearAuthToken = async () => {
         await asyncStorage.removeAuthToken("authToken")
         console.log("auth token cleared");
@@ -63,28 +90,31 @@ const Start = (props) => {
         // asyncStorage.removeAuthToken()
         navigation.navigate('ProductDetail', {
             id: id,
-            img: img
+            img: img,
+            id_user: dataUser.id,
         });
     };
     const handleGoList = () => {
         navigation.navigate('ProductList');
     };
 
-    // const handleRenderCategory = categories.map((item, index) => (
-    //     <View style={styles.categoryBox}>
-    //         <Text key={index} style={{ color: '#16162E', fontSize: 10 }}>{item.name}</Text>
-    //     </View>
-    // ));
-
-
-
 
     useEffect(() => {
-        dispatch(fetchProducts(page, pageSize, sort, desc));
+        try{dispatch(fetchProducts(page, pageSize, sort, desc));}
+        catch(error)
+        {
+            dispatch(logout())
+        }
     }, [page, pageSize, sort, desc]);
 
+
     useEffect(() => {
-        setProducts(data.content);
+     try{   setProducts(data.content);
+    } catch(error)
+    {
+        dispatch(logout())
+
+    }
     }, [data]);
 
     const renderCatetory = ({ item }) => {
@@ -133,12 +163,14 @@ const Start = (props) => {
                     placeholder="Search Product"
                     // placeholderTextColor="gray"
                     underlineColorAndroid={colors.alert}
+                    // onChangeText={}
                 />
                 <View style={styles.filter}>
                     <Icon
                         style={{ color: 'white', textAlign: 'center' }}
                         name="search"
                         size={25}
+                        onPress={()=>{dispatch(listCartByIdUser(47))}}
                     />
                 </View>
             </View>
@@ -279,8 +311,21 @@ const Start = (props) => {
                     style={{
                         backgroundColor: 'white'
                     }}>
-                    {/* product item */}
-                    <FlatList
+                    <ScrollView nestedScrollEnabled= {true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {products.map((item) => (
+                            <TouchableOpacity
+                                key={item.id}
+                                onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}
+                                style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+                                <ProductItem
+                                    imageSource={item.imageSet[0].url}
+                                    productName={item.name}
+                                    productPrice={formatMoneyVND(item.price)}
+                                />
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                    {/* <FlatList
                         style={{ flexDirection: 'row', margin: 5 }}
                         data={products}
                         keyExtractor={(item) => item.id.toString()}
@@ -291,11 +336,11 @@ const Start = (props) => {
                                 < ProductItem
                                     imageSource={item.imageSet[0].url}
                                     productName={item.name}
-                                    productPrice={item.price}
+                                    productPrice={formatMoneyVND(item.price)}
                                 />
                             </TouchableOpacity>
                         )}
-                    />
+                    /> */}
                     {/* <ProductList /> */}
 
                 </View>
@@ -312,7 +357,7 @@ const Start = (props) => {
                     alignItems: 'center',
                     marginTop: 20,
                     borderColor: 'black',
-                    borderRadius: 1
+                    borderRadius: 1,
 
                 }}>
                 <Text style={{
@@ -364,7 +409,7 @@ const styles = StyleSheet.create({
         color: colors.trangXam,//'#424242',
         borderRadius: 15,
         backgroundColor: colors.disable,
-        placeholderTextColor: colors.alert,
+        // placeholder: 'gray',
         fontSize: 15
     },
     filter: {

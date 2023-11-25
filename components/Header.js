@@ -6,12 +6,13 @@ import { asyncStorage } from '../utilies/asyncStorage';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/reducers/Login/signinReducer';
 import { colors } from '../constants';
+import { store } from '../redux/store';
 // {asyncStorage}
 const HeaderComp = () => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     return (
         <View style={styles.headerContainer}>
-            <Icon name="buffer" size={30} style={styles.iconBuffer} onPress={() => { dispatch(logout()) }} />
+            <Icon name="buffer" size={30} style={styles.iconBuffer} onPress={() => { store.dispatch(logout()) }} />
             <View style={{ display: 'flex', flexDirection: 'row' }}>
                 {/* <View style={styles.location}>
                     <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 25 }}>
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     },
     iconBuffer:
     {
-        color: colors.denNhe,
+        color: 'red',
         alignItems: 'flex-end',
         marginLeft: 15,
 

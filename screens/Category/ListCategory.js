@@ -1,18 +1,14 @@
-//import { Entypo, Feather } from '@expo/vector-icons';
-//import faker from 'faker';
-//import * as React from 'react';
+
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { colors, fontSize, images } from '../../constants/index';
+import { colors, fontSize } from '../../constants/index';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from "../../components/loading";
 import { useNavigation } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('screen');
 
 // faker.seed(10);
 
@@ -64,7 +60,7 @@ const ListCategory = () => {
 
 
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginVertical: 5 }}>
-            {console.log(categories.length)}
+            {/* {console.log(categories.length)} */}
             <FlatList
                 ref={ref}
                 initialScrollIndex={index}

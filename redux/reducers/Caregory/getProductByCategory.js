@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getProductByCategory from "../../../API/Category/getProductByCategory";
+import { logout } from "../Login/signinReducer";
+import { store } from "../../store";
 
 
 const initialState = {
@@ -39,7 +41,7 @@ export const fetchProductsByCategories = (idCate, page, pageSize, sort, desc) =>
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
         }
-
+        // store.dispatch(logout())
         dispatch(getFailure(errorMessage));
     }
 };

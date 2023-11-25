@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getProductById from "../../../API/Product/getProductById";
+import { logout } from "../Login/signinReducer";
+import { store } from "../../store";
 
 const initialState = {
     data: '',
@@ -31,7 +33,7 @@ export const fetchProductbyId = (id) => async (dispatch) => {
     try {
         dispatch(getStart());
         const data = await getProductById(id);
-        console.log(id + data);
+        // console.log("ID product and data product in redux product detail: "+ id+ "\t" + JSON.stringify(data));
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data';
@@ -39,6 +41,7 @@ export const fetchProductbyId = (id) => async (dispatch) => {
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
         }
+        // store.dispatch(logout())
 
         dispatch(getFailure(errorMessage));
     }

@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getGroupCategory from "../../../API/Category/getGroupCategory";
+import { logout } from "../Login/signinReducer";
+import { store } from "../../store";
 
 const initialState = {
     dataCate: [],
@@ -28,9 +30,9 @@ const groupCategorySlice = createSlice({
 export const fetchCategories = () => async (dispatch) => {
 
     try {
+        // console.log("cate in redux: ");
         dispatch(getStart());
         const data = await getGroupCategory();
-        // console.log(data);
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data of categories';
@@ -38,7 +40,7 @@ export const fetchCategories = () => async (dispatch) => {
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
         }
-
+        // store.dispatch(logout())
         dispatch(getFailure(errorMessage));
     }
 };

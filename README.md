@@ -1,7 +1,7 @@
 *npm install*
 *yarn*
-*npm installreact-native-paper*
-*npm install --save react-native-vector-icons*
-
+*react-native-paper*
+*react-native-vector-icons*
+*react-native-localize*
 *react-native-modals*
 *yarn android*
