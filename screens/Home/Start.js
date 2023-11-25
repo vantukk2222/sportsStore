@@ -284,7 +284,7 @@ const Start = () => {
                             paddingLeft: 18,
                             marginTop: 10,
                         }}>
-// <<<<<<< categoryDat
+{/* // <<<<<<< categoryDat */}
                         <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
                             Popular product
                         </Text>
@@ -322,54 +322,54 @@ const Start = () => {
                             )}
                         />
                         {/* <ProductList /> */}
-// =======
-//                         <Text style={{
-//                             color: '#F33A63', fontSize: 14, fontWeight: 'bold'
-//                         }}>More</Text>
-//                     </TouchableOpacity>
-//                 </View>
-//                 <View
-//                     style={{
-//                         backgroundColor: 'white'
-//                     }}>
-//                     <ScrollView nestedScrollEnabled= {true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-//                         {products.map((item) => (
-//                             <TouchableOpacity
-//                                 key={item.id}
-//                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}
-//                                 style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
-//                                 <ProductItem
-//                                     imageSource={item.imageSet[0].url}
-//                                     productName={item.name}
-//                                     productPrice={formatMoneyVND(item.price)}
-//                                 />
-//                             </TouchableOpacity>
-//                         ))}
-//                     </ScrollView>
-//                     {/* <FlatList
-//                         style={{ flexDirection: 'row', margin: 5 }}
-//                         data={products}
-//                         keyExtractor={(item) => item.id.toString()}
-//                         numColumns={2}
-//                         renderItem={({ item }) => (
-//                             <TouchableOpacity
-//                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
-//                                 < ProductItem
-//                                     imageSource={item.imageSet[0].url}
-//                                     productName={item.name}
-//                                     productPrice={formatMoneyVND(item.price)}
-//                                 />
-//                             </TouchableOpacity>
-//                         )}
-//                     /> */}
-//                     {/* <ProductList /> */}
-// >>>>>>> NewD
+  {/* ======= 
+                         <Text style={{
+                             color: '#F33A63', fontSize: 14, fontWeight: 'bold'
+                         }}>More</Text>
+                     </TouchableOpacity>
+                 </View>
+                 <View
+                     style={{
+                         backgroundColor: 'white'
+                     }}>
+                     <ScrollView nestedScrollEnabled= {true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                         {products.map((item) => (
+                             <TouchableOpacity
+                                 key={item.id}
+                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}
+                                 style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+                                 <ProductItem
+                                     imageSource={item.imageSet[0].url}
+                                     productName={item.name}
+                                     productPrice={formatMoneyVND(item.price)}
+                                 />
+                             </TouchableOpacity>
+                         ))}
+                     </ScrollView>
+                     {/* <FlatList
+                         style={{ flexDirection: 'row', margin: 5 }}
+                         data={products}
+                         keyExtractor={(item) => item.id.toString()}
+                         numColumns={2}
+                         renderItem={({ item }) => (
+                             <TouchableOpacity
+                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
+                                 < ProductItem
+                                     imageSource={item.imageSet[0].url}
+                                     productName={item.name}
+                                     productPrice={formatMoneyVND(item.price)}
+                                 />
+                             </TouchableOpacity>
+                         )}
+                     /> */}
+                     {/* <ProductList /> */}
+ {/* >>>>>>> NewD */}
 
                     </View>
                 </View>
 
 
-// <<<<<<< categoryDat
+{/* // <<<<<<< categoryDat */}
                 <TouchableOpacity
                     onPress={() => {
                         navigation.navigate('UITab');
@@ -388,8 +388,8 @@ const Start = () => {
                     }}>Products</Text>
                 </TouchableOpacity>
             </SafeAreaView>
-// =======
-//             <TouchableOpacity
+{/* // ======= */}
+{/* //             <TouchableOpacity
 //                 onPress={() => {
 //                     navigation.navigate('UITab');
 //                     //navigate('UITab')
@@ -406,7 +406,7 @@ const Start = () => {
 //                     color: 'black',
 //                 }}>Products</Text>
 //             </TouchableOpacity>
-// >>>>>>> NewD
+// >>>>>>> NewD */}
         </ScrollView >
     );
 
