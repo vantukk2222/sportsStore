@@ -4,16 +4,16 @@ import { store } from "../../redux/store";
 import { logout } from "../../redux/reducers/Login/signinReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const getProductById = async (id) => {
-    var data = await AsyncStorage.getItem('persist:root');
-    // console.log('token in get product by id:', data);
-    // const authToken = data.login.authToken
+
+    //var authToken = await asyncStorage.getAuthToken();
     // console.log(authToken);
     try {
         const response = await axios.get(`https://project-pbl6-production.up.railway.app/api/v1/product/${id}`, {
-            headers: {
-                // 'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json',
-            },
+            // headers: {
+            //     'Authorization': `Bearer ${authToken}`,
+            //     'Content-Type': 'application/json',
+            // },
+
         });
 
         // console.log('call API detail product');

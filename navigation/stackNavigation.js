@@ -1,6 +1,11 @@
-import { Login, Register, UITab } from "../screens"
+// <<<<<<< categoryDat
+import { Cart, Login, Register, UITab } from "../screens"
+import DetailProduct from "../screens/Category/DetailProduct"
 import ListProductByCategory from "../screens/Category/ListProductByCategory"
-import MyCart from "../screens/Home/MyCart"
+import ModalBuyProduct from "../screens/Category/ModalBuyProduct"
+// =======
+// import MyCart from "../screens/Home/MyCart"
+// >>>>>>> NewD
 import Start from "../screens/Home/Start"
 import ProductDetail from "../screens/Product/ProductDetail"
 import ProductItem from "../screens/Product/ProductItem"
@@ -23,7 +28,12 @@ export const LoginScreenNavigator = () => {
             <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
             <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
-            <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} />
+// <<<<<<< categoryDat
+            <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
+
+// =======
+//             <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} />
+// >>>>>>> NewD
         </Stack.Navigator>
     )
 }
@@ -39,7 +49,14 @@ export const MainScreenNavigator = () => {
             <Stack.Screen name='Login' component={LoginScreenNavigator} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
-            <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} />
+// <<<<<<< categoryDat
+            <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                <Stack.Screen name="ModalBuyProduct" component={ModalBuyProduct} />
+            </Stack.Group>
+// =======
+//             <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} />
+// >>>>>>> NewD
 
         </Stack.Navigator>
     )

@@ -26,11 +26,15 @@ import { asyncStorage } from '../../utilies/asyncStorage';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 //import DataTableCell from 'react-native-paper/lib/typescript/components/DataTable/DataTableCell';
 import ListCategory from '../Category/ListCategory';
+// <<<<<<< categoryDat
+import { SafeAreaView } from 'react-native-safe-area-context';
+// =======
 import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import { formatMoneyVND } from '../../utilies/validation';
 import { logout } from '../../redux/reducers/Login/signinReducer';
 import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
 // import { fetchUserByID } from '../../redux/reducers/User/userInfor';
+// >>>>>>> NewD
 
 
 const Start = () => {
@@ -154,216 +158,255 @@ const Start = () => {
     }
 
     return (
-        <ScrollView style={{ backgroundColor: colors.accent, flex: 100 }}>
-            <StatusBar backgroundColor={colors.trangXam} />
-            <Header />
-            <View style={styles.line}></View>
-            <View style={styles.searchContainer}>
-                <TextInput style={styles.input}
-                    placeholder="Search Product"
-                    // placeholderTextColor="gray"
-                    underlineColorAndroid={colors.alert}
-                    // onChangeText={}
-                />
-                <View style={styles.filter}>
-                    <Icon
-                        style={{ color: 'white', textAlign: 'center' }}
-                        name="search"
-                        size={25}
-                        onPress={()=>{dispatch(listCartByIdUser(47))}}
+// <<<<<<< categoryDat
+        <ScrollView>
+            <SafeAreaView style={{ backgroundColor: colors.accent, flex: 100 }}>
+                <StatusBar backgroundColor={colors.trangXam} />
+                <Header />
+                <View style={styles.line}></View>
+                <View style={styles.searchContainer}>
+                    <TextInput style={styles.input}
+                        placeholder="Search Product"
+                        // placeholderTextColor="gray"
+                        underlineColorAndroid={colors.alert}
+// =======
+//         <ScrollView style={{ backgroundColor: colors.accent, flex: 100 }}>
+//             <StatusBar backgroundColor={colors.trangXam} />
+//             <Header />
+//             <View style={styles.line}></View>
+//             <View style={styles.searchContainer}>
+//                 <TextInput style={styles.input}
+//                     placeholder="Search Product"
+//                     // placeholderTextColor="gray"
+//                     underlineColorAndroid={colors.alert}
+//                     // onChangeText={}
+//                 />
+//                 <View style={styles.filter}>
+//                     <Icon
+//                         style={{ color: 'white', textAlign: 'center' }}
+//                         name="search"
+//                         size={25}
+//                         onPress={()=>{dispatch(listCartByIdUser(47))}}
+// >>>>>>> NewD
                     />
-                </View>
-            </View>
-
-            {/* Category */}
-            <View style={styles.categoriesContainer}>
-                <View
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        paddingRight: 18,
-                        paddingLeft: 18,
-                        marginTop: 10,
-                    }}>
-                    {/* <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
-                        Menu :
-                    </Text> */}
-                </View>
-                <ListCategory />
-                {/* <View
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        paddingRight: 18,
-                        paddingLeft: 18,
-                        marginTop: 10,
-                    }}>
-                    <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
-                        Categories
-                    </Text>
-                    <Text style={{ color: '#F33A63', fontSize: 14, fontWeight: 'bold' }}>
-                        See all
-                    </Text>
+                    <View style={styles.filter}>
+                        <Icon
+                            style={{ color: 'white', textAlign: 'center' }}
+                            name="search"
+                            size={25}
+                        />
+                    </View>
                 </View>
 
-                <FlatList style={styles.categoriesList}
-                    data={categories}
-                    renderItem={renderCatetory}
-                    keyExtractor={(item) => item.id}
-                    horizontal={true} /> */}
-                {/* <View style={styles.categoryBox}>
-                        <Text style={{ color: '#16162E', fontSize: 10 }}>Cate</Text>
-                    </View> */}
+                {/* Category */}
+                <View style={styles.categoriesContainer}>
+                    <View
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            paddingRight: 18,
+                            paddingLeft: 18,
+                            marginTop: 10,
+                        }}>
+                    </View>
+                    <ListCategory />
+                </View>
 
 
-                {/* <Image source={require('../../assets/Carrot.png')} /> */}
-                {/* {handleRenderCategory} */}
-            </View>
-
-
-            {/* <View style={styles.tabs}>
+                {/* <View style={styles.tabs}>
                 <Text style={styles.tabFont}>All</Text>
                 <Text style={styles.tabFont}>Top sale</Text>
                 <Text style={styles.tabFontNew}>Event</Text>
                 <Text style={styles.tabFont}>Whats new </Text>
             </View> */}
-            <View style={styles.categories}>
-                <View
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        paddingRight: 18,
-                        paddingLeft: 18,
-                        marginTop: 10,
-                        marginVertical: 10
-                    }}>
-                    <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
-                        Sale : Giảm tất cả 50%
-                    </Text>
-
-
-                    <TouchableOpacity
-                        onPress={() => handleGoList()}
+                <View style={styles.categories}>
+                    <View
                         style={{
-                            justifyContent: 'center',
-                            alignItems: 'center'
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            paddingRight: 18,
+                            paddingLeft: 18,
+                            marginTop: 10,
+                            marginVertical: 10
                         }}>
-                        <Text style={{
-                            color: '#F33A63', fontSize: 14, fontWeight: 'bold'
-                        }}>Buy now</Text>
-                    </TouchableOpacity>
+                        <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
+                            Sale : Giảm tất cả 50%
+                        </Text>
+
+
+                        <TouchableOpacity
+                            onPress={() => handleGoList()}
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                            <Text style={{
+                                color: '#F33A63', fontSize: 14, fontWeight: 'bold'
+                            }}>Buy now</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}> */}
+                    <View style={styles.salesSlider}>
+                        <View style={styles.sales}>
+                            {/* <Image source={require('../../assets/lays.png')} /> */}
+                            <View style={styles.label}>
+                                <Text style={{ color: 'white', textAlign: 'center' }}>-50%</Text>
+                            </View>
+                        </View>
+                        <View style={styles.sales}>
+                            {/* <Image source={require('../../assets/canyy.png')} /> */}
+                            <View style={styles.label}>
+                                <Text style={{ color: 'white', textAlign: 'center' }}>-25%</Text>
+                            </View>
+                        </View>
+                        <View style={styles.sales}>
+                            {/* <Image source={require('../../assets/tropi.png')} /> */}
+                            <View style={styles.label}>
+                                <Text style={{ color: 'white', textAlign: 'center' }}>-35%</Text>
+                            </View>
+                        </View>
+                    </View>
+                    {/* </ScrollView> */}
                 </View>
 
-                {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}> */}
-                <View style={styles.salesSlider}>
-                    <View style={styles.sales}>
-                        {/* <Image source={require('../../assets/lays.png')} /> */}
-                        <View style={styles.label}>
-                            <Text style={{ color: 'white', textAlign: 'center' }}>-50%</Text>
-                        </View>
-                    </View>
-                    <View style={styles.sales}>
-                        {/* <Image source={require('../../assets/canyy.png')} /> */}
-                        <View style={styles.label}>
-                            <Text style={{ color: 'white', textAlign: 'center' }}>-25%</Text>
-                        </View>
-                    </View>
-                    <View style={styles.sales}>
-                        {/* <Image source={require('../../assets/tropi.png')} /> */}
-                        <View style={styles.label}>
-                            <Text style={{ color: 'white', textAlign: 'center' }}>-35%</Text>
-                        </View>
-                    </View>
-                </View>
-                {/* </ScrollView> */}
-            </View>
 
-
-            {/* Danh sach san pham */}
-            <View style={styles.categories}>
-                <View
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        paddingRight: 18,
-                        paddingLeft: 18,
-                        marginTop: 10,
-                    }}>
-                    <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
-                        Popular product
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => handleGoList()}
+                {/* Danh sach san pham */}
+                <View style={styles.categories}>
+                    <View
                         style={{
-                            justifyContent: 'center',
-                            alignItems: 'center'
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            paddingRight: 18,
+                            paddingLeft: 18,
+                            marginTop: 10,
                         }}>
-                        <Text style={{
-                            color: '#F33A63', fontSize: 14, fontWeight: 'bold'
-                        }}>More</Text>
-                    </TouchableOpacity>
+// <<<<<<< categoryDat
+                        <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
+                            Popular product
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => handleGoList()}
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                            <Text style={{
+                                color: '#F33A63', fontSize: 14, fontWeight: 'bold'
+                            }}>More</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            backgroundColor: 'white'
+                        }}>
+                        {/* product item */}
+                        <FlatList
+                            style={{ flexDirection: 'row', margin: 5 }}
+                            data={products}
+                            keyExtractor={(item) => item.id.toString()}
+
+                            numColumns={2}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
+                                    < ProductItem
+                                        imageSource={item.imageSet[0].url}
+                                        productName={item.name}
+                                        productPrice={item.price}
+                                    />
+                                </TouchableOpacity>
+                            )}
+                        />
+                        {/* <ProductList /> */}
+// =======
+//                         <Text style={{
+//                             color: '#F33A63', fontSize: 14, fontWeight: 'bold'
+//                         }}>More</Text>
+//                     </TouchableOpacity>
+//                 </View>
+//                 <View
+//                     style={{
+//                         backgroundColor: 'white'
+//                     }}>
+//                     <ScrollView nestedScrollEnabled= {true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+//                         {products.map((item) => (
+//                             <TouchableOpacity
+//                                 key={item.id}
+//                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}
+//                                 style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+//                                 <ProductItem
+//                                     imageSource={item.imageSet[0].url}
+//                                     productName={item.name}
+//                                     productPrice={formatMoneyVND(item.price)}
+//                                 />
+//                             </TouchableOpacity>
+//                         ))}
+//                     </ScrollView>
+//                     {/* <FlatList
+//                         style={{ flexDirection: 'row', margin: 5 }}
+//                         data={products}
+//                         keyExtractor={(item) => item.id.toString()}
+//                         numColumns={2}
+//                         renderItem={({ item }) => (
+//                             <TouchableOpacity
+//                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
+//                                 < ProductItem
+//                                     imageSource={item.imageSet[0].url}
+//                                     productName={item.name}
+//                                     productPrice={formatMoneyVND(item.price)}
+//                                 />
+//                             </TouchableOpacity>
+//                         )}
+//                     /> */}
+//                     {/* <ProductList /> */}
+// >>>>>>> NewD
+
+                    </View>
                 </View>
-                <View
+
+
+// <<<<<<< categoryDat
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('UITab');
+                        //navigate('UITab')
+                    }}
                     style={{
-                        backgroundColor: 'white'
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 20,
+                        borderColor: 'black',
+                        borderRadius: 1
+
                     }}>
-                    <ScrollView nestedScrollEnabled= {true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                        {products.map((item) => (
-                            <TouchableOpacity
-                                key={item.id}
-                                onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}
-                                style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
-                                <ProductItem
-                                    imageSource={item.imageSet[0].url}
-                                    productName={item.name}
-                                    productPrice={formatMoneyVND(item.price)}
-                                />
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                    {/* <FlatList
-                        style={{ flexDirection: 'row', margin: 5 }}
-                        data={products}
-                        keyExtractor={(item) => item.id.toString()}
-                        numColumns={2}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
-                                < ProductItem
-                                    imageSource={item.imageSet[0].url}
-                                    productName={item.name}
-                                    productPrice={formatMoneyVND(item.price)}
-                                />
-                            </TouchableOpacity>
-                        )}
-                    /> */}
-                    {/* <ProductList /> */}
+                    <Text style={{
+                        color: 'black',
+                    }}>Products</Text>
+                </TouchableOpacity>
+            </SafeAreaView>
+// =======
+//             <TouchableOpacity
+//                 onPress={() => {
+//                     navigation.navigate('UITab');
+//                     //navigate('UITab')
+//                 }}
+//                 style={{
+//                     justifyContent: 'center',
+//                     alignItems: 'center',
+//                     marginTop: 20,
+//                     borderColor: 'black',
+//                     borderRadius: 1,
 
-                </View>
-            </View>
-
-
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate('UITab');
-                    //navigate('UITab')
-                }}
-                style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 20,
-                    borderColor: 'black',
-                    borderRadius: 1,
-
-                }}>
-                <Text style={{
-                    color: 'black',
-                }}>Products</Text>
-            </TouchableOpacity>
+//                 }}>
+//                 <Text style={{
+//                     color: 'black',
+//                 }}>Products</Text>
+//             </TouchableOpacity>
+// >>>>>>> NewD
         </ScrollView >
     );
 
@@ -392,7 +435,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 8,
         borderBlockColor: 'black',
-        borderWidth: 1
+        borderWidth: 1,
 
     },
     line: {
