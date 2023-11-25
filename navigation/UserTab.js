@@ -10,11 +10,12 @@ yarn add react-native-vector-icons
 import * as React from 'react'
 
 import ProductList from '../screens/Product/ProductList';
-import Start from '../screens/Home/Start';
-import Cart from '../screens/Home/Cart';
+// import Start from '../screens/Home/Start';
+// import Cart from '../screens/Home/MyCart';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { fontSize, colors } from '../constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MyCart from '../screens/Home/MyCart';
 
 
 const Tab = createBottomTabNavigator()
@@ -40,7 +41,7 @@ function UITab(props) {
     return <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen name='ProductList' component={ProductList}
             options={{ tabBarLabel: 'Products' }} />
-        <Tab.Screen name='Cart' component={Cart}
+        <Tab.Screen name='Cart' component={MyCart}
             options={{ headerShown: false }} />
     </Tab.Navigator>
 }

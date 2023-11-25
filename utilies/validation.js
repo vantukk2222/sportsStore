@@ -1,5 +1,4 @@
-import { useState } from "react";
-import finalPropsSelectorFactory from "react-redux/es/connect/selectorFactory";
+import { formatNumber } from 'react-native-localize';
 
 export const isValidEmail = (mail) => {
   return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
@@ -14,3 +13,12 @@ export function isValidPassword(pw) {
          pw.length > 4;
 
 }
+export const formatMoneyVND = (amount) => {
+  const formattedAmount = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+  return formattedAmount;
+};

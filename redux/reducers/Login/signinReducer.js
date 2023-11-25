@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import loginPage from "../../../API/Login/loginAPI";
 import { asyncStorage } from "../../../utilies/asyncStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // {asyncStorage}
+
+
 const initialState = {
-  authToken: 
-  null,
+  authToken: null,
+  userName: null,
   isLoading: false,
   error: null,
 };
@@ -20,6 +23,7 @@ const loginSlice = createSlice({
     loginSuccess: (state, action) => {
       state.isLoading = false;
       state.authToken = action.payload.authToken;
+      state.userName = action.payload.userName;
     },
     loginFailure: (state, action) => {
       state.isLoading = false;
@@ -31,6 +35,7 @@ const loginSlice = createSlice({
       state.authToken = action.payload;
     },
     logout: (state,action) => {
+      
       state.authToken = null;
       state.isLoading = false;
       state.error = null;
@@ -40,15 +45,19 @@ const loginSlice = createSlice({
 
 export const loginUser = (username, password) => async (dispatch, getState) => {
   try {
+    await AsyncStorage.removeItem('persist:root')
+
     dispatch(loginSlice.actions.loginRequest()); // Dispatch loginRequest action
 
     const data = await loginPage(username, password); // Call loginPage API
     // console.log("data: ", data); // Log received data
 
-    dispatch(loginSlice.actions.loginSuccess({ authToken: data })); // Dispatch loginSuccess with received data
+    dispatch(loginSlice.actions.loginSuccess({ authToken: data , userName: username})); // Dispatch loginSuccess with received data
     // console.log("state reducerLogin: " + JSON.stringify(getState()));
     return data
   } catch (error) {
+    await AsyncStorage.removeItem('persist:root')
+
     let errorMessage = 'Error fetching data';
 
     if (error.response && error.response.data) {

@@ -14,8 +14,8 @@ const loginPage = async (email, password) => {
         });
         const { token } = response.data;
         // await asyncStorage.removeAuthToken()
-        await asyncStorage.setAuthToken(token)
-        console.log("API signin storage: " +await asyncStorage.getAuthToken())
+        // await asyncStorage.setAuthToken(token)
+        // console.log("API signin storage: " +token)
         return token;
       } catch (error) {
 

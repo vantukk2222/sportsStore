@@ -49,15 +49,18 @@ function Login(props) {
   const handlePress = async () => {
     setButtonDisabled(true);
     // navigation.replace("Main");
+    // await asyncStorage.setUsername(valueEmail)
+    // const tempUName = await asyncStorage.getUserNameStorage()
+    // Alert.alert("user name:",tempUName);
     setTimeout(() => {
       (
-
         setButtonDisabled(false),
-        loginUser(valueEmail, valuePassword)
+        loginUser(valueEmail, valuePassword) 
         .then(async(data) => {
           if (data) {
             // await asyncStorage.setAuthToken(data)
-            console.log("state: " + loginState)
+            // console.log("state: " + loginState)
+            await asyncStorage.setUsername(valueEmail)
             // console.log("login: "+ await asyncStorage.getAuthToken())
             setValueEmail('')
             setValuePassword('')
@@ -258,7 +261,7 @@ function Login(props) {
             marginVertical: 10
           }}>
           <Icon name='logo-facebook' size={45} color='blue'
-          onPress={async ()=>{console.log("API: " + await asyncStorage.getAuthToken())}}
+          // onPress={async ()=>{console.log("API: " + await asyncStorage.getAuthToken())}}
             style={{
               paddingHorizontal: 8
             }}></Icon>

@@ -11,7 +11,7 @@ const Main = () => {
   return (
     <Provider store={store}>
           <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-      <App />
+          <App />
     </PersistGate>
     </Provider>
   );

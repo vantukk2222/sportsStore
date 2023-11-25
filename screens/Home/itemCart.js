@@ -126,12 +126,7 @@ const ItemCard = () => {
 export default ItemCard;
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-
-        // backgroundColor:'red',
-        padding: 16,
-    },
+   
     dropdown: {
         height: 30,
         borderColor: 'gray',
@@ -142,19 +137,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         // backgroundColor:'red'
     },
-    icon: {
-        marginRight: 5,
-    },
-    label: {
-        position: 'absolute',
-        backgroundColor: 'white',
-        // backgroundColor:'red',
-        left: 22,
-        top: 8,
-        zIndex: 999,
-        paddingHorizontal: 8,
-        fontSize: 14,
-    },
+   
     placeholderStyle: {
         fontSize: 12,
     },
@@ -162,10 +145,6 @@ const styles = StyleSheet.create({
         // backgroundColor:'red',
         fontSize: 16,
     },
-    iconStyle: {
-        // backgroundColor:'red',
-        width: 20,
-        height: 20,
-    },
+
 
 });

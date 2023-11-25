@@ -1,7 +1,7 @@
 import axios from "axios";
 import { asyncStorage } from "../../utilies/asyncStorage";
 const getProduct = async (page, pageSize, sort, desc) => {
-    var authToken = await asyncStorage.getAuthToken();
+    // var authToken = await asyncStorage.getAuthToken();
     //console.log(authToken);
 
     try {
@@ -9,11 +9,11 @@ const getProduct = async (page, pageSize, sort, desc) => {
             params: {
                 page: page,
                 page_size: pageSize,
-                sort: sort,
+                sort: 'id',
                 desc: desc
             },
             headers: {
-                'Authorization': `Bearer ${authToken}`,
+                // 'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json',
             },
         });
@@ -21,8 +21,8 @@ const getProduct = async (page, pageSize, sort, desc) => {
         // console.log('call API get product ', response);
         return response.data;
     } catch (error) {
-        console.error('Error fetching data: ', error);
-        console.log(error.response);
+        //  console.error('Error fetching data: ', error);
+        // console.log(error.response);
         throw error;
     }
 };

@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import searchProduct from "../../../API/Product/searchProduct";
+import { logout } from "../Login/signinReducer";
+import { store } from "../../store";
 
 const initialState = {
     dataSearch: [],
@@ -26,6 +28,7 @@ const productSearchSlice = createSlice({
         }
     }
 });
+
 export const fetchProductbySearch = (name) => async (dispatch) => {
 
     try {
@@ -39,6 +42,7 @@ export const fetchProductbySearch = (name) => async (dispatch) => {
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
         }
+        // store.dispatch(logout())
 
         dispatch(getFailure(errorMessage));
     }

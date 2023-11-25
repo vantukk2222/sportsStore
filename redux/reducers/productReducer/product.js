@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getProduct } from "../../../API/Product";
+import { logout } from "../Login/signinReducer";
+import { store } from "../../store";
 
 const initialState = {
     data: [],
@@ -31,6 +33,8 @@ export const fetchProducts = (page, pageSize, sort, desc) => async (dispatch) =>
         const data = await getProduct(page, pageSize, sort, desc);
         dispatch(getAllsuccess(data));
     } catch (error) {
+        // store.dispatch(logout())
+
         dispatch(getAllFailure(error.message))
     }
 }

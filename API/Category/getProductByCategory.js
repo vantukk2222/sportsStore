@@ -18,10 +18,10 @@ const getProductByCategory = async (idCate, page, pageSize, sort, desc) => {
             // },
         });
 
-        console.log('call API get product by category');
+        // console.log('call API get product by category');
         return response.data;
     } catch (error) {
-        console.error(error.response.data.message);
+        console.error("Error get product by category: ",error.response.data.message);
         throw error;
     }
 };
