@@ -33,7 +33,7 @@ export const fetchProductsByCategories = (idCate, page, pageSize, sort, desc) =>
     try {
         dispatch(getStart());
         const data = await getProductByCategory(idCate, page, pageSize, sort, desc);
-        // console.log(data);
+        // console.log('get product by category', data);
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data of categories';

@@ -114,25 +114,25 @@ const DetailProduct = ({ navigation, route }) => {
                         alignItems: 'flex-start'
                     }}>{product?.business?.name}</Text>
                 </View>
-                <Icon
-                    name="angle-left"
-                    size={35}
-                    color='black'
-                    style={{
-                        padding: SPACING,
-                        position: 'absolute',
-                        top: 1,
-                        left: 4,
-                        zIndex: 2
-                    }}
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                />
+
             </ScrollView>
 
 
-
+            <Icon
+                name="angle-left"
+                size={35}
+                color='black'
+                style={{
+                    padding: SPACING,
+                    position: 'absolute',
+                    top: 1,
+                    left: 4,
+                    zIndex: 2
+                }}
+                onPress={() => {
+                    navigation.goBack();
+                }}
+            />
 
 
             {/* Kiem tra login hay chua ??? */}
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     },
     container: {
         padding: 20,
-        marginTop: 30,
+        marginTop: 15,
         backgroundColor: 'red',
         flexGrow: 1
 

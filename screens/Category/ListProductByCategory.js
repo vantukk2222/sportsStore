@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from "../../components/loading";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
+import { formatMoneyVND } from '../../utilies/validation';
 
 const SPACING = 28;
 const CELL_WIDTH = 400 * 0.64;
@@ -119,7 +120,7 @@ const ListProductByCategory = ({ route, navigation }) => {
                                                 left: SPACING
                                             }}>
                                                 <Text style={styles.name}>{item.name}</Text>
-                                                <Text style={styles.price}>{item.price}</Text>
+                                                <Text style={styles.price}>{formatMoneyVND(item.price_min)}</Text>
                                             </View>
                                             <Image
                                                 source={{ uri: findMainImage(item.imageSet) }}
@@ -158,7 +159,8 @@ const ListProductByCategory = ({ route, navigation }) => {
                                             <Text style={{ color: 'blue', fontWeight: '700' }}>{item.brand}</Text>
                                         </View>
                                     </View>
-                                    <Text style={styles.popularPrice}>{item.price}</Text>
+                                    {/* {console.log(item.price_min)} */}
+                                    <Text style={styles.popularPrice}>{formatMoneyVND(item.price_min)}</Text>
                                 </View>)
                             }}
                         />
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     },
     popularPrice: {
         fontWeight: '800',
-        color: 'yellow'
+        color: colors.denNhe
     },
     name: {
         fontWeight: '800',
@@ -203,9 +205,10 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     price: {
-        fontSize: 14,
+        fontSize: 18,
         opacity: 0.8,
-        color: colors.vangNhat
+        color: colors.denNhe,
+        marginVertical: 5
     },
     images: {
         width: 150,

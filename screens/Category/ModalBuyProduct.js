@@ -5,36 +5,37 @@ import { colors, fontSize, images } from '../../constants/index';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchQuantitybyId } from '../../redux/reducers/Size/getQuantityReducer';
+import { fetchSizeProduct } from '../../redux/reducers/Size/getProduct';
 import Loading from '../../components/loading';
+import { formatMoneyVND } from '../../utilies/validation';
 const ModalBuyProduct = ({ route }) => {
 
-    const [selectedSize, setSelectedSize] = useState(null);
+    const [selectedSizeId, setselectedSizeId] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(1);
 
-    const { dataQuality, loadingQuality, errorQuality } = useSelector((state) => state.quantity);
+    // product theo size cu the 
+    const { dataSizeProduct, loadingSizeProduct, errorSizeProduct } = useSelector((state) => state.sizeProduct);
     const navigation = useNavigation();
     const dispatch = useDispatch()
     const { product } = route.params;
-    //console.log('buy:\n', product)
+    console.log('buy:\n', product)
 
     useEffect(() => {
-
-        dispatch(fetchQuantitybyId(selectedSize))
-    }, [selectedSize])
+        dispatch(fetchSizeProduct(selectedSizeId))
+    }, [selectedSizeId])
     useEffect(() => {
-        setTotal(dataQuality)
+        setTotal(dataSizeProduct.quantity)
         return () => {
             setQuantity(1)
             setTotal(0)
         }
-    }, [dataQuality])
+    }, [dataSizeProduct])
 
     const handleSizeSelect = (size) => {
         setQuantity(1);
-        setSelectedSize(size);
+        setselectedSizeId(size);
     };
 
     const handleColorSelect = (color) => {
@@ -43,6 +44,9 @@ const ModalBuyProduct = ({ route }) => {
     const handleBuyPress = () => {
         // Handle Buy button press
     };
+    const handleTotalBefore = (sl, gia) => {
+        return formatMoneyVND(sl * gia);
+    }
     return (
 
 
@@ -74,12 +78,12 @@ const ModalBuyProduct = ({ route }) => {
                 <Text style={styles.label}>Chọn Size:</Text>
 
                 <View style={styles.buttonContainer}>
-                    {product?.sizeProductSet?.length > 0 ? product?.sizeProductSet?.map((eachSize) => (
+                    {product?.productSet?.length > 0 ? product?.productSet?.map((eachSize) => (
                         <TouchableOpacity
                             key={eachSize.id}
                             style={[
                                 styles.selectionButton,
-                                selectedSize === eachSize.id && styles.selectedButton,
+                                selectedSizeId === eachSize.id && styles.selectedButton,
                             ]}
                             onPress={() => handleSizeSelect(eachSize.id)}>
                             <Text style={styles.buttonText}>{eachSize.size}</Text>
@@ -102,8 +106,8 @@ const ModalBuyProduct = ({ route }) => {
                     ))}
                 </View> */}
 
-                {selectedSize === null ? <Text /> :
-                    loadingQuality === true ? <Text /> :
+                {selectedSizeId === null ? <Text /> :
+                    loadingSizeProduct === true ? <Text /> :
                         <View>
                             <Text style={styles.label}>Số lượng :</Text>
                             <View style={styles.quantityContainer}>
@@ -126,9 +130,17 @@ const ModalBuyProduct = ({ route }) => {
                                     <Text style={styles.quantityButtonText}>+</Text>
                                 </TouchableOpacity>
                             </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.labelPrice}>Giá:</Text>
+                                <View style={styles.quantityContainer}>
+                                    <Text style={styles.price}>{handleTotalBefore(quantity, dataSizeProduct?.price)}</Text>
+                                </View>
+                            </View>
                         </View>
 
                 }
+
+
 
 
             </View>
@@ -170,6 +182,13 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        color: 'black'
+    },
+    labelPrice: {
+        paddingTop: 20,
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 8,
@@ -230,6 +249,12 @@ const styles = StyleSheet.create({
     quantityText: {
         fontSize: 18,
         marginHorizontal: 16,
+        fontWeight: 'bold',
+        color: colors.denNhe,
+    },
+    price: {
+        fontSize: 18,
+        marginHorizontal: 26,
         fontWeight: 'bold',
         color: colors.denNhe,
     },

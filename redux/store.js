@@ -10,6 +10,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import productByCategorySlice from './reducers/Caregory/getProductByCategory';
 // <<<<<<< categoryDat
 import quantitySlice from './reducers/Size/getQuantityReducer';
+import sizeProductSlice from './reducers/Size/getProduct';
 
 // =======
 import userSlice from './reducers/User/userInfor'
@@ -26,14 +27,15 @@ const rootReducer = combineReducers({
   register: registerSlice,
   categories: groupCategorySlice,
   productsByCategory: productByCategorySlice,
-// <<<<<<< categoryDat
+  // <<<<<<< categoryDat
   quantity: quantitySlice,
-// =======
-  userData : userSlice,
+  sizeProduct: sizeProductSlice,
+  // =======
+  userData: userSlice,
   addToCartReducer: addToCartSlice,
-  listCartReducer: listCartSlice
-  
-// >>>>>>> NewD
+  listCartReducer: listCartSlice,
+
+  // >>>>>>> NewD
 })
 const persistConfig = {
   key: 'root',
