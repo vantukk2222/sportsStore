@@ -8,7 +8,7 @@ const getProductById = async (id) => {
     //var authToken = await asyncStorage.getAuthToken();
     // console.log(authToken);
     try {
-        const response = await axios.get(`https://project-pbl6-production.up.railway.app/api/v1/product/${id}`, {
+        const response = await axios.get(`https://project-pbl6-production.up.railway.app/api/v1/product-information/${id}`, {
             // headers: {
             //     'Authorization': `Bearer ${authToken}`,
             //     'Content-Type': 'application/json',

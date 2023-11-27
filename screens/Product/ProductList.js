@@ -19,7 +19,7 @@ const ProductList = (props) => {
     const [searchText, setSearchText] = useState('');
 
     const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(30);
     const [sort, setSort] = useState('name');
     const [desc, setDesc] = useState(false);
 
@@ -31,23 +31,23 @@ const ProductList = (props) => {
     const [totalPages, setTotalPages] = useState(1);
 
     //Function : Go to screens detail with  product's id
-    const handleGoDetail = (id) => {
-        navigation.navigate('ProductDetail', {
-            id: id
+    const handleGoDetail = (item) => {
+        console.log('id', item.id);
+        navigation.navigate('DetailProduct', {
+            item: item
         });
     };
 
     //Function : set search text = value of text input
-    const handleSearch = () => {
-
+    const handleSearch = (e) => {
+        console.log(e);
         const text = textInputSearch.current;
-        console.log('Search Text:', text);
         if (text.length > 0) {
+            console.log('Search Text:', text);
             setIsAll(false);
             setSearchText(text);
             textInputSearch.current = '';
         }
-
     }
 
     const handleSetAll = () => {
@@ -66,8 +66,10 @@ const ProductList = (props) => {
         //console.log(data.totalPages);
         setTotalPages(data.totalPages);
     }, [data, totalPages])
+
     //Call API, when search Product by name 
     useEffect(() => {
+
         if (searchText.length > 0) {
             console.log("get data search", searchText);
             dispatch(fetchProductbySearch(searchText));
@@ -75,11 +77,12 @@ const ProductList = (props) => {
     }, [searchText])
     //set products = dataSearch
     useEffect(() => {
+        console.log(" dataSearch", dataSearch);
         setProducts(dataSearch);
     }, [dataSearch])
 
     if (loading || loadingSearch) {
-        return <Loading />; S
+        return <Loading />;
     }
 
     if (error || errorSearch) {
@@ -148,11 +151,11 @@ const ProductList = (props) => {
                 numColumns={2}
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        onPress={() => handleGoDetail(item.id)}>
+                        onPress={() => { navigation.navigate('DetailProduct', { item }) }}>
                         < ProductItem
                             imageSource={item.imageSet[0].url}
                             productName={item.name}
-                            productPrice={item.price}
+                            productPrice={item.price_min}
                         />
                     </TouchableOpacity>
 

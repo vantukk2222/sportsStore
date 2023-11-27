@@ -5,11 +5,11 @@ const getProduct = async (page, pageSize, sort, desc) => {
     //console.log(authToken);
 
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product', {
+        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product-information', {
             params: {
                 page: page,
                 page_size: pageSize,
-                sort: 'id',
+                sort: sort,
                 desc: desc
             },
             headers: {

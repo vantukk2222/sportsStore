@@ -59,16 +59,16 @@ const ListCategory = () => {
     return (
 
 
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginVertical: 5 }}>
-{/* // <<<<<<< categoryDat */}
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginVertical: 5, }}>
+            {/* // <<<<<<< categoryDat */}
 
-{/* // ======= */}
-{/* //             {console.log(categories.length)} */}
-{/* // >>>>>>> NewD */}
+            {/* // ======= */}
+            {/* //             {console.log(categories.length)} */}
+            {/* // >>>>>>> NewD */}
             <FlatList
                 ref={ref}
                 initialScrollIndex={index}
-                style={{ flexGrow: 0 }}
+                style={{ flexGrow: 0, marginBottom: 5 }}
                 data={categories}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ paddingLeft: _spacing }}
@@ -99,121 +99,8 @@ const ListCategory = () => {
                     );
                 }}
             />
-            {/* <View
-                style={{
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    marginTop: _spacing * 2,
-                }}>
 
-                <View style={{ alignItems: 'center' }}>
-                    <Text
-                        style={{ color: '#36303F', fontWeight: '700', marginBottom: 10 }}>
-                        Navigation
-                    </Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            width: width / 2,
-                            justifyContent: 'center',
-                        }}>
-                        <TouchableOpacity onPress={() => {
-                            if (index === 0) {
-                                return;
-                            }
-                            setIndex(index - 1);
-                        }}>
-                            <View
-                                style={{
-                                    padding: _spacing,
-                                    backgroundColor: '#FCD259',
-                                    borderRadius: _spacing,
-                                    marginRight: _spacing,
-                                }}>
-                                <Icon name='arrow-left' size={24} color='#36303F' />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                            if (index === categories.length - 1) {
-                                return;
-                            }
-                            setIndex(index + 1);
-                        }}>
-                            <View
-                                style={{
-                                    padding: _spacing,
-                                    backgroundColor: '#FCD259',
-                                    borderRadius: _spacing,
-                                }}>
-                                <Icon name='arrow-right' size={24} color='#36303F' />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View> */}
         </View>
     );
 }
 export default ListCategory;
-
-{/* <View style={{ alignItems: 'center' }}>
-<Text
-    style={{
-        color: '#36303F',
-        fontWeight: '700',
-        marginBottom: _spacing,
-    }}>
-    Scroll position
-</Text>
-<View
-    style={{
-        flexDirection: 'row',
-        width: width / 2,
-        justifyContent: 'center',
-    }}>
-    {/* left button */}
-//     <TouchableOpacity onPress={() => {
-//         setViewPosition(0);
-//     }}>
-//         <View
-//             style={{
-//                 padding: _spacing,
-//                 backgroundColor: '#FCD259',
-//                 borderRadius: _spacing,
-//                 marginRight: _spacing,
-//             }}>
-//             <Icon name='align-left' size={24} color='#36303F' />
-//         </View>
-//     </TouchableOpacity>
-//     <TouchableOpacity onPress={() => {
-//         setViewPosition(0.5)
-//     }}>
-//         <View
-//             style={{
-//                 padding: _spacing,
-//                 backgroundColor: '#FCD259',
-//                 borderRadius: _spacing,
-//                 marginRight: _spacing,
-//             }}>
-//             <Icon
-//                 name='align-horizontal-middle'
-//                 size={24}
-//                 color='#36303F'
-//             />
-//         </View>
-//     </TouchableOpacity>
-
-//     <TouchableOpacity onPress={() => {
-//         setViewPosition(1)
-//     }}>
-//         <View
-//             style={{
-//                 padding: _spacing,
-//                 backgroundColor: '#FCD259',
-//                 borderRadius: _spacing,
-//             }}>
-//             <Icon name='align-right' size={24} color='#36303F' />
-//         </View>
-//     </TouchableOpacity>
-// </View>
-// </View> 

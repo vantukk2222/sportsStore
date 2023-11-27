@@ -3,7 +3,7 @@ import { asyncStorage } from "../../utilies/asyncStorage";
 const searchProduct = async (name, state) => {
     // var authToken = await asyncStorage.getAuthToken();
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product/search', {
+        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product-information/search', {
             params: {
                 name: name,
                 state: state
@@ -14,7 +14,7 @@ const searchProduct = async (name, state) => {
             },
         });
         // console.log('call API search ');
-        return response.data;
+        return response.data.content;
     } catch (error) {
         console.error('Error fetching data: ', error);
         console.log(error.response);

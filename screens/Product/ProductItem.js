@@ -9,7 +9,7 @@ const ProductItem = ({ imageSource, productName, productPrice }) => {
         <View style={styles.productItem}>
             <View style={styles.imageContainer}>
                 <Image style={styles.productImage} source={{ uri: imageSource }} />
-                <Icon style={styles.heartIcon} name="heart" size={25} />
+                {/* <Icon style={styles.heartIcon} name="heart" size={25} /> */}
             </View>
 
 
@@ -93,30 +93,34 @@ const styles = StyleSheet.create({
     starIcon: {
         marginRight: 3,
         color: 'yellow',
+        marginTop: 5
     },
     ratingText: {
         color: '#16162E',
-        fontSize: 10,
+        fontSize: 12,
+        marginTop: 18
     },
     priceContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         marginTop: 10,
     },
     productPrice: {
-        fontSize: 18,
+        fontSize: 15,
         paddingLeft: 8,
         fontWeight: 'bold',
-        color: colors.placeholder
+        color: colors.accent,
+        flex: 2
     },
     cartIconContainer: {
-        backgroundColor: '#40AA54',
+        backgroundColor: colors.denNhe,
         justifyContent: 'flex-end',
         alignItems: 'center',
         marginLeft: 25,
         padding: 5,
         borderRadius: 5,
-        marginBottom: 10
+        marginBottom: 10,
+        flex: 1
     },
 });
 

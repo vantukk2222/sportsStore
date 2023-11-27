@@ -34,7 +34,7 @@ export const fetchProductbySearch = (name) => async (dispatch) => {
     try {
         dispatch(getStart());
         const data = await searchProduct(name, 0);
-        //console.log(data);
+        console.log("search", data);
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data';

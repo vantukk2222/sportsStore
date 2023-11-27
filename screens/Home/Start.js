@@ -33,6 +33,7 @@ import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import { formatMoneyVND } from '../../utilies/validation';
 import { logout } from '../../redux/reducers/Login/signinReducer';
 import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
+import FlatListHori from '../Product/FlatListHori';
 // import { fetchUserByID } from '../../redux/reducers/User/userInfor';
 // >>>>>>> NewD
 
@@ -61,16 +62,16 @@ const Start = () => {
     const [categories, setCategories] = useState([])
 
 
-    
+
 
 
     useEffect(() => {
-       try{ dispatch(fetchUserByUserName(userName))
-        dispatch(fetchCategories());
-       } catch(error)
-       {
-        dispatch(logout())
-       }
+        try {
+            dispatch(fetchUserByUserName(userName))
+            dispatch(fetchCategories());
+        } catch (error) {
+            dispatch(logout())
+        }
     }, []);
 
 
@@ -90,11 +91,10 @@ const Start = () => {
     };
 
 
-    const handleGoDetail = (id, img) => {
+    const handleGoDetail = (item) => {
         // asyncStorage.removeAuthToken()
-        navigation.navigate('ProductDetail', {
-            id: id,
-            img: img,
+        navigation.navigate('DetailProduct', {
+            item: item,
             id_user: dataUser.id,
         });
     };
@@ -104,21 +104,20 @@ const Start = () => {
 
 
     useEffect(() => {
-        try{dispatch(fetchProducts(page, pageSize, sort, desc));}
-        catch(error)
-        {
+        try { dispatch(fetchProducts(page, pageSize, sort, desc)); }
+        catch (error) {
             dispatch(logout())
         }
     }, [page, pageSize, sort, desc]);
 
 
     useEffect(() => {
-     try{   setProducts(data.content);
-    } catch(error)
-    {
-        dispatch(logout())
+        try {
+            setProducts(data.content);
+        } catch (error) {
+            dispatch(logout())
 
-    }
+        }
     }, [data]);
 
     const renderCatetory = ({ item }) => {
@@ -158,36 +157,36 @@ const Start = () => {
     }
 
     return (
-// <<<<<<< categoryDat
+        // <<<<<<< categoryDat
         <ScrollView>
-            <SafeAreaView style={{ backgroundColor: colors.accent, flex: 100 }}>
+            <SafeAreaView style={{ backgroundColor: colors.trangXam, flex: 100 }}>
                 <StatusBar backgroundColor={colors.trangXam} />
                 <Header />
-                <View style={styles.line}></View>
-                <View style={styles.searchContainer}>
+
+                {/* <View style={styles.searchContainer}>
                     <TextInput style={styles.input}
                         placeholder="Search Product"
                         // placeholderTextColor="gray"
                         underlineColorAndroid={colors.alert}
-// =======
-//         <ScrollView style={{ backgroundColor: colors.accent, flex: 100 }}>
-//             <StatusBar backgroundColor={colors.trangXam} />
-//             <Header />
-//             <View style={styles.line}></View>
-//             <View style={styles.searchContainer}>
-//                 <TextInput style={styles.input}
-//                     placeholder="Search Product"
-//                     // placeholderTextColor="gray"
-//                     underlineColorAndroid={colors.alert}
-//                     // onChangeText={}
-//                 />
-//                 <View style={styles.filter}>
-//                     <Icon
-//                         style={{ color: 'white', textAlign: 'center' }}
-//                         name="search"
-//                         size={25}
-//                         onPress={()=>{dispatch(listCartByIdUser(47))}}
-// >>>>>>> NewD
+                    // =======
+                    //         <ScrollView style={{ backgroundColor: colors.accent, flex: 100 }}>
+                    //             <StatusBar backgroundColor={colors.trangXam} />
+                    //             <Header />
+                    //             <View style={styles.line}></View>
+                    //             <View style={styles.searchContainer}>
+                    //                 <TextInput style={styles.input}
+                    //                     placeholder="Search Product"
+                    //                     // placeholderTextColor="gray"
+                    //                     underlineColorAndroid={colors.alert}
+                    //                     // onChangeText={}
+                    //                 />
+                    //                 <View style={styles.filter}>
+                    //                     <Icon
+                    //                         style={{ color: 'white', textAlign: 'center' }}
+                    //                         name="search"
+                    //                         size={25}
+                    //                         onPress={()=>{dispatch(listCartByIdUser(47))}}
+                    // >>>>>>> NewD
                     />
                     <View style={styles.filter}>
                         <Icon
@@ -196,7 +195,9 @@ const Start = () => {
                             size={25}
                         />
                     </View>
-                </View>
+                </View> */}
+
+
 
                 {/* Category */}
                 <View style={styles.categoriesContainer}>
@@ -213,67 +214,40 @@ const Start = () => {
                     <ListCategory />
                 </View>
 
-
-                {/* <View style={styles.tabs}>
-                <Text style={styles.tabFont}>All</Text>
-                <Text style={styles.tabFont}>Top sale</Text>
-                <Text style={styles.tabFontNew}>Event</Text>
-                <Text style={styles.tabFont}>Whats new </Text>
-            </View> */}
-                <View style={styles.categories}>
-                    <View
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            flexDirection: 'row',
-                            paddingRight: 18,
-                            paddingLeft: 18,
-                            marginTop: 10,
-                            marginVertical: 10
-                        }}>
-                        <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
-                            Sale : Giảm tất cả 50%
-                        </Text>
-
-
-                        <TouchableOpacity
-                            onPress={() => handleGoList()}
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}>
-                            <Text style={{
-                                color: '#F33A63', fontSize: 14, fontWeight: 'bold'
-                            }}>Buy now</Text>
+                {/* Sale */}
+                <View style={styles.container}>
+                    <Image
+                        source={require('../../assets/images/banner4.jpg')}
+                        style={styles.backgroundImage}
+                    />
+                    <View style={styles.contentContainer}>
+                        {/* <Text style={styles.text}>Events</Text> */}
+                        <Text style={styles.textSmall}>Giảm giá lên đến 50%</Text>
+                        {/* TouchableOpacity */}
+                        <TouchableOpacity style={styles.touchableOpacity}>
+                            <Text style={styles.buttonText}>Mua ngay!</Text>
                         </TouchableOpacity>
                     </View>
-
-                    {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}> */}
-                    <View style={styles.salesSlider}>
-                        <View style={styles.sales}>
-                            {/* <Image source={require('../../assets/lays.png')} /> */}
-                            <View style={styles.label}>
-                                <Text style={{ color: 'white', textAlign: 'center' }}>-50%</Text>
-                            </View>
-                        </View>
-                        <View style={styles.sales}>
-                            {/* <Image source={require('../../assets/canyy.png')} /> */}
-                            <View style={styles.label}>
-                                <Text style={{ color: 'white', textAlign: 'center' }}>-25%</Text>
-                            </View>
-                        </View>
-                        <View style={styles.sales}>
-                            {/* <Image source={require('../../assets/tropi.png')} /> */}
-                            <View style={styles.label}>
-                                <Text style={{ color: 'white', textAlign: 'center' }}>-35%</Text>
-                            </View>
-                        </View>
-                    </View>
-                    {/* </ScrollView> */}
                 </View>
+                {/* Danh sach san pham sale */}
+                <FlatListHori />
+
 
 
                 {/* Danh sach san pham */}
+                {/* Go product */}
+                <View style={styles.container}>
+
+                    {/* Hình ảnh chiếm 1/2 bên trái */}
+                    <Image
+                        source={require('../../assets/images/banner5.jpeg')}
+                        style={styles.backgroundImage} />
+                    {/* TouchableOpacity chiếm 1/4 bên phải dưới */}
+
+                    <TouchableOpacity style={styles.imageQuarterBottom}>
+                        <Text style={styles.buttonText2}>Press me!</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.categories}>
                     <View
                         style={{
@@ -284,7 +258,7 @@ const Start = () => {
                             paddingLeft: 18,
                             marginTop: 10,
                         }}>
-{/* // <<<<<<< categoryDat */}
+                        {/* // <<<<<<< categoryDat */}
                         <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
                             Popular product
                         </Text>
@@ -304,7 +278,7 @@ const Start = () => {
                             backgroundColor: 'white'
                         }}>
                         {/* product item */}
-                        <FlatList
+                        {/* <FlatList
                             style={{ flexDirection: 'row', margin: 5 }}
                             data={products}
                             keyExtractor={(item) => item.id.toString()}
@@ -312,7 +286,7 @@ const Start = () => {
                             numColumns={2}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
-                                    onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
+                                    onPress={() => handleGoDetail(item)}>
                                     < ProductItem
                                         imageSource={item.imageSet[0].url}
                                         productName={item.name}
@@ -320,9 +294,11 @@ const Start = () => {
                                     />
                                 </TouchableOpacity>
                             )}
-                        />
+
+
+                        /> */}
                         {/* <ProductList /> */}
-  {/* ======= 
+                        {/* ======= 
                          <Text style={{
                              color: '#F33A63', fontSize: 14, fontWeight: 'bold'
                          }}>More</Text>
@@ -331,22 +307,22 @@ const Start = () => {
                  <View
                      style={{
                          backgroundColor: 'white'
-                     }}>
-                     <ScrollView nestedScrollEnabled= {true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                         {products.map((item) => (
-                             <TouchableOpacity
-                                 key={item.id}
-                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}
-                                 style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
-                                 <ProductItem
-                                     imageSource={item.imageSet[0].url}
-                                     productName={item.name}
-                                     productPrice={formatMoneyVND(item.price)}
-                                 />
-                             </TouchableOpacity>
-                         ))}
-                     </ScrollView>
-                     {/* <FlatList
+                     }}> */}
+                        <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            {products.map((item) => (
+                                <TouchableOpacity
+                                    key={item.id}
+                                    onPress={() => handleGoDetail(item)}
+                                    style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+                                    <ProductItem
+                                        imageSource={item.imageSet[0].url}
+                                        productName={item.name}
+                                        productPrice={formatMoneyVND(item.price_min)}
+                                    />
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
+                        {/* <FlatList
                          style={{ flexDirection: 'row', margin: 5 }}
                          data={products}
                          keyExtractor={(item) => item.id.toString()}
@@ -361,16 +337,16 @@ const Start = () => {
                                  />
                              </TouchableOpacity>
                          )}
-                     /> */}
-                     {/* <ProductList /> */}
- {/* >>>>>>> NewD */}
+                     />
+                        {/* <ProductList /> */}
+                        {/* >>>>>>> NewD */}
 
                     </View>
                 </View>
 
 
-{/* // <<<<<<< categoryDat */}
-                <TouchableOpacity
+                {/* // <<<<<<< categoryDat */}
+                {/* <TouchableOpacity
                     onPress={() => {
                         navigation.navigate('UITab');
                         //navigate('UITab')
@@ -386,10 +362,13 @@ const Start = () => {
                     <Text style={{
                         color: 'black',
                     }}>Products</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </SafeAreaView>
-{/* // ======= */}
-{/* //             <TouchableOpacity
+
+
+
+            {/* // ======= */}
+            {/* //             <TouchableOpacity
 //                 onPress={() => {
 //                     navigation.navigate('UITab');
 //                     //navigate('UITab')
@@ -412,6 +391,57 @@ const Start = () => {
 
 };
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        height: 550,
+        // marginTop: 15,
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: 'cover', // or 'stretch' or 'contain'
+        position: 'absolute',
+        width: '100%',
+        height: '90%',
+        borderRadius: 8
+    },
+    contentContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        margin: 20,
+    },
+    text: {
+        color: colors.accent,
+        marginBottom: 5,
+        fontSize: 45,
+        fontWeight: '700',
+    },
+    textSmall: {
+        fontSize: 26,
+        color: colors.denNhe,
+        fontWeight: '600',
+    },
+    touchableOpacity: {
+        backgroundColor: colors.google,
+        padding: 20,
+        borderRadius: 20,
+        borderColor: 'yellow',
+        borderWidth: 1
+
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight: '450',
+    },
+    buttonText2: {
+        color: 'white',
+        fontSize: 16,
+    },
+    containerProduct: {
+        flex: 1,
+        height: 800
+    },
     headerContainer: {
         width: '100%',
         display: 'flex',
@@ -467,12 +497,10 @@ const styles = StyleSheet.create({
     categoriesContainer: {
         display: 'flex',
         backgroundColor: colors.trangXam,
-        marginTop: 15,
-        borderRadius: 8,
-        borderWidth: 1,
+        marginVertical: 5,
+        borderRadius: 1,
+        borderWidth: 0.5,
         borderColor: 'black',
-        marginHorizontal: 5,
-        backgroundColor: colors.trangXam
         //height: 300
     },
     categoriesList: {
@@ -490,7 +518,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         borderColor: colors.denNhe,
-        flex: 20
+        flex: 20,
 
     },
     slider: {

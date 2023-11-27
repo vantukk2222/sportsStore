@@ -55,12 +55,13 @@ const ModalBuyProduct = ({ route }) => {
             </View>
             <View style={styles.imageListContainer}>
                 <FlatList
+                    style={{ backgroundColor: colors.xam }}
                     data={product?.imageSet}
                     keyExtractor={(item, index) => index.toString()}
                     horizontal
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            style={{ borderRadius: 8, borderColor: 'black', borderWidth: 1 }}>
+                            style={{ borderRadius: 8, borderColor: 'black', borderWidth: 1, marginEnd: 10 }}>
                             <Image
                                 source={{ uri: item.url }}
                                 style={styles.thumbnailImage}
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 80,
+        marginBottom: 40,
     },
     headerText: {
         fontSize: 18,
@@ -156,7 +157,6 @@ const styles = StyleSheet.create({
     imageListContainer: {
         marginTop: 10,
         marginBottom: 20,
-        flexWrap: 'wrap'
 
     },
     thumbnailImage: {
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     },
     selectionContainer: {
         flex: 1,
+        paddingTop: 10
     },
     label: {
         fontSize: 16,
