@@ -16,6 +16,7 @@ import sizeProductSlice from './reducers/Size/getProduct';
 import userSlice from './reducers/User/userInfor'
 import addToCartSlice from './reducers/Cart/cartReducer'
 import listCartSlice from './reducers/Cart/listCartReducer'
+import productByBusinessSlice from './reducers/Business/getProductByBusiness'
 // {userSlice}
 // >>>>>>> NewD
 
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   userData: userSlice,
   addToCartReducer: addToCartSlice,
   listCartReducer: listCartSlice,
+  productByBusiness: productByBusinessSlice,
 
   // >>>>>>> NewD
 })

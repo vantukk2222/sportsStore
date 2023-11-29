@@ -1,5 +1,7 @@
 // <<<<<<< categoryDat
 import { Cart, Login, MyCart, Register, UITab } from "../screens"
+import Business from "../screens/Business/Business"
+import ShopInfo from "../screens/Business/ShopInfo"
 import DetailProduct from "../screens/Category/DetailProduct"
 import ListProductByCategory from "../screens/Category/ListProductByCategory"
 import ModalBuyProduct from "../screens/Category/ModalBuyProduct"
@@ -37,6 +39,9 @@ export const LoginScreenNavigator = () => {
             <Stack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
                 <Stack.Screen name="ModalBuyProduct" component={ModalBuyProduct} />
             </Stack.Group>
+            <Stack.Screen name="ShopInfo" component={ShopInfo} options={{ headerShown: false }} />
+            <Stack.Screen name="Business" component={Business} options={{ headerShown: false }} />
+
         </Stack.Navigator>
     )
 }
@@ -54,6 +59,8 @@ export const MainScreenNavigator = () => {
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
             {/* // <<<<<<< categoryDat */}
             <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
+            <Stack.Screen name="ShopInfo" component={ShopInfo} options={{ headerShown: false }} />
+            <Stack.Screen name="Business" component={Business} options={{ headerShown: false }} />
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
                 <Stack.Screen name="ModalBuyProduct" component={ModalBuyProduct} />
             </Stack.Group>

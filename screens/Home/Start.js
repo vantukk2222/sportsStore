@@ -55,15 +55,11 @@ const Start = () => {
 
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [sort, setSort] = useState('name');
+    const [sort, setSort] = useState('id');
     const [desc, setDesc] = useState(false);
 
     const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories);
     const [categories, setCategories] = useState([])
-
-
-
-
 
     useEffect(() => {
         try {
@@ -120,6 +116,17 @@ const Start = () => {
         }
     }, [data]);
 
+    const findMainImage = (Listimg) => {
+        for (let i = 0; i < Listimg.length; i++) {
+            if (Listimg[i].is_main === true) {
+                //console.log(images[i].url)
+                var img = Listimg[i].url
+                //  setImages(im)
+                return Listimg[i].url;
+            }
+        }
+        return Listimg.length > 0 ? Listimg[0].url : null;
+    }
     const renderCatetory = ({ item }) => {
         { console.log(item) }
         <View style={{
@@ -196,9 +203,6 @@ const Start = () => {
                         />
                     </View>
                 </View> */}
-
-
-
                 {/* Category */}
                 <View style={styles.categoriesContainer}>
                     <View
@@ -231,161 +235,63 @@ const Start = () => {
                 </View>
                 {/* Danh sach san pham sale */}
                 <FlatListHori />
-
-
-
                 {/* Danh sach san pham */}
                 {/* Go product */}
                 <View style={styles.container}>
 
-                    {/* Hình ảnh chiếm 1/2 bên trái */}
+                    {/* Hình ảnh */}
                     <Image
-                        source={require('../../assets/images/banner5.jpeg')}
+                        source={require('../../assets/images/banner1.jpg')}
                         style={styles.backgroundImage} />
-                    {/* TouchableOpacity chiếm 1/4 bên phải dưới */}
-
-                    <TouchableOpacity style={styles.imageQuarterBottom}>
-                        <Text style={styles.buttonText2}>Press me!</Text>
+                </View>
+                <View
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                        paddingRight: 18,
+                        paddingLeft: 18,
+                        marginTop: 10,
+                    }}>
+                    {/* // <<<<<<< categoryDat */}
+                    <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
+                        Popular product
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => handleGoList()}
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Text style={{
+                            color: '#F33A63', fontSize: 18, fontWeight: 'bold'
+                        }}>More</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.categories}>
-                    <View
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            flexDirection: 'row',
-                            paddingRight: 18,
-                            paddingLeft: 18,
-                            marginTop: 10,
-                        }}>
-                        {/* // <<<<<<< categoryDat */}
-                        <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
-                            Popular product
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => handleGoList()}
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}>
-                            <Text style={{
-                                color: '#F33A63', fontSize: 14, fontWeight: 'bold'
-                            }}>More</Text>
-                        </TouchableOpacity>
-                    </View>
+
                     <View
                         style={{
                             backgroundColor: 'white'
                         }}>
-                        {/* product item */}
-                        {/* <FlatList
-                            style={{ flexDirection: 'row', margin: 5 }}
-                            data={products}
-                            keyExtractor={(item) => item.id.toString()}
-
-                            numColumns={2}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    onPress={() => handleGoDetail(item)}>
-                                    < ProductItem
-                                        imageSource={item.imageSet[0].url}
-                                        productName={item.name}
-                                        productPrice={item.price}
-                                    />
-                                </TouchableOpacity>
-                            )}
-
-
-                        /> */}
-                        {/* <ProductList /> */}
-                        {/* ======= 
-                         <Text style={{
-                             color: '#F33A63', fontSize: 14, fontWeight: 'bold'
-                         }}>More</Text>
-                     </TouchableOpacity>
-                 </View>
-                 <View
-                     style={{
-                         backgroundColor: 'white'
-                     }}> */}
-                        <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.facebook }}>
                             {products.map((item) => (
                                 <TouchableOpacity
                                     key={item.id}
                                     onPress={() => handleGoDetail(item)}
                                     style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
                                     <ProductItem
-                                        imageSource={item.imageSet[0].url}
+                                        imageSource={findMainImage(item?.imageSet)}
                                         productName={item.name}
-                                        productPrice={formatMoneyVND(item.price_min)}
+                                        productPrice={item.price_min}
                                     />
                                 </TouchableOpacity>
                             ))}
                         </ScrollView>
-                        {/* <FlatList
-                         style={{ flexDirection: 'row', margin: 5 }}
-                         data={products}
-                         keyExtractor={(item) => item.id.toString()}
-                         numColumns={2}
-                         renderItem={({ item }) => (
-                             <TouchableOpacity
-                                 onPress={() => handleGoDetail(item.id, item.imageSet[0].url)}>
-                                 < ProductItem
-                                     imageSource={item.imageSet[0].url}
-                                     productName={item.name}
-                                     productPrice={formatMoneyVND(item.price)}
-                                 />
-                             </TouchableOpacity>
-                         )}
-                     />
-                        {/* <ProductList /> */}
-                        {/* >>>>>>> NewD */}
 
                     </View>
                 </View>
-
-
-                {/* // <<<<<<< categoryDat */}
-                {/* <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate('UITab');
-                        //navigate('UITab')
-                    }}
-                    style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: 20,
-                        borderColor: 'black',
-                        borderRadius: 1
-
-                    }}>
-                    <Text style={{
-                        color: 'black',
-                    }}>Products</Text>
-                </TouchableOpacity> */}
             </SafeAreaView>
-
-
-
-            {/* // ======= */}
-            {/* //             <TouchableOpacity
-//                 onPress={() => {
-//                     navigation.navigate('UITab');
-//                     //navigate('UITab')
-//                 }}
-//                 style={{
-//                     justifyContent: 'center',
-//                     alignItems: 'center',
-//                     marginTop: 20,
-//                     borderColor: 'black',
-//                     borderRadius: 1,
-
-//                 }}>
-//                 <Text style={{
-//                     color: 'black',
-//                 }}>Products</Text>
-//             </TouchableOpacity>
-// >>>>>>> NewD */}
         </ScrollView >
     );
 
@@ -401,8 +307,8 @@ const styles = StyleSheet.create({
         resizeMode: 'cover', // or 'stretch' or 'contain'
         position: 'absolute',
         width: '100%',
-        height: '90%',
-        borderRadius: 8
+        height: '100%',
+        borderRadius: 8,
     },
     contentContainer: {
         flex: 1,
@@ -513,7 +419,7 @@ const styles = StyleSheet.create({
     categories: {
         display: 'flex',
         justifyContent: 'space-evenly',
-        backgroundColor: 'white',
+        backgroundColor: colors.facebook,
         marginTop: 15,
         borderRadius: 8,
         borderWidth: 1,

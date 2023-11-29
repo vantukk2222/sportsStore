@@ -145,7 +145,7 @@ const ProductList = (props) => {
             }
             <View style={styles.line}></View>
 
-            <FlatList style={{ flexDirection: 'row', margin: 5, backgroundColor: colors.accent, borderRadius: 10 }}
+            <FlatList style={{ flexDirection: 'row', margin: 5, backgroundColor: colors.facebook, borderRadius: 10 }}
                 data={products}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}

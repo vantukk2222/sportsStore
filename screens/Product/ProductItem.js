@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
+import { formatMoneyVND } from '../../utilies/validation';
 
 const ProductItem = ({ imageSource, productName, productPrice }) => {
 
@@ -17,17 +18,16 @@ const ProductItem = ({ imageSource, productName, productPrice }) => {
                 <View style={styles.productNameContainer}>
                     <Text style={styles.productName}>{productName}</Text>
                 </View>
+            </View>
+            <View style={styles.priceContainer}>
+                <Text style={styles.productPrice}>{formatMoneyVND(productPrice)}</Text>
                 <View style={styles.starRatingContainer}>
                     <Icon style={styles.starIcon} name="star" size={15} />
                     <Text style={styles.ratingText}>4.5</Text>
                 </View>
-
-            </View>
-            <View style={styles.priceContainer}>
-                <Text style={styles.productPrice}>{productPrice}</Text>
-                <View style={styles.cartIconContainer}>
+                {/* <View style={styles.cartIconContainer}>
                     <Icon name="shopping-cart" color="white" size={25} />
-                </View>
+                </View> */}
             </View>
         </View >
     );
@@ -86,29 +86,29 @@ const styles = StyleSheet.create({
     },
     starRatingContainer: {
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        marginTop: 4,
+        alignItems: 'stretch',
         justifyContent: 'flex-end',  // Căn phải theo chiều ngang
         marginRight: 5,  // Khoảng cách giữa productName và starIcon
     },
     starIcon: {
         marginRight: 3,
         color: 'yellow',
-        marginTop: 5
     },
     ratingText: {
         color: '#16162E',
         fontSize: 12,
-        marginTop: 18
     },
     priceContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 10,
+        flex: 20
+        // marginTop: 10,
     },
     productPrice: {
         fontSize: 15,
         paddingLeft: 8,
         fontWeight: 'bold',
+        alignContent: 'center',
         color: colors.accent,
         flex: 2
     },
