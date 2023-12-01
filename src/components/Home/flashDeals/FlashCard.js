@@ -31,13 +31,11 @@ const FlashCard = () => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     useEffect(() => {
-        dispatch(fetchGetProducts(page, pageSize));
-        
+        dispatch(fetchGetProducts('', page, pageSize));
     }, [page, pageSize]);
     useEffect(() => {
-        setProductItems(dataProduct.content)
-      
-    }, [dataProduct])
+        if (dataProduct && dataProduct.content) setProductItems(dataProduct.content);
+    }, [dataProduct]);
     const settings = {
         dots: false,
         infinite: true,
@@ -50,33 +48,36 @@ const FlashCard = () => {
 
     return (
         <>
-            <Slider {...settings}> {productItems.map((productItems) => {
-          return (
-            <div className='box' key={productItems.id}>
-              <div className='product mtop'>
-                <div className='img'>
-                  <img className='imgflashcard' src={productItems.imageSet.find((e)=>e.url).url} alt='' />
-                </div>
-                <div className='product-details'>
-                  <span className='spanname'>{productItems.name}</span>
-                  <div className='rate'>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star'></i>
-                  </div>
-                  <div className='price'>
-                    <h4>${productItems.price}.00 </h4>
-                    {/* step : 3  
+            <Slider {...settings}>
+                {' '}
+                {productItems.map((productItems) => {
+                    return (
+                        <div className="box" key={productItems.id}>
+                            <div className="product mtop">
+                                <div className="img">
+                                    <img className="imgflashcard" src={productItems.imageSet[0].url} alt="" />
+                                </div>
+                                <div className="product-details">
+                                    <span className="spanname">{productItems.name}</span>
+                                    <div className="rate">
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
+                                    </div>
+                                    <div className="price">
+                                        <h4>${productItems.price}.00 </h4>
+                                        {/* step : 3  
                      if hami le button ma click garryo bahne 
                     */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        })}</Slider>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </Slider>
         </>
     );
 };

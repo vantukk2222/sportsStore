@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import getUnAuth from "~/API/getUnAuth";
+import { createSlice } from '@reduxjs/toolkit';
+import getUnAuth from '~/API/getUnAuth';
 
 const initialState = {
     dataProduct: [],
     loadingProduct: false,
-    errorProduct: null
-}
+    errorProduct: null,
+};
 const productSlice = createSlice({
     name: 'product',
     initialState,
@@ -21,19 +21,20 @@ const productSlice = createSlice({
         getAllFailure: (state, action) => {
             state.errorProduct = action.payload;
             state.loadingProduct = false;
-        }
-    }
+        },
+    },
 });
-export const fetchGetProducts = (page, pageSize) => async (dispatch) => {
+export const fetchGetProducts = (link, page, pageSize) => async (dispatch) => {
     try {
         dispatch(getAllStart());
-        
-        const data = await getUnAuth(`product?page=${page}&page_size=${pageSize}`);
+        // console.log(link, page, pageSize);
+        const data = await getUnAuth(`product${link ? `/` + link : ``}?page=${page}&page_size=${pageSize}`);
+        //  console.log(data);
         dispatch(getAllsuccess(data));
     } catch (error) {
-        dispatch(getAllFailure(error.message))
+        dispatch(getAllFailure(error.message));
     }
-}
+};
 export const { getAllStart, getAllsuccess, getAllFailure } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -8,14 +8,13 @@ const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
-    const [login, setLogin] = useState(false);
     const { authToken, isLoading, error } = useSelector((state) => state.loginUser);
     const [isShowPassword, setIsShowPassword] = useState(false);
     function handleLogin(un, pw) {
         dispatch(loginUser(un, pw));
     }
     useEffect(() => {
-        setLogin(authToken ? navigate('/') : false);
+        if (authToken) navigate('/');
     }, [authToken]);
     return (
         <div className="login-container col-12 col-sm-4">
