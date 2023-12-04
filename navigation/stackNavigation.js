@@ -21,8 +21,8 @@ const Stack = createStackNavigator();
 export const LoginScreenNavigator = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name='Start' component={Start} options={{ headerShown: false }} />
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name="Cart" component={MyCart} options={{ headerShown: false }} />
             <Stack.Screen name='ProductList' component={ProductList} options={{ headerShown: false }} />

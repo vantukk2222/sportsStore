@@ -35,12 +35,12 @@ const listCartSlice = createSlice({
 
 export const listCartByIdUser = (id_user) => async (dispatch, getState) => {
   try {
-    console.log('Listcart request start');
+    // console.log('Listcart request start');
 
     dispatch(listCartRequest()); // Dispatch addToCartRequest action
-    console.log('Listcart request success');
+    // console.log('Listcart request success');
     const data = await getCartByIDUser(id_user); // Call addToCartPage API
-    console.log('Listcart get api success');
+    // console.log('Listcart get api success');
 
     // console.log("data in listCartReducer: ", data); // Log received data
 

@@ -168,7 +168,7 @@ const Start = () => {
         <ScrollView>
             <SafeAreaView style={{ backgroundColor: colors.trangXam, flex: 100 }}>
                 <StatusBar backgroundColor={colors.trangXam} />
-                <Header />
+                <Header id_user={dataUser.id} />
 
                 {/* <View style={styles.searchContainer}>
                     <TextInput style={styles.input}

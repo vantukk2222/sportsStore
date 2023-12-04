@@ -9,6 +9,7 @@ import { fetchProductbyId, resetProductDetail } from '../../redux/reducers/produ
 
 import { formatMoneyVND } from '../../utilies/validation';
 import ShopInfo from '../Business/ShopInfo';
+import HeaderComp from '../../components/Header';
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
@@ -17,12 +18,12 @@ const CELL_HEIGHT = CELL_WIDTH * 1.4;
 const DetailProduct = ({ navigation, route }) => {
 
     const dispatch = useDispatch()
-    const { item } = route.params;
+    const { item, id_user } = route.params;
     const [product, setProduct] = useState()
     const { data, loading, error } = useSelector((state) => state.productDetail);
     const [images, setImages] = useState(null)
     const [sale, setSale] = useState(null)
-
+    // console.log("id_User Detail:", id_user);
     const priceAfterSale = (price, discount) => {
         return (price * (1 - discount / 100))
     }
@@ -40,7 +41,7 @@ const DetailProduct = ({ navigation, route }) => {
     //console.log(item)
     useEffect(() => {
         dispatch(fetchProductbyId(item.id))//item.id
-        console.log('item.id\n', item.id)
+        // console.log('item.id\n', item.id)
         return () => {
             // item = null;
             dispatch(resetProductDetail());
@@ -50,7 +51,7 @@ const DetailProduct = ({ navigation, route }) => {
     useEffect(() => {
         setProduct(data)
         setSale(data.sale)
-        console.log('productDetail\n', data.sale)
+        // console.log('productDetail\n', data.sale)
         return () => {
             setProduct('')
         }
@@ -63,6 +64,7 @@ const DetailProduct = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={{ flex: 100 }}>
+            <HeaderComp init="Detail" id_user= {id_user}/>
             <ScrollView style={styles.container} nestedScrollEnabled={true}>
                 {product?.imageSet?.length > 0 ?
                     images !== null ?
@@ -177,7 +179,7 @@ const DetailProduct = ({ navigation, route }) => {
             </ScrollView>
 
 
-            <Icon
+            {/* <Icon
                 name="angle-left"
                 size={35}
                 color='black'
@@ -191,7 +193,7 @@ const DetailProduct = ({ navigation, route }) => {
                 onPress={() => {
                     navigation.goBack();
                 }}
-            />
+            /> */}
 
 
 
@@ -203,9 +205,11 @@ const DetailProduct = ({ navigation, route }) => {
                         position: 'absolute',
                         //top: 220,
                         bottom: 0,
-                        height: 60,
+                        height: 70,
+                        marginBottom:15,
+                        marginHorizontal:50,
                         //  marginHorizontal: 15,
-                        //borderRadius: 0,
+                        borderRadius: 8,
                         borderWidth: 1,
                         backgroundColor: 'white',
                         borderColor: 'black',
@@ -215,22 +219,23 @@ const DetailProduct = ({ navigation, route }) => {
                     }
                 }>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('ModalBuyProduct', { product })}
+                    onPress={() => navigation.navigate('ModalBuyProduct', { product:product, id_user: id_user })}
                     style={{
                         borderRadius: 2,
                         borderWidth: 1,
-                        borderColor: 'black',
-                        backgroundColor: 'green',
+                        borderColor: 'white',
+                        backgroundColor: '#4873E0',
                         height: '100%',
-                        width: '50%',
+                        width: '100%',
+                        // marginBottom:5,
                         justifyContent: 'center', // Center vertically
                         alignItems: 'center',
                     }}>
-                    <Icon name="cart-plus" size={25} />
-                    <Text style={{}}>Add to cart </Text>
+                    <Icon name="cart-plus" size={25} color='white'/>
+                    <Text style={{color:'white'}}>Add to cart </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    // onPress={() => navigation.navigate('ModalBuyProduct', product)}
+                {/* <TouchableOpacity
+                    onPress={() => navigation.navigate('Cart', {id_user: id_user})}
                     style={{
                         borderRadius: 2,
                         borderWidth: 1,
@@ -242,7 +247,7 @@ const DetailProduct = ({ navigation, route }) => {
                         alignItems: 'center',
                     }}>
                     <Text style={{ alignItems: 'center', color: 'white', fontWeight: 500, fontSize: 18 }}>Buy Now </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
         </SafeAreaView >

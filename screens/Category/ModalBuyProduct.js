@@ -8,9 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchSizeProduct } from '../../redux/reducers/Size/getProduct';
 import Loading from '../../components/loading';
 import { formatMoneyVND } from '../../utilies/validation';
+import addToCart from '../../API/Cart/addToCart';
+import { addToCartUser } from '../../redux/reducers/Cart/cartReducer';
+import { toastsuccess } from '../../components/toastCustom';
+import Toast from 'react-native-toast-message';
 const ModalBuyProduct = ({ route }) => {
 
+    const { product, id_user } = route.params;
     const [selectedSizeId, setselectedSizeId] = useState(null);
+    const [selectedID_Product, setSelectedID_Product] = useState(product?.productSet[0]?.id)
     const [selectedColor, setSelectedColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(1);
@@ -19,8 +25,7 @@ const ModalBuyProduct = ({ route }) => {
     const { dataSizeProduct, loadingSizeProduct, errorSizeProduct } = useSelector((state) => state.sizeProduct);
     const navigation = useNavigation();
     const dispatch = useDispatch()
-    const { product } = route.params;
-    console.log('buy:\n', product)
+    // console.log('buy:\n', id_user)
 
     useEffect(() => {
         dispatch(fetchSizeProduct(selectedSizeId))
@@ -33,16 +38,21 @@ const ModalBuyProduct = ({ route }) => {
         }
     }, [dataSizeProduct])
 
-    const handleSizeSelect = (size) => {
+    const handleSizeSelect = (size, id) => {
         setQuantity(1);
         setselectedSizeId(size);
+        setSelectedID_Product(id)
     };
 
     const handleColorSelect = (color) => {
         setSelectedColor(color);
     };
     const handleBuyPress = () => {
-        // Handle Buy button press
+        // console.log("ID_User: ",id_user + "\t" + "ID_Product: ", selectedID_Product + "\t" +"Quantity: ", quantity);
+        dispatch(addToCartUser(id_user,selectedID_Product,quantity))
+        navigation.goBack()
+        Toast.show("Thành công", "Bạn đã thêm sản phẩm vào giỏ hàng", 1000)
+        
     };
     const handleTotalBefore = (sl, gia) => {
         return formatMoneyVND(sl * gia);
@@ -85,7 +95,7 @@ const ModalBuyProduct = ({ route }) => {
                                 styles.selectionButton,
                                 selectedSizeId === eachSize.id && styles.selectedButton,
                             ]}
-                            onPress={() => handleSizeSelect(eachSize.id)}>
+                            onPress={() => {handleSizeSelect(eachSize.id,eachSize.id)}}>
                             <Text style={styles.buttonText}>{eachSize.size}</Text>
                         </TouchableOpacity>
                     )) : <Text style={styles.buttonText}>FreeSize</Text>}

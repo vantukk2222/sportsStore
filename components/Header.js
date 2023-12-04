@@ -7,12 +7,19 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../redux/reducers/Login/signinReducer';
 import { colors } from '../constants';
 import { store } from '../redux/store';
-// {asyncStorage}
-const HeaderComp = () => {
+import { useNavigation } from '@react-navigation/native';
+
+const HeaderComp = ({init = "Start", id_user}) => {
+    // const init = "Start";
     // const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const goBack = () => {
+        navigation.goBack();
+      };
+
     return (
         <View style={styles.headerContainer}>
-            <Icon name="buffer" size={30} style={styles.iconBuffer} onPress={() => { store.dispatch(logout()) }} />
+            {init == "Start"? "":(<Icon name="angle-left" size={30} style={styles.iconBuffer} onPress={() => { goBack}} />)}
             <View style={{ display: 'flex', flexDirection: 'row' }}>
                 {/* <View style={styles.location}>
                     <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 25 }}>
@@ -20,7 +27,7 @@ const HeaderComp = () => {
                     </Text>
                 </View> */}
             </View>
-            <Icon name="shopping-cart" size={30} style={styles.iconShopping} />
+            <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{navigation.navigate("Cart", {id_user:id_user})}}/>
         </View>
     );
 };
@@ -34,22 +41,23 @@ const styles = StyleSheet.create({
     },
     iconBuffer:
     {
-        color: 'red',
+        color:'#4873E0',
         alignItems: 'flex-end',
         marginLeft: 15,
 
     },
     iconShopping:
     {
-        color: '#333333',
+        color: '#4873E0',
         alignItems: 'flex-start',
         marginRight: 15
     },
-    location: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginLeft: 10,
-    },
+    // location: {
+    //     display: 'flex',
+    //     justifyContent: 'center',
+    //     alignItems:'center',
+    //     marginLeft: 10,
+    // }
 });
 
 export default HeaderComp;

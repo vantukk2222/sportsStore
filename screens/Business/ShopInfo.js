@@ -10,7 +10,7 @@ const ShopInfo = (props) => {
     return (
         <View >
             <View style={styles.shopContainer}>
-                <Image source={{ uri: 'https://scontent.fdad3-6.fna.fbcdn.net/v/t39.30808…2xCs7vrBkH27q_8GMMViNG57GtVP5ssoQjUdA&oe=6568D2F6' }} style={styles.shopImage} />
+                <Image source={{ uri: 'https://endlessicons.com/wp-content/uploads/2012/12/female-avatar-icon-614x460.png' }} style={styles.shopImage} />
                 <View style={styles.shopInfo}>
                     <Text style={styles.shopName}>{buss?.name}</Text>
                     <Text style={styles.shopDescription}>{buss?.about}</Text>

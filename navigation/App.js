@@ -27,15 +27,16 @@ const Stack = createStackNavigator();
 
 
 const App = ({ loggedIn, loginUser, auth }) => {
-    useEffect(()=>{
-        loggedIn??''
-        // if(!loggedIn) 
-    },[loggedIn])
+    // useEffect(()=>{
+    //     loggedIn??''
+    //     // if(!loggedIn) 
+    // },[loggedIn])
     return (
 
         <>
             <NavigationContainer>
-                {loggedIn ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator />)}
+                {/* {loggedIn ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator />)} */}
+            <Navigation.LoginScreenNavigator/>
             </NavigationContainer>
         </>
         )

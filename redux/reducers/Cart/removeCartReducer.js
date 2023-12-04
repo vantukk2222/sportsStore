@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import addToCartPage from "../../../API/addToCart/addToCartAPI";
 import { asyncStorage } from "../../../utilies/asyncStorage";
-import addToCart from "../../../API/Cart/addToCart";
-import { logout } from "../Login/signinReducer";
-import { store } from "../../store";
+import removeItemCart from "../../../API/Cart/removeItemCart";
+// import { logout } from "../Login/signinReducer";
+// import { store } from "../../store";
 // {asyncStorage}
 
 
