@@ -33,7 +33,7 @@ import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import { formatMoneyVND } from '../../utilies/validation';
 import { logout } from '../../redux/reducers/Login/signinReducer';
 import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
-import FlatListHori from '../Product/FlatListHori';
+import FlatListProductSale from '../Sale/FlatListProductSale';
 // import { fetchUserByID } from '../../redux/reducers/User/userInfor';
 // >>>>>>> NewD
 
@@ -127,34 +127,7 @@ const Start = () => {
         }
         return Listimg.length > 0 ? Listimg[0].url : null;
     }
-    const renderCatetory = ({ item }) => {
-        { console.log(item) }
-        <View style={{
-            width: 80,
-            height: 80,
-            margin: 10,
-            backgroundColor: 'lightblue',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 8,
-            borderWidth: 1,
-            borderColor: 'black',
-            backgroundColor: 'black'
-        }}>
 
-            <Text style={{ color: 'black' }}>{item.name}</Text>
-        </View>
-    }
-
-
-    const renderProductEvent = ({ item }) => {
-        <View style={styles.sales}>
-            {/* <Image source={require('../../assets/lays.png')} /> */}
-            <View style={styles.categoryBox}>
-                <Text style={{ color: '#16162E', fontSize: 10 }}>item.name</Text>
-            </View>
-        </View>
-    }
     if (loading) {
         return <Loading />;
     }
@@ -203,6 +176,7 @@ const Start = () => {
                         />
                     </View>
                 </View> */}
+
                 {/* Category */}
                 <View style={styles.categoriesContainer}>
                     <View
@@ -233,8 +207,11 @@ const Start = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
+
                 {/* Danh sach san pham sale */}
-                <FlatListHori />
+                <FlatListProductSale />
+
+
                 {/* Danh sach san pham */}
                 {/* Go product */}
                 <View style={styles.container}>

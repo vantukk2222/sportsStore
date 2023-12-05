@@ -31,7 +31,7 @@ const Business = ({ navigation, route }) => {
     }, [business, page, pageSize, sort, desc, state])
     useEffect(() => {
         setProduct(dataProductbyBusi.content)
-        console.log('poduct', dataProductbyBusi.content);
+        //console.log('product by business', dataProductbyBusi.content);
         setTotalPages(dataProductbyBusi.totalPages)
         //console.log('data product by business', dataProductbyBusi)
 

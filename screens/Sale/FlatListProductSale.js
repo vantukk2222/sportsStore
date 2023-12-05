@@ -9,7 +9,7 @@ const DATA = [
 
 const windowWidth = Dimensions.get('window').width;
 
-const FlatListHori = () => {
+const FlatListProductSale = () => {
     const renderItem = ({ item }) => (
         <View style={styles.item}>
             <Image source={{ uri: item.image }} style={styles.image} />
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FlatListHori;
+export default FlatListProductSale;
