@@ -55,13 +55,13 @@ const ListProductByCategory = ({ route, navigation }) => {
     }, [idCate, page, pageSize, sort, desc])
     useEffect(() => {
         setProducts(dataProductbyCate.content)
-        console.log("datacategoryapi: \n ", dataProductbyCate.content)
+        //console.log("datacategoryapi: \n ", dataProductbyCate.content)
     }, [dataProductbyCate])
 
 
     return (
         <ScrollView>
-            <SafeAreaView style={{ flex: 1, backgroundColor: colors.accent }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: colors.trangXam }}>
                 <FlatList
                     data={tabs}
                     keyExtractor={(item, index) => item.id}
@@ -76,7 +76,8 @@ const ListProductByCategory = ({ route, navigation }) => {
                             <View style={[styles.pill,
                             {
                                 backgroundColor:
-                                    item.id === idCate ? colors.accent : colors.trangXam,
+                                    item.id === idCate ? colors.google : colors.trangXam,
+                                marginLeft: 5,
                             }
                             ]} >
                                 <Text style={[styles.pillText,
@@ -86,12 +87,14 @@ const ListProductByCategory = ({ route, navigation }) => {
                         </TouchableOpacity>
                     }}
                 />
-                {loadingProductbyCateCate === true ? <Loading /> : products && products.length > 0 ?
+                {loadingProductbyCateCate === true ? <View style={{ flex: 1 }}>
+                    <Loading />
+                </View> : products && products.length > 0 ?
                     <View>
                         <FlatList
                             style={{
-                                backgroundColor: colors.accent, marginBottom: 2,
-                                borderRadius: 1,
+                                backgroundColor: colors.trangXam, marginBottom: 2,
+                                borderRadius: 0.6,
                                 borderColor: 'gray',
                                 borderWidth: 1
                             }}
@@ -106,11 +109,12 @@ const ListProductByCategory = ({ route, navigation }) => {
                                     <TouchableOpacity onPress={() => { navigation.navigate('DetailProduct', { item }) }}
                                         style={{
                                             width: CELL_WIDTH - 2, height: CELL_HEIGHT - 2,
-                                            margin: SPACING,
+                                            marginHorizontal: SPACING,
+                                            marginVertical: 5,
                                             padding: 1,
                                             borderRadius: 8,
                                             borderColor: 'black',
-                                            borderWidth: 3
+                                            borderWidth: 1
 
                                         }}>
                                         <View style={{ flex: 1, padding: SPACING, justifyContent: 'center' }}>
@@ -133,7 +137,7 @@ const ListProductByCategory = ({ route, navigation }) => {
 
                         </FlatList >
                         <FlatList
-                            style={{ backgroundColor: colors.accent }}
+                            style={{ backgroundColor: colors.trangXam }}
                             data={products}
                             keyExtractor={item => item.id}
                             scrollEnabled={false}
@@ -146,7 +150,7 @@ const ListProductByCategory = ({ route, navigation }) => {
                                     marginBottom: 2,
                                     borderRadius: 8,
                                     borderColor: 'black',
-                                    borderWidth: 2,
+                                    borderWidth: 0.4,
                                     marginTop: 2
                                 }}>
 
@@ -166,7 +170,9 @@ const ListProductByCategory = ({ route, navigation }) => {
                         />
                     </View>
 
-                    : <Text style={{ color: 'black' }}>No products available</Text>}
+                    : <View style={{ backgroundColor: colors.trangXam, flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ color: 'black', alignItems: 'center' }}>No products available</Text>
+                    </View>}
             </SafeAreaView >
 
         </ScrollView>
@@ -197,7 +203,7 @@ const styles = StyleSheet.create({
     },
     popularPrice: {
         fontWeight: '800',
-        color: colors.denNhe
+        color: colors.facebook
     },
     name: {
         fontWeight: '800',

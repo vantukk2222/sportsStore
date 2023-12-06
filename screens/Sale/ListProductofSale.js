@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, ScrollView, Text, FlatList, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import ProductItem from './ProductItem'; // Đảm bảo đường dẫn đến file ProductItem là chính xác
+import ProductItem from '../Product/ProductItem'; // Đảm bảo đường dẫn đến file ProductItem là chính xác
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducers/productReducer/product';
 import { fetchProductbySearch } from '../../redux/reducers/productReducer/searchProducts';
@@ -9,19 +9,23 @@ import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
-const ProductList = (props) => {
-
+import { fetchProductbySale } from '../../redux/reducers/productReducer/getProductBySale';
+const ListProductofSale = ({ route }) => {
+    //sale 
+    const { item } = route.params;
+    //console.log('sale ', item)
     const dispatch = useDispatch();
-    const { data, loading, error } = useSelector((state) => state.product);
+    const { dataProductbySale, loadingProductbySale, errorProductbySale } = useSelector((state) => state.getProductBySale);
     const [products, setProducts] = useState([]);
 
     const { dataSearch, loadingSearch, errorSearch } = useSelector((state) => state.productSearch);
     const [searchText, setSearchText] = useState('');
 
     const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(30);
+    const [pageSize, setPageSize] = useState(20);
     const [sort, setSort] = useState('name');
     const [desc, setDesc] = useState(false);
+    const [state, setState] = useState(0)
 
     const navigation = useNavigation();
 
@@ -57,15 +61,15 @@ const ProductList = (props) => {
 
     //Call API when starting
     useEffect(() => {
-        dispatch(fetchProducts(page, pageSize, sort, desc));
-    }, [page, pageSize, sort, desc]);
+        dispatch(fetchProductbySale(item.id, page, pageSize, sort, desc, state));
+    }, [item, page, pageSize, sort, desc, state]);
     //set products = data
     useEffect(() => {
         //console.log(data);
-        setProducts(data.content);
+        setProducts(dataProductbySale.content);
         //console.log(data.totalPages);
-        setTotalPages(data.totalPages);
-    }, [data, totalPages])
+        setTotalPages(dataProductbySale.totalPages);
+    }, [dataProductbySale, totalPages])
 
     //Call API, when search Product by name 
     useEffect(() => {
@@ -81,18 +85,15 @@ const ProductList = (props) => {
         setProducts(dataSearch);
     }, [dataSearch])
 
-    if (loading || loadingSearch) {
+    if (loadingProductbySale || loadingSearch) {
         return <Loading />;
     }
 
-    if (error || errorSearch) {
+    if (errorProductbySale || errorSearch) {
         return <Text style={{ color: 'red' }}>Error: {error}</Text>;
     }
     return (
-
-
         <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
-            {/* <View style={styles.lineTop}></View> */}
             <View style={styles.containerTop}>
                 <View style={styles.iconBack}>
                     <Icon
@@ -103,16 +104,6 @@ const ProductList = (props) => {
                         style={{ marginTop: 5 }}
                     />
                 </View>
-                {/* <View>
-                    <Text style={styles.title}>Product List</Text>
-                </View>
-                <View style={styles.iconCart}>
-                    <Icon name="shopping-cart"
-                        onPress={() => navigation.goBack('Start')}
-                        size={25}
-                        color={colors.accent}
-                        style={{ marginTop: 5 }} />
-                </View> */}
             </View>
             <View style={styles.line}></View>
             {/* Search tab */}
@@ -145,7 +136,13 @@ const ProductList = (props) => {
             }
             <View style={styles.line}></View>
 
-            <FlatList style={{ flexDirection: 'row', margin: 5, backgroundColor: colors.facebook, borderRadius: 10 }}
+            <FlatList style={{
+                flexDirection: 'row',
+                margin: 5,
+                backgroundColor: colors.trangXam,
+                borderRadius: 10,
+                marginTop: 10
+            }}
                 data={products}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
@@ -156,7 +153,7 @@ const ProductList = (props) => {
                             imageSource={item.imageSet[0].url}
                             productName={item.name}
                             productPrice={item.price_min}
-                            sale={item?.sale}
+                            sale={item.sale}
                         />
                     </TouchableOpacity>
 
@@ -172,7 +169,7 @@ const ProductList = (props) => {
                         }}
                         name="chevron-left"
                         size={25}
-                        color={colors.accent}
+                        color={colors.denNhe}
                         style={{ marginTop: 5 }}
                     />
                 </View>
@@ -189,7 +186,7 @@ const ProductList = (props) => {
                         }}
                         name="chevron-right"
                         size={25}
-                        color={colors.accent}
+                        color={colors.denNhe}
                         style={{ marginTop: 5 }}
                     />
                 </View>
@@ -246,7 +243,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginRight: 10,
-        borderColor: colors.accent,
+        borderColor: colors.denNhe,
         borderWidth: 1, // Độ dày đường viền
         borderRadius: 5,
     },
@@ -257,7 +254,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginLeft: 10,
-        borderColor: colors.accent,
+        borderColor: colors.denNhe,
         borderWidth: 1, // Độ dày đường viền
         borderRadius: 5,
     }
@@ -286,7 +283,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginLeft: 10,
-        borderColor: colors.accent,
+        borderColor: colors.denNhe,
         borderWidth: 1, // Độ dày đường viền
         borderRadius: 5,
 
@@ -331,7 +328,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     buttonText: {
-        color: colors.primary,
+        color: colors.denNhe,
         fontSize: fontSize.h3,
     },
     line: {
@@ -345,4 +342,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProductList;
+export default ListProductofSale;

@@ -4,8 +4,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
 import { formatMoneyVND } from '../../utilies/validation';
 
-const ProductItem = ({ imageSource, productName, productPrice }) => {
-
+const ProductItem = ({ imageSource, productName, productPrice, sale }) => {
+    const priceAfterSale = (price, discount) => {
+        return (price * (1 - discount / 100))
+    }
     return (
         <View style={styles.productItem}>
             <View style={styles.imageContainer}>
@@ -20,11 +22,33 @@ const ProductItem = ({ imageSource, productName, productPrice }) => {
                 </View>
             </View>
             <View style={styles.priceContainer}>
-                <Text style={styles.productPrice}>{formatMoneyVND(productPrice)}</Text>
-                <View style={styles.starRatingContainer}>
+                {sale !== null ?
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.priceSale}>{formatMoneyVND(productPrice)}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{
+                                color: 'red',
+                                fontSize: 15,
+                                fontWeight: 500,
+                                marginHorizontal: 10,
+                                //marginVertical: 2,
+                                alignItems: 'flex-start'
+                            }}>{formatMoneyVND(priceAfterSale(productPrice, sale?.discount))}</Text>
+                            <View>
+                                {sale?.discount > 0 && (
+                                    <Text style={styles.discountPrice}>
+                                        Giảm {sale?.discount}%
+                                    </Text>
+                                )}
+                            </View>
+                        </View>
+                    </View>
+                    :
+                    <Text style={styles.productPrice}>{formatMoneyVND(productPrice)}</Text>}
+                {/* <View style={styles.starRatingContainer}>
                     <Icon style={styles.starIcon} name="star" size={15} />
                     <Text style={styles.ratingText}>4.5</Text>
-                </View>
+                </View> */}
                 {/* <View style={styles.cartIconContainer}>
                     <Icon name="shopping-cart" color="white" size={25} />
                 </View> */}
@@ -35,7 +59,7 @@ const ProductItem = ({ imageSource, productName, productPrice }) => {
 
 const styles = StyleSheet.create({
     productItem: {
-        borderWidth: 1,
+        borderWidth: 0.4,
         borderRadius: 18,
         // overflow: 'hidden',
         margin: 5,
@@ -46,6 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     imageContainer: {
+        marginTop: 2,
         flexDirection: 'row',
         justifyContent: 'center',
         position: 'relative',
@@ -78,39 +103,48 @@ const styles = StyleSheet.create({
         //flexWrap: 'wrap', // Cho phép tự động xuống dòng
     },
     productName: {
-        fontSize: 10,
-        fontWeight: 'bold',
-        marginBottom: 5,
+        fontSize: 11,
+        fontWeight: '600',
         color: 'black',
         marginTop: 10,
+
     },
-    starRatingContainer: {
-        flexDirection: 'row',
-        marginTop: 4,
-        alignItems: 'stretch',
-        justifyContent: 'flex-end',  // Căn phải theo chiều ngang
-        marginRight: 5,  // Khoảng cách giữa productName và starIcon
-    },
-    starIcon: {
-        marginRight: 3,
-        color: 'yellow',
-    },
-    ratingText: {
-        color: '#16162E',
-        fontSize: 12,
-    },
+    // starRatingContainer: {
+    //     flexDirection: 'row',
+    //     marginTop: 4,
+    //     alignItems: 'stretch',
+    //     justifyContent: 'flex-end',  // Căn phải theo chiều ngang
+    //     marginRight: 5,  // Khoảng cách giữa productName và starIcon
+    // },
+    // starIcon: {
+    //     marginRight: 3,
+    //     color: 'yellow',
+    // },
+    // ratingText: {
+    //     color: '#16162E',
+    //     fontSize: 12,
+    // },
     priceContainer: {
         flexDirection: 'row',
-        flex: 20
+        flex: 25
         // marginTop: 10,
     },
     productPrice: {
-        fontSize: 15,
+        fontSize: 18,
+        marginLeft: 5,
         paddingLeft: 8,
         fontWeight: 'bold',
         alignContent: 'center',
-        color: colors.accent,
+        color: colors.facebook,
         flex: 2
+    },
+    priceSale: {
+        color: 'black',
+        fontSize: 12,
+        //fontWeight: 500,
+        marginHorizontal: 10,
+        textDecorationLine: 'line-through',
+        alignItems: 'flex-start'
     },
     cartIconContainer: {
         backgroundColor: colors.denNhe,
@@ -121,6 +155,16 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
         flex: 1
+    },
+    discountPrice: {
+        color: 'red', // You can customize the color for the discount label
+        fontSize: 12, // You can adjust the font size for the discount label
+        fontWeight: 'bold',
+        //marginTop: 5,
+        marginLeft: 5,
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: 'red'
     },
 });
 

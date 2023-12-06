@@ -12,6 +12,8 @@ import Start from "../screens/Home/Start"
 import ProductDetail from "../screens/Product/ProductDetail"
 import ProductItem from "../screens/Product/ProductItem"
 import ProductList from "../screens/Product/ProductList"
+import FlatListSale from "../screens/Sale/FlatListSale"
+import ListProductofSale from "../screens/Sale/ListProductofSale"
 import Information from "../screens/User/Information"
 
 import { createStackNavigator } from '@react-navigation/stack'
@@ -41,6 +43,9 @@ export const LoginScreenNavigator = () => {
             </Stack.Group>
             <Stack.Screen name="ShopInfo" component={ShopInfo} options={{ headerShown: false }} />
             <Stack.Screen name="Business" component={Business} options={{ headerShown: false }} />
+            <Stack.Screen name="ListProductofSale" component={ListProductofSale} options={{ headerShown: false }} />
+            <Stack.Screen name="FlatListSale" component={FlatListSale} options={{ headerShown: false }} />
+
 
         </Stack.Navigator>
     )

@@ -17,10 +17,10 @@ import { useNavigation } from '@react-navigation/native';
 //     job: faker.animal.crocodilia(),
 // }));
 
-const _colors = {
-    active: `#FCD259ff`,
-    inactive: `#FCD25900`,
-};
+// const _colors = {
+//     active: `#FCD259ff`,
+//     inactive: `#FCD25900`,
+// };
 const _spacing = 10;
 
 const ListCategory = () => {
@@ -86,10 +86,10 @@ const ListCategory = () => {
                                 style={{
                                     marginRight: _spacing,
                                     padding: _spacing,
-                                    borderWidth: 2,
+                                    borderWidth: 0.5,
                                     borderColor: colors.denNhe,
                                     borderRadius: 12,
-                                    backgroundColor: fIndex === index ? colors.orgC1 : colors.inactives
+                                    backgroundColor: fIndex === index ? colors.google : colors.inactives
                                 }}>
                                 <Text style={{ color: '#36303F', fontWeight: '700', fontSize: fontSize.h3, }}>
                                     {item.name}

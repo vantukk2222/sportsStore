@@ -33,7 +33,7 @@ import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import { formatMoneyVND } from '../../utilies/validation';
 import { logout } from '../../redux/reducers/Login/signinReducer';
 import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
-import FlatListProductSale from '../Sale/FlatListProductSale';
+import FlatListSale from '../Sale/FlatListSale';
 // import { fetchUserByID } from '../../redux/reducers/User/userInfor';
 // >>>>>>> NewD
 
@@ -195,21 +195,19 @@ const Start = () => {
                 {/* Sale */}
                 <View style={styles.container}>
                     <Image
-                        source={require('../../assets/images/banner4.jpg')}
+                        source={require('../../assets/images/banner3.jpeg')}
                         style={styles.backgroundImage}
                     />
-                    <View style={styles.contentContainer}>
-                        {/* <Text style={styles.text}>Events</Text> */}
+                    {/* <View style={styles.contentContainer}>
                         <Text style={styles.textSmall}>Giảm giá lên đến 50%</Text>
-                        {/* TouchableOpacity */}
                         <TouchableOpacity style={styles.touchableOpacity}>
                             <Text style={styles.buttonText}>Mua ngay!</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
 
                 {/* Danh sach san pham sale */}
-                <FlatListProductSale />
+                <FlatListSale />
 
 
                 {/* Danh sach san pham */}
@@ -223,51 +221,65 @@ const Start = () => {
                 </View>
                 <View
                     style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        paddingRight: 18,
-                        paddingLeft: 18,
-                        marginTop: 10,
+                        backgroundColor: colors.trangXam,
+                        borderRadius: 20,
+                        marginTop: 35,
+                        borderColor: 'gray',
+                        borderWidth: 0.4
                     }}>
-                    {/* // <<<<<<< categoryDat */}
-                    <Text style={{ color: '#16162E', fontSize: 18, fontWeight: 'bold' }}>
-                        Popular product
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => handleGoList()}
-                        style={{
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                        <Text style={{
-                            color: '#F33A63', fontSize: 18, fontWeight: 'bold'
-                        }}>More</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.categories}>
-
                     <View
                         style={{
-                            backgroundColor: 'white'
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            paddingRight: 18,
+                            paddingLeft: 18,
+                            marginTop: 10,
                         }}>
-                        <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.facebook }}>
-                            {products.map((item) => (
-                                <TouchableOpacity
-                                    key={item.id}
-                                    onPress={() => handleGoDetail(item)}
-                                    style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
-                                    <ProductItem
-                                        imageSource={findMainImage(item?.imageSet)}
-                                        productName={item.name}
-                                        productPrice={item.price_min}
-                                    />
-                                </TouchableOpacity>
-                            ))}
-                        </ScrollView>
+                        {/* // <<<<<<< categoryDat */}
+                        <Text style={{
+                            color: 'black',
+                            fontSize: 30,
+                            fontWeight: '700'
+                        }}>Sản phẩm
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => handleGoList()}
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                            <Text style={{
+                                color: '#F33A63', fontSize: 18, fontWeight: 'bold'
+                            }}>Xem</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.categories}>
 
+                        <View
+                            style={{
+                                backgroundColor: 'white'
+                            }}>
+                            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.trangXam }}>
+                                {products.map((item) => (
+                                    <TouchableOpacity
+                                        key={item.id}
+                                        onPress={() => handleGoDetail(item)}
+                                        style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+                                        <ProductItem
+                                            imageSource={findMainImage(item?.imageSet)}
+                                            productName={item.name}
+                                            productPrice={item.price_min}
+                                            sale={item?.sale}
+                                        />
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+
+                        </View>
                     </View>
                 </View>
+
             </SafeAreaView>
         </ScrollView >
     );
@@ -398,9 +410,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         backgroundColor: colors.facebook,
         marginTop: 15,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: colors.denNhe,
+        // borderRadius: 8,
+        // borderWidth: 1,
+        // borderColor: colors.denNhe,
         flex: 20,
 
     },
