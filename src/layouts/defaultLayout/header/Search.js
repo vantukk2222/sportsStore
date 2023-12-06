@@ -14,7 +14,7 @@ const Search = () => {
                     <div className="search-box f_flex">
                         <i className="fa fa-search"></i>
                         <input type="text" placeholder="Tìm kiếm..." />
-                        <span>Tìm kiếm</span>
+                        {/* <span>Tìm kiếm</span> */}
                     </div>
                     <div className="icon f_flex width">
                         <div className="cart">

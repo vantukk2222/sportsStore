@@ -2,29 +2,65 @@
     font-size: 45px;
     line-height: 55px;
     margin: 50px 0 20px 0;
-  }
-  .homeSlide p {
+}
+.homeSlide p {
     margin: 20px 0;
-  }
-  .homeSlide ul {
+}
+.homeSlide ul {
     position: absolute;
     bottom: 20px;
-  }
-  .homeSlide ul li {
+}
+.homeSlide ul li {
     border: 2px solid #b8b7b7;
     border-radius: 50%;
     padding: 10px;
-  }
-  .homeSlide ul li button {
+}
+.homeSlide ul li button {
     background: transparent !important;
     color: transparent !important;
-  }
-  .homeSlide ul li button::before {
+}
+.homeSlide ul li button::before {
     font-size: 15px !important;
     color: #0f3460;
     position: absolute;
     top: 2px;
     left: 0;
     margin: auto;
-  }
-  
+}
+/* CSS cho phần wrapper có className là "box" */
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 1px solid #ddd; /* Đường viền cho phần tử wrapper (có thể thay đổi màu sắc và kích thước tùy ý) */
+    padding: 10px; /* Khoảng cách giữa phần tử wrapper và nội dung bên trong (có thể điều chỉnh tùy ý) */
+}
+
+/* CSS cho phần chứa text có className là "left" */
+.left {
+    /* Đặt thuộc tính của phần tử chứa text */
+}
+
+/* CSS cho phần ảnh có className là "right" */
+.right {
+    /* Đặt thuộc tính của phần tử ảnh và thêm margin-right để tạo khoảng cách với phần tử bên cạnh */
+    margin-left: 10px; /* Điều chỉnh giá trị theo nhu cầu */
+}
+
+/* CSS cho button có className là "btn-primary" */
+
+/* Đảm bảo chữ không bị tràn */
+h1,
+p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* CSS cho ảnh có className là "img-slider" */
+.img-slider {
+    width: 700px; /* Điều chỉnh giá trị theo kích thước mong muốn */
+    height: 500px; /* Điều chỉnh giá trị theo kích thước mong muốn */
+    object-fit: cover;
+}
