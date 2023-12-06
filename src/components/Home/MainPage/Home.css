@@ -28,35 +28,8 @@
     margin: auto;
 }
 /* CSS cho phần wrapper có className là "box" */
-.box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    overflow: hidden;
-    border: 1px solid #ddd; /* Đường viền cho phần tử wrapper (có thể thay đổi màu sắc và kích thước tùy ý) */
-    padding: 10px; /* Khoảng cách giữa phần tử wrapper và nội dung bên trong (có thể điều chỉnh tùy ý) */
-}
 
 /* CSS cho phần chứa text có className là "left" */
-.left {
-    /* Đặt thuộc tính của phần tử chứa text */
-}
-
-/* CSS cho phần ảnh có className là "right" */
-.right {
-    /* Đặt thuộc tính của phần tử ảnh và thêm margin-right để tạo khoảng cách với phần tử bên cạnh */
-    margin-left: 10px; /* Điều chỉnh giá trị theo nhu cầu */
-}
-
-/* CSS cho button có className là "btn-primary" */
-
-/* Đảm bảo chữ không bị tràn */
-h1,
-p {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
 
 /* CSS cho ảnh có className là "img-slider" */
 .img-slider {
