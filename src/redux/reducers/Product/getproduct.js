@@ -28,7 +28,7 @@ export const fetchGetProducts = (link, page, pageSize) => async (dispatch) => {
     try {
         dispatch(getAllStart());
         // console.log(link, page, pageSize);
-        const data = await getUnAuth(`product${link ? `/` + link : ``}?page=${page}&page_size=${pageSize}`);
+        const data = await getUnAuth(`product-information${link ? `/` + link : ``}?page=${page}&page_size=${pageSize}`);
         //  console.log(data);
         dispatch(getAllsuccess(data));
     } catch (error) {

@@ -55,19 +55,23 @@ const FlashCard = () => {
                         <div className="box" key={productItems.id}>
                             <div className="product mtop">
                                 <div className="img">
-                                    <img className="imgflashcard" src={productItems.imageSet[0].url} alt="" />
+                                    <img
+                                        className="imgflashcard"
+                                        src={productItems.imageSet.find((e) => e.is_main === true).url}
+                                        alt=""
+                                    />
                                 </div>
                                 <div className="product-details">
                                     <span className="spanname">{productItems.name}</span>
-                                    <div className="rate">
+                                    {/* <div className="rate">
                                         <i className="fa fa-star"></i>
                                         <i className="fa fa-star"></i>
                                         <i className="fa fa-star"></i>
                                         <i className="fa fa-star"></i>
                                         <i className="fa fa-star"></i>
-                                    </div>
+                                    </div> */}
                                     <div className="price">
-                                        <h4>${productItems.price}.00 </h4>
+                                        <h4>${productItems.price_min}đ </h4>
                                         {/* step : 3  
                      if hami le button ma click garryo bahne 
                     */}
