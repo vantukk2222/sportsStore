@@ -41,7 +41,11 @@ const SlideCard = () => {
                                     <button className="btn-primary">Xem sản phẩm</button>
                                 </div>
                                 <div className="right" style={{}}>
-                                    <img className="img-slider"src={value.imageSet.find((e) => e.is_main === true).url} alt="" />
+                                    <img
+                                        className="img-slider"
+                                        src={value.imageSet.find((e) => e.is_main === true).url}
+                                        alt=""
+                                    />
                                 </div>
                             </div>
                         </div>
