@@ -27,9 +27,9 @@ const SamplePrevArrow = (props) => {
 };
 const FlashCard = () => {
     const dispatch = useDispatch();
-    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.slideProducts);
+    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.flashDealProducts);
     const [productItems, setProductItems] = useState([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const navigate = useNavigate();
     useEffect(() => {
