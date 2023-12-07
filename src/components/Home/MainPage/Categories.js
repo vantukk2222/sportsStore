@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories } from '~/redux/reducers/Caregory/getAllCategories';
+import { fetchCategories } from '~/redux/reducers/Category/getAllCategories';
 
 const Categories = () => {
     const dispatch = useDispatch();

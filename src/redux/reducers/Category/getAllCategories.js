@@ -28,7 +28,7 @@ const groupCategorySlice = createSlice({
 export const fetchCategories = () => async (dispatch) => {
     try {
         dispatch(getStart());
-        const data = await getUnAuth('category/get-group');
+        const data = await getUnAuth('category/get-category-group');
         // console.log(data);
         dispatch(getSuccess(data));
     } catch (error) {

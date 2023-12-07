@@ -1,53 +1,29 @@
-import React from "react"
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories } from '~/redux/reducers/Category/getAllCategories';
 
-const Catg = () => {
-  const data = [
-    {
-      cateImg: "./images/category/cat-1.png",
-      cateName: "ÁO THỂ THAO",
-    },
-    {
-      cateImg: "./images/category/cat-2.png",
-      cateName: "GIÀY THỂ THAO",
-    },
-    {
-      cateImg: "./images/category/cat-1.png",
-      cateName: "BÓNG THỂ THAO",
-    },
-    {
-      cateImg: "./images/category/cat-2.png",
-      cateName: "PHỤ KIỆN THỂ THAO",
-    },
-    {
-      cateImg: "./images/category/cat-1.png",
-      cateName: "ESPORT",
-    },
-    {
-      cateImg: "./images/category/cat-2.png",
-      cateName: "CÚP",
-    },
-  ]
-  return (
-    <>
-      <div className='category'>
-        <div className='chead d_flex'>
-          <h1>Brands </h1>
-          <h1>Shops </h1>
-        </div>
-        {data.map((value, index) => {
-          return (
-            <div className='box f_flex' key={index}>
-              <img src={value.cateImg} alt='' />
-              <span>{value.cateName}</span>
+const Catg = ({ handleClick }) => {
+    const dispath = useDispatch();
+    const { dataCate, loadingCate, erroCate } = useSelector((state) => state.categories);
+    useEffect(() => {
+        dispath(fetchCategories());
+    }, []);
+    return (
+        <>
+            <div className="category">
+                <div className="chead d_flex">
+                    <h1>Category </h1>
+                </div>
+                {dataCate.map((value, index) => {
+                    return (
+                        <div className="box f_flex" key={index} onClick={() => handleClick(value.categorySet)}>
+                            <span>{value.name}</span>
+                        </div>
+                    );
+                })}
             </div>
-          )
-        })}
-        <div className='box box2'>
-          <button>View All Brands</button>
-        </div>
-      </div>
-    </>
-  )
-}
+        </>
+    );
+};
 
-export default Catg
+export default Catg;

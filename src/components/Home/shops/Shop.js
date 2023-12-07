@@ -2,13 +2,20 @@ import React from 'react';
 import Catg from './Catg';
 import ShopCart from './ShopCart';
 import './style.css';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const Shop = () => {
+    const { dataCate, loadingCate, erroCate } = useSelector((state) => state.categories);
+    const [categoryItems, setCategoryItems] = useState(dataCate[0].categorySet);
+    const handleClick = (value) => {
+        setCategoryItems(value);
+    };
     return (
         <>
             <section className="shop background">
                 <div className="container d_flex">
-                    <Catg />
+                    <Catg handleClick={handleClick} />
 
                     <div className="contentWidth">
                         <div className="heading d_flex">
@@ -21,7 +28,7 @@ const Shop = () => {
                             </div>
                         </div>
                         <div className="product-content  grid1">
-                            <ShopCart />
+                            <ShopCart categoryItems={categoryItems}/>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,6 @@ import './App.css';
 import { publicRoutes, privateRoutes, vistorRoutes } from '~/routes';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Fragment, useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 function App() {
     const [login, setLogin] = useState(false);
     const [routers, setRouters] = useState([...vistorRoutes, ...publicRoutes]);
