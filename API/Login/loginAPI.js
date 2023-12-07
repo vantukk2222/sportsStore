@@ -2,6 +2,7 @@ import axios from "axios"
 import { asyncStorage } from "../../utilies/asyncStorage";
 
 const loginPage = async (email, password) => {
+  console.log("login API: username: ", email , "\t pass: ", password);
     try {
         const response = await axios.post('https://project-pbl6-production.up.railway.app/api/v1/auth/signin', {
           username: email,

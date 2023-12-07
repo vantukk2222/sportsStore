@@ -21,6 +21,7 @@ import { useNavigation } from '@react-navigation/native';
 import { asyncStorage } from '../../utilies/asyncStorage';
 import { loginUser } from '../../redux/reducers/Login/signinReducer';
 import Loading from '../../components/loading';
+import { toastsuccess } from '../../components/toastCustom';
 
 // {loginUser}
 function Login(props) {
@@ -61,6 +62,7 @@ function Login(props) {
             // await asyncStorage.setAuthToken(data)
             // console.log("state: " + loginState)
             await asyncStorage.setUsername(valueEmail)
+            toastsuccess("Đăng nhập thành công","Chào mừng bạn đến với SportStore")
             // console.log("login: "+ await asyncStorage.getAuthToken())
             setValueEmail('')
             setValuePassword('')

@@ -18,7 +18,7 @@ const CELL_HEIGHT = CELL_WIDTH * 1.4;
 const DetailProduct = ({ navigation, route }) => {
 
     const dispatch = useDispatch()
-    const { item, id_user } = route.params;
+    const { item } = route.params;
     const [product, setProduct] = useState()
     const { data, loading, error } = useSelector((state) => state.productDetail);
     const [images, setImages] = useState(null)
@@ -64,7 +64,7 @@ const DetailProduct = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={{ flex: 100 }}>
-            <HeaderComp init="Detail" id_user= {id_user}/>
+            <HeaderComp init="Detail"/>
             <ScrollView style={styles.container} nestedScrollEnabled={true}>
                 {product?.imageSet?.length > 0 ?
                     images !== null ?
@@ -219,7 +219,7 @@ const DetailProduct = ({ navigation, route }) => {
                     }
                 }>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('ModalBuyProduct', { product:product, id_user: id_user })}
+                    onPress={() => navigation.navigate('ModalBuyProduct', { product:product })}
                     style={{
                         borderRadius: 2,
                         borderWidth: 1,

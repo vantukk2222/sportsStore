@@ -1,25 +1,42 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { asyncStorage } from '../utilies/asyncStorage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/reducers/Login/signinReducer';
 import { colors } from '../constants';
 import { store } from '../redux/store';
 import { useNavigation } from '@react-navigation/native';
+import { fetchUserByUserName } from '../redux/reducers/User/userInfor';
 
-const HeaderComp = ({init = "Start", id_user}) => {
+const HeaderComp = ({init = "Start"}) => {
+
     // const init = "Start";
     // const dispatch = useDispatch();
+    const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
+    const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
+
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
     const goBack = () => {
         navigation.goBack();
+        // console.log("Log number id: ", 111);
       };
-
+    useEffect(()=>{
+        console.log("Username in Header: ", userName);
+        try {
+            dispatch(fetchUserByUserName(userName))
+        }
+        catch(error){}
+    },[userName])
     return (
         <View style={styles.headerContainer}>
-            {init == "Start"? "":(<Icon name="angle-left" size={30} style={styles.iconBuffer} onPress={() => { goBack}} />)}
+            {init === "Start"? "":(<TouchableOpacity onPress={()=>{goBack()}}>
+                <Icon name="angle-left" size={30} style={styles.iconBuffer}></Icon>
+            </TouchableOpacity>)}
+            {/* {init == "Start"? "":(<Icon name="angle-left" size={30} style={styles.iconBuffer} onPress={() => { goBack}} />)} */}
             <View style={{ display: 'flex', flexDirection: 'row' }}>
                 {/* <View style={styles.location}>
                     <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 25 }}>
@@ -27,20 +44,25 @@ const HeaderComp = ({init = "Start", id_user}) => {
                     </Text>
                 </View> */}
             </View>
-            <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{navigation.navigate("Cart", {id_user:id_user})}}/>
+            <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{navigation.navigate("Cart", {id_user:dataUser?.id})}}/>
         </View>
     );
 };
 const styles = StyleSheet.create({
+    
     headerContainer: {
+        backgroundColor:"#EEEEEE",
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        marginTop: 5,
+        // marginTop: 5,
         justifyContent: 'space-between',
+        height:30
     },
     iconBuffer:
     {
+        // backgroundColor:"green",
+        // witd:30,
         color:'#4873E0',
         alignItems: 'flex-end',
         marginLeft: 15,

@@ -68,7 +68,7 @@ const Start = () => {
         } catch (error) {
             dispatch(logout())
         }
-    }, []);
+    }, [userName]);
 
 
     // useEffect(()=>{
@@ -91,7 +91,7 @@ const Start = () => {
         // asyncStorage.removeAuthToken()
         navigation.navigate('DetailProduct', {
             item: item,
-            id_user: dataUser.id,
+            // id_user: dataUser?.id,
         });
     };
     const handleGoList = () => {
@@ -138,10 +138,11 @@ const Start = () => {
 
     return (
         // <<<<<<< categoryDat
-        <ScrollView>
+        // <ScrollView>
             <SafeAreaView style={{ backgroundColor: colors.trangXam, flex: 100 }}>
                 <StatusBar backgroundColor={colors.trangXam} />
-                <Header id_user={dataUser.id} />
+                <Header  />
+                <ScrollView>
 
                 {/* <View style={styles.searchContainer}>
                     <TextInput style={styles.input}
@@ -261,7 +262,7 @@ const Start = () => {
                                 backgroundColor: 'white'
                             }}>
                             <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.trangXam }}>
-                                {products.map((item) => (
+                                {products?.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
                                         onPress={() => handleGoDetail(item)}
@@ -279,9 +280,40 @@ const Start = () => {
                         </View>
                     </View>
                 </View>
-
+                </ScrollView>
+                <View
+        style={{
+          position: 'absolute',
+          bottom: 10,
+          height: '8%',
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity
+          onPress={() => {navigation.navigate("Login")}}
+          style={{
+            width: '86%',
+            height: '90%',
+            backgroundColor: "blue",
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: '500',
+              letterSpacing: 1,
+              color: "white",
+              textTransform: 'uppercase',
+            }}>
+            CHECKOUT)
+          </Text>
+        </TouchableOpacity>
+      </View>
             </SafeAreaView>
-        </ScrollView >
+        // {/* </ScrollView > */}
     );
 
 };

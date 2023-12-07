@@ -10,6 +10,17 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
 import { fetchProductbySale } from '../../redux/reducers/productReducer/getProductBySale';
+
+export const findMainImage = (images) => {
+    for (let i = 0; i < images.length; i++) {
+        if (images[i].is_main === true) {
+            // console.log(images[i].url)
+            return images[i].url;
+        }
+    }
+    return images.length > 0 ? images[0].url : null;
+}
+
 const ListProductofSale = ({ route }) => {
     //sale 
     const { item } = route.params;
@@ -58,6 +69,7 @@ const ListProductofSale = ({ route }) => {
         setIsAll(true);
         setProducts(data.content);
     }
+    
 
     //Call API when starting
     useEffect(() => {
@@ -135,8 +147,23 @@ const ListProductofSale = ({ route }) => {
 
             }
             <View style={styles.line}></View>
-
-            <FlatList style={{
+            
+            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.trangXam }}>
+                                {products?.map((item) => (
+                                    <TouchableOpacity
+                                        key={item.id}
+                                        onPress={() => handleGoDetail(item)}
+                                        style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+                                        <ProductItem
+                                            imageSource={findMainImage(item?.imageSet)}
+                                            productName={item.name}
+                                            productPrice={item.price_min}
+                                            sale={item?.sale}
+                                        />
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+            {/* <FlatList style={{
                 flexDirection: 'row',
                 margin: 5,
                 backgroundColor: colors.trangXam,
@@ -158,7 +185,7 @@ const ListProductofSale = ({ route }) => {
                     </TouchableOpacity>
 
                 )}
-            />
+            /> */}
             {isAll === true && <View style={styles.containerPages}>
                 <View style={styles.iconBackPage}>
                     <Icon

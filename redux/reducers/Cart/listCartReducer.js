@@ -21,7 +21,8 @@ const listCartSlice = createSlice({
       state.error = null;
     },
     listCartSuccess: (state, action) => {
-      state.dataCart =  action.payload.data
+      // state.dataCart =  [...state.dataCart,action.payload.data]
+      state.dataCart = action.payload.data
       state.isLoading = false;
     },
 

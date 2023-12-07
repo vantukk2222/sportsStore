@@ -41,28 +41,31 @@ const MyCart = ({ route, navigation }) => {
   const [groupedProducts, setGroupedProducts] = useState([]);
 
   useEffect(() => {
+    // console.log("i = ", i);
 
-    const groupedByBusiness = {};
+    // const groupedByBusiness = {};
 
-    product.forEach(item => {
-      const productDetails = {
-        ...item.product,
-        quantity_cart: item.quantity, // Số lượng sản phẩm trong giỏ hàng
-      };
-      const { business, product } = item;
+    // product.forEach(item => {
+    //   item.forEach(eachItem =>{
+    //   const productDetails = {
+    //     ...eachItem.product,
+    //     quantity_cart: eachItem.quantity, // Số lượng sản phẩm trong giỏ hàng
+    //   };
       
-      if (!groupedByBusiness[business.id]) {
-        groupedByBusiness[business.id] = {
-          business,
-          products: [productDetails],
-        };
-      } else {
-        groupedByBusiness[business.id].products.push(productDetails);
-      }
-    });
+    //   const { business, eachItems } = eachItem;
+    //   if (!groupedByBusiness[business.id]) {
+    //     groupedByBusiness[business.id] = {
+    //       business,
+    //       products: [productDetails],
+    //     };
+    //   } else {
+    //     groupedByBusiness[business.id].products.push(productDetails);
+    //   }
+    //  })
+    // });
 
-    const groupedProductsArray = Object.values(groupedByBusiness);
-    setGroupedProducts(groupedProductsArray);
+    // const groupedProductsArray = Object.values(groupedByBusiness);
+    // setGroupedProducts(groupedProductsArray);
 
   }, [product]); // Chạy chỉ một lần khi component mount
 
@@ -184,7 +187,7 @@ const MyCart = ({ route, navigation }) => {
   };
 
   const renderProducts = (data, index) => {
-    console.log("data :", data);
+    // console.log("data :", data);
 
     //   // console.log('data render cartItem:', data.size.product.imageSet[0]?.url);
     //   const [quantity_buy, setQuantity_Buy] = useState(data.quantity)
@@ -405,11 +408,11 @@ const MyCart = ({ route, navigation }) => {
           My Cart
         </Text>
         {/* {console.log(`cartItem:`, product.map((productItem) => productItem))} */}
-        {groupedProducts.map((productItem, index) => {
+        {/* {groupedProducts.map((productItem, index) => {
           console.log(`cartItem map ${index} `, productItem);
-          return (
-            <View key={index} style={{ margin: 10 }}>
-              <View style={{
+          return ( */}
+            {/* // <View key={index} style={{ margin: 10 }}> */}
+              {/* <View style={{
                 backgroundColor: 'white',
                 borderRadius: 8,
                 padding: 16,
@@ -417,22 +420,22 @@ const MyCart = ({ route, navigation }) => {
                 marginTop: 20
               }}>
                 <ShopInfo business={productItem.business} />
-              </View>
+              </View> */}
               {/* <View style={{ backgroundColor: '#F1F1F1', padding: 10, marginBottom: 5, flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
                 
                 <Text style={{ fontSize: 16, color: 'black', fontStyle: 'italic' }}>{(String(productItem.businessId)).toUpperCase()}</Text>
                 <Icon name="angle-right" size={30} onPress={() => {}} />
               </View> */}
-              <ScrollView style={{ padding: 8, marginBottom: 45, height: 280, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
-                {/* {console.log('productItem: ', productItem.productSet[0].size.product)} */}
+              {/* <ScrollView style={{ padding: 8, marginBottom: 45, height: 280, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
+                {console.log('productItem: ', productItem.productSet[0].size.product)}
                 {productItem.products ? productItem.products.map((eachproductItem, eachindex) => {
                   return <RenderProducts data={eachproductItem} />;
                 }) : null}
-              </ScrollView>
-            </View>
-          );
-        })}
-        {/* <View style={{margin:10}}>
+              </ScrollView> */}
+            {/* // </View>
+        //   );
+        // })} */}
+         <View style={{margin:10}}>
           <View style={{backgroundColor:'#F1F1F1', padding:10, marginBottom:5, flexDirection:'row',display: 'flex',justifyContent: 'space-between'}}>
             <Text style={{fontSize:16, color:'black'}}>Tên cừa hàng</Text>
             <Icon name="angle-right" size={30} onPress={() => {  }} />
@@ -442,12 +445,12 @@ const MyCart = ({ route, navigation }) => {
 
         </ScrollView>
 
-        <ScrollView style={{padding: 8, marginBottom:45, height: 280,  borderRadius:5, borderColor:'gray',  borderWidth:2}} nestedScrollEnabled={true}>
-        {product ? product.map((productItem, index) => renderProducts(productItem, index)) : null}
+        {/* <ScrollView style={{padding: 8, marginBottom:45, height: 280,  borderRadius:5, borderColor:'gray',  borderWidth:2}} nestedScrollEnabled={true}>
+        {product ? product.map((productItem, index) => renderProducts(productItem, index)) : null} */}
 
-        </ScrollView>
+        {/* </ScrollView> */}
 
-        </View> */}
+        </View> 
         <View>
           <View
             style={{
