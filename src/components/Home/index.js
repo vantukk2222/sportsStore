@@ -12,9 +12,9 @@ function Home() {
         <>
             <MainPage />
             <FlashDeals />
-            <TopCate />
+            {/* <TopCate />
             <NewArrivals />
-            <Discount />
+            <Discount /> */}
             <Shop />
             <Annocument />
             <Wrapper />

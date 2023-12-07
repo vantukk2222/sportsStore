@@ -3,7 +3,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { fetchGetProducts } from '~/redux/reducers/Product/getproduct';
+import { fetchGetProducts } from '~/redux/reducers/Product/getFlashDealProduct';
+import { useNavigate } from 'react-router';
 const SampleNextArrow = (props) => {
     const { onClick } = props;
     return (
@@ -26,10 +27,11 @@ const SamplePrevArrow = (props) => {
 };
 const FlashCard = () => {
     const dispatch = useDispatch();
-    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.products);
+    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.slideProducts);
     const [productItems, setProductItems] = useState([]);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
+    const navigate = useNavigate();
     useEffect(() => {
         dispatch(fetchGetProducts('', page, pageSize));
     }, [page, pageSize]);
@@ -45,14 +47,16 @@ const FlashCard = () => {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
     };
-
+    const handleClick = (id) => {
+        console.log(id);
+        if (id) navigate('/shop');
+    };
     return (
         <>
             <Slider {...settings}>
-                {' '}
                 {productItems.map((productItems) => {
                     return (
-                        <div className="box" key={productItems.id}>
+                        <div className="box" key={productItems.id} onClick={() => handleClick(productItems.id)}>
                             <div className="product mtop">
                                 <div className="img">
                                     <img
