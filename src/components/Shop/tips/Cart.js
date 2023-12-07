@@ -1,11 +1,11 @@
 import Ndata from './Ndata';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGetProducts } from '~/redux/reducers/Product/getSlideProduct';
+import { fetchGetProducts } from '~/redux/reducers/Product/getShopProduct';
 
 const Cart = ({ shopItem }) => {
     const dispatch = useDispatch();
-    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.slideProducts);
+    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.shopProducts);
     const [productItems, setProductItems] = useState([]);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(6);

@@ -7,6 +7,8 @@ import SproductSlice from './reducers/Product/getSlideProduct';
 import saleSlice from './reducers/Sale/sale';
 import shop from './reducers/Business/shop';
 import FDproductSlide from './reducers/Product/getFlashDealProduct'
+import ShproductSlice from './reducers/Product/getShopProduct';
+
 const rootReducer = combineReducers({
     categories: groupCategorySlice,
     loginUser: loginSlice,
@@ -14,6 +16,7 @@ const rootReducer = combineReducers({
     flashDealProducts: FDproductSlide,
     sales: saleSlice,
     shops: shop,
+    shopProducts: ShproductSlice
 });
 const persistConfig = {
     key: 'root',

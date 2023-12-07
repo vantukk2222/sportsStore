@@ -48,7 +48,7 @@ const FlashCard = () => {
         prevArrow: <SamplePrevArrow />,
     };
     const handleClick = (id) => {
-        console.log(id);
+        // console.log(id);
         if (id) navigate('/shop');
     };
     return (
