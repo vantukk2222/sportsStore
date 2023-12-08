@@ -36,6 +36,7 @@ export const fetchProductbySale = (idSale, page, pageSize, sort, desc, state) =>
     try {
         dispatch(getStart());
         const data = await getProductBySale(idSale, page, pageSize, sort, desc, state);
+        //console.log('saleeeee', data)
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data';

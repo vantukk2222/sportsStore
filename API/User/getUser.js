@@ -12,7 +12,7 @@ const getUserByUserName = async (userName) => {
         // console.log("get User DONE: ", response.data)
         return response.data;
     } catch (error) {
-        console.error('Error get data User: ', error);
+        console.error('Error get data User: ', error.response);
         throw error;
     }
 };

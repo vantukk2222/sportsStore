@@ -140,6 +140,7 @@ const Business = ({ navigation, route }) => {
                                             imageSource={findMainImage(item?.imageSet)}
                                             productName={item.name}
                                             productPrice={item.price_min}
+                                            sale={item?.sale}
                                         />
                                     </TouchableOpacity>
                                 ))}

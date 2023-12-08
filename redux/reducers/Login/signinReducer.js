@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import loginPage from "../../../API/Login/loginAPI";
 import { asyncStorage } from "../../../utilies/asyncStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchUserByUserName } from "../User/userInfor";
 // {asyncStorage}
 
 
@@ -29,13 +30,13 @@ const loginSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload.error;
     },
-    setToken: (state,action)=> {
+    setToken: (state, action) => {
       state.isLoading = false;
       // console.log(action);
       state.authToken = action.payload;
     },
-    logout: (state,action) => {
-      
+    logout: (state, action) => {
+
       state.authToken = null;
       state.isLoading = false;
       state.error = null;
@@ -52,7 +53,8 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
     const data = await loginPage(username, password); // Call loginPage API
     // console.log("data: ", data); // Log received data
 
-    dispatch(loginSlice.actions.loginSuccess({ authToken: data , userName: username})); // Dispatch loginSuccess with received data
+    dispatch(loginSlice.actions.loginSuccess({ authToken: data, userName: username })); // Dispatch loginSuccess with received data
+    dispatch(fetchUserByUserName(username))
     // console.log("state reducerLogin: " + JSON.stringify(getState()));
     return data
   } catch (error) {
@@ -67,5 +69,5 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
   }
 };
 
-export const { loginRequest, loginSuccess, loginFailure,setToken,logout } = loginSlice.actions;
+export const { loginRequest, loginSuccess, loginFailure, setToken, logout } = loginSlice.actions;
 export default loginSlice.reducer;

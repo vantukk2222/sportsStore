@@ -19,8 +19,9 @@ const productDetailSlice = createSlice({
             state.error = null;
         },
         getSuccess: (state, action) => {
-            const data_detail = { ...action.payload, imgUrl: action.payload?.imageSet[0].url };
-            state.data = {...state.data, data_detail}
+            state.data = { ...action.payload, imgUrl: action.payload?.imageSet[0].url };
+            // const data_detail = { ...action.payload, imgUrl: action.payload?.imageSet[0].url };
+            // state.data = {...state.data, data_detail}
             state.loading = false;
         },
         getFailure: (state, action) => {
@@ -37,11 +38,11 @@ export const fetchProductbyId = (id) => async (dispatch) => {
     try {
         dispatch(getStart());
         const data = await getProductById(id);
-// <<<<<<< categoryDat
+        // <<<<<<< categoryDat
         console.log("getproductbyid\n", id + data);
-// =======
+        // =======
         // console.log("ID product and data product in redux product detail: "+ id+ "\t" + JSON.stringify(data));
-// >>>>>>> NewD
+        // >>>>>>> NewD
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data';

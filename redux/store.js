@@ -19,6 +19,10 @@ import listCartSlice from './reducers/Cart/listCartReducer'
 import productByBusinessSlice from './reducers/Business/getProductByBusiness'
 import saleSlice from './reducers/Sale/getAllSale'
 import getProductBySaleSlice from './reducers/productReducer/getProductBySale'
+import saleByBusinessSlice from './reducers/Sale/getSalesbyIdBusiness'
+import saleByDiscountSlice from './reducers/Sale/getSaleByDiscount'
+import searchProductInSaleSlice from './reducers/productReducer/searchProductInSale';
+import setInforUserSlice from './reducers/User/setInforUser'
 // {userSlice}
 // >>>>>>> NewD
 
@@ -41,7 +45,11 @@ const rootReducer = combineReducers({
   // >>>>>>> NewD
   sales: saleSlice,
   getProductBySale: getProductBySaleSlice,
+  saleByBusiness: saleByBusinessSlice,
+  saleByDiscount: saleByDiscountSlice,
+  searchProductInSale: searchProductInSaleSlice,
 
+  setInforUser: setInforUserSlice,
 })
 const persistConfig = {
   key: 'root',

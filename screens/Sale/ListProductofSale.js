@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
 import { fetchProductbySale } from '../../redux/reducers/productReducer/getProductBySale';
+import { fetchProductInSale } from '../../redux/reducers/productReducer/searchProductInSale';
 
 export const findMainImage = (images) => {
     for (let i = 0; i < images.length; i++) {
@@ -24,12 +25,12 @@ export const findMainImage = (images) => {
 const ListProductofSale = ({ route }) => {
     //sale 
     const { item } = route.params;
-    //console.log('sale ', item)
+    console.log('sale ', item)
     const dispatch = useDispatch();
     const { dataProductbySale, loadingProductbySale, errorProductbySale } = useSelector((state) => state.getProductBySale);
     const [products, setProducts] = useState([]);
 
-    const { dataSearch, loadingSearch, errorSearch } = useSelector((state) => state.productSearch);
+    const { dataSearchProductInSale, loadingSearchProductInSale, errorSearchProductInSale } = useSelector((state) => state.searchProductInSale);
     const [searchText, setSearchText] = useState('');
 
     const [page, setPage] = useState(0);
@@ -54,8 +55,8 @@ const ListProductofSale = ({ route }) => {
     };
 
     //Function : set search text = value of text input
-    const handleSearch = (e) => {
-        console.log(e);
+    const handleSearch = () => {
+
         const text = textInputSearch.current;
         if (text.length > 0) {
             console.log('Search Text:', text);
@@ -67,9 +68,9 @@ const ListProductofSale = ({ route }) => {
 
     const handleSetAll = () => {
         setIsAll(true);
-        setProducts(data.content);
+        setProducts(dataProductbySale.content);
     }
-    
+
 
     //Call API when starting
     useEffect(() => {
@@ -87,21 +88,21 @@ const ListProductofSale = ({ route }) => {
     useEffect(() => {
 
         if (searchText.length > 0) {
-            console.log("get data search", searchText);
-            dispatch(fetchProductbySearch(searchText));
+            console.log("get product search by sale", searchText);
+            dispatch(fetchProductInSale(item.id, searchText, 0));
         }
     }, [searchText])
     //set products = dataSearch
     useEffect(() => {
-        console.log(" dataSearch", dataSearch);
-        setProducts(dataSearch);
-    }, [dataSearch])
+        console.log(" dataSearch", dataSearchProductInSale);
+        setProducts(dataSearchProductInSale.content);
+    }, [dataSearchProductInSale])
 
-    if (loadingProductbySale || loadingSearch) {
+    if (loadingProductbySale || loadingSearchProductInSale) {
         return <Loading />;
     }
 
-    if (errorProductbySale || errorSearch) {
+    if (errorProductbySale || errorSearchProductInSale) {
         return <Text style={{ color: 'red' }}>Error: {error}</Text>;
     }
     return (
@@ -123,7 +124,7 @@ const ListProductofSale = ({ route }) => {
                 <TextInput
                     onChangeText={(text) => { textInputSearch.current = text }}
                     style={styles.input}
-                    placeholder={searchText.length <= 0 ? "Search Product" : searchText}
+                    placeholder={`Search in ${item?.businessResponse.name}`}
                     placeholderTextColor="gray"
                     underlineColorAndroid={colors.alert}
                 />
@@ -147,22 +148,22 @@ const ListProductofSale = ({ route }) => {
 
             }
             <View style={styles.line}></View>
-            
+
             <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.trangXam }}>
-                                {products?.map((item) => (
-                                    <TouchableOpacity
-                                        key={item.id}
-                                        onPress={() => handleGoDetail(item)}
-                                        style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
-                                        <ProductItem
-                                            imageSource={findMainImage(item?.imageSet)}
-                                            productName={item.name}
-                                            productPrice={item.price_min}
-                                            sale={item?.sale}
-                                        />
-                                    </TouchableOpacity>
-                                ))}
-                            </ScrollView>
+                {products?.map((item) => (
+                    <TouchableOpacity
+                        key={item.id}
+                        onPress={() => handleGoDetail(item)}
+                        style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+                        <ProductItem
+                            imageSource={findMainImage(item?.imageSet)}
+                            productName={item.name}
+                            productPrice={item.price_min}
+                            sale={item?.sale}
+                        />
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
             {/* <FlatList style={{
                 flexDirection: 'row',
                 margin: 5,
