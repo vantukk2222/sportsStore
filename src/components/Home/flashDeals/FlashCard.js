@@ -49,7 +49,7 @@ const FlashCard = () => {
     };
     const handleClick = (id) => {
         // console.log(id);
-        if (id) navigate('/shop');
+        if (id) navigate(`/product/${id}`);
     };
     return (
         <>

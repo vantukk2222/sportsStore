@@ -2,15 +2,20 @@ import React from 'react';
 import Catg from './Catg';
 import ShopCart from './ShopCart';
 import './style.css';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, memo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCategories } from '~/redux/reducers/Category/getAllCategories';
 
 const Shop = () => {
+    const dispath = useDispatch();
     const { dataCate, loadingCate, erroCate } = useSelector((state) => state.categories);
     const [categoryItems, setCategoryItems] = useState(dataCate[0].categorySet);
     const handleClick = (value) => {
         setCategoryItems(value);
     };
+    useEffect(() => {
+        dispath(fetchCategories());
+    }, []);
     return (
         <>
             <section className="shop background">
@@ -28,7 +33,7 @@ const Shop = () => {
                             </div>
                         </div>
                         <div className="product-content  grid1">
-                            <ShopCart categoryItems={categoryItems}/>
+                            <ShopCart categoryItems={categoryItems} />
                         </div>
                     </div>
                 </div>
@@ -37,4 +42,4 @@ const Shop = () => {
     );
 };
 
-export default Shop;
+export default memo(Shop);

@@ -9,6 +9,7 @@ import shop from './reducers/Business/shop';
 import FDproductSlide from './reducers/Product/getFlashDealProduct';
 import ShproductSlice from './reducers/Product/getShopProduct';
 import CproductSlide from './reducers/Product/getCategoryProducts';
+import DlproductSlice from './reducers/Product/getDetailProduct';
 const rootReducer = combineReducers({
     categories: groupCategorySlice,
     loginUser: loginSlice,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     shops: shop,
     shopProducts: ShproductSlice,
     cateProducts: CproductSlide,
+    detailProduct: DlproductSlice,
 });
 const persistConfig = {
     key: 'root',

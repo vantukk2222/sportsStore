@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '~/redux/reducers/Category/getAllCategories';
 
 const Catg = ({ handleClick }) => {
-    const dispath = useDispatch();
     const { dataCate, loadingCate, erroCate } = useSelector((state) => state.categories);
-    useEffect(() => {
-        dispath(fetchCategories());
-    }, []);
     return (
         <>
             <div className="category">

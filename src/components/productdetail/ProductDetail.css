@@ -1,0 +1,116 @@
+.product-detail-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-image-container,
+.product-info-container,
+.product-comments-container {
+    flex: 1;
+}
+
+.product-image-container {
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.product-info-container {
+    margin-left: 40px;
+}
+
+.product-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-size: 20px;
+    color: #ee4d2d;
+    margin-bottom: 15px;
+}
+
+.product-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.add-to-cart-button {
+    background-color: #ee4d2d;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.add-to-cart-button:hover {
+    background-color: #333;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.product-image:hover {
+    transform: scale(1.1);
+}
+
+.product-attribute,
+.product-brand,
+.product-quantity,
+.user-feedback-container textarea {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.product-comments-container,
+.user-feedback-container {
+    margin-top: 20px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.product-comments-container h3,
+.user-feedback-container h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.product-comments-container li {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.user-feedback-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.user-feedback-container button {
+    background-color: #ee4d2d;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.user-feedback-container button:hover {
+    background-color: #333;
+}

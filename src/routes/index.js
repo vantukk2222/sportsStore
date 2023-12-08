@@ -8,10 +8,12 @@ import defaultLayout from '~/layouts/defaultLayout/defaultLayout';
 import layout_login from '~/layouts/layout_login/layout_login';
 import notFound from '~/components/NotFound/notFound';
 import Shop from '~/components/Shop/Shop';
+import ProductDetail from '~/components/productdetail/ProductDetail';
 const vistorRoutes = [
     { path: '/', component: Home, layout: defaultLayout },
     { path: '/shop', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound },
+    {path:`/product/:id`,component:ProductDetail,layout:defaultLayout}
 ];
 const publicRoutes = [
     { path: '/login', component: Login },

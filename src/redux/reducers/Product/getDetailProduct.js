@@ -6,8 +6,8 @@ const initialState = {
     loadingProduct: false,
     errorProduct: null,
 };
-const CproductSlice = createSlice({
-    name: 'cproduct',
+const DlproductSlice = createSlice({
+    name: 'dlproduct',
     initialState,
     reducers: {
         getAllStart: (state) => {
@@ -22,19 +22,22 @@ const CproductSlice = createSlice({
             state.errorProduct = action.payload;
             state.loadingProduct = false;
         },
+        clearDataProduct: (state) => {
+            state.dataProduct = [];
+            state.loadingProduct = false;
+        },
     },
 });
 export const fetchGetProducts = (id) => async (dispatch) => {
     try {
         dispatch(getAllStart());
-        const result = await getUnAuth(`product-information/find-by-category/${id}`);
-        const data = result.content;
-        while (data.length > 9) data.pop();
+        const data = await getUnAuth(`product-information/${id}`);
+        // console.log(data);
         dispatch(getAllsuccess(data));
     } catch (error) {
         dispatch(getAllFailure(error.message));
     }
 };
-export const { getAllStart, getAllsuccess, getAllFailure } = CproductSlice.actions;
+export const { getAllStart, getAllsuccess, getAllFailure, clearDataProduct } = DlproductSlice.actions;
 
-export default CproductSlice.reducer;
+export default DlproductSlice.reducer;

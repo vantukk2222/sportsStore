@@ -30,20 +30,22 @@ const SlideCard = () => {
         },
     };
     const handleClick = (id) => {
-      //  console.log(id);
-        if (id) navigate('/shop');
+        //  console.log(id);
+        if (id) navigate(`/product/${id}`);
     };
     return (
         <>
             <Slider {...settings}>
                 {productItems.map((value, index) => {
                     return (
-                        <div key={index} >
+                        <div key={index}>
                             <div className="box d_flex top slide" style={{ position: 'relative' }}>
                                 <div className="left">
                                     <h1>{value.business.name}</h1>
                                     <p>{value.name}</p>
-                                    <button className="btn-primary" onClick={()=>handleClick(value.id)}>Xem sản phẩm</button>
+                                    <button className="btn-primary" onClick={() => handleClick(value.id)}>
+                                        Xem sản phẩm
+                                    </button>
                                 </div>
                                 <div className="right" style={{}}>
                                     <img
