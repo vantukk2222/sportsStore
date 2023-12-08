@@ -1,47 +1,48 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { asyncStorage } from "../../../utilies/asyncStorage";
 import removeItemCart from "../../../API/Cart/removeItemCart";
+import { Alert } from "react-native";
+import getCartByIDUser from "../../../API/Cart/listCart";
+import { listCartByIdUser } from "./listCartReducer";
 // import { logout } from "../Login/signinReducer";
 // import { store } from "../../store";
 // {asyncStorage}
 
 
 const initialState = {
-//   cart: [],
+  //   cart: [],
   isLoading: false,
   error: null,
 };
-
-const addToCartSlice = createSlice({
-  name: 'addToCartReducer',
+const removeCartItemSlice = createSlice({
+  name: "removeItemCartReducer",
   initialState,
   reducers: {
-    addToCartRequest: (state) => {
-      state.isLoading = true;
+    removeCartItemRequest: (state) => {
+      state.isLoading = false;
       state.error = null;
     },
-    addToCartSuccess: (state) => {
-      state.isLoading = false;
+    removeCartItemSuccess: (state) => {
+      state.isLoading = true;
     },
-
-    addToCartFailure: (state, action) => {
+    removeCartItemFailure: (state, action) => {
       state.isLoading = false;
       state.error = action.payload.error;
     }
   },
+
 });
-
-export const addToCartUser = (id_user, id_size, quantity) => async (dispatch, getState) => {
+export const removerItemCartByID = (id_Cart) => async (dispatch, getState) => {
   try {
-
-    dispatch(addToCartSlice.actions.addToCartRequest()); // Dispatch addToCartRequest action
+    dispatch(removeCartItemRequest())
     const authToken = getState().login.authToken
-    // console.log("Toke cartReducer:", authToken);
-    const data = await addToCart(id_user, id_size, quantity,authToken); // Call addToCartPage API
-    console.log("data in cartReducer: ", data.response); // Log received data
+    const id_user = getState().userData.data.id
+    console.log("Token remove Cart:", authToken);
+    await removeItemCart(id_Cart, authToken)
+    Alert.alert("Thành công", "Bạn đã xoá sản phẩm ", id_Cart, " ra khỏi giỏ hàng")
+    dispatch(removeCartItemSuccess())
+    dispatch(listCartByIdUser(id_user))
 
-    dispatch(addToCcartSlice.actions.addToCartSuccess()); // Dispatch addToCartSuccess with received data
-    // console.log("state reduceraddToCart: " + JSON.stringify(getState()));
     return true
   } catch (error) {
     let errorMessage = 'Error fetching data';
@@ -50,10 +51,10 @@ export const addToCartUser = (id_user, id_size, quantity) => async (dispatch, ge
       errorMessage = error.response.data.message || errorMessage;
     }
     // store.dispatch(logout())
-    dispatch(addToCartSlice.actions.addToCartFailure({ error: errorMessage })); // Dispatch addToCartFailure with error message
+    dispatch(removeCartItemFailure({ error: errorMessage })); // Dispatch addToCartFailure with error message
     // return false
-}
-};
+  }
 
-export const { addToCartRequest, addToCartSuccess, addToCartFailure } = addToCartSlice.actions;
-export default addToCartSlice.reducer;
+}
+export const {removeCartItemFailure, removeCartItemRequest, removeCartItemSuccess} = removeCartItemSlice.actions
+export default removeCartItemSlice.reducer

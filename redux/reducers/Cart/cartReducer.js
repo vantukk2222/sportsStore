@@ -4,6 +4,7 @@ import { asyncStorage } from "../../../utilies/asyncStorage";
 import addToCart from "../../../API/Cart/addToCart";
 import { logout } from "../Login/signinReducer";
 import { store } from "../../store";
+import { listCartByIdUser } from "./listCartReducer";
 // {asyncStorage}
 
 
@@ -41,7 +42,8 @@ export const addToCartUser = (id_user, id_size, quantity) => async (dispatch, ge
     const data = await addToCart(id_user, id_size, quantity,authToken); // Call addToCartPage API
     console.log("data in cartReducer: ", data.response); // Log received data
 
-    dispatch(addToCcartSlice.actions.addToCartSuccess()); // Dispatch addToCartSuccess with received data
+    dispatch(addToCartSlice.actions.addToCartSuccess()); // Dispatch addToCartSuccess with received data
+    dispatch(listCartByIdUser(id_user))
     // console.log("state reduceraddToCart: " + JSON.stringify(getState()));
     return true
   } catch (error) {

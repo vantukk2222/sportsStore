@@ -102,7 +102,8 @@ const ListProductofSale = ({ route }) => {
     }
 
     if (errorProductbySale || errorSearch) {
-        return <Text style={{ color: 'red' }}>Error: {error}</Text>;
+        
+        return <Text style={{ color: 'red' }}>Error: {errorProductbySale}</Text>;
     }
     return (
         <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>

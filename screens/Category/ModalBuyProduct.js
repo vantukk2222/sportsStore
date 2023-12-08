@@ -26,7 +26,6 @@ const ModalBuyProduct = ({ route }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch()
     // console.log('buy:\n', id_user)
-
     useEffect(() => {
         dispatch(fetchSizeProduct(selectedSizeId))
     }, [selectedSizeId])
@@ -39,6 +38,8 @@ const ModalBuyProduct = ({ route }) => {
     }, [dataSizeProduct])
 
     const handleSizeSelect = (size, id) => {
+    console.log("data product in modalBuy:", product);
+
         setQuantity(1);
         setselectedSizeId(size);
         setSelectedID_Product(id)
@@ -51,11 +52,11 @@ const ModalBuyProduct = ({ route }) => {
         // console.log("ID_User: ",id_user + "\t" + "ID_Product: ", selectedID_Product + "\t" +"Quantity: ", quantity);
         dispatch(addToCartUser(id_user,selectedID_Product,quantity))
         navigation.goBack()
-        Toast.show("Thành công", "Bạn đã thêm sản phẩm vào giỏ hàng", 1000)
+        toastsuccess("Thành công", "Bạn đã thêm sản phẩm vào giỏ hàng", 1000)
         
     };
     const handleTotalBefore = (sl, gia) => {
-        return formatMoneyVND(sl * gia);
+        return formatMoneyVND(sl * gia*(100-product?.sale));
     }
     return (
 
@@ -65,11 +66,11 @@ const ModalBuyProduct = ({ route }) => {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name="arrow-left" size={25} color={colors.disable} />
                 </TouchableOpacity>
-                <Text style={styles.headerText}>Product Selection</Text>
+                <Text style={styles.headerText}>Lựa chọn sản phẩm</Text>
             </View>
             <View style={styles.imageListContainer}>
                 <FlatList
-                    style={{ backgroundColor: colors.xam }}
+                    style={{ backgroundColor: "#E3E3E3" }}
                     data={product?.imageSet}
                     keyExtractor={(item, index) => index.toString()}
                     horizontal
@@ -85,7 +86,7 @@ const ModalBuyProduct = ({ route }) => {
                 />
             </View>
             <View style={styles.selectionContainer}>
-                <Text style={styles.label}>Chọn Size:</Text>
+                <Text style={styles.label}>Chọn cỡ:</Text>
 
                 <View style={styles.buttonContainer}>
                     {product?.productSet?.length > 0 ? product?.productSet?.map((eachSize) => (

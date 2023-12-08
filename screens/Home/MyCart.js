@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
+  Alert,
 } from 'react-native';
+import {isEqual} from 'lodash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {COLOURS, Items} from '../database/Database';
 // {Items}
@@ -21,12 +23,17 @@ import ShopInfo from '../Business/ShopInfo';
 import getDetailProduct, { fetchProductbyId } from '../../redux/reducers/productReducer/getDetailProduct';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 import RenderProducts from '../Cart/CartScreen';
+import { saveBill } from '../../redux/reducers/Bill/billReducer';
+import { toastsuccess } from '../../components/toastCustom';
+import Loading from '../../components/loading';
 // import MaterialCommunityIcons
 // {Items}
 const MyCart = ({ route, navigation }) => {
   const { id_user } = route.params
   const dispatch = useDispatch()
   const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer)
+  
+
   // console.log("data Cart: ", dataCart);
   const [product, setProduct] = useState(dataCart);
   const [total, setTotal] = useState(null);
@@ -39,33 +46,34 @@ const MyCart = ({ route, navigation }) => {
   // }))) 
 
   const [groupedProducts, setGroupedProducts] = useState([]);
-
+  const arr_ID_Cart = []
   useEffect(() => {
     // console.log("i = ", i);
 
-    // const groupedByBusiness = {};
+    const groupedByBusiness = {};
 
-    // product.forEach(item => {
-    //   item.forEach(eachItem =>{
-    //   const productDetails = {
-    //     ...eachItem.product,
-    //     quantity_cart: eachItem.quantity, // Số lượng sản phẩm trong giỏ hàng
-    //   };
+    product.forEach(item => {
+    
+      const productDetails = {
+        ...item.product,
+        quantity_cart: item.quantity, // Số lượng sản phẩm trong giỏ hàng
+        id_Cart : item.id
+      };
       
-    //   const { business, eachItems } = eachItem;
-    //   if (!groupedByBusiness[business.id]) {
-    //     groupedByBusiness[business.id] = {
-    //       business,
-    //       products: [productDetails],
-    //     };
-    //   } else {
-    //     groupedByBusiness[business.id].products.push(productDetails);
-    //   }
-    //  })
-    // });
+      const { business, product } = item;
+      if (!groupedByBusiness[business.id]) {
+        groupedByBusiness[business.id] = {
+          business,
+          products: [productDetails],
+        };
+      } else {
+        groupedByBusiness[business.id].products.push(productDetails);
+      }
 
-    // const groupedProductsArray = Object.values(groupedByBusiness);
-    // setGroupedProducts(groupedProductsArray);
+    });
+
+    const groupedProductsArray = Object.values(groupedByBusiness);
+    setGroupedProducts(groupedProductsArray);
 
   }, [product]); // Chạy chỉ một lần khi component mount
 
@@ -74,60 +82,16 @@ const MyCart = ({ route, navigation }) => {
   console.log("data cart:", groupedProducts);
 
 
-  // });
-  // console.log("id_User in CartSreen:", id_user);
-  // 
-  // useEffect(() => {
-  //   // const unsubscribe = navigation.addListener('focus', () => {
-  //   // getDataFromDB();
-  //   // }
-  //   // );
-  //   // return unsubscribe;
-  // });
-  // useEffect(()=>{
-  //   product.forEach((item) => {
-  //     const productId = item.product.id;
-  //     const business = item.business;
-  //     const quantity = item.quantity;
-
-  //     if (groupedProductsByBusinessWithQuantity.has(business)) {
-  //       // Nếu doanh nghiệp đã tồn tại trong Map
-  //       const existingProducts = groupedProductsByBusinessWithQuantity.get(business);
-  //       const existingProductIndex = existingProducts.findIndex((prod) => prod.id === productId);
-
-  //       if (existingProductIndex !== -1) {
-  //         // Nếu sản phẩm đã tồn tại, cập nhật số lượng tương đương
-  //         existingProducts[existingProductIndex].quantity += quantity;
-  //       } else {
-  //         // Nếu sản phẩm chưa tồn tại, thêm sản phẩm vào danh sách
-  //         existingProducts.push({ ...item.product, quantity });
-  //       }
-  //       groupedProductsByBusinessWithQuantity.set(business, existingProducts);
-  //     } else {
-  //       // Nếu doanh nghiệp chưa tồn tại trong Map
-  //       groupedProductsByBusinessWithQuantity.set(business, [{ ...item.product, quantity }]);
-  //     }
-  //   });
-
-  //   groupedProductsByBusinessWithQuantity.forEach((products, business) => {
-  //     console.log(`Doanh nghiệp ${business.id} có các sản phẩm và số lượng tương đương:`);
-  //     console.log(products);
-  //   });
-  //   // settransformedData([...groupedProductsByBusinessWithQuantity].map(([businessId, products]) => ({
-  //   //   businessId,
-  //   //   products,
-  //   // })))
-  // },[product])
   const updateCartAPI = useCallback(async () => {
     // Gọi API hoặc dispatch action để cập nhật giỏ hàng trước khi rời khỏi màn hình
     try {
       // Gọi API cập nhật giỏ hàng với product và id_user
+      dispatch(listCartByIdUser(id_user))
       // Ví dụ: dispatch(updateCartAction(id_user, product));
-
     } catch (error) {
       console.error("Error updating cart:", error);
     }
-  }, [id_user, product]);
+  }, [id_user]);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
@@ -149,21 +113,23 @@ const MyCart = ({ route, navigation }) => {
     // setTriggerRerender(true);
     setTotal(getTotal(product))
   }, [product]);
+
+  
   useEffect(() => {
-    dispatch(listCartByIdUser(id_user))
+    if (!isEqual(product,dataCart)){
     // console.log('dataCart in Cart:', dataCart);
+    dispatch(listCartByIdUser(id_user))
     setProduct(dataCart)
+    }
     // console.log('id_user in cart: ', id_user);
-  }, [id_user])
+  }, [dataCart])
 
   const getTotal = (cartProducts) => {
     let totalPrice = 0;
 
     cartProducts.forEach((cartItem) => {
-      // cartItem.productSet.forEach((product) => {
-      //   // totalPrice += product.product.price * product.quantity
-      //   console.log("product cal total Money", product);
-      // });
+      console.log("product in Mycart:", cartItem);
+      totalPrice += cartItem?.product?.price * cartItem?.quantity
     });
 
     return totalPrice;
@@ -177,182 +143,37 @@ const MyCart = ({ route, navigation }) => {
 
 
   const checkOut = async () => {
+    const newData = product.map(({ product, quantity }) => ({
+      id_product: product.id,
+      quantity,
+      price: product.price
+    }));
+    product?.map((eachItem, idx)=>{
+      arr_ID_Cart.push(eachItem.id)
+      // setId_Cart({...id_Cart, eachItem.id})
+    })
+    // console.log("ID_Cart:, ",arr_ID_Cart);
+    // const dataBill = {
+    //   name: id_user,
+    //   information : "Thanh toán bằng MOMO",
+    //   total : total,
+    //   id_user :id_user,
+    //   state: 0,
+    //   bill_detailSet : newData
+    // }
+    // console.log("dataBill", dataBill);
+    
+
     try {
-      dispatch(listCartByUserName(47))
+      // dispatch(saveBill(id_user,"Thanh toán bằng MOMO", total, id_user, 0, newData, arr_ID_Cart))
+      
+      toastsuccess("Thành công","Thanh toán thành công")
+      Alert.alert("Thành công", "Thanh toán thành công")
     } catch (error) {
       return error;
     }
 
 
-  };
-
-  const renderProducts = (data, index) => {
-    // console.log("data :", data);
-
-    //   // console.log('data render cartItem:', data.size.product.imageSet[0]?.url);
-    //   const [quantity_buy, setQuantity_Buy] = useState(data.quantity)
-    //   const [total_eachProduct, setToTal_eachProduct] = useState(quantity_buy * data.size.product.price)
-    //   const updateTotal = (newQuantity, productPrice) => {
-    //     const updatedTotal = total - (data.quantity * data.size.product.price) + (newQuantity * productPrice);
-    //     setTotal(updatedTotal);
-    //   };
-    //   useEffect(() => {
-    //     setToTal_eachProduct(quantity_buy * data.size.product.price)
-    //     // setTotal(getTotal(product))
-
-    //   }, [quantity_buy])
-    //   return (
-    //     <TouchableOpacity
-    //       key={data.id_cart}
-    //       // onPress={() => navigation.navigate('ProductInfo', {productID: data.id})}
-    //       style={{
-    //         width: '100%',
-    //         height: 120,
-    //         marginVertical: 6,
-    //         // paddingBottom: 25,
-    //         flexDirection: 'row',
-    //         alignItems: 'center',
-    //       }}>
-    //       <View
-    //         style={{
-    //           width: '30%',
-    //           height: 100,
-    //           padding: 14,
-    //           justifyContent: 'center',
-    //           alignItems: 'center',
-    //           backgroundColor: COLOURS.backgroundLight,
-    //           borderRadius: 10,
-    //           marginRight: 22,
-    //           // paddingBottom:5,
-    //           // marginBottom:5
-    //           // overflow: 'hidden', // Thêm dòng này
-
-    //         }}>
-    //         <Image
-    //           source={{ uri: data.size.product.imageSet.find(image => image.is_main === true).url }}
-    //           style={{
-    //             width: '100%',
-    //             height: '100%',
-    //             resizeMode: 'contain',
-
-    //           }}
-    //         />
-    //       </View>
-    //       <View
-    //         style={{
-    //           flex: 1,
-    //           height: '100%',
-    //           justifyContent: 'space-around',
-    //         }}>
-    //         <View style={{}}>
-    //           <Text
-    //             style={{
-    //               fontSize: 14,
-    //               maxWidth: '100%',
-    //               color: COLOURS.black,
-    //               fontWeight: '600',
-    //               letterSpacing: 1,
-    //             }}>
-    //             {data.size.product.name}
-    //           </Text>
-    //           <View
-    //             style={{
-    //               marginTop: 4,
-    //               flexDirection: 'row',
-    //               alignItems: 'center',
-    //               opacity: 0.6,
-    //             }}>
-    //             <Text
-    //               style={{
-    //                 fontSize: 16,
-    //                 fontWeight: '400',
-    //                 maxWidth: '85%',
-    //                 marginRight: 4,
-    //                 color: 'red'
-    //               }}>
-    //               {formatMoneyVND(total_eachProduct)}
-    //             </Text>
-    //             <Text>
-    //               {/* {data.size.product.price + data.size.product.price / 20} */}
-    //               Giảm giá
-    //             </Text>
-    //           </View>
-    //         </View>
-    //         <View
-    //           style={{
-    //             flexDirection: 'row',
-    //             justifyContent: 'space-between',
-    //             alignItems: 'center',
-    //           }}>
-    //           <View
-    //             style={{
-    //               flexDirection: 'row',
-    //               alignItems: 'center',
-    //             }}>
-    //             <View
-    //               style={{
-    //                 borderRadius: 100,
-    //                 marginRight: 20,
-    //                 padding: 4,
-    //                 borderWidth: 1,
-    //                 borderColor: COLOURS.backgroundMedium,
-    //                 opacity: 0.5,
-    //               }}>
-    //               <MaterialCommunityIcons
-    //                 onPress={() => {
-    //                   quantity_buy <= 1 ? setQuantity_Buy(1) : setQuantity_Buy(quantity_buy - 1)
-    //                   updateTotal(quantity_buy - 1, data.size.product.price);
-
-    //                 }}
-    //                 name="minus"
-    //                 style={{
-    //                   fontSize: 16,
-    //                   color: COLOURS.backgroundDark,
-    //                 }}
-    //               />
-    //             </View>
-    //             <Text>
-    //               {quantity_buy}
-    //             </Text>
-    //             <View
-    //               style={{
-    //                 borderRadius: 100,
-    //                 marginLeft: 20,
-    //                 padding: 4,
-    //                 borderWidth: 1,
-    //                 borderColor: COLOURS.backgroundMedium,
-    //                 opacity: 0.5,
-    //               }}>
-    //               <MaterialCommunityIcons
-    //                 onPress={() => {
-    //                   setQuantity_Buy(quantity_buy + 1)
-    //                   updateTotal(quantity_buy +1, data.size.product.price);
-
-    //                 }}
-    //                 name="plus"
-    //                 style={{
-    //                   fontSize: 16,
-    //                   color: COLOURS.backgroundDark,
-    //                 }}
-    //               />
-    //             </View>
-    //           </View>
-    //           <TouchableOpacity onPress={() => removeItemFromCart(14)}>
-    //             <MaterialCommunityIcons
-    //               name="delete-outline"
-    //               style={{
-    //                 fontSize: 16,
-    //                 color: COLOURS.backgroundDark,
-    //                 backgroundColor: COLOURS.backgroundLight,
-    //                 padding: 8,
-    //                 borderRadius: 100,
-    //               }}
-    //             />
-    //           </TouchableOpacity>
-    //         </View>
-    //       </View>
-    //     </TouchableOpacity>
-    //   );
   };
 
   return (
@@ -391,7 +212,7 @@ const MyCart = ({ route, navigation }) => {
               color: COLOURS.black,
               fontWeight: '400',
             }}>
-            Order Details
+            Chi tiết đơn hàng
           </Text>
           <View></View>
         </View>
@@ -405,14 +226,14 @@ const MyCart = ({ route, navigation }) => {
             paddingLeft: 16,
             marginBottom: 10,
           }}>
-          My Cart
+          Đơn hàng của tôi
         </Text>
         {/* {console.log(`cartItem:`, product.map((productItem) => productItem))} */}
-        {/* {groupedProducts.map((productItem, index) => {
+        {groupedProducts.map((productItem, index) => {
           console.log(`cartItem map ${index} `, productItem);
-          return ( */}
-            {/* // <View key={index} style={{ margin: 10 }}> */}
-              {/* <View style={{
+          return (
+            <View key={index} style={{ margin: 10 }}>
+              <View style={{
                 backgroundColor: 'white',
                 borderRadius: 8,
                 padding: 16,
@@ -420,37 +241,38 @@ const MyCart = ({ route, navigation }) => {
                 marginTop: 20
               }}>
                 <ShopInfo business={productItem.business} />
-              </View> */}
+              </View>
               {/* <View style={{ backgroundColor: '#F1F1F1', padding: 10, marginBottom: 5, flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
                 
                 <Text style={{ fontSize: 16, color: 'black', fontStyle: 'italic' }}>{(String(productItem.businessId)).toUpperCase()}</Text>
                 <Icon name="angle-right" size={30} onPress={() => {}} />
               </View> */}
-              {/* <ScrollView style={{ padding: 8, marginBottom: 45, height: 280, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
-                {console.log('productItem: ', productItem.productSet[0].size.product)}
+              <ScrollView style={{ paddingBottom: 20, marginBottom: 45, minHeight:150, maxHeight:300, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
+                {/* {console.log('productItem: ', productItem.productSet[0].size.product)} */}
+                {/* {console.log('eachItem in prodductItem',productItem)} */}
                 {productItem.products ? productItem.products.map((eachproductItem, eachindex) => {
                   return <RenderProducts data={eachproductItem} />;
                 }) : null}
-              </ScrollView> */}
-            {/* // </View>
-        //   );
-        // })} */}
-         <View style={{margin:10}}>
+              </ScrollView>
+             </View>
+           );
+         })}
+         {/* <View style={{margin:10}}>
           <View style={{backgroundColor:'#F1F1F1', padding:10, marginBottom:5, flexDirection:'row',display: 'flex',justifyContent: 'space-between'}}>
             <Text style={{fontSize:16, color:'black'}}>Tên cừa hàng</Text>
             <Icon name="angle-right" size={30} onPress={() => {  }} />
-          </View>
+          </View> 
         <ScrollView style={{padding: 8,marginBottom:45, height: 280, borderRadius:5, borderColor:'gray',  borderWidth:2}} nestedScrollEnabled={true}>
         {product ? product.map((productItem, index) => renderProducts(productItem, index)) : null}
 
-        </ScrollView>
+        </ScrollView> 
 
-        {/* <ScrollView style={{padding: 8, marginBottom:45, height: 280,  borderRadius:5, borderColor:'gray',  borderWidth:2}} nestedScrollEnabled={true}>
-        {product ? product.map((productItem, index) => renderProducts(productItem, index)) : null} */}
+         <ScrollView style={{padding: 8, marginBottom:45, height: 280,  borderRadius:5, borderColor:'gray',  borderWidth:2}} nestedScrollEnabled={true}>
+        {product ? product.map((productItem, index) => renderProducts(productItem, index)) : null} 
 
-        {/* </ScrollView> */}
+         </ScrollView>
 
-        </View> 
+        </View>  */}
         <View>
           <View
             style={{
@@ -465,7 +287,7 @@ const MyCart = ({ route, navigation }) => {
                 letterSpacing: 1,
                 marginBottom: 20,
               }}>
-              Delivery Location
+              Địa chỉ giao hàng
             </Text>
             <View
               style={{
@@ -504,7 +326,7 @@ const MyCart = ({ route, navigation }) => {
                       color: COLOURS.black,
                       fontWeight: '500',
                     }}>
-                    2 Petre Melikishvili St.
+                    Địa chỉ của bạn
                   </Text>
                   <Text
                     style={{
@@ -514,7 +336,7 @@ const MyCart = ({ route, navigation }) => {
                       lineHeight: 20,
                       opacity: 0.5,
                     }}>
-                    0162, Tbilisi
+                    Vui lòng thêm địa chỉ giao hàng trước khi thanh toán!
                   </Text>
                 </View>
               </View>
@@ -537,7 +359,7 @@ const MyCart = ({ route, navigation }) => {
                 letterSpacing: 1,
                 marginBottom: 20,
               }}>
-              Payment Method
+              Phương thức thanh toán
             </Text>
             <View
               style={{
@@ -568,7 +390,7 @@ const MyCart = ({ route, navigation }) => {
                       color: COLOURS.blue,
                       letterSpacing: 1,
                     }}>
-                    VISA
+                    MOMO
                   </Text>
                 </View>
                 <View>
@@ -578,7 +400,7 @@ const MyCart = ({ route, navigation }) => {
                       color: COLOURS.black,
                       fontWeight: '500',
                     }}>
-                    Visa Classic
+                    QR MOMO
                   </Text>
                   <Text
                     style={{
@@ -588,7 +410,7 @@ const MyCart = ({ route, navigation }) => {
                       lineHeight: 20,
                       opacity: 0.5,
                     }}>
-                    ****-9092
+                    ****-0497
                   </Text>
                 </View>
               </View>
@@ -612,7 +434,7 @@ const MyCart = ({ route, navigation }) => {
                 letterSpacing: 1,
                 marginBottom: 20,
               }}>
-              Order Info
+              Thông tin đơn hàng
             </Text>
             <View
               style={{
@@ -629,7 +451,7 @@ const MyCart = ({ route, navigation }) => {
                   color: COLOURS.black,
                   opacity: 0.5,
                 }}>
-                Subtotal
+                Giá đơn hàng
               </Text>
               <Text
                 style={{
@@ -638,7 +460,7 @@ const MyCart = ({ route, navigation }) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                &#8377;{total}.00
+                {formatMoneyVND(total)}
               </Text>
             </View>
             <View
@@ -656,7 +478,7 @@ const MyCart = ({ route, navigation }) => {
                   color: COLOURS.black,
                   opacity: 0.5,
                 }}>
-                Shipping Tax
+                Phí giao hàng
               </Text>
               <Text
                 style={{
@@ -665,7 +487,7 @@ const MyCart = ({ route, navigation }) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                &#8377;{total / 20}
+                {formatMoneyVND(total/20)}
               </Text>
             </View>
             <View
@@ -682,7 +504,7 @@ const MyCart = ({ route, navigation }) => {
                   color: COLOURS.black,
                   opacity: 0.5,
                 }}>
-                Total
+                Tổng
               </Text>
               <Text
                 style={{
@@ -690,7 +512,7 @@ const MyCart = ({ route, navigation }) => {
                   fontWeight: '500',
                   color: COLOURS.black,
                 }}>
-                &#8377;{total + total / 20}
+                {formatMoneyVND(total *1.05)}
               </Text>
             </View>
           </View>
@@ -724,7 +546,7 @@ const MyCart = ({ route, navigation }) => {
               color: COLOURS.white,
               textTransform: 'uppercase',
             }}>
-            CHECKOUT (&#8377;{total + total / 20} )
+            Thanh toán ({formatMoneyVND(total *1.05)} )
           </Text>
         </TouchableOpacity>
       </View>

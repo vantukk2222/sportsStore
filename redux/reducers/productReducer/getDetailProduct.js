@@ -4,7 +4,7 @@ import { logout } from "../Login/signinReducer";
 import { store } from "../../store";
 
 const initialState = {
-    data: '',
+    data: {},
     loading: false,
     error: null
 }
@@ -19,8 +19,10 @@ const productDetailSlice = createSlice({
             state.error = null;
         },
         getSuccess: (state, action) => {
+            // state.data = { ...action.payload, imgUrl: action.payload?.imageSet[0].url }
             const data_detail = { ...action.payload, imgUrl: action.payload?.imageSet[0].url };
-            state.data = {...state.data, data_detail}
+            state.data[`${data_detail.id}`] = data_detail
+            // state.data = {...state.data, data_detail}
             state.loading = false;
         },
         getFailure: (state, action) => {

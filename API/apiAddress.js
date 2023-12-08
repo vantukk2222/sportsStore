@@ -1,0 +1,1 @@
+export const urlAPI = "https://project-pbl6-production.up.railway.app"

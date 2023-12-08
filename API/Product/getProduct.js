@@ -1,11 +1,12 @@
 import axios from "axios";
 import { asyncStorage } from "../../utilies/asyncStorage";
+import { urlAPI } from "../apiAddress";
 const getProduct = async (page, pageSize, sort, desc) => {
     // var authToken = await asyncStorage.getAuthToken();
     //console.log(authToken);
 
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product-information', {
+        const response = await axios.get(urlAPI+'/api/v1/product-information', {
             params: {
                 page: page,
                 page_size: pageSize,

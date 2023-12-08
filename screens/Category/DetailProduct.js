@@ -17,13 +17,19 @@ const CELL_HEIGHT = CELL_WIDTH * 1.4;
 
 const DetailProduct = ({ navigation, route }) => {
 
-    const dispatch = useDispatch()
+    const { data, loading, error } = useSelector((state) => state.productDetail);
+    const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
+    const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
+
     const { item } = route.params;
     const [product, setProduct] = useState()
-    const { data, loading, error } = useSelector((state) => state.productDetail);
+    
     const [images, setImages] = useState(null)
     const [sale, setSale] = useState(null)
     // console.log("id_User Detail:", id_user);
+
+    const dispatch = useDispatch()
+
     const priceAfterSale = (price, discount) => {
         return (price * (1 - discount / 100))
     }
@@ -38,6 +44,14 @@ const DetailProduct = ({ navigation, route }) => {
         }
         return Listimg.length > 0 ? Listimg[0].url : null;
     }
+
+    useEffect(()=>{
+        console.log("Username in DetailProduct: ", userName);
+        try {
+            dispatch(fetchUserByUserName(userName))
+        }
+        catch(error){}
+    },[userName])
     //console.log(item)
     useEffect(() => {
         dispatch(fetchProductbyId(item.id))//item.id
@@ -49,15 +63,20 @@ const DetailProduct = ({ navigation, route }) => {
     }, [item])
 
     useEffect(() => {
-        setProduct(data)
-        setSale(data.sale)
+        setProduct(data[item.id])
+        setSale(data[item.id]?.sale)
         // console.log('productDetail\n', data.sale)
         return () => {
             setProduct('')
         }
-    }, [data])
+    }, [data[item.id]])
     // console.log("product", item);
-
+    handleAddtocart = () =>
+    {
+            navigation.navigate('ModalBuyProduct', { product:product ,id_user: dataUser.id})
+            console.log("id_information: ",product.id)
+    }
+    // Xử
     if (loading) {
         return <Loading />;
     }
@@ -219,7 +238,7 @@ const DetailProduct = ({ navigation, route }) => {
                     }
                 }>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('ModalBuyProduct', { product:product })}
+                    onPress={() => {handleAddtocart()}}
                     style={{
                         borderRadius: 2,
                         borderWidth: 1,
@@ -294,6 +313,7 @@ const styles = StyleSheet.create({
     container: {
         paddingBottom: 20,
         marginTop: 5,
+        paddingTop:5,
         //height: 200,
         backgroundColor: 'white',
         //overflow: 'scroll',

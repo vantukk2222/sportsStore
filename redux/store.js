@@ -19,6 +19,8 @@ import listCartSlice from './reducers/Cart/listCartReducer'
 import productByBusinessSlice from './reducers/Business/getProductByBusiness'
 import saleSlice from './reducers/Sale/getAllSale'
 import getProductBySaleSlice from './reducers/productReducer/getProductBySale'
+import saveBillSlice  from './reducers/Bill/billReducer';
+import removeCartItemSlice from './reducers/Cart/removeCartReducer'
 // {userSlice}
 // >>>>>>> NewD
 
@@ -30,17 +32,16 @@ const rootReducer = combineReducers({
   register: registerSlice,
   categories: groupCategorySlice,
   productsByCategory: productByCategorySlice,
-  // <<<<<<< categoryDat
   quantity: quantitySlice,
   sizeProduct: sizeProductSlice,
-  // =======
   userData: userSlice,
   addToCartReducer: addToCartSlice,
   listCartReducer: listCartSlice,
   productByBusiness: productByBusinessSlice,
-  // >>>>>>> NewD
   sales: saleSlice,
   getProductBySale: getProductBySaleSlice,
+  saveBillReducer: saveBillSlice,
+  removeItemCartReducer:removeCartItemSlice
 
 })
 const persistConfig = {

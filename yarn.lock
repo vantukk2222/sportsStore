@@ -6042,10 +6042,10 @@ react-native-select-dropdown@^3.4.0:
   resolved "https://registry.yarnpkg.com/react-native-select-dropdown/-/react-native-select-dropdown-3.4.0.tgz#3ce31dc2e5ffa1abf4c47e3297bf0da7144f1ea3"
   integrity sha512-9xK1z4tYpwMxp3hsM0y1+xfqq/JoMh+l7sBsJ81b2eikFwT6ZbndFBqupQXrsQ1akce9hgC/10Nkzj0LjVjeXQ==
 
-react-native-toast-message@^2.1.7:
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-2.1.7.tgz#480ead6ea23e884f50ba467c818337d6830341e5"
-  integrity sha512-5zX3T5buVpg4bn9KZYVZ2VUQiLQZ1FHSM2AFQHVpgeKMYb+Gq+jt7wjhfPqhuMkJElQr7XNrnRw/rBCdD+7Q9w==
+react-native-toast-message@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-2.1.8.tgz#60570821d9391b90947bea2e3e90276701ce35e3"
+  integrity sha512-vlDQVkvpSq9L3/GRfoKaxVQyenj/A7yHToC9M0nrSCTR9XPXzoc2AOgRQnM6GVvDhetDld9ZfGtFcucyWcGQNA==
 
 react-native-vector-icons@^10.0.2:
   version "10.0.2"

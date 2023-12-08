@@ -1,9 +1,10 @@
 import axios from "axios";
 import { asyncStorage } from "../../utilies/asyncStorage";
+import { urlAPI } from "../apiAddress";
 const searchProduct = async (name, state) => {
     // var authToken = await asyncStorage.getAuthToken();
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/product-information/search', {
+        const response = await axios.get(urlAPI+'/api/v1/product-information/search', {
             params: {
                 name: name,
                 state: state

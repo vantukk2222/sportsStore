@@ -59,8 +59,9 @@ const ProductItem = ({ imageSource, productName, productPrice, sale }) => {
 
 const styles = StyleSheet.create({
     productItem: {
+        paddingTop:15,
         borderWidth: 0.4,
-        borderRadius: 18,
+        borderRadius: 15,
         // overflow: 'hidden',
         margin: 5,
         width: 180,

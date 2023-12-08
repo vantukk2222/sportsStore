@@ -1,10 +1,11 @@
 import axios from "axios"
 import { asyncStorage } from "../../utilies/asyncStorage";
+import { urlAPI } from "../apiAddress";
 
 const loginPage = async (email, password) => {
   console.log("login API: username: ", email , "\t pass: ", password);
     try {
-        const response = await axios.post('https://project-pbl6-production.up.railway.app/api/v1/auth/signin', {
+        const response = await axios.post(urlAPI+'/api/v1/auth/signin', {
           username: email,
           password: password,
         }, {

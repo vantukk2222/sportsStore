@@ -1,8 +1,9 @@
 import axios from "axios";
+import { urlAPI } from "../apiAddress";
 
 const getCategory = async (page, pageSize, sort, desc) => {
     try {
-        const response = await axios.get('https://project-pbl6-production.up.railway.app/api/v1/category', {
+        const response = await axios.get(urlAPI+'/api/v1/category', {
             params: {
                 page: page,
                 page_size: pageSize,

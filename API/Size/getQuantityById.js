@@ -1,10 +1,11 @@
 import axios from "axios";
 import { asyncStorage } from "../../utilies/asyncStorage";
+import { urlAPI } from "../apiAddress";
 const getQuantityById = async (id) => {
     //var authToken = await asyncStorage.getAuthToken();
     // console.log(authToken);
     try {
-        const response = await axios.get(`https://project-pbl6-production.up.railway.app/api/v1/product/get-quantity/${id}`, {
+        const response = await axios.get(urlAPI+`/api/v1/product/get-quantity/${id}`, {
             // headers: {
             //     'Authorization': `Bearer ${authToken}`,
             //     'Content-Type': 'application/json',

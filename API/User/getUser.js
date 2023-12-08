@@ -1,9 +1,10 @@
 import axios from "axios";
+import { urlAPI } from "../apiAddress";
 
 const getUserByUserName = async (userName) => {
     try {
         // console.log("Username in API: ", userName);
-        const response = await axios.get(`https://project-pbl6-production.up.railway.app/api/v1/user/get-by-username/${userName}`, {
+        const response = await axios.get(urlAPI+`/api/v1/user/get-by-username/${userName}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'accept': '*/*'

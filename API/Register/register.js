@@ -1,11 +1,12 @@
 import axios from "axios"
 import { asyncStorage } from "../../utilies/asyncStorage";
+import { urlAPI } from "../apiAddress";
 
 
 
 const registerPage = async (userData) => {
   try {
-    const response = await axios.post('https://project-pbl6-production.up.railway.app/api/v1/auth/signup', userData, {
+    const response = await axios.post(urlAPI+'/api/v1/auth/signup', userData, {
 
       headers: {
         'Content-Type': 'application/json',

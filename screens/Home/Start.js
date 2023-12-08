@@ -81,19 +81,16 @@ const Start = () => {
         // console.log("cate in start:", categories);
     }, [dataCate])
 
-    const clearAuthToken = async () => {
-        await asyncStorage.removeAuthToken("authToken")
-        console.log("auth token cleared");
-    };
-
 
     const handleGoDetail = (item) => {
+        console.log("item data in Start:",item);
         // asyncStorage.removeAuthToken()
         navigation.navigate('DetailProduct', {
             item: item,
             // id_user: dataUser?.id,
         });
     };
+
     const handleGoList = () => {
         navigation.navigate('ProductList');
     };
@@ -222,7 +219,7 @@ const Start = () => {
                 </View>
                 <View
                     style={{
-                        backgroundColor: colors.trangXam,
+                        backgroundColor: "#FCFCFC",
                         borderRadius: 20,
                         marginTop: 35,
                         borderColor: 'gray',
@@ -261,7 +258,7 @@ const Start = () => {
                             style={{
                                 backgroundColor: 'white'
                             }}>
-                            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.trangXam }}>
+                            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "#FCFCFC"}}>
                                 {products?.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}

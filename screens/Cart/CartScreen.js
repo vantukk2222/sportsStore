@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {COLOURS, Items} from '../database/Database';
@@ -22,41 +23,53 @@ import ShopInfo from '../Business/ShopInfo';
 import getDetailProduct, { fetchProductbyId } from '../../redux/reducers/productReducer/getDetailProduct';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 import { Dropdown } from 'react-native-element-dropdown';
+import { removerItemCartByID } from '../../redux/reducers/Cart/removeCartReducer';
+import Loading from '../../components/loading';
+import { useNavigation } from '@react-navigation/native';
 const RenderProducts = ({data}) => {
     const dispatch = useDispatch()
-
+    const navigation = useNavigation()
     // console.log("data :", data);
     const { data:dataDetail, loading:loadingDetail, error:errorDetail } = useSelector((state) => state.productDetail)
-
-    const [quantity_buy, setQuantity_Buy] = useState(data.quantity_cart)
-    const [total_eachProduct, setToTal_eachProduct] = useState(quantity_buy * data.price)
+    const {  isLoading, error } = useSelector((state) => state.removeItemCartReducer)
+    const [quantity_buy, setQuantity_Buy] = useState(data?.quantity_cart)
+    const [total_eachProduct, setToTal_eachProduct] = useState(quantity_buy * data?.price)
     // const [informationProduct, setInformationProduct] = useState(dataDetail)
     const [isFocus, setIsFocus] = useState(false);
     // const [value, setValue] = useState(null);
     // const [sizes, setSizes] = useState([])
 
-    const removeItemFromCart = () =>{
+    const removeItemFromCart = (id_cart) =>{
+      // console.log("ID_Cart in CartScreen: ", id_cart);
         // dispatchAPI....
+        dispatch(removerItemCartByID(id_cart))
     } 
     useEffect(()=>{
         console.log(data);
-      dispatch(fetchProductbyId(data.id_product_information))
+      dispatch(fetchProductbyId(data?.id_product_information))
       // setInformationProduct({...informationProduct, dataDetail})
     },[data])
     
     // console.log('data render cartItem:', data.imageSet[0]?.url);
     useEffect(() => {
-      setToTal_eachProduct(quantity_buy * data.price)
+      setToTal_eachProduct(quantity_buy * data?.price)
       // setTotal(getTotal(product))
 
     }, [quantity_buy])
+    if(isLoading) return (<Loading></Loading>)
+    
     return (
       <TouchableOpacity
       onPress={() => {
-        console.log("data detail product", dataDetail);
+        // console.log("data detail product", dataDetail[data?.id_product_information]);
+        navigation.navigate('DetailProduct', {
+          item: dataDetail[data?.id_product_information],
+          // id_user: dataUser?.id,
+      });
+
 
       }}
-        key={data.id_cart}
+        key={data?.id_cart}
         // onPress={() => navigation.navigate('ProductInfo', {productID: data.id})}
         style={{
           width: '100%',
@@ -70,19 +83,18 @@ const RenderProducts = ({data}) => {
           style={{
             width: '30%',
             height: 100,
-            padding: 14,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: COLOURS.backgroundLight,
+            backgroundColor: COLOURS?.backgroundLight,
             borderRadius: 10,
             marginRight: 22,
+            marginLeft:5,
             // paddingBottom:5,
             // marginBottom:5
             // overflow: 'hidden', // Thêm dòng này
-
           }}>
           <Image
-            source={{ uri: dataDetail.imageSet?.find(image => image.is_main === true).url }}
+            source={{ uri: dataDetail[data.id_product_information]?.imageSet?.find(image => image?.is_main === true)?.url }}
             style={{
               width: '100%',
               height: '100%',
@@ -107,7 +119,7 @@ const RenderProducts = ({data}) => {
                 letterSpacing: 1,
               }}>
                 {/* {1} */}
-              {dataDetail.name}
+              {dataDetail[data?.id_product_information]?.name}
             </Text>
             <View
               style={{
@@ -177,7 +189,6 @@ const RenderProducts = ({data}) => {
                 <MaterialCommunityIcons
                   onPress={() => {
                     quantity_buy <= 1 ? setQuantity_Buy(1) : setQuantity_Buy(quantity_buy - 1)
-
                   }}
                   name="minus"
                   style={{
@@ -211,7 +222,8 @@ const RenderProducts = ({data}) => {
                 />
               </View>
             </View>
-            <TouchableOpacity onPress={() => removeItemFromCart(14)}>
+            <TouchableOpacity 
+            onPress={() => removeItemFromCart(data?.id_Cart)}>
               <MaterialCommunityIcons
                 name="delete-outline"
                 style={{
