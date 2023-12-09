@@ -15,13 +15,13 @@ import { isValidEmail } from '../../utilies/validation'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
 // import { loginUser } from '../../redux/reducers/Login/authActions';
 import { asyncStorage } from '../../utilies/asyncStorage';
 import { loginUser } from '../../redux/reducers/Login/signinReducer';
 import Loading from '../../components/loading';
-import { toastsuccess } from '../../components/toastCustom';
+import { toastError, toastsuccess } from '../../components/toastCustom';
 
 // {loginUser}
 function Login(props) {
@@ -66,10 +66,16 @@ function Login(props) {
               // console.log("login: "+ await asyncStorage.getAuthToken())
               setValueEmail('')
               setValuePassword('')
-              navigation.navigate('LoginBottomNavigator')
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'LoginBottomNavigator' }], // Thay 'Home' bằng màn hình bạn muốn quay về
+                })
+              );
+              // navigation.navigate('LoginBottomNavigator')
             } else {
 
-              Alert.alert("Lỗi đăng nhập", "Không thể đăng nhập")
+              toastError("Lỗi đăng nhập", "Không thể đăng nhập")
             }
           })
       )

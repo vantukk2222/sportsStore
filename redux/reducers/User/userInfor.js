@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import getUserByUserName from "../../../API/User/getUser";
 import { store } from "../../store";
 import { startMapper } from "react-native-reanimated";
+import { logout } from "../Login/signinReducer";
 
 const initialState = {
     data: [],
@@ -27,6 +28,11 @@ const userSlice = createSlice({
             state.error = action.payload;
             state.loading = false;
         },
+        resetStateUser: (state) =>{
+            state.data = null;
+            state.loading= false;
+            state.error= null;
+        },
         resetUser: (state) => {
             return initialState;
         }
@@ -40,13 +46,13 @@ export const fetchUserByUserName = (userName) => async (dispatch) => {
         dispatch(getUsersuccess(data));
 
     } catch (error) {
-        store.dispatch(logout())
+        dispatch(logout())
 
         dispatch(getUserFailure(error.message))
     }
     // return data
 }
 
-export const { getUserStart, getUsersuccess, getUserFailure, resetUser } = userSlice.actions;
+export const { getUserStart, getUsersuccess, getUserFailure, resetUser,resetStateUser } = userSlice.actions;
 
 export default userSlice.reducer;

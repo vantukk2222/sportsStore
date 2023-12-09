@@ -2,7 +2,7 @@ import axios from "axios"
 import { asyncStorage } from "../../utilies/asyncStorage";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { toastsuccess } from "../../components/toastCustom";
+import { toastError, toastsuccess } from "../../components/toastCustom";
 import { urlAPI } from "../apiAddress";
 
 const removeItemCart = async (id_cart, authToken) => {
@@ -19,7 +19,7 @@ const removeItemCart = async (id_cart, authToken) => {
         // Alert.alert("Xoa san pham id: ",id_cart)
       } catch (error) {
         // Alert.alert("Add ok san pham id: ",id_product)
-        Alert.alert("error remove item cart ",error.message)
+        toastError("error remove item cart ",error.message)
       }
 }
 

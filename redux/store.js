@@ -49,8 +49,7 @@ const rootReducer = combineReducers({
   saleByDiscount: saleByDiscountSlice,
   searchProductInSale: searchProductInSaleSlice,
   saveBillReducer: saveBillSlice,
-  removeItemCartReducer:removeCartItemSlice
-
+  removeItemCartReducer:removeCartItemSlice,
   setInforUser: setInforUserSlice,
 })
 const persistConfig = {

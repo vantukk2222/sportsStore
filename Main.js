@@ -5,14 +5,16 @@ import { persistor, store } from './redux/store';
 import App from './navigation/App';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Text } from 'react-native';
-// {store}
+import Toast from 'react-native-toast-message'; // Import Toast từ thư viện react-native-toast-message
+import { toastConfig } from './components/toastCustom';
 
 const Main = () => {
   return (
     <Provider store={store}>
-          <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-          <App />
-    </PersistGate>
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <App />
+      <Toast config={toastConfig} />
+      </PersistGate>
     </Provider>
   );
 };

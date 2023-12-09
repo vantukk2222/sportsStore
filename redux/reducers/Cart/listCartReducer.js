@@ -17,20 +17,24 @@ const listCartSlice = createSlice({
   initialState,
   reducers: {
     listCartRequest: (state) => {
-      state.isLoading = true;
-      state.error = null;
+      state.loadingCart = true;
+      state.errorCart = null;
     },
     listCartSuccess: (state, action) => {
       // state.dataCart =  [...state.dataCart,action.payload.data]
       state.dataCart = action.payload.data
-      state.isLoading = false;
+      state.loadingCart = false;
     },
 
     listCartFailure: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload.error;
+      state.loadingCart = false;
+      state.errorCart = action.payload.error;
+    },
+    resetStateListCart:(state)=>{
+      state.dataCart=null;
+      state.loadingCart = false;
+      state.errorCart = null;
     }
-
   },
 });
 
@@ -60,5 +64,5 @@ export const listCartByIdUser = (id_user) => async (dispatch, getState) => {
 }
 };
 
-export const { listCartRequest, listCartSuccess, listCartFailure } = listCartSlice.actions;
+export const { listCartRequest, listCartSuccess, listCartFailure, resetStateListCart } = listCartSlice.actions;
 export default listCartSlice.reducer;

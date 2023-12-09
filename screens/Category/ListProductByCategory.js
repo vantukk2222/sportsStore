@@ -143,7 +143,9 @@ const ListProductByCategory = ({ route, navigation }) => {
                             scrollEnabled={false}
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item }) => {
-                                return (<View style={{
+                                return (<TouchableOpacity
+                                    onPress={() =>{{ navigation.navigate('DetailProduct', { item }) }}}
+                                    style={{
                                     flexDirection: 'row',
                                     alignItems: 'center', backgroundColor: colors.trangXam,
                                     padding: SPACING,
@@ -165,13 +167,13 @@ const ListProductByCategory = ({ route, navigation }) => {
                                     </View>
                                     {/* {console.log(item.price_min)} */}
                                     <Text style={styles.popularPrice}>{formatMoneyVND(item.price_min)}</Text>
-                                </View>)
+                                </TouchableOpacity>)
                             }}
                         />
                     </View>
 
-                    : <View style={{ backgroundColor: colors.trangXam, flex: 1, justifyContent: 'center' }}>
-                        <Text style={{ color: 'black', alignItems: 'center' }}>No products available</Text>
+                    : <View style={{ backgroundColor: colors.trangXam, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ color: 'black', alignItems: 'center' , fontSize:16}}>Không có sản phẩm loại này</Text>
                     </View>}
             </SafeAreaView >
 

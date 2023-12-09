@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { asyncStorage } from '../utilies/asyncStorage';
@@ -9,6 +9,7 @@ import { colors } from '../constants';
 import { store } from '../redux/store';
 import { useNavigation } from '@react-navigation/native';
 import { fetchUserByUserName } from '../redux/reducers/User/userInfor';
+import { toastError } from './toastCustom';
 
 const HeaderComp = ({init = "Start"}) => {
 
@@ -44,7 +45,7 @@ const HeaderComp = ({init = "Start"}) => {
                     </Text>
                 </View> */}
             </View>
-            <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{navigation.navigate("Cart", {id_user:dataUser?.id})}}/>
+            <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{userName? navigation.navigate("Cart", {id_user:dataUser?.id}) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")}}/>
         </View>
     );
 };

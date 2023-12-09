@@ -56,7 +56,7 @@ const ModalBuyProduct = ({ route }) => {
         
     };
     const handleTotalBefore = (sl, gia) => {
-        return formatMoneyVND(sl * gia*(100-product?.sale));
+        return formatMoneyVND(product?.sale ? (sl * gia*(100-product?.sale)) : (sl * gia));
     }
     return (
 

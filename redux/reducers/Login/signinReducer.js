@@ -35,8 +35,8 @@ const loginSlice = createSlice({
       // console.log(action);
       state.authToken = action.payload;
     },
-    logout: (state, action) => {
-
+    logout: (state) => {
+      state.userName = null
       state.authToken = null;
       state.isLoading = false;
       state.error = null;

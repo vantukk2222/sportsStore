@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { combineTransition } from 'react-native-reanimated';
 import { signupUser } from '../../redux/reducers/Register/signupReducer';
 import { connect } from 'react-redux';
+import { toastError } from '../../components/toastCustom';
 
 
 function Register(props) {
@@ -49,7 +50,7 @@ function Register(props) {
       signupUser(userData).then(data=>{
         if(data.includes("Error"))
         {
-          Alert.alert(JSON.stringify(data))
+          toastError(JSON.stringify(data))
         }
         else{
           console.log("OK nha em oi: " + data)

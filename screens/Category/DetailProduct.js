@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, Image, TouchableOpacity, View, ScrollView } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, Image, TouchableOpacity, View, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize, images } from '../../constants/index';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { fetchProductbyId, resetProductDetail } from '../../redux/reducers/produ
 import { formatMoneyVND } from '../../utilies/validation';
 import ShopInfo from '../Business/ShopInfo';
 import HeaderComp from '../../components/Header';
+import { toastError } from '../../components/toastCustom';
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
@@ -73,7 +74,7 @@ const DetailProduct = ({ navigation, route }) => {
     // console.log("product", item);
     handleAddtocart = () =>
     {
-            navigation.navigate('ModalBuyProduct', { product:product ,id_user: dataUser.id})
+        dataUser?.id ? navigation.navigate('ModalBuyProduct', {product:product ,id_user: dataUser?.id}) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
             console.log("id_information: ",product.id)
     }
     // Xử

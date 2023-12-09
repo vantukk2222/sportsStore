@@ -52,7 +52,7 @@ const MyCart = ({ route, navigation }) => {
 
     const groupedByBusiness = {};
 
-    product.forEach(item => {
+    product?.forEach(item => {
     
       const productDetails = {
         ...item.product,
@@ -127,7 +127,7 @@ const MyCart = ({ route, navigation }) => {
   const getTotal = (cartProducts) => {
     let totalPrice = 0;
 
-    cartProducts.forEach((cartItem) => {
+    cartProducts?.forEach((cartItem) => {
       console.log("product in Mycart:", cartItem);
       totalPrice += cartItem?.product?.price * cartItem?.quantity
     });
@@ -168,7 +168,6 @@ const MyCart = ({ route, navigation }) => {
       // dispatch(saveBill(id_user,"Thanh toán bằng MOMO", total, id_user, 0, newData, arr_ID_Cart))
       
       toastsuccess("Thành công","Thanh toán thành công")
-      Alert.alert("Thành công", "Thanh toán thành công")
     } catch (error) {
       return error;
     }

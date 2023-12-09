@@ -287,27 +287,7 @@ const Start = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <TouchableOpacity
-          onPress={() => {navigation.navigate("Login")}}
-          style={{
-            width: '86%',
-            height: '90%',
-            backgroundColor: "blue",
-            borderRadius: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: '500',
-              letterSpacing: 1,
-              color: "white",
-              textTransform: 'uppercase',
-            }}>
-            CHECKOUT)
-          </Text>
-        </TouchableOpacity>
+        
       </View>
             </SafeAreaView>
         // {/* </ScrollView > */}

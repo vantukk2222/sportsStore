@@ -4,6 +4,7 @@ import removeItemCart from "../../../API/Cart/removeItemCart";
 import { Alert } from "react-native";
 import getCartByIDUser from "../../../API/Cart/listCart";
 import { listCartByIdUser } from "./listCartReducer";
+import { toastError, toastsuccess } from "../../../components/toastCustom";
 // import { logout } from "../Login/signinReducer";
 // import { store } from "../../store";
 // {asyncStorage}
@@ -39,7 +40,7 @@ export const removerItemCartByID = (id_Cart) => async (dispatch, getState) => {
     const id_user = getState().userData.data.id
     console.log("Token remove Cart:", authToken);
     await removeItemCart(id_Cart, authToken)
-    Alert.alert("Thành công", "Bạn đã xoá sản phẩm ", id_Cart, " ra khỏi giỏ hàng")
+    toastsuccess("Thành công", "Bạn đã xoá sản phẩm ", id_Cart, " ra khỏi giỏ hàng")
     dispatch(removeCartItemSuccess())
     dispatch(listCartByIdUser(id_user))
 

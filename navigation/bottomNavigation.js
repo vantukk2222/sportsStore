@@ -36,7 +36,7 @@ export const LoginBottomNavigator = (props) => {
                 },
             })}
             tabBarOptions={{
-                activeTintColor: 'green',
+                activeTintColor: 'blue',
                 inactiveTintColor: 'black',
                 showLabel: true, // Đặt giá trị này thành true nếu bạn muốn hiển thị nhãn
 
