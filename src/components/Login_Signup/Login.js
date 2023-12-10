@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from '~/redux/reducers/Login/signinReducer';
 import { useDispatch, useSelector } from 'react-redux';
 const Login = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
-    const { authToken, isLoading, error } = useSelector((state) => state.loginUser);
+    // const { authToken, isLoading, error } = useSelector((state) => state.loginUser);
     const [isShowPassword, setIsShowPassword] = useState(false);
     function handleLogin(un, pw) {
-        dispatch(loginUser(un, pw));
+        //  dispatch(loginUser(un, pw));
     }
-    useEffect(() => {
-        if (authToken) navigate('/');
-    }, [authToken]);
+    // useEffect(() => {
+    //     if (authToken) navigate('/');
+    // }, [authToken]);
     return (
         <div className="login-container col-12 col-sm-4">
             <div className="title">Log in</div>

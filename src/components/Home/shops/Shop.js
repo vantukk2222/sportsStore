@@ -3,24 +3,38 @@ import Catg from './Catg';
 import ShopCart from './ShopCart';
 import './style.css';
 import { useState, memo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchCategories } from '~/redux/reducers/Category/getAllCategories';
-
+import getUnAuth from '~/API/getUnAuth';
 const Shop = () => {
-    const dispath = useDispatch();
-    const { dataCate, loadingCate, erroCate } = useSelector((state) => state.categories);
-    const [categoryItems, setCategoryItems] = useState(dataCate[0].categorySet);
+    const [categoryItems, setCategoryItems] = useState(null);
+    const [gcategoryItems, setGCategoryItems] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const handleClick = (value) => {
         setCategoryItems(value);
     };
     useEffect(() => {
-        dispath(fetchCategories());
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const response = await getUnAuth(`category/get-category-group`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+                setGCategoryItems(response);
+                setCategoryItems(response[0].categorySet);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
     }, []);
     return (
         <>
             <section className="shop background">
                 <div className="container d_flex">
-                    <Catg handleClick={handleClick} />
+                    <Catg handleClick={handleClick} categoryItems={gcategoryItems} />
 
                     <div className="contentWidth">
                         <div className="heading d_flex">
@@ -33,7 +47,7 @@ const Shop = () => {
                             </div>
                         </div>
                         <div className="product-content  grid1">
-                            <ShopCart categoryItems={categoryItems} />
+                            <ShopCart categoryItems={categoryItems ? categoryItems : null} />
                         </div>
                     </div>
                 </div>

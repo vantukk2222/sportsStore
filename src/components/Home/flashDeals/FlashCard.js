@@ -1,10 +1,10 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { fetchGetProducts } from '~/redux/reducers/Product/getFlashDealProduct';
 import { useNavigate } from 'react-router';
+import getUnAuth from '~/API/getUnAuth';
+import Loading from '~/components/loading/Loading';
 const SampleNextArrow = (props) => {
     const { onClick } = props;
     return (
@@ -26,18 +26,27 @@ const SamplePrevArrow = (props) => {
     );
 };
 const FlashCard = () => {
-    const dispatch = useDispatch();
-    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.flashDealProducts);
-    const [productItems, setProductItems] = useState([]);
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [productItems, setProductItems] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     useEffect(() => {
-        dispatch(fetchGetProducts('', page, pageSize));
-    }, [page, pageSize]);
-    useEffect(() => {
-        if (dataProduct && dataProduct.content) setProductItems(dataProduct.content);
-    }, [dataProduct]);
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const response = await getUnAuth(`product-information?page=0&page_size=10`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+                setProductItems(response.content);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
     const settings = {
         dots: false,
         infinite: true,
@@ -48,44 +57,37 @@ const FlashCard = () => {
         prevArrow: <SamplePrevArrow />,
     };
     const handleClick = (id) => {
-        // console.log(id);
         if (id) navigate(`/product/${id}`);
     };
     return (
         <>
-            <Slider {...settings}>
-                {productItems.map((productItems) => {
-                    return (
-                        <div className="box" key={productItems.id} onClick={() => handleClick(productItems.id)}>
-                            <div className="product mtop">
-                                <div className="img">
-                                    <img
-                                        className="imgflashcard"
-                                        src={productItems.imageSet.find((e) => e.is_main === true).url}
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="product-details">
-                                    <span className="spanname">{productItems.name}</span>
-                                    {/* <div className="rate">
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                    </div> */}
-                                    <div className="price">
-                                        <h4>${productItems.price_min}đ </h4>
-                                        {/* step : 3  
-                     if hami le button ma click garryo bahne 
-                    */}
+            {productItems ? (
+                <Slider {...settings}>
+                    {productItems.map((productItems) => {
+                        return (
+                            <div className="box" key={productItems.id} onClick={() => handleClick(productItems.id)}>
+                                <div className="product mtop">
+                                    <div className="img">
+                                        <img
+                                            className="imgflashcard"
+                                            src={productItems.imageSet.find((e) => e.is_main === true).url}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="product-details">
+                                        <span className="spanname">{productItems.name}</span>
+                                        <div className="price">
+                                            <h4>${productItems.price_min}đ </h4>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </Slider>
+                        );
+                    })}
+                </Slider>
+            ) : (
+                <Loading />
+            )}
         </>
     );
 };

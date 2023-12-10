@@ -1,62 +1,72 @@
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { fetchGetProducts } from '~/redux/reducers/Product/getCategoryProducts';
-
+import getUnAuth from '~/API/getUnAuth';
+import Loading from '~/components/loading/Loading';
 const ShopCart = ({ categoryItems }) => {
     const navigate = useNavigate();
-    const dispath = useDispatch();
-    const { dataProduct, loadingProduct, errorProduct } = useSelector((state) => state.cateProducts);
-    const [productItems, setProductItems] = useState(dataProduct);
+    const [productItems, setProductItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
-    console.log(productItems);
     const [count, setCount] = useState(0);
     useEffect(() => {
         setCount(0);
         setProductItems([]);
     }, [categoryItems]);
     useEffect(() => {
-        if (categoryItems[count] && categoryItems[count].id && productItems.length < 9) {
-            dispath(fetchGetProducts(categoryItems[count].id)).then(() => setCount((prevCount) => prevCount + 1));
-        }
-    }, [categoryItems, count]);
-    useEffect(() => {
-        if (dataProduct && productItems.length < 9) {
-            setProductItems((prevProduct) => {
-                for (var i = 0; i < dataProduct.length; i += 1) {
-                    if (prevProduct.length === 9) break;
-                    prevProduct = [...prevProduct, dataProduct[i]];
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const response = await getUnAuth(`product-information/find-by-category/${categoryItems[count].id}`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
                 }
-
-                return prevProduct;
-            });
-        }
-    }, [dataProduct]);
+                setCount((prevCount) => prevCount + 1);
+                const dataProduct = response.content;
+                console.log(dataProduct);
+                if (dataProduct && productItems.length < 9) {
+                    setProductItems((prevProduct) => {
+                        for (var i = 0; i < dataProduct.length; i += 1) {
+                            if (prevProduct.length == 9) break;
+                            prevProduct = [...prevProduct, dataProduct[i]];
+                        }
+                        return prevProduct;
+                    });
+                }
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [categoryItems, count]);
     return (
         <>
-            {productItems.map((value, index) => {
-                return (
-                    <div className="box" key={index} onClick={() => handleClick(value.id)}>
-                        <div className="product mtop">
-                            <div className="img">
-                                <img src={value.imageSet.find((e) => e.is_main === true).url} alt="" />
-                            </div>
-                            <div className="product-details">
-                                <h3>{value.name}</h3>
-                                <div className="price">
-                                    <h4>${value.price_min}đ </h4>
-                                    {/* step : 3  
-                     if hami le button ma click garryo bahne 
-                    */}
+            {productItems.length !== 0 ? (
+                productItems.map((value, index) => {
+                    return (
+                        <div className="box" key={index} onClick={() => handleClick(value.id)}>
+                            <div className="product mtop">
+                                <div className="img">
+                                    <img src={value.imageSet.find((e) => e.is_main === true).url} alt="" />
+                                </div>
+                                <div className="product-details">
+                                    <h3>{value.name}</h3>
+                                    <div className="price">
+                                        <h4>${value.price_min}đ </h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                );
-            })}
+                    );
+                })
+            ) : (
+                <Loading />
+            )}
         </>
     );
 };
