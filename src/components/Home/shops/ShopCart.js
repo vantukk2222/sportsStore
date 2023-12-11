@@ -8,6 +8,9 @@ const ShopCart = ({ categoryItems }) => {
     const [productItems, setProductItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const homeShop_product = localStorage.getItem('homeShop_product');
+    let product = homeShop_product ? JSON.parse(homeShop_product) : null;
+    let check = useRef(false);
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
@@ -20,13 +23,13 @@ const ShopCart = ({ categoryItems }) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
+                if (!categoryItems || count >= categoryItems.length || productItems.length >= 9) return;
                 const response = await getUnAuth(`product-information/find-by-category/${categoryItems[count].id}`);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
                 setCount((prevCount) => prevCount + 1);
                 const dataProduct = response.content;
-                console.log(dataProduct);
                 if (dataProduct && productItems.length < 9) {
                     setProductItems((prevProduct) => {
                         for (var i = 0; i < dataProduct.length; i += 1) {
@@ -42,11 +45,17 @@ const ShopCart = ({ categoryItems }) => {
                 setLoading(false);
             }
         };
-        fetchData();
+        if (!product) fetchData();
+        else setProductItems(product);
     }, [categoryItems, count]);
+    if (productItems.length == 9 && !product) {
+        localStorage.setItem('homeShop_product', [JSON.stringify(productItems)]);
+    }
     return (
         <>
-            {productItems.length !== 0 ? (
+            {productItems.length < 9 ? (
+                <Loading />
+            ) : (
                 productItems.map((value, index) => {
                     return (
                         <div className="box" key={index} onClick={() => handleClick(value.id)}>
@@ -64,8 +73,6 @@ const ShopCart = ({ categoryItems }) => {
                         </div>
                     );
                 })
-            ) : (
-                <Loading />
             )}
         </>
     );

@@ -5,15 +5,6 @@ import { Fragment, useEffect, useState, useRef } from 'react';
 function App() {
     const [login, setLogin] = useState(false);
     const [routers, setRouters] = useState([...vistorRoutes, ...publicRoutes]);
-    const storage = useRef(localStorage.getItem('authToken'));
-    useEffect(() => {
-        if (storage.current) {
-            setLogin(true);
-        }
-    }, [storage.current]);
-    useEffect(() => {
-        login ? setRouters([...vistorRoutes, ...privateRoutes]) : setRouters([...vistorRoutes, ...publicRoutes]);
-    }, [login]);
     return (
         <Router>
             <div className="App">

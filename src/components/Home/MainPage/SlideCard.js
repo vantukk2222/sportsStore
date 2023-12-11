@@ -10,6 +10,8 @@ const SlideCard = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const slide_product = localStorage.getItem('slide_product');
+    const product = slide_product ? JSON.parse(slide_product) : null;
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -19,19 +21,15 @@ const SlideCard = () => {
                     throw new Error('Network response was not ok');
                 }
                 setProductItems(response.content);
+                localStorage.setItem('slide_product', JSON.stringify(response.content));
             } catch (error) {
                 setError(error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchData();
-        // const reponse = fetch(
-        //     'https://project-pbl6-production.up.railway.app/api/v1/product-information?page=0&page_size=5',
-        // )
-        //     .then((data) => data.json())
-        //     .then((data) => setProductItems(data.content))
-        //     .catch((er) => console.log(er));
+        if (!product) fetchData();
+        else setProductItems(product);
     }, []);
     const settings = {
         dots: true,
