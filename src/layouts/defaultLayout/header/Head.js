@@ -19,8 +19,6 @@ const Head = () => {
                         <label> dt5@gmail.com</label>
                     </div>
                     <div className="right row RText">
-                        📢
-                        <label>Thông báo</label>
                         <label>
                             <Link to="/contact">📧 Liên hệ</Link>
                         </label>

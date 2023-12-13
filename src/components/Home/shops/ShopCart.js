@@ -1,3 +1,4 @@
+import { current } from '@reduxjs/toolkit';
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -8,9 +9,6 @@ const ShopCart = ({ categoryItems }) => {
     const [productItems, setProductItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const homeShop_product = localStorage.getItem('homeShop_product');
-    let product = homeShop_product ? JSON.parse(homeShop_product) : null;
-    let check = useRef(false);
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
@@ -45,12 +43,8 @@ const ShopCart = ({ categoryItems }) => {
                 setLoading(false);
             }
         };
-        if (!product) fetchData();
-        else setProductItems(product);
+        fetchData();
     }, [categoryItems, count]);
-    if (productItems.length == 9 && !product) {
-        localStorage.setItem('homeShop_product', [JSON.stringify(productItems)]);
-    }
     return (
         <>
             {productItems.length < 9 ? (

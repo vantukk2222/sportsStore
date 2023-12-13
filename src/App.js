@@ -5,6 +5,18 @@ import { Fragment, useEffect, useState, useRef } from 'react';
 function App() {
     const [login, setLogin] = useState(false);
     const [routers, setRouters] = useState([...vistorRoutes, ...publicRoutes]);
+    const [CartItem, setCartItem] = useState([]);
+    const addToCart = (product) => {
+        const productExit = CartItem.find((item) => item.id === product.id);
+
+        if (productExit) {
+            setCartItem(
+                CartItem.map((item) => (item.id === product.id ? { ...productExit, qty: productExit.qty + 1 } : item)),
+            );
+        } else {
+            setCartItem([...CartItem, { ...product, qty: 1 }]);
+        }
+    };
     return (
         <Router>
             <div className="App">
@@ -18,7 +30,7 @@ function App() {
                                 path={route.path}
                                 element={
                                     <Layout>
-                                        <Page />
+                                        <Page addToCart={addToCart} />
                                     </Layout>
                                 }
                             />
