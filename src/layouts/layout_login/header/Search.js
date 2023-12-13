@@ -16,6 +16,14 @@ const Search = () => {
                         <input type="text" placeholder="Tìm kiếm..." />
                         {/* <span>Tìm kiếm</span> */}
                     </div>
+                    <div className="icon f_flex width">
+                        <div className="cart">
+                            <Link to="/cart">
+                                <i className="fa fa-shopping-bag icon-circle"></i>
+                                <span>{}</span>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </section>
         </>

@@ -4,6 +4,10 @@ import './ProductDetail.css';
 import getUnAuth from '~/API/getUnAuth';
 import { FaArrowRight } from 'react-icons/fa';
 import { FaArrowLeft } from 'react-icons/fa6';
+import Loading from '../loading/Loading';
+import Shopdetail from './Shopdetail';
+import Detail from './Detail';
+import Comment from './Comment';
 const ProductDetail = ({ addToCart }) => {
     const location = useLocation();
     const [productItem, setProductItem] = useState([]);
@@ -11,6 +15,9 @@ const ProductDetail = ({ addToCart }) => {
     const [error, setError] = useState(null);
     const [startIndex, setStartIndex] = useState(0);
     const [start, setStart] = useState(0);
+    const [quantity, setQuantity] = useState(0);
+    const [price, setPrice] = useState(0);
+    const [id, setId] = useState(0);
     const showNextImages = () => {
         const totalImages = productItem.imageSet.length;
         const imagesToShow = 3;
@@ -24,6 +31,12 @@ const ProductDetail = ({ addToCart }) => {
     const handleimg = (index) => {
         setStart(index);
     };
+    const handleSize = (e) => {
+        console.log(productItem.productSet);
+        setId(productItem.productSet.find((element) => element.id === e.id).id);
+        setQuantity(e.quantity);
+        setPrice(e.price);
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,7 +46,12 @@ const ProductDetail = ({ addToCart }) => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
+                console.log(response);
+                response.productSet.sort((a, b) => a.id - b.id);
+
                 setProductItem(response);
+                setQuantity(response.productSet.reduce((r, e) => r + e.quantity, 0));
+                setPrice(response.price_min);
                 setStart(response.imageSet.find((e) => e.is_main === true).id);
             } catch (error) {
                 setError(error);
@@ -47,76 +65,91 @@ const ProductDetail = ({ addToCart }) => {
     // console.log(productItem);
     return (
         <>
-            <div className="product-detail-container">
-                <div className="product-image-container">
-                    <div className="main-image">
-                        {productItem.imageSet && productItem.imageSet.length > 0 && (
-                            <img
-                                src={productItem.imageSet.find((e) => e.id === start).url}
-                                alt=""
-                                className="product-image"
-                            />
-                        )}
-                    </div>
-                    <div className="product-img">
-                        <button className="iconimg" onClick={showPrevImages} disabled={startIndex === 0}>
-                            <FaArrowLeft />
-                        </button>
-                        &nbsp;&nbsp;
-                        <div className="thumbnail-images">
-                            {productItem.imageSet &&
-                                productItem.imageSet
-                                    .slice(startIndex, startIndex + 3)
-                                    .map((image, index) => (
-                                        <img
-                                            key={startIndex + index}
-                                            src={image.url}
-                                            alt={`Product ${productItem.id} - Thumbnail ${startIndex + index + 1}`}
-                                            className="thumbnail-image"
-                                            onClick={() => handleimg(startIndex + index)}
-                                        />
-                                    ))}
-                        </div>
-                        <button
-                            className="iconimg"
-                            onClick={showNextImages}
-                            disabled={startIndex >= (productItem.imageSet?.length || 0) - 1}
-                        >
-                            <FaArrowRight />
-                        </button>
-                    </div>
-                </div>
-                <div className="product-info-container">
-                    <h2 className="product-name">{productItem.name}</h2>
-                    <p className="product-price">${productItem.price}</p>
-                    <p className="product-description">{productItem.detail}</p>
-                    <p className="product-attribute">
-                        <strong>Attribute:</strong> {productItem.attribute}
-                    </p>
-                    <p className="product-brand">
-                        <strong>Brand:</strong> {productItem.brand}
-                    </p>
-                    <p className="product-quantity">
-                        <strong>Quantity:</strong> {productItem.quantity}
-                    </p>
-                    <p className="product-size">
-                        <strong>Size:</strong>
-                        {productItem.sizes &&
-                            productItem.sizes.map((size, index) => (
-                                <button className="sort" key={index}>
-                                    {size.name}
+            {productItem.id ? (
+                <>
+                    <div className="product-detail-container">
+                        <div className="product-image-container">
+                            <div className="main-image">
+                                {productItem.imageSet && productItem.imageSet.length > 0 && (
+                                    <img
+                                        src={productItem.imageSet.find((e) => e.id === start).url}
+                                        alt=""
+                                        className="product-image"
+                                    />
+                                )}
+                            </div>
+                            <div className="product-img">
+                                <button className="iconimg" onClick={showPrevImages} disabled={startIndex === 0}>
+                                    <FaArrowLeft />
                                 </button>
-                            ))}
-                    </p>
-                    <button onClick={() => addToCart(productItem)} className="add-to-cart-button">
-                        Thêm vào giỏ hàng
-                    </button>
-                    &nbsp;&nbsp;&nbsp;
-                    <button onClick={() => addToCart(productItem)} className="add-to-cart-button">
-                        Mua ngay
-                    </button>
-                </div>
-            </div>
+                                &nbsp;&nbsp;
+                                <div className="thumbnail-images">
+                                    {productItem.imageSet &&
+                                        productItem.imageSet
+                                            .slice(startIndex, startIndex + 3)
+                                            .map((image, index) => (
+                                                <img
+                                                    key={startIndex + index}
+                                                    src={image.url}
+                                                    alt={`Product ${productItem.id} - Thumbnail ${
+                                                        startIndex + index + 1
+                                                    }`}
+                                                    className="thumbnail-image"
+                                                    onClick={() => handleimg(image.id)}
+                                                />
+                                            ))}
+                                </div>
+                                <button
+                                    className="iconimg"
+                                    onClick={showNextImages}
+                                    disabled={startIndex >= (productItem.imageSet?.length || 0) - 1}
+                                >
+                                    <FaArrowRight />
+                                </button>
+                            </div>
+                        </div>
+                        <div className="product-info-container">
+                            <h2 className="product-name">{productItem.name}</h2>
+                            <p className="product-price">${price}</p>
+                            <p className="product-description">{productItem.detail}</p>
+                            <p className="product-attribute">
+                                <strong>Attribute:</strong> {productItem.attribute}
+                            </p>
+                            <p className="product-brand">
+                                <strong>Brand:</strong> {productItem.brand}
+                            </p>
+                            <p className="product-quantity">
+                                <strong>Quantity:</strong> {quantity}
+                            </p>
+                            <p className="product-size">
+                                <strong>Size:</strong>
+                                {productItem.productSet &&
+                                    productItem.productSet.map((e, index) => (
+                                        <button
+                                            className={`sort ${e.id == id ? 'clicked' : ''}`}
+                                            key={index}
+                                            onClick={() => handleSize(e)}
+                                        >
+                                            {e.size}
+                                        </button>
+                                    ))}
+                            </p>
+                            <button onClick={() => addToCart(productItem)} className="add-to-cart-button">
+                                Thêm vào giỏ hàng
+                            </button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button onClick={() => addToCart(productItem)} className="add-to-cart-button">
+                                Mua ngay
+                            </button>
+                        </div>
+                    </div>
+                    <Shopdetail business={productItem.business} />
+                    <Detail productItem={productItem} />
+                    <Comment />
+                </>
+            ) : (
+                <Loading />
+            )}
         </>
     );
 };
