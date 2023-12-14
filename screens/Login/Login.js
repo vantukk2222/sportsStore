@@ -22,6 +22,9 @@ import { asyncStorage } from '../../utilies/asyncStorage';
 import { loginUser } from '../../redux/reducers/Login/signinReducer';
 import Loading from '../../components/loading';
 import { toastError, toastsuccess } from '../../components/toastCustom';
+import { decodeToken } from '../../utilies/decodeToken';
+import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
+import { setRole } from '../../redux/reducers/Role/roleReducer';
 
 // {loginUser}
 function Login(props) {
@@ -47,6 +50,55 @@ function Login(props) {
   //  const getToken = useCallback(async()=> {
   //     return await asyncStorage.getAuthToken();
   // },[])
+
+  //get user by username
+  const { data, loading, error } = useSelector((state) => state.userData)
+  const dispatch = useDispatch();
+  const [token, setToken] = useState()
+
+
+  const handleCheckArray = (array, text) => {
+    if (array.includes(text)) {
+      return true;
+    }
+    return false
+  }
+  useEffect(() => {
+    dispatch(fetchUserByUserName(valueEmail))
+    // return () => {
+
+    //   setValueEmail('')
+    //   setValuePassword('')
+    // }
+  }, [token])
+
+  useEffect(() => {
+    console.log("efff", data);
+    if (data && handleCheckArray(data?.roles, "ROLE_CUSTOMER")) {
+      console.log("hereeeeee");
+      dispatch(setRole('ROLE_CUSTOMER'))
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'LoginBottomNavigator' }],
+
+          // Thay 'Home' bằng màn hình bạn muốn quay về
+        })
+      );
+    }
+    else if (data) {
+      dispatch(setRole('ROLE_BUSINESS'))
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'BusinessBottomNavigator' }],
+
+          // Thay 'Home' bằng màn hình bạn muốn quay về
+        })
+      );
+    }
+
+  }, [data])
   const handlePress = async () => {
     setButtonDisabled(true);
     // navigation.replace("Main");
@@ -57,21 +109,22 @@ function Login(props) {
       (
         setButtonDisabled(false),
         loginUser(valueEmail, valuePassword)
-          .then(async (data) => {
-            if (data) {
+          .then(async (dataToken) => {
+            if (dataToken) {
               // await asyncStorage.setAuthToken(data)
               // console.log("state: " + loginState)
+              console.log("user ", data);
+              //  decodeToken(data)
               await asyncStorage.setUsername(valueEmail)
               toastsuccess("Đăng nhập thành công", "Chào mừng bạn đến với SportStore")
               // console.log("login: "+ await asyncStorage.getAuthToken())
-              setValueEmail('')
-              setValuePassword('')
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: 'LoginBottomNavigator' }], // Thay 'Home' bằng màn hình bạn muốn quay về
-                })
-              );
+              setToken(dataToken)
+
+              // setValueEmail('')
+              // setValuePassword('')
+
+
+
               // navigation.navigate('LoginBottomNavigator')
             } else {
 

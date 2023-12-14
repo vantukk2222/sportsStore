@@ -9,7 +9,7 @@ import Start from '../screens/Home/Start';
 import Information from '../screens/User/Information';
 import UITab from './UserTab';
 import { Login, MyCart, Register } from '../screens';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { loginUser, setToken } from '../redux/reducers/Login/signinReducer';
 // import { bindActionCreators } from 'redux';
 import { asyncStorage } from '../utilies/asyncStorage';
@@ -31,12 +31,27 @@ const App = ({ loggedIn, loginUser, auth }) => {
     //     loggedIn??''
     //     // if(!loggedIn) 
     // },[loggedIn])
+    const role = useSelector((state) => state.role.role);
+    const handNavigator = () => {
+        if (role === "ROLE_BUSINESS") {
+            return (
+                <Navigation.BusinessScreenNavigator />
+            )
+        }
+        else {
+            return (
+                <Navigation.LoginScreenNavigator />
+            )
+        }
+
+    }
     return (
 
         <>
             <NavigationContainer>
                 {/* {loggedIn ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator />)} */}
-                <Navigation.LoginScreenNavigator />
+                {handNavigator()}
+
             </NavigationContainer>
         </>
     )

@@ -28,10 +28,10 @@ const userSlice = createSlice({
             state.error = action.payload;
             state.loading = false;
         },
-        resetStateUser: (state) =>{
+        resetStateUser: (state) => {
             state.data = null;
-            state.loading= false;
-            state.error= null;
+            state.loading = false;
+            state.error = null;
         },
         resetUser: (state) => {
             return initialState;
@@ -43,6 +43,7 @@ export const fetchUserByUserName = (userName) => async (dispatch) => {
     try {
         dispatch(getUserStart());
         const data = await getUserByUserName(userName);
+
         dispatch(getUsersuccess(data));
 
     } catch (error) {
@@ -53,6 +54,6 @@ export const fetchUserByUserName = (userName) => async (dispatch) => {
     // return data
 }
 
-export const { getUserStart, getUsersuccess, getUserFailure, resetUser,resetStateUser } = userSlice.actions;
+export const { getUserStart, getUsersuccess, getUserFailure, resetUser, resetStateUser } = userSlice.actions;
 
 export default userSlice.reducer;

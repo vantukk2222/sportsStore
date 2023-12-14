@@ -54,7 +54,10 @@ const ListProductByCategory = ({ route, navigation }) => {
         dispatch(fetchProductsByCategories(idCate, page, pageSize, sort, desc))
     }, [idCate, page, pageSize, sort, desc])
     useEffect(() => {
-        setProducts(dataProductbyCate.content)
+        if (dataProductbyCate) {
+            setProducts(dataProductbyCate.content)
+        }
+
         //console.log("datacategoryapi: \n ", dataProductbyCate.content)
     }, [dataProductbyCate])
 
@@ -144,17 +147,17 @@ const ListProductByCategory = ({ route, navigation }) => {
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item }) => {
                                 return (<TouchableOpacity
-                                    onPress={() =>{{ navigation.navigate('DetailProduct', { item }) }}}
+                                    onPress={() => { { navigation.navigate('DetailProduct', { item }) } }}
                                     style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center', backgroundColor: colors.trangXam,
-                                    padding: SPACING,
-                                    marginBottom: 2,
-                                    borderRadius: 8,
-                                    borderColor: 'black',
-                                    borderWidth: 0.4,
-                                    marginTop: 2
-                                }}>
+                                        flexDirection: 'row',
+                                        alignItems: 'center', backgroundColor: colors.trangXam,
+                                        padding: SPACING,
+                                        marginBottom: 2,
+                                        borderRadius: 8,
+                                        borderColor: 'black',
+                                        borderWidth: 0.4,
+                                        marginTop: 2
+                                    }}>
 
                                     <Image
                                         source={{ uri: findMainImage(item.imageSet) }}
@@ -173,7 +176,7 @@ const ListProductByCategory = ({ route, navigation }) => {
                     </View>
 
                     : <View style={{ backgroundColor: colors.trangXam, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ color: 'black', alignItems: 'center' , fontSize:16}}>Không có sản phẩm loại này</Text>
+                        <Text style={{ color: 'black', alignItems: 'center', fontSize: 16 }}>Không có sản phẩm loại này</Text>
                     </View>}
             </SafeAreaView >
 

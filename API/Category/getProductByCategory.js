@@ -2,8 +2,8 @@ import axios from "axios";
 import { asyncStorage } from "../../utilies/asyncStorage";
 import { urlAPI } from "../apiAddress";
 const getProductByCategory = async (idCate, page, pageSize, sort, desc) => {
-   try {
-        const response = await axios.get(urlAPI+`/api/v1/product-information/find-by-category/${idCate}`, {
+    try {
+        const response = await axios.get(urlAPI + `/api/v1/product-information/find-by-category/${idCate}`, {
             // headers: {
             params: {
                 page: page,
@@ -20,7 +20,7 @@ const getProductByCategory = async (idCate, page, pageSize, sort, desc) => {
 
         return response.data;
     } catch (error) {
-        console.error("Error get product by category: ", error.response.data.message);
+        //console.error("Error get product by category: ", error.response.data.message);
         throw error;
     }
 };

@@ -62,12 +62,15 @@ const Start = () => {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
-        try {
-            dispatch(fetchUserByUserName(userName))
-            dispatch(fetchCategories());
-        } catch (error) {
-            dispatch(logout())
+        if (userName) {
+            try {
+                // dispatch(fetchUserByUserName(userName))
+                dispatch(fetchCategories());
+            } catch (error) {
+                dispatch(logout())
+            }
         }
+
     }, [userName]);
 
 
@@ -83,7 +86,7 @@ const Start = () => {
 
 
     const handleGoDetail = (item) => {
-        console.log("item data in Start:",item);
+        console.log("item data in Start:", item);
         // asyncStorage.removeAuthToken()
         navigation.navigate('DetailProduct', {
             item: item,
@@ -136,10 +139,10 @@ const Start = () => {
     return (
         // <<<<<<< categoryDat
         // <ScrollView>
-            <SafeAreaView style={{ backgroundColor: colors.trangXam, flex: 100 }}>
-                <StatusBar backgroundColor={colors.trangXam} />
-                <Header  />
-                <ScrollView>
+        <SafeAreaView style={{ backgroundColor: colors.trangXam, flex: 100 }}>
+            <StatusBar backgroundColor={colors.trangXam} />
+            <Header />
+            <ScrollView>
 
                 {/* <View style={styles.searchContainer}>
                     <TextInput style={styles.input}
@@ -258,7 +261,7 @@ const Start = () => {
                             style={{
                                 backgroundColor: 'white'
                             }}>
-                            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "#FCFCFC"}}>
+                            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "#FCFCFC" }}>
                                 {products?.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
@@ -277,19 +280,19 @@ const Start = () => {
                         </View>
                     </View>
                 </View>
-                </ScrollView>
-                <View
-        style={{
-          position: 'absolute',
-          bottom: 10,
-          height: '8%',
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        
-      </View>
-            </SafeAreaView>
+            </ScrollView>
+            <View
+                style={{
+                    position: 'absolute',
+                    bottom: 10,
+                    height: '8%',
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+
+            </View>
+        </SafeAreaView>
         // {/* </ScrollView > */}
     );
 

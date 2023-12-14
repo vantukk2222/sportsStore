@@ -1,4 +1,5 @@
 // <<<<<<< categoryDat
+import { initialCalculations } from "react-native-reanimated/lib/typescript/reanimated2/animation/springUtils"
 import { Cart, Login, MyCart, Register, UITab } from "../screens"
 import Business from "../screens/Business/Business"
 import ShopInfo from "../screens/Business/ShopInfo"
@@ -20,8 +21,16 @@ import setInfor from "../screens/User/setInfor"
 import { LoginBottomNavigator } from "./bottomNavigation"
 
 import { createStackNavigator } from '@react-navigation/stack'
-
+import { BusinessBottomNavigator } from './bottomBusinessNavigation'
 const Stack = createStackNavigator();
+export const BusinessScreenNavigator = () => {
+    return (
+        <Stack.Navigator initialCalculations="BusinessBottomNavigator">
+            <Stack.Screen name="BusinessBottomNavigator" component={BusinessBottomNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        </Stack.Navigator>
+    )
+}
 
 export const LoginScreenNavigator = () => {
     return (

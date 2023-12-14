@@ -102,7 +102,7 @@ const ListProductofSale = ({ route }) => {
         return <Loading />;
     }
 
-    if (errorProductbySale || errorSearch) {
+    if (errorProductbySale || errorSearchProductInSale) {
         return <Text style={{ color: 'red' }}>Error: {errorProductbySale}</Text>;
     }
     return (
