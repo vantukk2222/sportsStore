@@ -165,12 +165,13 @@ const styles = StyleSheet.create({
     settingContainer: {
 
         position: 'absolute',
-        bottom: 0,
+        bottom: 1,
         left: 1,
         right: 1,
         // borderTopWidth: 1,
         // borderTopColor: "#ccc",
-        flex:2,
+        flex:1,
+        marginBottom:180,
         paddingHorizontal: 10,
         flexDirection:'row',
         justifyContent: 'center'
@@ -183,8 +184,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     setItem: {
-        flex:1,
         paddingTop: 20,
+        width:160,
         paddingVertical: 12,
         borderWidth: 1,
         backgroundColor:"#FBFBFB",
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     },
     setText: {
         fontSize: 16,
-        color: 'black'
+        color: 'red'
     },
     infoText: {
         fontSize: 16,

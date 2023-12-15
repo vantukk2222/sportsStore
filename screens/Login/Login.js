@@ -58,7 +58,7 @@ function Login(props) {
 
 
   const handleCheckArray = (array, text) => {
-    if (array.includes(text)) {
+    if (array?.includes(text)) {
       return true;
     }
     return false
