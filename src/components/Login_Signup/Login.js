@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import loginPage from '~/API/postAuth';
 const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
-    // const { authToken, isLoading, error } = useSelector((state) => state.loginUser);
     const [isShowPassword, setIsShowPassword] = useState(false);
     function handleLogin(un, pw) {
-        //  dispatch(loginUser(un, pw));
+        loginPage(un, pw);
     }
     // useEffect(() => {
     //     if (authToken) navigate('/');

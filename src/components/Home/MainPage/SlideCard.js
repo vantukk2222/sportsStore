@@ -10,7 +10,7 @@ const SlideCard = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const slide_product = localStorage.getItem('slide_product');
+    const slide_product = sessionStorage.getItem('slide_product');
     const product = slide_product ? JSON.parse(slide_product) : null;
     useEffect(() => {
         const fetchData = async () => {
@@ -21,7 +21,7 @@ const SlideCard = () => {
                     throw new Error('Network response was not ok');
                 }
                 setProductItems(response.content);
-                localStorage.setItem('slide_product', JSON.stringify(response.content));
+                sessionStorage.setItem('slide_product', JSON.stringify(response.content));
             } catch (error) {
                 setError(error);
             } finally {

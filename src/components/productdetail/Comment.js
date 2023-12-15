@@ -6,17 +6,6 @@ const Comment = () => {
   const [newComment, setNewComment] = useState('');
   const [userRating, setUserRating] = useState(0);
 
-  useEffect(() => {
-    // Load comments from local storage when component mounts
-    const storedComments = JSON.parse(localStorage.getItem('comments')) || [];
-    setComments(storedComments);
-  }, []);
-
-  useEffect(() => {
-    // Save comments to local storage whenever comments change
-    localStorage.setItem('comments', JSON.stringify(comments));
-  }, [comments]);
-
   const submitComment = () => {
     if (newComment.trim() !== '') {
       const currentDate = new Date();

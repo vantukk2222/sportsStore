@@ -9,7 +9,7 @@ const Shop = () => {
     const [gcategoryItems, setGCategoryItems] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const group_cate = localStorage.getItem('group_cate');
+    const group_cate = sessionStorage.getItem('group_cate');
     const group_category = group_cate ? JSON.parse(group_cate) : null;
     const handleClick = (value) => {
         setCategoryItems(value);
@@ -25,7 +25,7 @@ const Shop = () => {
                 }
                 setGCategoryItems(response);
                 setCategoryItems(response[0].categorySet);
-                localStorage.setItem('group_cate', JSON.stringify(response));
+                sessionStorage.setItem('group_cate', JSON.stringify(response));
             } catch (error) {
                 setError(error);
             } finally {

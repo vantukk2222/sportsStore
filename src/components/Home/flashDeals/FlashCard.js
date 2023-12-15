@@ -29,7 +29,7 @@ const FlashCard = () => {
     const [productItems, setProductItems] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const flash_product = localStorage.getItem('flash_product');
+    const flash_product = sessionStorage.getItem('flash_product');
     const product = flash_product ? JSON.parse(flash_product) : null;
     const navigate = useNavigate();
     useEffect(() => {
@@ -41,7 +41,7 @@ const FlashCard = () => {
                     throw new Error('Network response was not ok');
                 }
                 setProductItems(response.content);
-                localStorage.setItem('flash_product', JSON.stringify(response.content));
+                sessionStorage.setItem('flash_product', JSON.stringify(response.content));
             } catch (error) {
                 setError(error);
             } finally {

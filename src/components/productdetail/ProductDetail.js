@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './ProductDetail.css';
 import getUnAuth from '~/API/getUnAuth';
 import { FaArrowRight } from 'react-icons/fa';
@@ -61,7 +61,7 @@ const ProductDetail = ({ addToCart }) => {
         };
         fetchData();
     }, []);
-
+    // console.log(startIndex);
     // console.log(productItem);
     return (
         <>

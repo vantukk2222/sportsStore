@@ -1,15 +1,17 @@
 import axios from 'axios';
+
 const getUnAuth = async (prop) => {
     try {
-        const response = await axios.get(`https://project-pbl6-production.up.railway.app/api/v1/${prop}`);
+        const api = 'https://project-pbl6-production.up.railway.app/api/v1/';
+        //  console.log(api + prop);
+        const response = await axios.get(api + prop);
+        //  console.log(response);
         return response.data;
     } catch (error) {
         console.error('Error fetching data - Get group category: ', error);
-        console.log('er', error.response); // Thêm dòng này để xem chi tiết lỗi từ phản hồi của server
-
+        console.log('Error response from server:', error.response);
         throw error;
     }
 };
+
 export default getUnAuth;
-//https://project-pbl6-production.up.railway.app/api/v1
-//http://ec2-3-25-109-240.ap-southeast-2.compute.amazonaws.com:5555/api/v1

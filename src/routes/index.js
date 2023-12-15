@@ -11,9 +11,9 @@ import Shop from '~/components/Shop/Shop';
 import ProductDetail from '~/components/productdetail/ProductDetail';
 const vistorRoutes = [
     { path: '/', component: Home, layout: defaultLayout },
-    { path: '/shop', component: Shop, layout: defaultLayout },
+    { path: '/shop/:id', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound },
-    {path:`/product/:id`,component:ProductDetail,layout:defaultLayout}
+    { path: `/product/:id`, component: ProductDetail, layout: defaultLayout },
 ];
 const publicRoutes = [
     { path: '/login', component: Login },
