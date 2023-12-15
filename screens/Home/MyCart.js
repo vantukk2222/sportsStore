@@ -5,9 +5,13 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Linking,
   ToastAndroid,
   Alert,
+  Modal,
 } from 'react-native';
+// import InAppBrowser from 'react-native-inappbrowser-reborn';
+
 import {isEqual} from 'lodash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {COLOURS, Items} from '../database/Database';
@@ -24,15 +28,17 @@ import getDetailProduct, { fetchProductbyId } from '../../redux/reducers/product
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 import RenderProducts from '../Cart/CartScreen';
 import { saveBill } from '../../redux/reducers/Bill/billReducer';
-import { toastsuccess } from '../../components/toastCustom';
+import { toastError, toastsuccess } from '../../components/toastCustom';
 import Loading from '../../components/loading';
+import { savePayment } from '../../redux/reducers/Payment/paymentReducer';
+import WebView from 'react-native-webview';
 // import MaterialCommunityIcons
 // {Items}
 const MyCart = ({ route, navigation }) => {
   const { id_user } = route.params
   const dispatch = useDispatch()
   const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer)
-  
+  const {data: dataMOMO, isLoading: loadingMOMO, error: errorMOMO} = useSelector((state)=> state.savePaymentReducer)
 
   // console.log("data Cart: ", dataCart);
   const [product, setProduct] = useState(dataCart);
@@ -46,7 +52,7 @@ const MyCart = ({ route, navigation }) => {
   // }))) 
 
   const [groupedProducts, setGroupedProducts] = useState([]);
-  const arr_ID_Cart = []
+  const [visible, setVisible] = useState(false)
   useEffect(() => {
     // console.log("i = ", i);
 
@@ -137,40 +143,30 @@ const MyCart = ({ route, navigation }) => {
   //remove data from Cart
 
 
-
-
   //checkout
 
+//   const openBrowser = async () => {
+//   const url = dataMOMO;
+//   const supported = await Linking.canOpenURL(url);
 
+//   if (supported) {
+//     await Linking.openURL(url);
+//   } else {
+//     console.error('Cannot open URL');
+//   }
+// };
+
+  // const openLinkInWebView = () => setVisible(true)
   const checkOut = async () => {
-    const newData = product.map(({ product, quantity }) => ({
-      id_product: product.id,
-      quantity,
-      price: product.price
-    }));
-    product?.map((eachItem, idx)=>{
-      arr_ID_Cart.push(eachItem.id)
-      // setId_Cart({...id_Cart, eachItem.id})
-    })
-    // console.log("ID_Cart:, ",arr_ID_Cart);
-    // const dataBill = {
-    //   name: id_user,
-    //   information : "Thanh toán bằng MOMO",
-    //   total : total,
-    //   id_user :id_user,
-    //   state: 0,
-    //   bill_detailSet : newData
-    // }
-    // console.log("dataBill", dataBill);
-    
 
     try {
-      // dispatch(saveBill(id_user,"Thanh toán bằng MOMO", total, id_user, 0, newData, arr_ID_Cart))
-      
+      dispatch(savePayment(id_user))
       toastsuccess("Thành công","Thanh toán thành công")
     } catch (error) {
+      toastError("Xin lỗi","Đã có lỗi xảy ra với máy chủ")
       return error;
     }
+    setVisible(true)
 
 
   };
@@ -183,6 +179,14 @@ const MyCart = ({ route, navigation }) => {
         backgroundColor: COLOURS.white,
         position: 'relative',
       }}>
+        <Modal
+          visible={visible}
+          presentationStyle={'pageSheet'}
+          animationType={'slide'}
+          onRequestClose={()=>setVisible(false)}
+          >
+            <WebView source ={{uri: dataMOMO}}/>
+            </Modal>
       <ScrollView>
         <View
           style={{

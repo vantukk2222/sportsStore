@@ -11,6 +11,7 @@ import { formatMoneyVND } from '../../utilies/validation';
 import ShopInfo from '../Business/ShopInfo';
 import HeaderComp from '../../components/Header';
 import { toastError } from '../../components/toastCustom';
+import { logout } from '../../redux/reducers/Login/signinReducer';
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
@@ -46,13 +47,16 @@ const DetailProduct = ({ navigation, route }) => {
         return Listimg.length > 0 ? Listimg[0].url : null;
     }
 
-    useEffect(()=>{
-        console.log("Username in DetailProduct: ", userName);
-        try {
-            dispatch(fetchUserByUserName(userName))
+    useEffect(() => {
+        if (userName) {
+            try {
+                dispatch(fetchUserByUserName(userName))
+            } catch (error) {
+                // dispatch(logout())
+            }
         }
-        catch(error){}
-    },[userName])
+
+    }, [userName]);
     //console.log(item)
     useEffect(() => {
         dispatch(fetchProductbyId(item.id))//item.id

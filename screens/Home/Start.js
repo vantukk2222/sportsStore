@@ -64,7 +64,7 @@ const Start = () => {
     useEffect(() => {
         if (userName) {
             try {
-                // dispatch(fetchUserByUserName(userName))
+                dispatch(fetchUserByUserName(userName))
                 dispatch(fetchCategories());
             } catch (error) {
                 dispatch(logout())
@@ -245,7 +245,10 @@ const Start = () => {
                         }}>Sản phẩm
                         </Text>
                         <TouchableOpacity
-                            onPress={() => handleGoList()}
+                            onPress={() => {
+                                handleGoList()
+                                // console.log("DataUser:", dataUser?.id);
+                            }}
                             style={{
                                 justifyContent: 'center',
                                 alignItems: 'center'
