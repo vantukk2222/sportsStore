@@ -3,18 +3,19 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { colors } from '../../constants';
 const SellerHomeScreen = () => {
     // Giả sử danh sách sản phẩm của người bán
     const tabs = [
         {
             id: '1',
-            name: 'Quản lý sản phẩm',
+            name: 'Thêm sản phẩm',
             iconName: 'archive'
             // image: require('./images/product1.jpg'),
         },
         {
             id: '2',
-            name: 'Quản lý sự kiện',
+            name: 'Thêm sự kiện',
             iconName: 'calendar-check'
             //image: require('./images/product2.jpg'),
         },
@@ -47,7 +48,11 @@ const SellerHomeScreen = () => {
 
     return (
         <View style={styles.container}>
+
             <Text style={styles.header}>Seller Home</Text>
+            <TouchableOpacity style={styles.dsContainer}>
+                <Text style={styles.doanhSo}>Xem doanh số</Text>
+            </TouchableOpacity>
             <FlatList
                 horizontal={false}
                 data={tabs}
@@ -56,9 +61,7 @@ const SellerHomeScreen = () => {
                 numColumns={2}
                 style={{ marginTop: 25 }}
             />
-            <TouchableOpacity style={styles.dsContainer}>
-                <Text style={styles.doanhSo}>Xem doanh số</Text>
-            </TouchableOpacity>
+
         </View>
     );
 };
@@ -67,7 +70,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: 'gray'
+        backgroundColor: colors.facebook
     },
     header: {
         fontSize: 24,
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 0.4,
         alignItems: 'center',
-        backgroundColor: 'blue'
+        backgroundColor: 'white'
     },
     doanhSo: {
 

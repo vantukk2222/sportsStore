@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { fontSize } from "../constants";
 import HomeBusiness from "../screens/Business/HomeBusiness";
 import InforBusiness from "../screens/Business/InforBusiness";
-import ProductBusiness from "../screens/Business/ProductBusiness";
+import ProductBusiness from "../screens/Business/Products/ProductBusiness";
 
 const Tab = createBottomTabNavigator();
 
