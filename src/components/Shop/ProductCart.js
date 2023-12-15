@@ -5,7 +5,7 @@ const ProductCart = ({ productItems }) => {
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
-    // console.log(productItems);
+    console.log(productItems);
     return (
         <>
             {productItems?.map((products, index) => (

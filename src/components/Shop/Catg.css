@@ -54,7 +54,6 @@
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-
 .filter-price {
     margin-bottom: 15px;
 }
@@ -133,7 +132,6 @@
 .filter-price button:active {
     background-color: #004080;
 }
-
 
 .filter-price input {
     padding: 5px;
