@@ -68,7 +68,7 @@ const Shop = () => {
                                     <h2>SẢN PHẨM CỦA SHOP</h2>
                                 </div>
                             </div>
-                            <div className="product-content grid1">
+                            <div className="product-content grid2">
                                 <ProductCart productItems={productItems} />
                             </div>
                             <Pagination />
