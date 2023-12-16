@@ -62,4 +62,4 @@ const Shop = () => {
     );
 };
 
-export default memo(Shop);
+export default Shop;

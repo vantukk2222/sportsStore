@@ -13,7 +13,7 @@ const ShopCart = ({ categoryItems }) => {
         if (id) navigate(`/product/${id}`);
     };
     const [count, setCount] = useState(0);
-    console.log(categoryItems);
+    //   console.log(categoryItems);
     useEffect(() => {
         setCount(0);
         setProductItems([]);
@@ -29,7 +29,7 @@ const ShopCart = ({ categoryItems }) => {
                 }
                 setCount((prevCount) => prevCount + 1);
                 const dataProduct = response.content;
-                console.log(dataProduct);
+                //      console.log(dataProduct);
                 if (dataProduct && productItems.length < 9) {
                     setProductItems((prevProduct) => {
                         for (var i = 0; i < dataProduct.length; i += 1) {

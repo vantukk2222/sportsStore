@@ -14,9 +14,9 @@ const loginPage = async (email, password) => {
                 },
             },
         );
-        const { token } = response.data;
-        localStorage.setItem('authToken', token);
-        return token;
+        // const { token } = response.data;
+        // localStorage.setItem('authToken', token);
+        return response.data;
     } catch (error) {
         console.log('error sign in' + error.message);
     }

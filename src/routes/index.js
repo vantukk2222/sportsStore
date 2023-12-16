@@ -10,20 +10,20 @@ import notFound from '~/components/NotFound/notFound';
 import Shop from '~/components/Shop/Shop';
 import ProductDetail from '~/components/productdetail/ProductDetail';
 const vistorRoutes = [
-    { path: '/', component: Home, layout: defaultLayout },
     { path: '/shop/:id', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound },
     { path: `/product/:id`, component: ProductDetail, layout: defaultLayout },
+    { path: '/contact', component: Contact, layout: defaultLayout },
 ];
 const publicRoutes = [
+    { path: '/', component: Home, layout: defaultLayout },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/contact', component: Contact, layout: defaultLayout },
 ];
 
 const privateRoutes = [
+    { path: '/', component: Home, layout: layout_login },
     { path: '/cart', component: Cart, layout: defaultLayout },
-    { path: '/contact', component: Contact, layout: defaultLayout },
 ];
 
 export { publicRoutes, privateRoutes, vistorRoutes };

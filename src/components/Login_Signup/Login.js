@@ -6,21 +6,36 @@ const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const fetchData = async (un, pw) => {
+        try {
+            const response = await loginPage(un, pw);
+            if (!response) {
+                throw new Error('Network response was not ok');
+            }
+            const { token } = response;
+            localStorage.setItem('authToken', token);
+            sessionStorage.clear();
+            if (token) navigate('/');
+        } catch (error) {
+            alert('Bạn đã đăng nhập thất bại kiểm tra lại mật khẩu và tài khoản của bạn');
+        } finally {
+            setLoading(false);
+        }
+    };
     function handleLogin(un, pw) {
-        loginPage(un, pw);
+        fetchData(un, pw);
     }
-    // useEffect(() => {
-    //     if (authToken) navigate('/');
-    // }, [authToken]);
     return (
         <div className="login-container col-12 col-sm-4">
-            <div className="title">Log in</div>
-            <div className="text">Email or Username</div>
+            <div className="title">Đăng nhập</div>
+            <div className="text">Tài khoản</div>
             <input
                 className="input"
                 type="text"
-                placeholder="Email or username..."
+                placeholder="Tài khoản..."
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
             />
@@ -30,7 +45,7 @@ const Login = () => {
                 <input
                     className="input"
                     type={isShowPassword === true ? 'text' : 'password'}
-                    placeholder="Password..."
+                    placeholder="Mật Khẩu..."
                     value={password}
                     onChange={(event) => setpassword(event.target.value)}
                 />
@@ -46,7 +61,7 @@ const Login = () => {
                 onClick={() => handleLogin(username, password)}
             >
                 {/* {loadingApi && <i class="fas fa-sync fa-spin"></i>} */}
-                &nbsp;Login
+                &nbsp;Đăng nhập
             </button>
 
             <div className="back">
