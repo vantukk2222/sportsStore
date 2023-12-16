@@ -29,18 +29,18 @@ const Shop = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                let a = [];
-                a.push(
-                    response.content.reduce((r, e) => {
-                        if (r.length == 5) {
-                            a.push(r);
-                            r = [];
-                        }
-                        r = [...r, e];
-                        return r;
-                    }, []),
-                );
-                setProductItems(a);
+                // let a = [];
+                // a.push(
+                //     response.content.reduce((r, e) => {
+                //         if (r.length == 5) {
+                //             a.push(r);
+                //             r = [];
+                //         }
+                //         r = [...r, e];
+                //         return r;
+                //     }, []),
+                // );
+                setProductItems(response.content);
             } catch (error) {
                 setError(error);
             } finally {

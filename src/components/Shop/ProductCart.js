@@ -8,7 +8,7 @@ const ProductCart = ({ productItems }) => {
     console.log(productItems);
     return (
         <>
-            {productItems?.map((products, index) => (
+            {/* {productItems?.map((products, index) => (
                 <div key={index}>
                     {products.map((product, index) => (
                         <div key={index} className="box" onClick={() => handleClick(product.id)}>
@@ -26,7 +26,7 @@ const ProductCart = ({ productItems }) => {
                         </div>
                     ))}
                 </div>
-            ))}
+            ))} */}
         </>
     );
 };
