@@ -6,7 +6,7 @@ const Cart = ({ productItems }) => {
     };
     return (
         <>
-            <div className="content grid product">
+            <div className="content grid ">
                 {productItems.map((val, index) => {
                     return (
                         <div className="box" key={index} onClick={() => handleClick(val.id)}>

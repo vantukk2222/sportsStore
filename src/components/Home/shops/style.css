@@ -44,7 +44,7 @@
 
 .grid1 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 1px;
 }
 .shop .product img {
@@ -52,7 +52,9 @@
     height: 100%;
 }
 .shop .product {
-    transition: 0.5s;
+    width: 250px;
+    border: 1px solid #ccc;
+    overflow: hidden;
 }
 .shop .product:hover {
     box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;

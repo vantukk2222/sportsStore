@@ -170,9 +170,10 @@ button {
 .product h3 {
     font-weight: 500;
     font-size: 17px;
-}
-.product h3.long-text {
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    margin: 0;
 }
 
 .product .rate i {
