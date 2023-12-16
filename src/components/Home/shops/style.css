@@ -44,7 +44,7 @@
 
 .grid1 {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 1px;
 }
 .shop .product img {
@@ -52,7 +52,7 @@
     height: 100%;
 }
 .shop .product {
-    width: 330px;
+    width: 300px;
     border: 1px solid #ccc;
     overflow: hidden;
 }
