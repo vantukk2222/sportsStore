@@ -1,14 +1,14 @@
 import Footer from '../defaultLayout/footer/Footer';
-import HeaderLogin from './headerLogin/HeaderLogin';
+import HeaderRes from './headerLogin/HeaderRes';
 
-function layout_login({ children }) {
+function layout_res({ children }) {
     return (
         <>
-            <HeaderLogin />
+            <HeaderRes />
             <div>{children}</div>
             <Footer />
         </>
     );
 }
 
-export default layout_login;
+export default layout_res;

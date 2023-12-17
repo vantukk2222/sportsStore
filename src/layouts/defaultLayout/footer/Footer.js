@@ -4,20 +4,10 @@ const Footer = () => {
     return (
         <>
             <footer>
-                <div className="container grid2">
+                <div className="container grid1">
                     <div className="box">
                         <h1>DT5 SPORT</h1>
                         <p>20.nh13 PBL6 Nguyễn Dương Gia Bảo Nguyễn Văn Tú Vũ Tiến Hùng Trương Thành Đạt Nguyễn Hiếu</p>
-                        <div className="icon d_flex">
-                            <div className="img d_flex">
-                                <i className="fa-brands fa-google-play"></i>
-                                <span>Google Play</span>
-                            </div>
-                            <div className="img d_flex">
-                                <i className="fa-brands fa-app-store-ios"></i>
-                                <span>App Store</span>
-                            </div>
-                        </div>
                     </div>
 
                     <div className="box">

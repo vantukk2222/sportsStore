@@ -14,7 +14,6 @@
     font-style: italic;
 }
 
-
 /* Account Menu */
 /* Account Menu */
 .account-menu {
@@ -71,43 +70,4 @@
 .account-menu:hover ul {
     display: block;
     opacity: 1;
-}
-
-
-/* Footer */
-footer {
-    background-color: #0c2a4d;
-    padding: 50px 0;
-    color: #fff;
-}
-
-footer .img {
-    padding: 15px 20px;
-    border-radius: 5px;
-    background-color: #0c2a4d;
-}
-
-footer .img i {
-    font-size: 20px;
-    margin: 5px;
-}
-
-footer .img span {
-    margin-top: 5px;
-}
-
-footer p {
-    font-size: 14px;
-    font-weight: 300;
-    opacity: 0.5;
-    margin-bottom: 20px;
-}
-
-footer h2 {
-    margin-bottom: 20px;
-}
-
-footer li {
-    margin-bottom: 10px;
-    opacity: 0.5;
 }

@@ -1,0 +1,34 @@
+.headlogin {
+    padding: 1px 0;
+    text-align: center;
+  }
+  
+  .header-container {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    
+  }
+  
+  .imgheaderlogin {
+    max-width: 200px; /* Đặt kích thước tối đa cho hình ảnh */
+    margin-top: 10px;
+  }
+  
+  .dn {
+    font-size: 18px;
+  }
+  
+  .lableheaderlogin {
+    text-decoration: none;
+    color: #fff;
+    margin: 0;
+    padding-left: 60%;
+
+  }
+  
+  .label-left {
+    margin-right: auto; /* Đẩy label này về bên trái */
+    font-size: 20;
+  }
+  

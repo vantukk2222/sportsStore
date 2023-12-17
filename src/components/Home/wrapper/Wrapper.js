@@ -27,7 +27,7 @@ const Wrapper = () => {
     return (
         <>
             <section className="wrapper background">
-                <div className="container grid2">
+                <div className="container grid1">
                     {data.map((val, index) => {
                         return (
                             <div className="product" key={index}>
