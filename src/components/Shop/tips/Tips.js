@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Cart from './Cart';
 import './style.css';
-import getUnAuth from '~/API/getUnAuth';
+import getUnAuth from '~/API/get';
 import Loading from '~/components/loading/Loading';
 
 const Tips = ({ shopItem }) => {

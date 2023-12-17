@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './ProductDetail.css';
-import getUnAuth from '~/API/getUnAuth';
+import getUnAuth from '~/API/get';
 import { FaArrowRight } from 'react-icons/fa';
 import { FaArrowLeft } from 'react-icons/fa6';
 import Loading from '../loading/Loading';

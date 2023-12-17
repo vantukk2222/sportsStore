@@ -3,7 +3,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import getUnAuth from '~/API/getUnAuth';
+import getUnAuth from '~/API/get';
 import Loading from '~/components/loading/Loading';
 const SampleNextArrow = (props) => {
     const { onClick } = props;

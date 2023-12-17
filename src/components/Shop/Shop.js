@@ -2,7 +2,7 @@ import MainShop from './MainShop';
 import { useState, useEffect } from 'react';
 import Tips from './tips/Tips';
 import { useLocation } from 'react-router-dom';
-import getUnAuth from '~/API/getUnAuth';
+import getUnAuth from '~/API/get';
 import Loading from '../loading/Loading';
 import Pagination from './Pagination';
 import Sortproduct from './Sortproduct';

@@ -9,6 +9,10 @@ const Login = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const store = JSON.parse(localStorage.getItem('authToken'));
+    useEffect(() => {
+        if (store) navigate('/');
+    }, []);
     const fetchData = async (un, pw) => {
         try {
             const response = await loginPage(un, pw);
@@ -16,9 +20,13 @@ const Login = () => {
                 throw new Error('Network response was not ok');
             }
             const { token } = response;
-            localStorage.setItem('authToken', token);
+            localStorage.setItem('authToken', JSON.stringify(token));
             sessionStorage.clear();
-            if (token) navigate('/');
+            if (token) {
+                //     console.log(response);
+                localStorage.setItem('User', JSON.stringify(un));
+                navigate('/');
+            }
         } catch (error) {
             alert('Bạn đã đăng nhập thất bại kiểm tra lại mật khẩu và tài khoản của bạn');
         } finally {

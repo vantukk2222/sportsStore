@@ -2,7 +2,7 @@ import { current } from '@reduxjs/toolkit';
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import getUnAuth from '~/API/getUnAuth';
+import getUnAuth from '~/API/get';
 import Loading from '~/components/loading/Loading';
 const ShopCart = ({ categoryItems }) => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ const ShopCart = ({ categoryItems }) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                if (!categoryItems || count >= categoryItems.length || productItems.length >= 9) return;
+                if (!categoryItems || count >= categoryItems.length || productItems.length >= 8) return;
                 const response = await getUnAuth(`product-information/find-by-category/${categoryItems[count].id}`);
                 if (!response) {
                     throw new Error('Network response was not ok');
@@ -30,10 +30,10 @@ const ShopCart = ({ categoryItems }) => {
                 setCount((prevCount) => prevCount + 1);
                 const dataProduct = response.content;
                 //      console.log(dataProduct);
-                if (dataProduct && productItems.length < 9) {
+                if (dataProduct && productItems.length < 8) {
                     setProductItems((prevProduct) => {
                         for (var i = 0; i < dataProduct.length; i += 1) {
-                            if (prevProduct.length == 9) break;
+                            if (prevProduct.length == 8) break;
                             prevProduct = [...prevProduct, dataProduct[i]];
                         }
                         return prevProduct;
@@ -49,7 +49,7 @@ const ShopCart = ({ categoryItems }) => {
     }, [categoryItems, count]);
     return (
         <>
-            {productItems.length < 9 ? (
+            {productItems.length < 8 ? (
                 <Loading />
             ) : (
                 productItems.map((value, index) => {

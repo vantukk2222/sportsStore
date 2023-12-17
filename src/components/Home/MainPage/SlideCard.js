@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router';
-import getUnAuth from '~/API/getUnAuth';
+import getUnAuth from '~/API/get';
 import Loading from '~/components/loading/Loading';
 const SlideCard = () => {
     const [productItems, setProductItems] = useState(null);

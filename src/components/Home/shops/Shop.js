@@ -2,7 +2,7 @@ import React, { useState, memo, useEffect } from 'react';
 import Catg from './Catg';
 import ShopCart from './ShopCart';
 import './style.css';
-import getUnAuth from '~/API/getUnAuth';
+import getUnAuth from '~/API/get';
 
 const Shop = () => {
     const [categoryItems, setCategoryItems] = useState(null);
