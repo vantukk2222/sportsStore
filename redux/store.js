@@ -27,6 +27,7 @@ import saveBillSlice from './reducers/Bill/billReducer';
 import removeCartItemSlice from './reducers/Cart/removeCartReducer';
 import roleSlice from './reducers/Role/roleReducer';
 import savePaymentSlice from './reducers/Payment/paymentReducer'
+import putStateProductSlice from './reducers/productReducer/putChangeState';
 // {userSlice}
 // >>>>>>> NewD
 
@@ -54,6 +55,7 @@ const rootReducer = combineReducers({
   setInforUser: setInforUserSlice,
   role: roleSlice,
   savePaymentReducer: savePaymentSlice,
+  putStateProduct: putStateProductSlice,
 })
 const persistConfig = {
   key: 'root',

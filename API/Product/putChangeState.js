@@ -1,29 +1,30 @@
 import axios from "axios";
-import { asyncStorage } from "../../utilies/asyncStorage";
-import { store } from "../../redux/store";
-import { logout } from "../../redux/reducers/Login/signinReducer";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { urlAPI } from "../apiAddress";
-const putChangeState = async (id, state) => {
+const putChangeState = async (id, state, authToken) => {
 
     //var authToken = await asyncStorage.getAuthToken();
-    // console.log(authToken);
+    console.log("token API", authToken);
     try {
-        const response = await axios.get(urlAPI + `/api/v1/product-information/${id}`, {
-            // headers: {
-            //     'Authorization': `Bearer ${authToken}`,
-            //     'Content-Type': 'application/json',
-            // },
 
-        });
+        const response = await axios.put(
+            urlAPI + `/api/v1/product-information/change-state/${id}?state=${state}`,
+            {},
+            {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json',
+                    'accept': '*/*'
+                },
+            }
+        );
 
-        // console.log('call API detail product');
-        return response.data;
+
+        console.log('response state', response);
+        return response.status;
     } catch (error) {
-        store.dispatch(logout())
-        console.error("error get product by id", error.response.data.message);
+        console.error("error put change state", error.response);
         throw error;
     }
 };
 
-export default getProductById;
+export default putChangeState;

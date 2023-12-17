@@ -4,6 +4,12 @@ import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import ListProduct from './ListProduct';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductsByBusiness } from '../../../redux/reducers/Business/getProductByBusiness';
+import putChangeState from '../../../API/Product/putChangeState';
+import { resetState, setStateProduct } from '../../../redux/reducers/productReducer/putChangeState';
+import { reset } from '../../../redux/reducers/User/setInforUser';
+import { toastError, toastsuccess } from '../../../components/toastCustom';
+import colors from '../../../constants_Tu/colors';
+
 
 const ProductBusiness = () => {
     const { dataProductbyBusi, loadingProductbyBusi, errorProductbyBusi } = useSelector((state) => state.productByBusiness)
@@ -15,12 +21,14 @@ const ProductBusiness = () => {
     const [desc, setDesc] = useState(true)
     const [state, setState] = useState(0)
     const { data, loading, error } = useSelector((state) => state.userData)
+
+    const { dataState, loadingSate, errorState } = useSelector((state) => state.putStateProduct)
     useEffect(() => {
         //console.log(data);
         dispatch(fetchProductsByBusiness(data?.id, page, pageSize, sort, desc, state))
     }, [data, page, pageSize, sort, desc, state])
     useEffect(() => {
-        console.log(dataProductbyBusi.content);
+        // console.log(dataProductbyBusi.content);
         setProducts(dataProductbyBusi.content)
     }, [dataProductbyBusi])
 
@@ -28,7 +36,18 @@ const ProductBusiness = () => {
         // Xử lý sự kiện sửa sản phẩm
         console.log('Edit product with ID:', productId);
     };
+    useEffect(() => {
+        if (dataState === 202) {
+            console.log("data State", dataState);
+            // Xử lý sự kiện xóa sản phẩm
 
+        }
+        //else {
+        //     toastError("Xoa san pham", "That bai")
+        // }
+        dispatch(resetState)
+
+    }, [dataState])
     const handleDelete = (productId) => {
         // Xử lý sự kiện xóa sản phẩm
         Alert.alert(
@@ -41,11 +60,18 @@ const ProductBusiness = () => {
                 },
                 {
                     text: 'Xóa',
+
                     onPress: () => {
-                        // Xử lý sự kiện xóa sản phẩm
-                        setProducts((prevProducts) =>
-                            prevProducts.filter((product) => product.id !== productId)
-                        );
+                        console.log("id", productId);
+                        dispatch(setStateProduct(productId, 2))
+                        if (dataState === 202) {
+                            // Xử lý sự kiện xóa sản phẩm
+                            setProducts((prevProducts) =>
+                                prevProducts.filter((product) => product.id !== productId)
+                            );
+                            toastsuccess("Xoa san pham", "Thanh cong")
+                        }
+
                     },
                 },
             ],
@@ -67,7 +93,9 @@ const ProductBusiness = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Product Management</Text>
+
             </View>
+            <View style={{ height: 1, backgroundColor: 'black' }}></View>
             <ListProduct
                 products={products}
                 onEdit={handleEdit}
@@ -98,7 +126,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: 'blue'
+        color: 'black'
     },
     navigation: {
         flexDirection: 'row',

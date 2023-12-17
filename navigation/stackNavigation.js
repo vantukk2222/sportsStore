@@ -17,6 +17,7 @@ import ListProductofSale from "../screens/Sale/ListProductofSale"
 import SalesofBusiness from "../screens/Sale/SalesofBusiness"
 import Information from "../screens/User/Information"
 import setInfor from "../screens/User/setInfor"
+import CreateNewProduct from "../screens/Business/Products/CreateNewProduct"
 
 import { LoginBottomNavigator } from "./bottomNavigation"
 
@@ -28,6 +29,7 @@ export const BusinessScreenNavigator = () => {
         <Stack.Navigator initialCalculations="BusinessBottomNavigator">
             <Stack.Screen name="BusinessBottomNavigator" component={BusinessBottomNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="CreateNewProduct" component={CreateNewProduct} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }

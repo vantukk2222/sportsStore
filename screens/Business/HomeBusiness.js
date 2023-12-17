@@ -4,13 +4,16 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors } from '../../constants';
+import { useNavigation } from '@react-navigation/native';
 const SellerHomeScreen = () => {
     // Giả sử danh sách sản phẩm của người bán
     const tabs = [
         {
             id: '1',
             name: 'Thêm sản phẩm',
-            iconName: 'archive'
+            iconName: 'archive',
+            naviga: 'CreateNewProduct'
+
             // image: require('./images/product1.jpg'),
         },
         {
@@ -34,9 +37,14 @@ const SellerHomeScreen = () => {
         // ...Thêm sản phẩm khác
     ];
 
+    const navigation = useNavigation();
     // Render mỗi sản phẩm trong danh sách
     const renderProductItem = ({ item }) => (
-        <TouchableOpacity style={styles.productContainer}>
+        <TouchableOpacity style={styles.productContainer}
+            onPress={() => {
+                navigation.navigate(item.naviga)
+            }}
+        >
             <Icon
                 style={styles.productImage}
                 name={item.iconName}
@@ -50,6 +58,7 @@ const SellerHomeScreen = () => {
         <View style={styles.container}>
 
             <Text style={styles.header}>Seller Home</Text>
+            <View style={{ height: 1, backgroundColor: 'white' }}></View>
             <TouchableOpacity style={styles.dsContainer}>
                 <Text style={styles.doanhSo}>Xem doanh số</Text>
             </TouchableOpacity>
@@ -74,9 +83,9 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontWeight: '600',
         marginBottom: 25,
-        color: 'black',
+        color: 'white',
 
     },
     productContainer: {

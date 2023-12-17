@@ -7,3 +7,6 @@
 
 *lodash*
 *yarn android*
+
+"react-native-image-picker"
+"react-native-dropdown-select-list
