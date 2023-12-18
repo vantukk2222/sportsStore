@@ -8,6 +8,7 @@ import Loading from '../loading/Loading';
 import Shopdetail from './Shopdetail';
 import Detail from './Detail';
 import Comment from './Comment';
+import postCart from '~/API/postCart';
 const ProductDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -40,30 +41,31 @@ const ProductDetail = () => {
         setSize(e.size);
         console.log(e.size);
     };
+    const addToCart = (product) => {
+        const cart = JSON.parse(localStorage.getItem('Cart'));
+        const id2 = product.productSet.find((e) => e.size == size).id;
+        const id_product_information = product.productSet.find((e) => e.size == size).id_product_information;
+        if (cart.find((c) => c.product.id == id2 && c.product.id_product_information == id_product_information)) {
+            cart.find(
+                (c) => c.product.id == id2 && c.product.id_product_information == id_product_information,
+            ).quantity += 1;
+        } else {
+            const user = JSON.parse(localStorage.getItem('User'));
+            const authToken = JSON.parse(localStorage.getItem('authToken'));
+            postCart(user.id, id2, 1, authToken);
+        }
+
+        localStorage.setItem('Cart', JSON.stringify(cart));
+    };
     const handleAdd = (product) => {
-        if (size != '') {
-            const cart = JSON.parse(localStorage.getItem('Cart'));
-            const id2 = product.productSet.find((e) => e.size == size).id;
-            const id_product_information = product.productSet.find((e) => e.size == size).id_product_information;
-            if (cart.find((c) => c.product.id == id2 && c.product.id_product_information == id_product_information))
-                cart.find(
-                    (c) => c.product.id == id2 && c.product.id_product_information == id_product_information,
-                ).quantity += 1;
-            localStorage.setItem('Cart', JSON.stringify(cart));
-        } else alert('Hãy chọn loại sản phẩm mua trước khi thêm vào giỏ hàng');
+        if (size != '') addToCart(product);
+        else alert('Hãy chọn loại sản phẩm mua trước khi thêm vào giỏ hàng');
     };
     const handleBuy = (product) => {
         if (size != '') {
-            const cart = JSON.parse(localStorage.getItem('Cart'));
-            const id2 = product.productSet.find((e) => e.size == size).id;
-            const id_product_information = product.productSet.find((e) => e.size == size).id_product_information;
-            if (cart.find((c) => c.product.id == id2 && c.product.id_product_information == id_product_information))
-                cart.find(
-                    (c) => c.product.id == id2 && c.product.id_product_information == id_product_information,
-                ).quantity += 1;
-            localStorage.setItem('Cart', JSON.stringify(cart));
+            addToCart(product);
             navigate('/cart');
-        } else alert('Hãy chọn loại sản phẩm mua trước khi mua');
+        } else alert('Hãy chọn loại sản phẩm mua trước khi thêm vào giỏ hàng');
     };
     useEffect(() => {
         const fetchData = async () => {

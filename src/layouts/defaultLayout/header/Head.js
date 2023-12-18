@@ -25,11 +25,11 @@ const Head = ({ userName }) => {
                         {userName ? (
                             <div className="account-menu">
                                 <label>
-                                    <Link to="/account">👤 {userName}</Link>
+                                    <Link to="/profile">👤 {userName}</Link>
                                 </label>
                                 <ul>
                                     <li>
-                                        <Link to="/myacc">👤 Hồ sơ của tôi</Link>
+                                        <Link to="/profile">👤 Hồ sơ của tôi</Link>
                                     </li>
                                     <li>
                                         <Link to="/track">🛒 Đơn hàng</Link>

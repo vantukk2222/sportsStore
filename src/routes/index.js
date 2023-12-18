@@ -12,6 +12,7 @@ import ProductDetail from '~/components/productdetail/ProductDetail';
 import layout_res from '~/layouts/layout_login/layout_res';
 import SearchProduct from '~/components/search/SearchProduct';
 import SearchallShop from '~/components/search/searchallShop/SearchallShop';
+import Profile from '~/components/profile/Profile';
 const VRoutes = [
     { path: '/shop/:id', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound, layout: defaultLayout },
@@ -23,6 +24,7 @@ const VRoutes = [
     { path: '/cart', component: Cart, layout: defaultLayout },
     { path: '/searchProduct/:name', component: SearchProduct, layout: defaultLayout },
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
+    { path: '/profile', component: Profile, layout: defaultLayout },
 ];
 
 export { VRoutes };

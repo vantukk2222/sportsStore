@@ -1,29 +1,25 @@
 import axios from 'axios';
-const loginPage = async (email, password) => {
+const postCart = async (id_user, id_product, quantity, authToken = '') => {
     try {
-        const response = await axios.post(
-            'https://project-pbl6-production.up.railway.app/api/v1/auth/signin',
+        console.log(id_user, id_product, quantity);
+        await axios.post(
+            'https://project-pbl6-production.up.railway.app/api/v1/cart/save',
             {
-                id_user: 10,
-                id_product: 1,
-                quantity: 1,
-                created_at: '2023-12-17T12:47:12.612Z',
-                updated_at: '2023-12-17T12:47:12.612Z',
+                id_user: id_user,
+                id_product: id_product,
+                quantity: quantity,
             },
             {
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json',
-                    'accept': '*/*'
+                    accept: '*/*',
+                    Authorization: `Bearer ${authToken}`,
                 },
             },
         );
-        // const { token } = response.data;
-        // localStorage.setItem('authToken', token);
-        return response.data;
     } catch (error) {
         console.log('error sign in' + error.message);
     }
 };
 
-export default loginPage;
+export default postCart;
