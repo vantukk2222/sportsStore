@@ -23,6 +23,7 @@ import { LoginBottomNavigator } from "./bottomNavigation"
 
 import { createStackNavigator } from '@react-navigation/stack'
 import { BusinessBottomNavigator } from './bottomBusinessNavigation'
+import CreateSize from "../screens/Business/Products/CreateSize"
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
     return (
@@ -30,6 +31,7 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="BusinessBottomNavigator" component={BusinessBottomNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="CreateNewProduct" component={CreateNewProduct} options={{ headerShown: false }} />
+            <Stack.Screen name="CreateSize" component={CreateSize} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }

@@ -31,7 +31,7 @@ const setInfor = ({ route }) => {
             email: TxtEmail.current || user.email,
             phone: TxtPhone.current || user.phone,
             cic: TxtCic.current || user.cic,
-            password: "$2a$10$FyUiMIaGMB4FRKSSiGUG6ump1uHtO4vJTFOijfBha3bE0u0KIeGxq",
+            // password: "$2a$10$FyUiMIaGMB4FRKSSiGUG6ump1uHtO4vJTFOijfBha3bE0u0KIeGxq",
         });
         setUser(newUser)
         // console.log(newUser)

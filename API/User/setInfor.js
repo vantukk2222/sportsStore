@@ -1,10 +1,11 @@
 import axios from "axios";
+import { urlAPI } from "../apiAddress";
 
 export const setInfor = async (userId, userData, authToken) => {
     console.log('User :', userData)
     try {
         const response = await axios.put(
-            `https://project-pbl6-production.up.railway.app/api/v1/user/save/${userId}`,
+            urlAPI + `/api/v1/user/save/${userId}`,
             userData,
             {
                 headers: {

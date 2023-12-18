@@ -1,33 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { colors } from '../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../../../redux/reducers/Caregory/getAllCategories';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useEvent } from 'react-native-reanimated';
-import { prepareAutoBatched } from '@reduxjs/toolkit';
 import ImagePickerComponent from './UploadImages';
+import { createImages, resetImage } from '../../../redux/reducers/Images/ImageReducer';
+import { toastError } from '../../../components/toastCustom';
+import { createProductInfor, resetProductInformation } from '../../../redux/reducers/productReducer/createProductInformation';
+import { useNavigation } from '@react-navigation/native';
+
 
 const CreateNewProduct = () => {
     const [name, setName] = useState('');
     const [detail, setDetail] = useState('');
+    const [attribute, setAttribute] = useState('');
     const [id_business, setIdBusiness] = useState(0);
     const [state, setState] = useState(2);
     const [selectedCategories, setSelectedCategories] = useState([]);
+
     const [selectedCParent, setSelectedCParent] = useState();
     const [selectedImage, setSelectedImage] = useState(null);
-    const [id_imageSet, setIdImageSet] = useState(0);
     const { data, loading, error } = useSelector((state) => state.userData)
-    const [nameCategory, setNameCategory] = useState()
 
     const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories)
+    const { dataProductInfor, loadingProductInfor, errorProductInfor } = useSelector((state) => state.createProductInformation)
     const [parentArray, setParentArray] = useState([])
     const [childArray, setChildArray] = useState([])
     const dispatch = useDispatch();
 
+
+    const [uploadedImages, setUploadedImages] = useState([]);
+    const [listIdImage, setListIdImage] = useState([]);
+
+    const { dataImage, loadingImage, errorImage } = useSelector((state) => state.createImage);
+
+
+    const navigation = useNavigation();
     const getChildArrayById = (parentId) => {
         const parentItem = dataCate?.find(item => item.id === parentId);
         // Kiểm tra xem có tồn tại parentItem và có thuộc tính categorySet không
@@ -50,29 +59,74 @@ const CreateNewProduct = () => {
             setSelectedCategories(updatedCategories);
         }
     };
-    const addToArrIfNotExists = (arr, number) => {
-        if (!arr.includes(number)) {
-            setSelectedCategories((precate) => [...precate, number])
-        }
-    }
+
     const addToArrIfKeyNotExists = (arr, object) => {
         const { key, value } = object;
-
-        // Kiểm tra xem key (số) đã tồn tại trong mảng chưa
         if (!arr.some(item => item.key === key || item.value === value)) {
-            // Nếu chưa tồn tại, thêm đối tượng vào mảng
             setSelectedCategories(prevState => [...prevState, object]);
         }
     };
 
     const searchByKey = (arr, inputKey) => {
         const foundItem = arr.find(item => item.key === inputKey);
-        return foundItem || null; // Trả về phần tử nếu tìm thấy, hoặc null nếu không tìm thấy
+        return foundItem || null;
+    };
+
+
+    //Tao product
+    const handleCreateProduct = (name, detail, attribute, id_business, id_categorySet, id_imageSet) => {
+        console.log(id_categorySet, id_imageSet);
+        return {
+            name: name || '',
+            detail: detail || '',
+            attribute: attribute || '',
+            id_business: id_business,
+            id_sale: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            id_categorySet: id_categorySet || [], // Extracting keys from selectedCategories
+            id_imageSet: id_imageSet || [], // You may set this value accordingly
+        };
+    };
+    //tao Image
+    const createImageObject = (name, url, is_main) => {
+        return {
+            name: name || '',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            is_main: is_main,
+            url: url || '',
+        };
     };
     useEffect(() => {
-        console.log("id bussiness", data);
+        // console.log(name, detail);
         dispatch(fetchCategories());
+        setIdBusiness(data.id)
+        return () => {
+            dispatch(resetImage())
+            dispatch(resetProductInformation());
+        }
     }, [data])
+    //data id image
+    useEffect(() => {
+        console.log("data image id", dataImage);
+        console.log(listIdImage);
+        if (dataImage) {
+
+            setListIdImage((preId) => [...preId, dataImage])
+        }
+
+    }, [dataImage])
+    useEffect(() => {
+        if (listIdImage.length > 0 && listIdImage.length === uploadedImages.length && !listIdImage.some(element => element === null)) {
+            //console.log('imageSet', listIdImage);
+            const id_categorySet = selectedCategories.map(category => category.key);
+            dispatch(createProductInfor(handleCreateProduct(name, detail, attribute, id_business, id_categorySet, listIdImage)))
+
+            setListIdImage([])
+        }
+    }, [listIdImage])
+
     useEffect(() => {
         // console.log(dataCate[0].categorySet);
         const ArrayP = dataCate?.map(item => {
@@ -84,31 +138,37 @@ const CreateNewProduct = () => {
         setParentArray(ArrayP)
     }, [dataCate])
 
-    useEffect(() => {
-        console.log("mang cate", selectedCategories)
-    }, [selectedCategories])
+    // useEffect(() => {
+    //     console.log("mang cate", selectedCategories)
+    // }, [selectedCategories])
+
+    // useEffect(() => {
+    //     console.log('upload image', uploadedImages);
+    // }, [uploadedImages])
+
     useEffect(() => {
         const ArrayC = getChildArrayById(selectedCParent)
         //console.log(ArrayC);
         setChildArray(ArrayC)
-        console.log("parent", selectedCParent);
+        //console.log("parent", selectedCParent);
     }, [selectedCParent])
-    // useEffect(() => {
+    useEffect(() => {
+        console.log('id product information', dataProductInfor);
+        if (dataProductInfor) {
+            navigation.navigate('CreateSize', { id_productinformation: dataProductInfor })
+        }
 
-    // }, [childArray])
+    }, [dataProductInfor, navigation])
 
-    const handleImageUpload = async () => {
-        // Implement image upload logic using Cloudinary
-        // Get the image URL and set it to selectedImage state
-        // Use the uploaded image URL to create the imageSet on your server
-        // Update the id_imageSet state with the response from the server
+    const handleListUrlChange = (newListUrl) => {
+        setUploadedImages(newListUrl);
     };
 
-    const handleSubmit = async () => {
-        // Implement your logic to send product data to the server
-        // Use id_imageSet state for the imageSet ID
-        // ...
-    };
+    if (errorProductInfor) {
+        console.log("error", errorProductInfor);
+        dispatch(resetProductInformation())
+        toastError('Tạo sản phẩm', 'không thành công')
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -131,11 +191,16 @@ const CreateNewProduct = () => {
                 placeholder="Nhập chi tiết sản phẩm"
                 style={{ height: 90 }}
             />
-
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Doanh nghiệp ID: {id_business}</Text>
-
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10 }}>Trạng thái: {state}</Text>
-
+            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Thuộc tính:</Text>
+            <TextInput
+                color={colors.denNhe}
+                placeholderTextColor={'gray'}
+                value={attribute}
+                onChangeText={setAttribute}
+                placeholder="Thuộc tính sản phẩm"
+                style={{ height: 90 }}
+            />
+            {/* <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Doanh nghiệp ID: {id_business}</Text> */}
 
             <Text style={{ color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10 }}>Danh mục:</Text>
 
@@ -178,12 +243,12 @@ const CreateNewProduct = () => {
                     childArray.length > 0 && < SelectList
                         setSelected={(val) => {
                             //setSelectedCParent(val)
-                            { console.log(searchByKey(parentArray, selectedCParent), searchByKey(childArray, val)); }
+                            // { console.log(searchByKey(parentArray, selectedCParent), searchByKey(childArray, val)); }
                             addToArrIfKeyNotExists(selectedCategories, searchByKey(parentArray, selectedCParent))
                             addToArrIfKeyNotExists(selectedCategories, searchByKey(childArray, val))
                         }}
                         data={childArray}
-                        placeholder={"Select Category"}
+                        placeholder={"Select Detail Category"}
                         dropdownTextStyles={{ color: 'black' }}
                         inputStyles={{ color: 'black' }}
                         boxStyles={{ marginTop: 15 }}
@@ -194,11 +259,35 @@ const CreateNewProduct = () => {
 
 
             <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Hình ảnh:</Text>
-            <Button title="Chọn ảnh" onPress={handleImageUpload} />
+            {/* <Button title="Chọn ảnh" onPress={handleImageUpload} />
 
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>ID Hình ảnh: {id_imageSet}</Text>
-            <ImagePickerComponent />
-            <Button title="Tạo sản phẩm" onPress={handleSubmit} />
+            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>ID Hình ảnh: {id_imageSet}</Text> */}
+            <ImagePickerComponent onListUrlChange={handleListUrlChange} />
+            <TouchableOpacity title="Tạo sản phẩm"
+                onPress={() => {
+
+                    uploadedImages.forEach((item, index) => {
+
+                        const isMain = index === 0
+                        dispatch(createImages(createImageObject(`Image${id_business}${index}`, item, isMain)))
+                    });
+
+
+                }}
+                style={{
+                    marginTop: 5,
+                    height: 50,
+                    width: 200,
+                    backgroundColor: 'skyblue',
+                    borderRadius: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 20,
+                }} >
+                {loadingProductInfor ? <ActivityIndicator size="large" color={colors.success} /> :
+                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Tạo sản phẩm</Text>}
+            </TouchableOpacity>
         </ScrollView >
     );
 };
