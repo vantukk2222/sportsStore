@@ -10,6 +10,8 @@ import notFound from '~/components/NotFound/notFound';
 import Shop from '~/components/Shop/Shop';
 import ProductDetail from '~/components/productdetail/ProductDetail';
 import layout_res from '~/layouts/layout_login/layout_res';
+import SearchProduct from '~/components/search/SearchProduct';
+import SearchallShop from '~/components/search/searchallShop/SearchallShop';
 const VRoutes = [
     { path: '/shop/:id', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound, layout: defaultLayout },
@@ -19,6 +21,8 @@ const VRoutes = [
     { path: '/login', component: Login, layout: layout_login },
     { path: '/register', component: Register, layout: layout_res },
     { path: '/cart', component: Cart, layout: defaultLayout },
+    { path: '/searchProduct/:name', component: SearchProduct, layout: defaultLayout },
+    { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
 ];
 
 export { VRoutes };

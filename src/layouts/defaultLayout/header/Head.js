@@ -1,12 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './head.css';
 const Head = ({ userName }) => {
-    const navigate = useNavigate();
-    const handleLogout = () => {
+    const handleLogout = (e) => {
+        e.preventDefault();
         localStorage.clear();
         const path = window.location.pathname;
         if (path == '/') window.location.reload();
-        else navigate('/');
+        else window.location.assign('/');
     };
     return (
         <>
@@ -35,7 +35,7 @@ const Head = ({ userName }) => {
                                         <Link to="/track">🛒 Đơn hàng</Link>
                                     </li>
                                     <li>
-                                        <p onClick={() => handleLogout()}>🚪 Đăng xuất</p>
+                                        <Link onClick={(e) => handleLogout(e)}>🚪 Đăng xuất</Link>
                                     </li>
                                 </ul>
                             </div>

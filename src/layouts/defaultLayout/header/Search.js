@@ -7,6 +7,22 @@ const Search = ({ id }) => {
     const cart = JSON.parse(localStorage.getItem('Cart'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    window.addEventListener('scroll', function () {
+        const search = document.querySelector('.search');
+        search.classList.toggle('active', window.scrollY > 100);
+    });
+    const [searchValue, setSearchValue] = useState('');
+
+    const [showMenu, setShowMenu] = useState(false);
+
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        setSearchValue(value);
+        setShowMenu(value.trim() != '');
+    };
+    const handleLinkClick = (event) => {
+        event.preventDefault();
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -15,7 +31,7 @@ const Search = ({ id }) => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-               // console.log(response);
+                // console.log(response);
                 localStorage.setItem('Cart', JSON.stringify(response));
             } catch (error) {
                 setError(error);
@@ -36,8 +52,29 @@ const Search = ({ id }) => {
                     </div>
                     <div className="search-box f_flex">
                         <i className="fa fa-search"></i>
-                        <input type="text" placeholder="Tìm kiếm..." />
-                        {/* <span>Tìm kiếm</span> */}
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm..."
+                            value={searchValue}
+                            onChange={(e) => handleInputChange(e)}
+                        />
+                        {showMenu && (
+                            <div className="search-menu">
+                                <ul>
+                                    <li>
+                                        <Link to={`/searchShop/${searchValue}`}>
+                                            Tìm kiếm theo shop: {searchValue}{' '}
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to={`/searchProduct/${searchValue}`}>
+        
+                                            Tìm kiếm theo sản phẩm: {searchValue}
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
                     </div>
                     <div className="icon f_flex width">
                         <div className="cart">

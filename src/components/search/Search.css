@@ -1,0 +1,338 @@
+/* Catg.css */
+
+.category {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+/* Catg.css */
+
+.filter-category button {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+    /* Add cursor style to indicate interactivity */
+}
+
+.filter-brand select option {
+    color: #333;
+    /* Set the color of the options */
+}
+
+.filter-brand select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.filter-brand select {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+    /* Add cursor style to indicate interactivity */
+}
+
+.filter-category select option {
+    color: #333;
+    /* Set the color of the options */
+}
+
+.filter-category select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.filter-price {
+    margin-bottom: 15px;
+}
+
+.filter-search input {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.filter-search input::placeholder {
+    color: #888;
+}
+
+.filter-search input:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Catg.css */
+
+.filter-price {
+    margin-bottom: 15px;
+}
+
+.filter-price h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.filter-price p {
+    margin: 0;
+    padding: 5px;
+}
+
+.filter-price input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.filter-price input:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.filter-price span {
+    display: block;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.filter-price button {
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.filter-price button:hover {
+    background-color: #0056b3;
+}
+
+.filter-price button:active {
+    background-color: #004080;
+}
+
+
+.filter-price input {
+    padding: 5px;
+}
+
+.filter-price p {
+    margin: 0;
+    padding: 5px;
+}
+
+.filter-price span {
+    display: block;
+}
+
+.filter-price button {
+    color: black;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Catg.css */
+
+.filter-clear {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.filter-clear button {
+    padding: 10px;
+    background-color: #fff;
+    color: #007bff;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.filter-clear button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+
+.shopsearch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  height: 60px;
+}
+
+.shopsearch {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0px;
+}
+
+
+.ratingfl {
+  white-space: nowrap; /* Ngăn chặn các phần tử xuống dòng */
+}
+
+.rating, .followers {
+  display: inline-block;
+  margin-right: 10px; /* Để tạo khoảng cách giữa các phần tử */
+}
+
+/* Các kiểu khác của rating và followers */
+
+
+.shopsearch img {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+}
+
+
+.shopinfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.shopinfo h2 {
+  margin: 0;
+  text-align: center;
+}
+
+.rating, .followers {
+  margin-top: 5px;
+}
+
+.view-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.view-button:hover {
+  background-color: #45a049;
+}
+
+.shop .category {
+    padding: 30px;
+    height: 100%;
+  }
+  .chead h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .chead h1:nth-child(2) {
+    opacity: 0.5;
+    border-left: 3px solid rgba(0, 0, 0, 0.5);
+    padding-left: 70px;
+  }
+  .shop .category .box {
+    background-color: #f6f9fc;
+    margin: 15px 0;
+    padding: 5px 10px;
+    transition: 0.5s;
+    border-radius: 5px;
+  }
+  .shop .category img {
+    width: auto;
+    height: auto;
+  }
+  .shop .category .box:hover {
+    background-color: #fff;
+    box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
+  }
+  .shop .box2 {
+    margin-top: 100px !important;
+    text-align: center;
+  }
+  .shop .category button {
+    padding: 10px;
+    background: none;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+  }
+  
+  .shop .contentWidth {
+    margin-left: 10px;
+  }
+  
+  .grid1 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1px;
+  }
+  .shop .product img {
+    width: 100%;
+    height: 100%; 
+    
+  }
+  .shop .product {
+    transition: 0.5s;
+    
+  }
+  
+  .shop .product:hover {
+    box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
+  }
+  
+  .pricemaxmin {
+    display: flex;
+    align-items: center; /* Can be adjusted based on your layout needs */
+  }
+  
+  .price-inputs {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Add any existing styles you might have */
+
+.price-input {
+    width: 67px; /* Độ rộng của input */
+    padding: 8px; /* Padding bên trong input */
+    font-size: 14px; /* Kích thước chữ */
+    border: 1px solid #ccc; /* Viền của input */
+    border-radius: 4px; /* Độ cong góc của input */
+    margin-right: 10px; /* Khoảng cách phải giữa input và các phần tử khác */
+    box-sizing: border-box; /* Đảm bảo rằng padding và border được tính vào kích thước tổng cộng của input */
+  }
+  
+  /* Add any additional styling as needed */
+  
+
+
+
+  
+  .SearchShopCart{
+    
+  }

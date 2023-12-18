@@ -15,7 +15,7 @@ const ProductCart = ({ productItems }) => {
     };
     return (
         <>
-            {productItems.map((product, index) => (
+            {productItems?.map((product, index) => (
                 <div key={index} className="box" onClick={() => handleClick(product.id)}>
                     <div className="product mtop">
                         <div key={product.id} className="img">

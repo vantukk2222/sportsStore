@@ -1,9 +1,14 @@
 import React from 'react';
 import logoImage from './shop.png';
+import { useNavigate } from 'react-router';
 
 const Shopdetail = ({ business }) => {
+    const navigate = useNavigate();
     const date = new Date(business.time_start);
     const d = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    const handleClick = (id) => {
+        navigate(`/shop/${id}`);
+    };
     return (
         <div className="shopdetail-container">
             <div className="store-header">
@@ -12,7 +17,9 @@ const Shopdetail = ({ business }) => {
                         <img src={logoImage} alt="DT5 SPORT" />
                         <div className="shop-flow">
                             &nbsp;<h1 className="h1-shopname">{business.name}</h1>
-                            <button className="b">Xem shop</button>
+                            <button className="b" onClick={() => handleClick(business.id)}>
+                                Xem shop
+                            </button>
                             {/* <button className="b">Nhắn tin</button> */}
                         </div>
                     </div>
