@@ -1,5 +1,5 @@
 import getUnAuth from '~/API/get';
-import logoImage from './logo.png';
+import logoImage from './logooo.png';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -68,7 +68,6 @@ const Search = ({ id }) => {
                                     </li>
                                     <li>
                                         <Link to={`/searchProduct/${searchValue}`}>
-        
                                             Tìm kiếm theo sản phẩm: {searchValue}
                                         </Link>
                                     </li>

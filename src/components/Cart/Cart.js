@@ -64,10 +64,10 @@ const Cart = () => {
                         <div className=" d_flex">
                             <h4>Tổng tiền :</h4>
                             <h3>{totalPrice} Vnđ</h3>
-                            <Link to="/checkout" className="payButton">
-                                Thanh toán
-                            </Link>
                         </div>
+                        <button className="payButton">
+                            <Link to="/checkout">Thanh toán</Link>
+                        </button>
                     </div>
                 </div>
             </section>
