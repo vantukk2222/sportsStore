@@ -12,8 +12,9 @@ const loginPage = async (email, password) => {
             },
             {
                 headers: {
+                    'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json',
-                    Accept: '*/*',
+                    'accept': '*/*'
                 },
             },
         );

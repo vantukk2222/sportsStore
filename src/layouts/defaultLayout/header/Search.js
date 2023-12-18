@@ -20,9 +20,6 @@ const Search = ({ id }) => {
         setSearchValue(value);
         setShowMenu(value.trim() != '');
     };
-    const handleLinkClick = (event) => {
-        event.preventDefault();
-    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -62,12 +59,12 @@ const Search = ({ id }) => {
                             <div className="search-menu">
                                 <ul>
                                     <li>
-                                        <Link to={`/searchShop/${searchValue}`}>
+                                        <Link to={`/searchShop/${encodeURIComponent(searchValue)}`}>
                                             Tìm kiếm theo shop: {searchValue}{' '}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to={`/searchProduct/${searchValue}`}>
+                                        <Link to={`/searchProduct/${encodeURIComponent(searchValue)}`}>
                                             Tìm kiếm theo sản phẩm: {searchValue}
                                         </Link>
                                     </li>

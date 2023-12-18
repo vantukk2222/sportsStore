@@ -7,7 +7,7 @@ const ProductCart = ({ productItems }) => {
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
-    console.log(productItems);
+    //console.log(productItems);
     const [count, setCount] = useState(0);
 
     const increment = () => {

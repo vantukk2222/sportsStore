@@ -2,8 +2,14 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket, faStar, faComment, faReply, faClock } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
 
 const Shop = ({ shop }) => {
+    console.log(shop);
+    const navigate = useNavigate();
+    const handleClick = (id) => {
+        navigate(`/shop/${id}`);
+    };
     return (
         <div className="allshop">
             <img src={shop.logo} alt={shop.name} />
@@ -18,27 +24,30 @@ const Shop = ({ shop }) => {
 
             <div className="allshopdiv">
                 <FontAwesomeIcon icon={faShoppingBasket} /> Sản phẩm
-                <p>100</p>
+                <p>{shop.count_product}</p>
             </div>
 
             <div className="allshopdiv">
                 <FontAwesomeIcon icon={faComment} /> Đánh giá
-                <p>100</p>
+                <p>{shop.count_comment}</p>
             </div>
 
             <div className="allshopdiv">
                 <FontAwesomeIcon icon={faReply} /> Tỉ lệ phản hồi
-                <p>100</p>
+                <p>100%</p>
             </div>
 
             <div className="allshopdiv">
                 <FontAwesomeIcon icon={faClock} /> Thời gian phản hồi
-                <p>100</p>
+                <p>Không có sẵn</p>
             </div>
 
             <div className="allshopdiv">
-                <button className="allshopview-button">View Shop</button>&nbsp;&nbsp;
-                <button className="allshopview-button">Theo dõi</button>
+                <button className="allshopview-button" onClick={() => handleClick(shop.id)}>
+                    View Shop
+                </button>
+                &nbsp;&nbsp;
+                {/* <button className="allshopview-button">Theo dõi</button> */}
             </div>
         </div>
     );

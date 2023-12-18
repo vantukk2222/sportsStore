@@ -9,6 +9,9 @@ const Cart = () => {
     }, []);
     const cart = JSON.parse(localStorage.getItem('Cart'));
     //console.log(cart);
+    const handleClick = (id) => {
+        if (id) navigate(`/product/${id}`);
+    };
     const totalPrice = cart?.reduce((price, item) => price + item.quantity * item.product.price, 0);
     return (
         <>
@@ -24,7 +27,11 @@ const Cart = () => {
                                 return (
                                     <div className="cart-list product d_flex" key={item.id}>
                                         <div className="img">
-                                            <img src={item.product.image_product_information} alt="" />
+                                            <img
+                                                src={item.product.image_product_information}
+                                                alt=""
+                                                onClick={() => handleClick(item.product.id_product_information)}
+                                            />
                                         </div>
 
                                         <div className="cart-details">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './ProductDetail.css';
 import getUnAuth from '~/API/get';
 import { FaArrowRight } from 'react-icons/fa';
@@ -8,8 +8,9 @@ import Loading from '../loading/Loading';
 import Shopdetail from './Shopdetail';
 import Detail from './Detail';
 import Comment from './Comment';
-const ProductDetail = ({ addToCart }) => {
+const ProductDetail = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [productItem, setProductItem] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,6 +19,7 @@ const ProductDetail = ({ addToCart }) => {
     const [quantity, setQuantity] = useState(0);
     const [price, setPrice] = useState(0);
     const [id, setId] = useState(0);
+    const [size, setSize] = useState('');
     const showNextImages = () => {
         const totalImages = productItem.imageSet.length;
         const imagesToShow = 3;
@@ -32,10 +34,36 @@ const ProductDetail = ({ addToCart }) => {
         setStart(index);
     };
     const handleSize = (e) => {
-        console.log(productItem.productSet);
         setId(productItem.productSet.find((element) => element.id === e.id).id);
         setQuantity(e.quantity);
         setPrice(e.price);
+        setSize(e.size);
+        console.log(e.size);
+    };
+    const handleAdd = (product) => {
+        if (size != '') {
+            const cart = JSON.parse(localStorage.getItem('Cart'));
+            const id2 = product.productSet.find((e) => e.size == size).id;
+            const id_product_information = product.productSet.find((e) => e.size == size).id_product_information;
+            if (cart.find((c) => c.product.id == id2 && c.product.id_product_information == id_product_information))
+                cart.find(
+                    (c) => c.product.id == id2 && c.product.id_product_information == id_product_information,
+                ).quantity += 1;
+            localStorage.setItem('Cart', JSON.stringify(cart));
+        } else alert('Hãy chọn loại sản phẩm mua trước khi thêm vào giỏ hàng');
+    };
+    const handleBuy = (product) => {
+        if (size != '') {
+            const cart = JSON.parse(localStorage.getItem('Cart'));
+            const id2 = product.productSet.find((e) => e.size == size).id;
+            const id_product_information = product.productSet.find((e) => e.size == size).id_product_information;
+            if (cart.find((c) => c.product.id == id2 && c.product.id_product_information == id_product_information))
+                cart.find(
+                    (c) => c.product.id == id2 && c.product.id_product_information == id_product_information,
+                ).quantity += 1;
+            localStorage.setItem('Cart', JSON.stringify(cart));
+            navigate('/cart');
+        } else alert('Hãy chọn loại sản phẩm mua trước khi mua');
     };
     useEffect(() => {
         const fetchData = async () => {
@@ -46,7 +74,7 @@ const ProductDetail = ({ addToCart }) => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                console.log(response);
+                //   console.log(response);
                 response.productSet.sort((a, b) => a.id - b.id);
 
                 setProductItem(response);
@@ -134,11 +162,11 @@ const ProductDetail = ({ addToCart }) => {
                                         </button>
                                     ))}
                             </p>
-                            <button onClick={() => addToCart(productItem)} className="add-to-cart-button">
+                            <button onClick={() => handleAdd(productItem)} className="add-to-cart-button">
                                 Thêm vào giỏ hàng
                             </button>
                             &nbsp;&nbsp;&nbsp;
-                            <button onClick={() => addToCart(productItem)} className="add-to-cart-button">
+                            <button onClick={() => handleBuy(productItem)} className="add-to-cart-button">
                                 Mua ngay
                             </button>
                         </div>

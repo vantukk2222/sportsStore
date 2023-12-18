@@ -5,13 +5,6 @@ import { Fragment } from 'react';
 function App() {
     const routers = VRoutes;
     const cart = JSON.parse(localStorage.getItem('Cart'));
-    const addToCart = (e) => {
-        const productExit = cart.find((item) => item.product.id === e.id);
-
-        if (productExit) {
-        } else {
-        }
-    };
     return (
         <Router>
             <div className="App">
@@ -24,8 +17,8 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    <Layout addToCart={addToCart}>
-                                        <Page addToCart={addToCart} />
+                                    <Layout >
+                                        <Page  />
                                     </Layout>
                                 }
                             />
