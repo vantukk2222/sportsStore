@@ -64,15 +64,13 @@
 /* Password input and eye icon styling */
 .input-2 {
     position: relative;
-
-    i {
-        cursor: pointer;
-        position: absolute;
-        top: 17px;
-        right: 10px;
-    }
 }
-
+.input-2 i {
+    cursor: pointer;
+    position: absolute;
+    top: 42px;
+    right: 10px;
+}
 /* Button styling */
 button {
     margin-top: 15px;

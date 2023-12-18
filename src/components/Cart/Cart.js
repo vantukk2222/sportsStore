@@ -26,11 +26,13 @@ const Cart = () => {
                                         <div className="img">
                                             <img src={item.product.image_product_information} alt="" />
                                         </div>
+
                                         <div className="cart-details">
                                             <h3>{item.product.name_product_information}</h3>
+                                            <h4> Phân loại hàng: {item.product.size}</h4>
                                             <h4>
-                                                {item.product.price} Vnđ * {item.quantity}
-                                                <span>Tổng: {productQty} Vnđ</span>
+                                                {item.product.price} Vnđ x {item.quantity}
+                                                <span>Thành tiền: {productQty} Vnđ</span>
                                             </h4>
                                         </div>
                                         <div className="cart-items-function">
