@@ -4,6 +4,7 @@ import { urlAPI } from "../apiAddress";
 import { toastError, toastsuccess } from "../../components/toastCustom";
 
 const savePaymentAPI = async (id_user, authToken) => {
+  console.log("payment MOMOAPI:", id_user, authToken);
     try {
         if (!authToken) {
           toastError("Xin chào","Phiên đăng nhập đã hết hạn")

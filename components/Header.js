@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -15,8 +15,11 @@ const HeaderComp = ({init = "Start"}) => {
 
     // const init = "Start";
     // const dispatch = useDispatch();
-    const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
+    // const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
     const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
+    const [userName, setUserName] = useState('')
+
+
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -25,8 +28,17 @@ const HeaderComp = ({init = "Start"}) => {
         navigation.goBack();
         // console.log("Log number id: ", 111);
       };
+
+
     useEffect(()=>{
+        const fetchUserName = async() =>{
+            const uname = await asyncStorage.getUserNameStorage('userName')
+            setUserName(uname)
+        }
+        fetchUserName()
+        
         console.log("Username in Header: ", userName);
+
         try {
             dispatch(fetchUserByUserName(userName))
         }

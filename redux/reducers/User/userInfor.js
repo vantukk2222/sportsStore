@@ -47,7 +47,7 @@ export const fetchUserByUserName = (userName) => async (dispatch) => {
         dispatch(getUsersuccess(data));
 
     } catch (error) {
-        dispatch(logout())
+        // dispatch(logout())
 
         dispatch(getUserFailure(error.message))
     }

@@ -19,7 +19,7 @@ const ProductList = (props) => {
     const [searchText, setSearchText] = useState('');
 
     const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(30);
+    const [pageSize, setPageSize] = useState(10);
     const [sort, setSort] = useState('name');
     const [desc, setDesc] = useState(false);
 
@@ -145,7 +145,7 @@ const ProductList = (props) => {
             }
             <View style={styles.line}></View>
 
-            <FlatList style={{ flexDirection: 'row', margin: 5, backgroundColor: colors.facebook, borderRadius: 10 }}
+            {/* <FlatList style={{ flexDirection: 'row', margin: 5, backgroundColor: colors.facebook, borderRadius: 10 }}
                 data={products}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
@@ -161,7 +161,25 @@ const ProductList = (props) => {
                     </TouchableOpacity>
 
                 )}
-            />
+            /> */}
+            <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap:'wrap',margin: 5}}>
+                {products.map((item) => (
+                    <TouchableOpacity
+                    
+                        key={item.id.toString()}
+                        style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}
+                        onPress={() => {
+                            navigation.navigate('DetailProduct', { item });
+                        }}>
+                        <ProductItem
+                            imageSource={item?.imageSet[0]?.url}
+                            productName={item?.name}
+                            productPrice={item?.price_min}
+                            sale={item?.sale}
+                        />
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
             {isAll === true && <View style={styles.containerPages}>
                 <View style={styles.iconBackPage}>
                     <Icon

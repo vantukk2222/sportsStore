@@ -77,6 +77,9 @@ function Login(props) {
     if (data && handleCheckArray(data?.roles, "ROLE_CUSTOMER")) {
       console.log("hereeeeee");
       dispatch(setRole('ROLE_CUSTOMER'))
+    // navigation.navigate('LoginBottomNavigator')
+
+      navigation.navigate
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -88,6 +91,8 @@ function Login(props) {
     }
     else if (data) {
       dispatch(setRole('ROLE_BUSINESS'))
+    // navigation.navigate('BusinessBottomNavigator')
+
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -97,7 +102,6 @@ function Login(props) {
         })
       );
     }
-
   }, [data])
   const handlePress = async () => {
     setButtonDisabled(true);
@@ -118,6 +122,7 @@ function Login(props) {
               await asyncStorage.setUsername(valueEmail)
               toastsuccess("Đăng nhập thành công", "Chào mừng bạn đến với SportStore")
               // console.log("login: "+ await asyncStorage.getAuthToken())
+              console.log("token in login:",dataToken);
               setToken(dataToken)
 
               // setValueEmail('')
@@ -135,6 +140,7 @@ function Login(props) {
     }, 500)
   };
   //  if(!getToken()) return <Loading/>
+  if(loginState.isLoading) return <Loading></Loading>
   if (errorLoad) { return <Text style={{ color: 'red' }}>Error: {error}</Text>; }
   return (
 
@@ -339,10 +345,13 @@ function Login(props) {
 
   );
 }
+
 const mapStateToProps = (state) => ({
   loginState: state.login
 })
+
 const mapDispatchToProps = {
   loginUser
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

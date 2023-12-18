@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, Image, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllSale, resetSale } from '../../redux/reducers/Sale/getAllSale';
 import Loading from '../../components/loading';
@@ -39,12 +39,12 @@ const FlatListSale = () => {
 
     const renderItem = ({ item }) => (
         < View style={styles.item} >
-            <Image source={{ uri: item.url }} style={styles.image} />
+            <Image source={{ uri: item?.url }} style={styles.image} />
             <View style={{ marginLeft: 10 }}>
                 <TouchableOpacity
                     onPress={() => { navigation.navigate('ListProductofSale', { item }) }}>
-                    <Text style={styles.business}>{item.businessResponse.name}</Text>
-                    <Text style={styles.title}>{item.content}</Text>
+                    <Text style={styles.business}>{item?.businessResponse.name}</Text>
+                    <Text style={styles.title}>{item?.content}</Text>
                 </TouchableOpacity>
 
             </View>
@@ -61,13 +61,30 @@ const FlatListSale = () => {
                     <Text style={styles.viewAll}>View all</Text>
                 </TouchableOpacity>
             </View>
-            <FlatList
+            {/* <FlatList
                 data={sale}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
-            />
+            /> */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {sale?.map((item) => (
+                    <View key={item.id} style={styles.item}>
+                        <Image source={{ uri: item?.url }} style={styles.image} />
+                        <View style={{ marginLeft: 10 }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('ListProductofSale', { item });
+                                }}>
+                                <Text style={styles.business}>{item?.businessResponse.name}</Text>
+                                <Text style={styles.title}>{item?.content}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
+
         </View>
     );
 };

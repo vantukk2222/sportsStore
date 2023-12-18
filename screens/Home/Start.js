@@ -67,10 +67,9 @@ const Start = () => {
                 dispatch(fetchUserByUserName(userName))
                 dispatch(fetchCategories());
             } catch (error) {
-                dispatch(logout())
+                // dispatch(logout())
             }
         }
-
     }, [userName]);
 
 
@@ -102,7 +101,7 @@ const Start = () => {
     useEffect(() => {
         try { dispatch(fetchProducts(page, pageSize, sort, desc)); }
         catch (error) {
-            dispatch(logout())
+            // dispatch(logout())
         }
     }, [page, pageSize, sort, desc]);
 
@@ -111,7 +110,7 @@ const Start = () => {
         try {
             setProducts(data.content);
         } catch (error) {
-            dispatch(logout())
+            // dispatch(logout())
 
         }
     }, [data]);
@@ -144,43 +143,9 @@ const Start = () => {
             <Header />
             <ScrollView>
 
-                {/* <View style={styles.searchContainer}>
-                    <TextInput style={styles.input}
-                        placeholder="Search Product"
-                        // placeholderTextColor="gray"
-                        underlineColorAndroid={colors.alert}
-                    // =======
-                    //         <ScrollView style={{ backgroundColor: colors.accent, flex: 100 }}>
-                    //             <StatusBar backgroundColor={colors.trangXam} />
-                    //             <Header />
-                    //             <View style={styles.line}></View>
-                    //             <View style={styles.searchContainer}>
-                    //                 <TextInput style={styles.input}
-                    //                     placeholder="Search Product"
-                    //                     // placeholderTextColor="gray"
-                    //                     underlineColorAndroid={colors.alert}
-                    //                     // onChangeText={}
-                    //                 />
-                    //                 <View style={styles.filter}>
-                    //                     <Icon
-                    //                         style={{ color: 'white', textAlign: 'center' }}
-                    //                         name="search"
-                    //                         size={25}
-                    //                         onPress={()=>{dispatch(listCartByIdUser(47))}}
-                    // >>>>>>> NewD
-                    />
-                    <View style={styles.filter}>
-                        <Icon
-                            style={{ color: 'white', textAlign: 'center' }}
-                            name="search"
-                            size={25}
-                        />
-                    </View>
-                </View> */}
-
-                {/* Category */}
+               {/* Categories */}
                 <View style={styles.categoriesContainer}>
-                    <View
+                    {/* <View
                         style={{
                             display: 'flex',
                             justifyContent: 'space-between',
@@ -189,13 +154,16 @@ const Start = () => {
                             paddingLeft: 18,
                             marginTop: 10,
                         }}>
-                    </View>
+                    </View> */}
                     <ListCategory />
                 </View>
 
+                
                 {/* Sale */}
-                <View style={styles.container}>
+                    
+                <View style={styles.container}  >
                     <Image
+                    onPress={()=>{ console.log(1) }}
                         source={require('../../assets/images/banner3.jpeg')}
                         style={styles.backgroundImage}
                     />
@@ -247,6 +215,8 @@ const Start = () => {
                         <TouchableOpacity
                             onPress={() => {
                                 handleGoList()
+                                // console.log("token in start: ", authToken)
+
                                 // console.log("DataUser:", dataUser?.id);
                             }}
                             style={{

@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   Alert,
   Modal,
+  Button,
 } from 'react-native';
 // import InAppBrowser from 'react-native-inappbrowser-reborn';
 
@@ -20,8 +21,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLOURS } from './Database';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useDispatch, useSelector } from 'react-redux';
-import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { listCartByIdUser } from '../../redux/reducers/Cart/listCartReducer';
 import { formatMoneyVND } from '../../utilies/validation';
 import ShopInfo from '../Business/ShopInfo';
 import getDetailProduct, { fetchProductbyId } from '../../redux/reducers/productReducer/getDetailProduct';
@@ -30,19 +31,23 @@ import RenderProducts from '../Cart/CartScreen';
 import { saveBill } from '../../redux/reducers/Bill/billReducer';
 import { toastError, toastsuccess } from '../../components/toastCustom';
 import Loading from '../../components/loading';
-import { savePayment } from '../../redux/reducers/Payment/paymentReducer';
+import { removePaymentState, savePayment } from '../../redux/reducers/Payment/paymentReducer';
 import WebView from 'react-native-webview';
 // import MaterialCommunityIcons
 // {Items}
-const MyCart = ({ route, navigation }) => {
+const MyCart = ({ route, navigation}, props) => {
+  const {
+    cartState,
+    // paymentState
+  } = props;
   const { id_user } = route.params
   const dispatch = useDispatch()
   const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer)
-  const {data: dataMOMO, isLoading: loadingMOMO, error: errorMOMO} = useSelector((state)=> state.savePaymentReducer)
 
   // console.log("data Cart: ", dataCart);
-  const [product, setProduct] = useState(dataCart);
+  const [product, setProduct] = useState(cartState?.dataCart);
   const [total, setTotal] = useState(null);
+  const [link, setlink] = useState(null)
   // const groupedProductsByBusinessWithQuantity = new Map();
 
 
@@ -53,36 +58,63 @@ const MyCart = ({ route, navigation }) => {
 
   const [groupedProducts, setGroupedProducts] = useState([]);
   const [visible, setVisible] = useState(false)
-  useEffect(() => {
-    // console.log("i = ", i);
+  // useEffect(() => {
+  //   // console.log("i = ", i);
 
-    const groupedByBusiness = {};
+  //   const groupedByBusiness = {};
 
-    product?.forEach(item => {
+  //   product?.forEach(item => {
     
-      const productDetails = {
-        ...item.product,
-        quantity_cart: item.quantity, // Số lượng sản phẩm trong giỏ hàng
-        id_Cart : item.id
-      };
+  //     const productDetails = {
+  //       ...item.product,
+  //       quantity_cart: item.quantity, // Số lượng sản phẩm trong giỏ hàng
+  //       id_Cart : item.id
+  //     };
       
-      const { business, product } = item;
-      if (!groupedByBusiness[business.id]) {
-        groupedByBusiness[business.id] = {
-          business,
-          products: [productDetails],
+  //     const { business, product } = item;
+  //     if (!groupedByBusiness[business.id]) {
+  //       groupedByBusiness[business.id] = {
+  //         business,
+  //         products: [productDetails],
+  //       };
+  //     } else {
+  //       groupedByBusiness[business.id].products.push(productDetails);
+  //     }
+
+  //   });
+
+  //   const groupedProductsArray = Object.values(groupedByBusiness);
+  //   setGroupedProducts(groupedProductsArray);
+
+  // }, []); // Chạy chỉ một lần khi component mount
+  useEffect(() => {
+    // Update groupedProducts whenever product changes
+    // Ensure product has values before updating groupedProducts
+    if (product && product.length > 0) {
+      const groupedByBusiness = {};
+  
+      product.forEach((item) => {
+        const productDetails = {
+          ...item.product,
+          quantity_cart: item.quantity,
+          id_Cart: item.id,
         };
-      } else {
-        groupedByBusiness[business.id].products.push(productDetails);
-      }
-
-    });
-
-    const groupedProductsArray = Object.values(groupedByBusiness);
-    setGroupedProducts(groupedProductsArray);
-
-  }, [product]); // Chạy chỉ một lần khi component mount
-
+  
+        const { business } = item;
+        if (!groupedByBusiness[business.id]) {
+          groupedByBusiness[business.id] = {
+            business,
+            products: [productDetails],
+          };
+        } else {
+          groupedByBusiness[business.id].products.push(productDetails);
+        }
+      });
+  
+      const groupedProductsArray = Object.values(groupedByBusiness);
+      setGroupedProducts(groupedProductsArray);
+    }
+  }, [product]);
 
   // Kết quả: mảng sản phẩm đã được nhóm theo business
   console.log("data cart:", groupedProducts);
@@ -92,7 +124,10 @@ const MyCart = ({ route, navigation }) => {
     // Gọi API hoặc dispatch action để cập nhật giỏ hàng trước khi rời khỏi màn hình
     try {
       // Gọi API cập nhật giỏ hàng với product và id_user
-      dispatch(listCartByIdUser(id_user))
+      dispatch(listCartByIdUser(id_user)).then(() => {
+        // After the cart data is updated, setProduct can be called
+        setProduct(dataCart);
+      });
       // Ví dụ: dispatch(updateCartAction(id_user, product));
     } catch (error) {
       console.error("Error updating cart:", error);
@@ -158,19 +193,22 @@ const MyCart = ({ route, navigation }) => {
 
   // const openLinkInWebView = () => setVisible(true)
   const checkOut = async () => {
-
     try {
-      dispatch(savePayment(id_user))
-      toastsuccess("Thành công","Thanh toán thành công")
+      const getlink = await dispatch(savePayment(id_user));
+      console.log("Momo Link previous:", getlink);
+      setlink(getlink)
+      await Linking.openURL(getlink)
+      toastsuccess("Thành công", "Thanh toán thành công");
+      dispatch(listCartByIdUser(id_user))
+      setProduct(dataCart)
     } catch (error) {
-      toastError("Xin lỗi","Đã có lỗi xảy ra với máy chủ")
+      toastError("Xin lỗi", "Đã có lỗi xảy ra với máy chủ");
       return error;
     }
-    setVisible(true)
-
-
+    setVisible(true);
   };
-
+  
+ 
   return (
     <View
       style={{
@@ -179,14 +217,14 @@ const MyCart = ({ route, navigation }) => {
         backgroundColor: COLOURS.white,
         position: 'relative',
       }}>
-        <Modal
+        {/* <Modal
           visible={visible}
           presentationStyle={'pageSheet'}
           animationType={'slide'}
           onRequestClose={()=>setVisible(false)}
           >
-            <WebView source ={{uri: dataMOMO}}/>
-            </Modal>
+            <WebView source ={{uri: link}}/>
+            </Modal> */}
       <ScrollView>
         <View
           style={{
@@ -250,13 +288,13 @@ const MyCart = ({ route, navigation }) => {
                 <Text style={{ fontSize: 16, color: 'black', fontStyle: 'italic' }}>{(String(productItem.businessId)).toUpperCase()}</Text>
                 <Icon name="angle-right" size={30} onPress={() => {}} />
               </View> */}
-              <ScrollView style={{ paddingBottom: 20, marginBottom: 45, minHeight:150, maxHeight:300, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
+              <View style={{ paddingBottom: 20, marginBottom: 45, minHeight:150, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
                 {/* {console.log('productItem: ', productItem.productSet[0].size.product)} */}
                 {/* {console.log('eachItem in prodductItem',productItem)} */}
                 {productItem.products ? productItem.products.map((eachproductItem, eachindex) => {
-                  return <RenderProducts data={eachproductItem} />;
+                  return <RenderProducts data={eachproductItem} product_all ={groupedProducts} />;
                 }) : null}
-              </ScrollView>
+              </View>
              </View>
            );
          })}
@@ -531,6 +569,7 @@ const MyCart = ({ route, navigation }) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
+          {/* <OpenURLButton url={'https://google.com'} > Mở trang web</OpenURLButton> */}
         <TouchableOpacity
           onPress={() => (total != 0 ? checkOut() : null)}
           style={{
@@ -557,4 +596,10 @@ const MyCart = ({ route, navigation }) => {
   );
 };
 
-export default MyCart;
+
+const mapStateToProps = (state) => ({
+  cartState: state.listCartReducer,
+  // paymentState: state.savePaymentReducer
+})
+
+export default connect(mapStateToProps)(MyCart);

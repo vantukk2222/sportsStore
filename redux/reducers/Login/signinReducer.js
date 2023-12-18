@@ -48,12 +48,12 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
   try {
     await AsyncStorage.removeItem('persist:root')
 
-    dispatch(loginSlice.actions.loginRequest()); // Dispatch loginRequest action
+    dispatch(loginRequest()); // Dispatch loginRequest action
 
     const data = await loginPage(username, password); // Call loginPage API
-    // console.log("data: ", data); // Log received data
+    console.log("data token in reducer signin:", data); // Log received data
 
-    dispatch(loginSlice.actions.loginSuccess({ authToken: data, userName: username })); // Dispatch loginSuccess with received data
+    dispatch(loginSuccess({ authToken: data, userName: username })); // Dispatch loginSuccess with received data
     dispatch(fetchUserByUserName(username))
     // console.log("state reducerLogin: " + JSON.stringify(getState()));
     return data

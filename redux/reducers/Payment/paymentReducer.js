@@ -18,12 +18,18 @@ const savePaymentSlice = createSlice({
         },
         savePaymentSuccess: (state, action) => {
             state.data = action.payload
+            console.log("data payment:", action.payload);
             state.isLoading = false;
         },
 
         savePaymentFailure: (state, action) => {
             state.isLoading = false;
             state.error = action.payload.error;
+        },
+        removePaymentState:(state,action) =>{
+            state.data = action.payload;
+            state.isLoading = false;
+            state.error = null
         }
     },
 });
@@ -36,9 +42,8 @@ export const savePayment = (id_user) => async (dispatch, getState) => {
         console.log("Token PaymentReducer:", authToken);
         const response = await savePaymentAPI(id_user, authToken) // Call addToCartPage API
         console.log("data in Payment Reducer: ", response); // Log received data
-
-
         dispatch(savePaymentSuccess( response)); // Dispatch addToCartSuccess with received data
+        console.log("Thanh cong nhe ^^");
         return response
     } catch (error) {
         let errorMessage = 'Error fetching data';
@@ -51,5 +56,5 @@ export const savePayment = (id_user) => async (dispatch, getState) => {
     }
 };
 
-export const { savePaymentRequest, savePaymentSuccess, savePaymentFailure } = savePaymentSlice.actions;
+export const { savePaymentRequest, savePaymentSuccess, savePaymentFailure, removePaymentState } = savePaymentSlice.actions;
 export default savePaymentSlice.reducer;

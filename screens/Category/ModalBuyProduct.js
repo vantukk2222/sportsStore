@@ -25,7 +25,7 @@ const ModalBuyProduct = ({ route }) => {
     const { dataSizeProduct, loadingSizeProduct, errorSizeProduct } = useSelector((state) => state.sizeProduct);
     const navigation = useNavigation();
     const dispatch = useDispatch()
-    // console.log('buy:\n', id_user)
+    console.log('buy:\n', id_user)
     useEffect(() => {
         dispatch(fetchSizeProduct(selectedSizeId))
     }, [selectedSizeId])

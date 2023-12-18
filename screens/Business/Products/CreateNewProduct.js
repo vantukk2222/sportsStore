@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity,ScrollView } from 'react-native';
 import { colors } from '../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../../../redux/reducers/Caregory/getAllCategories';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useEvent } from 'react-native-reanimated';
-import { prepareAutoBatched } from '@reduxjs/toolkit';
 import ImagePickerComponent from './UploadImages';
 
 const CreateNewProduct = () => {
@@ -22,7 +17,7 @@ const CreateNewProduct = () => {
     const [id_imageSet, setIdImageSet] = useState(0);
     const { data, loading, error } = useSelector((state) => state.userData)
     const [nameCategory, setNameCategory] = useState()
-
+ 
     const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories)
     const [parentArray, setParentArray] = useState([])
     const [childArray, setChildArray] = useState([])

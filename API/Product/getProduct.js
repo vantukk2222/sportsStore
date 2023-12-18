@@ -11,7 +11,9 @@ const getProduct = async (page, pageSize, sort, desc) => {
                 page: page,
                 page_size: pageSize,
                 sort: sort,
-                desc: desc
+                desc: desc,
+                state: 0,
+                state_business: 0,
             },
             headers: {
                 // 'Authorization': `Bearer ${authToken}`,

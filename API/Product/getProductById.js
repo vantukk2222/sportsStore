@@ -20,7 +20,7 @@ const getProductById = async (id) => {
         // console.log('call API detail product');
         return response.data;
     } catch (error) {
-        store.dispatch(logout())
+        // store.dispatch(logout())
         console.error("error get product by id", error.response.data.message);
         throw error;
     }

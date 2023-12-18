@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Image, SafeAreaView, Alert } from 'react-native';
+import { View, Text, Button, Image, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { SafeAreaFrameContext } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 const ImagePickerComponent = () => {
     const [selectedImage, setSelectedImage] = useState('');
     const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dlo5qxnxw/image/upload';

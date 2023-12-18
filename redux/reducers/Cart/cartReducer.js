@@ -38,10 +38,10 @@ export const addToCartUser = (id_user, id_size, quantity) => async (dispatch, ge
 
     dispatch(addToCartSlice.actions.addToCartRequest()); // Dispatch addToCartRequest action
     const authToken = getState().login.authToken
-    // console.log("Toke cartReducer:", authToken);
+    console.log("Token cart Reducer:", authToken);
     const data = await addToCart(id_user, id_size, quantity,authToken); // Call addToCartPage API
     console.log("data in cartReducer: ", data.response); // Log received data
-
+    // dispatch
     dispatch(addToCartSlice.actions.addToCartSuccess()); // Dispatch addToCartSuccess with received data
     dispatch(listCartByIdUser(id_user))
     // console.log("state reduceraddToCart: " + JSON.stringify(getState()));

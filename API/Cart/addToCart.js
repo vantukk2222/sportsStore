@@ -1,7 +1,4 @@
 import axios from "axios"
-import { asyncStorage } from "../../utilies/asyncStorage";
-import { Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { toastError, toastsuccess } from "../../components/toastCustom";
 import { urlAPI } from "../apiAddress";
 
@@ -25,8 +22,11 @@ const addToCart = async (id_user, id_product ,quantity,authToken = '') => {
       } catch (error) {
         // Alert.alert("Add ok san pham id: ",id_product)
         console.log("type of error.message", typeof(error.message))
-        if(error.message.includes("403")){
-        toastError("Xin lỗi","Bạn chưa đăng nhập, vui lòng đăng nhập")}
+        if(error.message.includes("403"))
+          {
+            toastError("Xin lỗi","Bạn chưa đăng nhập, API Vui lòng đăng nhập")
+          }
+
         if(error.message.includes("400")){toastError("Có lỗi đã xảy ra","Sản phẩm này không tồn tại trong shop")}
       }
 }

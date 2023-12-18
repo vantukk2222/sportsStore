@@ -14,6 +14,7 @@ import { resetListCart, resetStateListCart } from "../../redux/reducers/Cart/lis
 import {isEqual} from 'lodash'
 import { toastError } from "../../components/toastCustom";
 import Toast from "react-native-toast-message";
+import { asyncStorage } from "../../utilies/asyncStorage";
 const Information = () => {
     const { userName } = useSelector((state) => state.login)
 
@@ -32,6 +33,7 @@ const Information = () => {
         navigation.navigate("Login")
     }
     const handleLogout = async() => {
+        await asyncStorage.setUsername('')
         dispatch(logout())
         dispatch(resetStateListCart())
         dispatch(resetStateUser())
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
         // borderTopWidth: 1,
         // borderTopColor: "#ccc",
         flex:1,
-        marginBottom:180,
+        marginBottom:10,
         paddingHorizontal: 10,
         flexDirection:'row',
         justifyContent: 'center'
