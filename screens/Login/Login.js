@@ -140,7 +140,7 @@ function Login(props) {
     }, 500)
   };
   //  if(!getToken()) return <Loading/>
-  if(loginState.isLoading) return <Loading></Loading>
+  if((loginState?.isLoading)) return <Loading></Loading>
   if (errorLoad) { return <Text style={{ color: 'red' }}>Error: {error}</Text>; }
   return (
 

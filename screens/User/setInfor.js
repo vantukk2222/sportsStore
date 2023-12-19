@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { colors } from "../../constants";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import { reset, setUserInformation } from "../../redux/reducers/User/setInforUser";
 import { fetchUserByUserName } from "../../redux/reducers/User/userInfor";
+import { useNavigation } from "@react-navigation/native";
 const setInfor = ({ route }) => {
 
     const TxtName = useRef();
@@ -16,7 +18,13 @@ const setInfor = ({ route }) => {
 
     const { dataInfor, loadingInfor, errorInfor } = useSelector((state) => state.setInforUser)
 
-    const dispatch = useDispatch()
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const goBack = () => {
+        navigation.goBack();
+        // console.log("Log number id: ", 111);
+      };
     useEffect(() => {
         setUser(infor)
     }, [infor])
@@ -53,7 +61,14 @@ const setInfor = ({ route }) => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.headerContainer}>
+            <TouchableOpacity onPress={()=>{goBack()}}>
+                <Icon name="angle-left" size={30} style={styles.iconBuffer}></Icon>
+            </TouchableOpacity>
+            {/* {init == "Start"? "":(<Icon name="angle-left" size={30} style={styles.iconBuffer} onPress={() => { goBack}} />)} */}
             <Text style={styles.heading}>Chỉnh sửa thông tin cá nhân</Text>
+            </View>
+            
 
             <View style={styles.fieldContainer}>
                 <Text style={styles.label}>Họ và tên:</Text>
@@ -108,6 +123,23 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         paddingTop: 20
+    },
+     headerContainer: {
+        backgroundColor:"#EEEEEE",
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        // marginTop: 5,
+        justifyContent: 'space-between',
+    },
+    iconBuffer:
+    {
+        // backgroundColor:"green",
+        // witd:30,
+        color:'#4873E0',
+        alignItems: 'flex-end',
+        marginLeft: 5
+
     },
     heading: {
         fontSize: 25,

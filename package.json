@@ -29,7 +29,7 @@
     "react-native-element-dropdown": "^2.10.0",
     "react-native-gesture-handler": "^2.13.4",
     "react-native-image-picker": "^7.1.0",
-    "react-native-localize": "^3.0.3",
+    "react-native-localize": "^3.0.4",
     "react-native-modal": "^13.0.1",
     "react-native-modals": "^0.22.3",
     "react-native-paper": "^5.11.1",

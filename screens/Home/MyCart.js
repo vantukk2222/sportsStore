@@ -292,7 +292,7 @@ const MyCart = ({ route, navigation}, props) => {
                 {/* {console.log('productItem: ', productItem.productSet[0].size.product)} */}
                 {/* {console.log('eachItem in prodductItem',productItem)} */}
                 {productItem.products ? productItem.products.map((eachproductItem, eachindex) => {
-                  return <RenderProducts data={eachproductItem} product_all ={groupedProducts} />;
+                  return <RenderProducts data={eachproductItem} />;
                 }) : null}
               </View>
              </View>

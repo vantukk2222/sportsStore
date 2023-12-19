@@ -234,7 +234,7 @@ const Start = () => {
                             style={{
                                 backgroundColor: 'white'
                             }}>
-                            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "#FCFCFC" }}>
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "#FCFCFC" }}>
                                 {products?.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
@@ -248,7 +248,7 @@ const Start = () => {
                                         />
                                     </TouchableOpacity>
                                 ))}
-                            </ScrollView>
+                            </View>
 
                         </View>
                     </View>

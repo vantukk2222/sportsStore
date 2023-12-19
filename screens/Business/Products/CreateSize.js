@@ -36,6 +36,7 @@ const CreateSize = ({ navigation }, props) => {
         console.log("data product size", initialState?.dataProductSize);
         if (initialState?.errorProductSize != null) {
             toastsuccess('Thêm size', 'Thành công')
+            navigation.navigate('BusinessBottomNavigator')
         }
 
     }, [initialState?.dataProductSize])

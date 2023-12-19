@@ -26,7 +26,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { removerItemCartByID } from '../../redux/reducers/Cart/removeCartReducer';
 import Loading from '../../components/loading';
 import { useNavigation } from '@react-navigation/native';
-const RenderProducts = ({data,product_all}) => {
+const RenderProducts = ({data}) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     // console.log("data :", data);
@@ -48,7 +48,7 @@ const RenderProducts = ({data,product_all}) => {
         console.log(data);
       dispatch(fetchProductbyId(data?.id_product_information))
       // setInformationProduct({...informationProduct, dataDetail})
-    },[data,product_all])
+    },[data])
     
     // console.log('data render cartItem:', data.imageSet[0]?.url);
     useEffect(() => {
