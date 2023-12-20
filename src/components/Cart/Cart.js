@@ -72,9 +72,11 @@ const Cart = () => {
                             <h4>Tổng tiền :</h4>
                             <h3>{totalPrice} Vnđ</h3>
                         </div>
-                        <button className="payButton">
-                            <Link to="/checkout">Thanh toán</Link>
-                        </button>
+                        {cart?.length > 0 && (
+                            <button className="payButton">
+                                <Link to="/checkout">Thanh toán</Link>
+                            </button>
+                        )}
                     </div>
                 </div>
             </section>

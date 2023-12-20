@@ -284,6 +284,7 @@ button {
 .control-btn .prev i,
 .control-btn .next i {
     font-size: 20px;
+    display: flex;
     transition: 0.5s;
     color: #fff;
 }

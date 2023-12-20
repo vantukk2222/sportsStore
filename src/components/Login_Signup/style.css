@@ -4,9 +4,8 @@
     flex-direction: column;
     margin: 80px auto;
     padding: 30px;
-    margin-top: 1%;
-    margin-bottom: 4%;
-    border-radius: 8px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     justify-content: center;
     background-color: #606eca;
     border: 1px solid #606eca;
@@ -68,7 +67,7 @@
 .input-2 i {
     cursor: pointer;
     position: absolute;
-    top: 42px;
+    top: 50px;
     right: 10px;
 }
 /* Button styling */
@@ -100,7 +99,6 @@ button {
     transition: background-color 0.3s;
 }
 
-/* Back link styling */
 .back {
     text-align: center;
     margin-top: 15px;
