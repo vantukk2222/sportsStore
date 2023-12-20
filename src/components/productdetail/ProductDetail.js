@@ -42,17 +42,33 @@ const ProductDetail = () => {
         console.log(e.size);
     };
     const addToCart = (product) => {
-        const cart = JSON.parse(localStorage.getItem('Cart'));
-        const id2 = product.productSet.find((e) => e.size == size).id;
-        const id_product_information = product.productSet.find((e) => e.size == size).id_product_information;
-        if (cart.find((c) => c.product.id == id2 && c.product.id_product_information == id_product_information)) {
+        let cart = JSON.parse(localStorage.getItem('Cart'));
+        const id2 = product.productSet?.find((e) => e.size == size).id;
+        const id_product_information = product.productSet?.find((e) => e.size == size).id_product_information;
+        if (cart?.find((c) => c?.product.id == id2 && c?.product.id_product_information == id_product_information)) {
             cart.find(
-                (c) => c.product.id == id2 && c.product.id_product_information == id_product_information,
+                (c) => c?.product.id == id2 && c?.product.id_product_information == id_product_information,
             ).quantity += 1;
         } else {
+            const fetchData = async () => {
+                try {
+                    setLoading(true);
+                    const user = JSON.parse(localStorage.getItem('User'));
+                    const response = await getUnAuth(`cart/get-by-id-user/${user.id}`);
+                    if (!response) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log(' Data in screen login/redux...', response);
+                    localStorage.setItem('Cart', JSON.stringify(response));
+                } catch (error) {
+                    setError(error);
+                } finally {
+                    setLoading(false);
+                }
+            };
             const user = JSON.parse(localStorage.getItem('User'));
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-            postCart(user.id, id2, 1, authToken);
+            postCart(user.id, id2, 1, authToken).then(() => fetchData());
         }
 
         localStorage.setItem('Cart', JSON.stringify(cart));
@@ -65,7 +81,7 @@ const ProductDetail = () => {
         if (size != '') {
             addToCart(product);
             navigate('/cart');
-        } else alert('Hãy chọn loại sản phẩm mua trước khi thêm vào giỏ hàng');
+        } else alert('Hãy chọn loại sản phẩm mua trước khi mua ngay');
     };
     useEffect(() => {
         const fetchData = async () => {

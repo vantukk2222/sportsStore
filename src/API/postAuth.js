@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { api } from './url';
 const loginPage = async (email, password) => {
     try {
         const response = await axios.post(
-            'https://project-pbl6-production.up.railway.app/api/v1/auth/signin',
+            `${api}auth/signin`,
             {
                 username: email,
                 password: password,
