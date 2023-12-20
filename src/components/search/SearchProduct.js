@@ -31,13 +31,14 @@ const SearchProduct = () => {
         };
         fetchData();
     }, [location]);
+    console.log(productItems);
     return (
         <>
             <section className="shop background">
                 <div className="container d_flex">
                     {/* <MenuSearch shopItems={shopItems} apiCate={apiCate} /> */}
 
-                    <div className="contentWidth">
+                   {productItems.length>0 ? <div className="contentWidth">
                         <h2>Kết quả tìm kiếm cho từ khóa "{decodeURIComponent(name)}"</h2>
                         <div className="heading d_flex"></div>
                         <div className="product-content  grid1">
@@ -46,7 +47,7 @@ const SearchProduct = () => {
                         <div>
                             <Pagination />
                         </div>
-                    </div>
+                    </div>:<h2>Không có sản phẩm bạn muốn tìm kiếm</h2>}
                 </div>
             </section>
         </>
