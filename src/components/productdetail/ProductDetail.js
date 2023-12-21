@@ -11,6 +11,7 @@ import Comment from './Comment';
 import postCart from '~/API/postCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
+import putCart from '~/API/putCart';
 const ProductDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -46,19 +47,22 @@ const ProductDetail = () => {
         console.log(e.size);
     };
     const addToCart = (product) => {
-        let cart = JSON.parse(localStorage.getItem('Cart'));
         const id2 = product.productSet?.find((e) => e.size == size).id;
         const id_product_information = product.productSet?.find((e) => e.size == size).id_product_information;
-        if (cart?.find((c) => c?.product.id == id2 && c?.product.id_product_information == id_product_information)) {
-            cart.find(
-                (c) => c?.product.id == id2 && c?.product.id_product_information == id_product_information,
-            ).quantity += 1;
+        const check = dataCart?.find(
+            (c) => c?.product.id == id2 && c?.product.id_product_information == id_product_information,
+        );
+        if (check) {
+            const user = JSON.parse(localStorage.getItem('User'));
+            const id = check.id;
+            const quantity = check.quantity;
+            const authToken = JSON.parse(localStorage.getItem('authToken'));
+            putCart(id, quantity + 1, authToken).then(() => dispatch(listCartByIdUser(user.id)));
         } else {
             const user = JSON.parse(localStorage.getItem('User'));
             const authToken = JSON.parse(localStorage.getItem('authToken'));
             postCart(user.id, id2, 1, authToken).then(() => dispatch(listCartByIdUser(user.id)));
         }
-        localStorage.setItem('Cart', JSON.stringify(cart));
     };
     const handleAdd = (product) => {
         if (size != '') addToCart(product);
