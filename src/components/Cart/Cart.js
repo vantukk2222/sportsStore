@@ -1,18 +1,44 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import './style.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 const Cart = () => {
     const navigate = useNavigate();
     const store = JSON.parse(localStorage.getItem('authToken'));
+
+    const [checkedItems, setCheckedItems] = useState([]);
+
+    const toggleCheckbox = (id) => {
+        setCheckedItems((prevItems) => {
+            if (prevItems.includes(id)) {
+                return prevItems.filter((item) => item !== id);
+            } else {
+                return [...prevItems, id];
+            }
+        });
+    };
+
     useLayoutEffect(() => {
         if (!store) navigate('/login', { replace: true });
     }, []);
+
     const cart = JSON.parse(localStorage.getItem('Cart'));
-    //console.log(cart);
+
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
-    const totalPrice = cart?.reduce((price, item) => price + item.quantity * item.product.price, 0);
+
+    const totalPrice = cart?.reduce(
+        (price, item) => (checkedItems.includes(item.id) ? price + item.quantity * item.product.price : price),
+        0,
+    );
+    const handleCheckout = () => {
+        const selectedItems = cart.filter((item, index) => checkedItems[index]);
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+
+        navigate('/checkout', { state: { selectedItems: selectedItems } });
+    };
+
     return (
         <>
             <section className="cart-items">
@@ -26,6 +52,15 @@ const Cart = () => {
 
                                 return (
                                     <div className="cart-list product d_flex" key={item.id}>
+                                        <div className="checkbox-container">
+                                            <input
+                                                type="checkbox"
+                                                id={`checkbox-${item.id}`}
+                                                checked={checkedItems.includes(item.id)}
+                                                onChange={() => toggleCheckbox(item.id)}
+                                            />
+                                        </div>
+
                                         <div className="img">
                                             <img
                                                 src={item.product.image_product_information}
@@ -73,8 +108,8 @@ const Cart = () => {
                             <h3>{totalPrice} Vnđ</h3>
                         </div>
                         {cart?.length > 0 && (
-                            <button className="payButton">
-                                <Link to="/checkout">Thanh toán</Link>
+                            <button className="payButton" onClick={handleCheckout}>
+                                THANH TOÁN
                             </button>
                         )}
                     </div>

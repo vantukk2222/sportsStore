@@ -94,7 +94,7 @@
 .cart-total button {
     font-size: 20px;
     font-weight: 500;
-    color: #e94560;
+    color: black;
 }
 
 .cart-total h2 {
@@ -115,4 +115,25 @@
     background-color: #e94560;
     margin-top: 50px;
     margin-left: 35%;
+}
+
+.checkbox-container {
+}
+
+.checkbox-container input {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+
+    border: 2px solid #e94560;
+    border-radius: 5px;
+    appearance: none;
+    outline: none;
+}
+
+.checkbox-container input:checked {
+    background-color: #e94560;
+    border-color: #e94560;
 }

@@ -13,6 +13,7 @@ import layout_res from '~/layouts/layout_login/layout_res';
 import SearchProduct from '~/components/search/SearchProduct';
 import SearchallShop from '~/components/search/searchallShop/SearchallShop';
 import Profile from '~/components/profile/Profile';
+import Checkout from '~/components/checkout/Checkout';
 const VRoutes = [
     { path: '/shop/:id', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound, layout: defaultLayout },
@@ -22,6 +23,8 @@ const VRoutes = [
     { path: '/login', component: Login, layout: layout_login },
     { path: '/register', component: Register, layout: layout_res },
     { path: '/cart', component: Cart, layout: defaultLayout },
+    { path: '/checkout', component: Checkout, layout: defaultLayout },
+
     { path: '/searchProduct/:name', component: SearchProduct, layout: defaultLayout },
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
