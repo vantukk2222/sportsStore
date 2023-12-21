@@ -9,9 +9,13 @@ import Shopdetail from './Shopdetail';
 import Detail from './Detail';
 import Comment from './Comment';
 import postCart from '~/API/postCart';
+import { useDispatch, useSelector } from 'react-redux';
+import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 const ProductDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
     const [productItem, setProductItem] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -50,27 +54,10 @@ const ProductDetail = () => {
                 (c) => c?.product.id == id2 && c?.product.id_product_information == id_product_information,
             ).quantity += 1;
         } else {
-            const fetchData = async () => {
-                try {
-                    setLoading(true);
-                    const user = JSON.parse(localStorage.getItem('User'));
-                    const response = await getUnAuth(`cart/get-by-id-user/${user.id}`);
-                    if (!response) {
-                        throw new Error('Network response was not ok');
-                    }
-                    console.log(' Data in screen login/redux...', response);
-                    localStorage.setItem('Cart', JSON.stringify(response));
-                } catch (error) {
-                    setError(error);
-                } finally {
-                    setLoading(false);
-                }
-            };
             const user = JSON.parse(localStorage.getItem('User'));
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-            postCart(user.id, id2, 1, authToken).then(() => fetchData());
+            postCart(user.id, id2, 1, authToken).then(() => dispatch(listCartByIdUser(user.id)));
         }
-
         localStorage.setItem('Cart', JSON.stringify(cart));
     };
     const handleAdd = (product) => {

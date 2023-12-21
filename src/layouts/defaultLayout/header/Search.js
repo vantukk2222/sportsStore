@@ -2,8 +2,12 @@ import getUnAuth from '~/API/get';
 import logoImage from './logooo.png';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 
 const Search = ({ id }) => {
+    const dispatch = useDispatch();
+    const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
     const cart = JSON.parse(localStorage.getItem('Cart'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -20,6 +24,9 @@ const Search = ({ id }) => {
         setSearchValue(value);
         setShowMenu(value.trim() != '');
     };
+    useEffect(() => {
+        dispatch(listCartByIdUser(id));
+    }, []);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -76,7 +83,7 @@ const Search = ({ id }) => {
                         <div className="cart">
                             <Link to="/cart">
                                 <i className="fa fa-shopping-bag icon-circle"></i>
-                                {cart?.length > 0 ? <span>{cart.length}</span> : <></>}
+                                {dataCart?.length > 0 ? <span>{dataCart.length}</span> : <></>}
                             </Link>
                         </div>
                     </div>

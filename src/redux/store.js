@@ -1,8 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
-const rootReducer = combineReducers({
+import addToCartSlice from './reducers/Cart/cartReducer';
+import listCartSlice from './reducers/Cart/listCartReducer';
+import removeCartItemSlice from './reducers/Cart/removeCartReducer';
 
+const rootReducer = combineReducers({
+    listCartReducer: listCartSlice,
+    removeItemCartReducer: removeCartItemSlice,
+    addToCartReducer: addToCartSlice,
 });
 const persistConfig = {
     key: 'root',
