@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
-import { fetchProductbySale } from '../../redux/reducers/productReducer/getProductBySale';
+import { fetchProductbySale, resetProductbySale } from '../../redux/reducers/productReducer/getProductBySale';
 import { fetchProductInSale } from '../../redux/reducers/productReducer/searchProductInSale';
 
 export const findMainImage = (images) => {
@@ -75,6 +75,9 @@ const ListProductofSale = ({ route }) => {
     //Call API when starting
     useEffect(() => {
         dispatch(fetchProductbySale(item.id, page, pageSize, sort, desc, state));
+        return () => {
+            resetProductbySale();
+        }
     }, [item, page, pageSize, sort, desc, state]);
     //set products = data
     useEffect(() => {

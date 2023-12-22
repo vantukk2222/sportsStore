@@ -8,6 +8,8 @@ import { fontSize } from "../constants";
 import HomeBusiness from "../screens/Business/HomeBusiness";
 import InforBusiness from "../screens/Business/InforBusiness";
 import ProductBusiness from "../screens/Business/Products/ProductBusiness";
+import setProductinSale from "../screens/Business/Sale/setProductinSale";
+import Sale from "../screens/Business/Sale/Sale";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +48,7 @@ export const BusinessBottomNavigator = (props) => {
             tabBarStyle={{ height: 80 }}
         >
             <Tab.Screen name="Home" component={HomeBusiness} options={{ headerShown: false }} />
-            <Tab.Screen name="Sale" component={InforBusiness} options={{ headerShown: false }} />
+            <Tab.Screen name="Sale" component={Sale} options={{ headerShown: false }} />
             <Tab.Screen name="Product" component={ProductBusiness} options={{ headerShown: false }} />
             <Tab.Screen name="Me" component={InforBusiness} options={{ headerShown: false }} />
         </Tab.Navigator >

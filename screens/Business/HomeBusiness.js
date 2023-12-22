@@ -19,7 +19,8 @@ const SellerHomeScreen = () => {
         {
             id: '2',
             name: 'Thêm sự kiện',
-            iconName: 'calendar-check'
+            iconName: 'calendar-check',
+            naviga: 'CreateSale'
             //image: require('./images/product2.jpg'),
         },
         {
@@ -44,6 +45,7 @@ const SellerHomeScreen = () => {
             onPress={() => {
                 navigation.navigate(item.naviga)
             }}
+            key={item.id}
         >
             <Icon
                 style={styles.productImage}

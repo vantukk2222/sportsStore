@@ -3,12 +3,12 @@ import { asyncStorage } from "../../utilies/asyncStorage";
 import { urlAPI } from "../apiAddress";
 const getProductBySale = async (idSale, page, pageSize, sort, desc, state) => {
     try {
-        const response = await axios.get(urlAPI+`/api/v1/product-information/find-by-sale/${idSale}`, {
+        const response = await axios.get(urlAPI + `/api/v1/product-information/find-by-sale/${idSale}`, {
             // headers: {
 
             params: {
                 page: page,
-                pageSize: pageSize,
+                page_size: pageSize,
                 sort: sort,
                 desc: desc,
                 state: state
@@ -18,7 +18,7 @@ const getProductBySale = async (idSale, page, pageSize, sort, desc, state) => {
             // },
         });
 
-        // console.log('call API get product by category', response.data.content);
+        //console.log('call API get product by sale', response.data.content, idSale);
 
         return response.data;
     } catch (error) {

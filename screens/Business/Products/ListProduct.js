@@ -4,7 +4,7 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react
 import { colors } from '../../../constants';
 import { findMainImage } from '../../Category/ListProductByCategory';
 
-const ListProduct = ({ products, onEdit, onDelete }) => {
+const ListProduct = ({ products, onEdit, onDelete, removeState, onRecover }) => {
     const renderItem = ({ item }) => (
 
         <View style={styles.row}>
@@ -13,23 +13,38 @@ const ListProduct = ({ products, onEdit, onDelete }) => {
                 <Text style={{ color: 'black' }}>{item.name}</Text>
                 <Text style={{ color: 'blue' }}>{item.price_min}</Text>
             </View>
-            <View style={styles.columnButton}>
-                <TouchableOpacity style={styles.button} onPress={() => console.log('img:', findMainImage(item?.imageSet))}>
-                    <Text style={{ color: 'white' }}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => onDelete(item.id)}>
-                    <Text style={{ color: 'red' }}>Delete</Text>
-                </TouchableOpacity>
-            </View>
+            {
+                removeState === false ?
+
+                    <View style={styles.columnButton}>
+                        <TouchableOpacity style={styles.button} onPress={() => console.log('img:', findMainImage(item?.imageSet))}>
+                            <Text style={{ color: 'white' }}>Sửa</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => onDelete(item.id)}>
+                            <Text style={{ color: 'red' }}>Ẩn</Text>
+                        </TouchableOpacity>
+                    </View>
+                    :
+                    <View style={styles.columnButton}>
+                        <TouchableOpacity style={styles.button} onPress={() =>
+                            onRecover(item.id)
+                            //console.log('img:', findMainImage(item?.imageSet))
+                        }>
+                            <Text style={{ color: 'white' }}>Hiện</Text>
+                        </TouchableOpacity>
+                    </View>
+            }
         </View >
     );
 
     return (
+
         <FlatList
             data={products}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
         />
+
     );
 };
 

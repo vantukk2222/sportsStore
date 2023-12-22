@@ -3,7 +3,7 @@ import { logout } from "../Login/signinReducer";
 import { store } from "../../store";
 import getProductBySale from "../../../API/Product/getProductBySale";
 
-const initialState = {
+const productSaleState = {
     dataProductbySale: [],
     loadingProductbySale: false,
     errorProductbySale: null
@@ -11,7 +11,7 @@ const initialState = {
 
 const getProductBySaleSlice = createSlice({
     name: 'getProductBySale',
-    initialState,
+    initialState: productSaleState,
     reducers: {
         getStart: (state) => {
             //console.log("state details:", state)
@@ -27,7 +27,7 @@ const getProductBySaleSlice = createSlice({
             state.loadingProductbySale = false;
         },
         resetProductbySale: (state) => {
-            return initialState; // Reset the productDetail state to its initial state
+            return productofSaleState; // Reset the productDetail state to its initial state
         },
     }
 });
@@ -36,7 +36,7 @@ export const fetchProductbySale = (idSale, page, pageSize, sort, desc, state) =>
     try {
         dispatch(getStart());
         const data = await getProductBySale(idSale, page, pageSize, sort, desc, state);
-        //console.log('saleeeee', data)
+        // console.log('saleeeee', data)
         dispatch(getSuccess(data));
     } catch (error) {
         let errorMessage = 'Error fetching data';

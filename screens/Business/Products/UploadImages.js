@@ -5,7 +5,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaFrameContext } from 'react-native-safe-area-context';
 import { toastError, toastsuccess } from '../../../components/toastCustom';
 import { colors } from '../../../constants';
-const ImagePickerComponent = ({ onListUrlChange }) => {
+const ImagePickerComponent = ({ onListUrlChange, onUrlChange, isSale = false }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [listImages, setListImages] = useState([]);
     const [listUrl, setListUrl] = useState([]);
@@ -57,10 +57,14 @@ const ImagePickerComponent = ({ onListUrlChange }) => {
                         setListImages((preImages) => [...preImages, response.assets[0].uri])
                         setSelectedImage(null)
                         toastsuccess('Thêm ảnh', 'Thành công')
-                        onListUrlChange([...listUrl, uploadedFileUrl]);
-
+                        {
+                            isSale === false ?
+                                onListUrlChange([...listUrl, uploadedFileUrl])
+                                :
+                                onUrlChange('url', uploadedFileUrl);
+                        }
                         // Lưu URL vào trạng thái hoặc thực hiện các thao tác khác tại đây
-                        // setSelectedImage(response.);
+                        // setSelectedImage(response.)
                     }
                 })
                 .catch((error) => {
@@ -71,9 +75,29 @@ const ImagePickerComponent = ({ onListUrlChange }) => {
 
         }
     }
+    const handleImagePress = (index) => {
+        setListImages((prevImage) =>
+            prevImage.filter((image, i) => i !== index)
+        );
+    };
     const renderImages = () => {
         return listImages.map((item, index) => (
-            <Image key={index} style={{ height: 70, width: 70, marginRight: 10, borderRadius: 8 }} source={{ uri: item }} />
+            <TouchableOpacity
+                key={index}
+                onPress={() => handleImagePress(index)}
+            >
+                <Image
+                    style={{ height: 70, width: 70, marginRight: 10, borderRadius: 8 }}
+                    source={{ uri: item }}
+                    onPress={
+                        () => {
+                            setListImages((prevImage) =>
+                                prevImage.filter((image) => image.index !== index)
+                            );
+                        }
+                    } />
+            </TouchableOpacity>
+
         ));
     };
     return (
@@ -97,17 +121,32 @@ const ImagePickerComponent = ({ onListUrlChange }) => {
                     onPress={() => {
                         ImagePicker();
                     }}
-                    style={{
-                        marginTop: 20,
-                        height: 50,
-                        width: 120,
-                        backgroundColor: 'skyblue',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center'
-                    }}>
-                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chọn ảnh</Text>
+                    disabled={isSale && listImages?.length > 0 ? true : false}
+
+                    style={
+                        isSale && listImages?.length > 0 ?
+                            {
+                                marginTop: 20,
+                                height: 50,
+                                width: 120,
+                                backgroundColor: colors.disable,
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                alignSelf: 'center'
+                            } :
+                            {
+                                marginTop: 20,
+                                height: 50,
+                                width: 120,
+                                backgroundColor: 'skyblue',
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                alignSelf: 'center'
+                            }
+                    }>
+                    <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Chọn ảnh</Text>
 
                 </TouchableOpacity>
 

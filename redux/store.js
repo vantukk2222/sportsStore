@@ -32,6 +32,11 @@ import createImageSlice from './reducers/Images/ImageReducer'
 import createProductInformationSlice from './reducers/productReducer/createProductInformation'
 import createProductSizeSlice from './reducers/productReducer/ProductSize/createProductSize'
 import deleteProductInformationSlice from './reducers/productReducer/deleteProductInformation'
+import hireProductSlice from './reducers/productReducer/hireProduct';
+import createNewSaleSlice from './reducers/Sale/createNewSale';
+import addProductInSaleSlice from './reducers/Sale/addProductInSale';
+import removeProductinforSaleSlice from './reducers/Sale/removeProduct';
+
 // {userSlice}
 // >>>>>>> NewD
 
@@ -64,6 +69,10 @@ const rootReducer = combineReducers({
   createProductInformation: createProductInformationSlice,
   createProductSize: createProductSizeSlice,
   deleteProductInformation: deleteProductInformationSlice,
+  hireProduct: hireProductSlice,
+  createNewSale: createNewSaleSlice,
+  addProductInSale: addProductInSaleSlice,
+  removeProductinforSale: removeProductinforSaleSlice,
 })
 const persistConfig = {
   key: 'root',

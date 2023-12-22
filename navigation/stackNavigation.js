@@ -24,6 +24,10 @@ import { LoginBottomNavigator } from "./bottomNavigation"
 import { createStackNavigator } from '@react-navigation/stack'
 import { BusinessBottomNavigator } from './bottomBusinessNavigation'
 import CreateSize from "../screens/Business/Products/CreateSize"
+import setProductinSale from "../screens/Business/Sale/setProductinSale"
+import CreateSale from "../screens/Business/Sale/CreateSale"
+import Sale from "../screens/Business/Sale/Sale"
+import ListSale from "../screens/Business/Sale/ListSale"
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
     return (
@@ -32,6 +36,10 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="CreateNewProduct" component={CreateNewProduct} options={{ headerShown: false }} />
             <Stack.Screen name="CreateSize" component={CreateSize} options={{ headerShown: false }} />
+            <Stack.Screen name="setProductinSale" component={setProductinSale} options={{ headerShown: false }} />
+            <Stack.Screen name="CreateSale" component={CreateSale} options={{ headerShown: false }} />
+            <Stack.Screen name="Sale" component={Sale} options={{ headerShown: false }} />
+            <Stack.Screen name="ListSale" component={ListSale} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }

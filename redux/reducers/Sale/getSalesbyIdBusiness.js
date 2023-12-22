@@ -31,7 +31,7 @@ const saleByBusinessSlice = createSlice({
         },
     }
 });
-export const fetchProductsByBusiness = (idBusi, page, pageSize, sort, desc) => async (dispatch) => {
+export const fetchSalesByBusiness = (idBusi, page, pageSize, sort, desc) => async (dispatch) => {
 
     try {
         dispatch(getStart());
