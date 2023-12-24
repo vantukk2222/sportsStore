@@ -7,8 +7,24 @@ const ListCheckout = ({ selectedItems }) => {
         setCartItems(selectedItems);
     }, [selectedItems]);
 
-    const getTotalPrice = () => {
-        return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    const groupItemsByBusiness = () => {
+        const groupedItems = {};
+
+        cartItems.forEach((item) => {
+            const businessName = item.business?.name || 'N/A';
+
+            if (!groupedItems[businessName]) {
+                groupedItems[businessName] = [];
+            }
+
+            groupedItems[businessName].push(item);
+        });
+
+        return groupedItems;
+    };
+
+    const getTotalPrice = (items) => {
+        return items.reduce((total, item) => total + item.product.price * item.quantity, 0);
     };
 
     const [message, setMessage] = useState('');
@@ -24,10 +40,13 @@ const ListCheckout = ({ selectedItems }) => {
         }
     };
 
+    const groupedItems = groupItemsByBusiness();
+
     return (
         <div className="listCheckout">
-            {cartItems.map((item) => (
-                <div key={item.id} className="listCheckout-table">
+            {Object.entries(groupedItems).map(([businessName, items]) => (
+                <div key={businessName} className="listCheckout-table">
+                    <h3>{businessName}</h3>
                     <table>
                         <thead>
                             <tr>
@@ -38,23 +57,24 @@ const ListCheckout = ({ selectedItems }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <h4>{item.business?.name || 'N/A'}</h4>
-                                    <div className="info-listcheck">
-                                        <img
-                                            src={item.product.image_product_information}
-                                            alt=""
-                                            style={{ width: '50px', height: '50px' }}
-                                        />
-                                        <p>{item.product.name_product_information}</p>
-                                        <p>Loại: {item.product.size}</p>
-                                    </div>
-                                </td>
-                                <td>${item.product.price?.toFixed(2) || 'N/A'}</td>
-                                <td>{item.quantity || 'N/A'}</td>
-                                <td>${(item.product.price * item.quantity)?.toFixed(2) || 'N/A'}</td>
-                            </tr>
+                            {items.map((item) => (
+                                <tr key={item.id}>
+                                    <td>
+                                        <div className="info-listcheck">
+                                            <img
+                                                src={item.product.image_product_information}
+                                                alt=""
+                                                style={{ width: '50px', height: '50px' }}
+                                            />
+                                            <p>{item.product.name_product_information}</p>
+                                            <p>Loại: {item.product.size}</p>
+                                        </div>
+                                    </td>
+                                    <td>${item.product.price?.toFixed(2) || 'N/A'}</td>
+                                    <td>{item.quantity || 'N/A'}</td>
+                                    <td>${(item.product.price * item.quantity)?.toFixed(2) || 'N/A'}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                     <div className="ship-listcheckout">
@@ -68,7 +88,7 @@ const ListCheckout = ({ selectedItems }) => {
                         </select>
                     </div>
                     <div className="total-listCheckout">
-                        <h4>Tổng cộng: ${getTotalPrice()?.toFixed(2) || 'N/A'}</h4>
+                        <h4>Tổng cộng: ${getTotalPrice(items)?.toFixed(2) || 'N/A'}</h4>
                     </div>
                 </div>
             ))}

@@ -16,17 +16,25 @@
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.listCheckout-table h3 {
+    margin-top: 20px;
+    margin-left: 20px;
+}
 
 .listCheckout-table table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .listCheckout-table th,
 .listCheckout-table td {
     padding: 8px;
     text-align: left;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .listCheckout-form {
@@ -111,7 +119,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .ship-listcheckout p {
