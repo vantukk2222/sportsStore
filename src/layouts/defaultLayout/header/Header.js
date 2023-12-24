@@ -14,6 +14,7 @@ const Header = () => {
             try {
                 setLoading(true);
                 let response = await getUnAuth(`user/get-by-username/${s}`);
+            
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }

@@ -38,12 +38,14 @@ export const listCartByIdUser = (id_user) => async (dispatch, getState) => {
         // console.log('Listcart request start');
         dispatch(listCartRequest()); // Dispatch addToCartRequest action
         // console.log('Listcart request success');
-        const data = await getUnAuth(`cart/get-by-id-user/${id_user}`); // Call addToCartPage API
-        // console.log('Listcart get api success');
+        if (id_user) {
+            const data = await getUnAuth(`cart/get-by-id-user/${id_user}`); // Call addToCartPage API
+            // console.log('Listcart get api success');
 
-        // console.log("data in listCartReducer: ", data); // Log received data
+            // console.log("data in listCartReducer: ", data); // Log received data
 
-        dispatch(listCartSuccess({ data: data })); // Dispatch addToCartSuccess with received data
+            dispatch(listCartSuccess({ data: data }));
+        } // Dispatch addToCartSuccess with received data
         // console.log("state reduceraddToCart: " + JSON.stringify(getState()));
         // return true
     } catch (error) {
