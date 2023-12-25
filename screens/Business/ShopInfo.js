@@ -1,19 +1,23 @@
+import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 const ShopInfo = (props) => {
     const buss = props.business;
+    const inCart = props.inCart;
+
     //const { name, id, about } = buss;
     //console.log(buss);
     const navigation = useNavigation();
     return (
         <View >
             <View style={styles.shopContainer}>
+            
                 <Image source={{ uri: 'https://endlessicons.com/wp-content/uploads/2012/12/female-avatar-icon-614x460.png' }} style={styles.shopImage} />
                 <View style={styles.shopInfo}>
                     <Text style={styles.shopName}>{buss?.name}</Text>
-                    <Text style={styles.shopDescription}>{buss?.about}</Text>
+                    {inCart ? "": <Text style={styles.shopDescription}>{buss?.about}</Text>}
                 </View>
                 <View>
                     <TouchableOpacity
@@ -23,14 +27,14 @@ const ShopInfo = (props) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={styles.moreContainer}>
+            {inCart ? "": <View style={styles.moreContainer}>
                 <Text style={styles.shopDescription}>
                     < Text style={{ color: 'red' }}>{buss?.count_product}</Text> Sản phẩm</Text>
                 <Text style={styles.shopDescription}>
                     < Text style={{ color: 'red' }}>{buss?.count_comment_like}</Text> Lượt thích</Text>
                 <Text style={styles.shopDescription}>
                     < Text style={{ color: 'red' }}>{buss?.count_comment}</Text> Bình luận</Text>
-            </View>
+            </View>}
         </View>
     );
 };
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
     shopContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
+        // padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
     },

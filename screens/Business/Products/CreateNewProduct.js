@@ -10,30 +10,29 @@ import { createImages, resetImage } from '../../../redux/reducers/Images/ImageRe
 import { toastError } from '../../../components/toastCustom';
 import { createProductInfor, resetProductInformation } from '../../../redux/reducers/productReducer/createProductInformation';
 import { useNavigation } from '@react-navigation/native';
+import Loading from '../../../components/loading';
 
 
 const CreateNewProduct = () => {
+    const { data, loading, error } = useSelector((state) => state.userData)
+    const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories)
+    const { dataProductInfor, loadingProductInfor, errorProductInfor } = useSelector((state) => state.createProductInformation)
+    const { dataImage, loadingImage, errorImage } = useSelector((state) => state.createImage);
+   
     const [name, setName] = useState('');
     const [detail, setDetail] = useState('');
     const [attribute, setAttribute] = useState('');
     const [id_business, setIdBusiness] = useState(0);
     const [state, setState] = useState(2);
     const [selectedCategories, setSelectedCategories] = useState([]);
-
     const [selectedCParent, setSelectedCParent] = useState();
     const [selectedImage, setSelectedImage] = useState(null);
-    const { data, loading, error } = useSelector((state) => state.userData)
-    const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories)
-    const { dataProductInfor, loadingProductInfor, errorProductInfor } = useSelector((state) => state.createProductInformation)
     const [parentArray, setParentArray] = useState([])
     const [childArray, setChildArray] = useState([])
     const dispatch = useDispatch();
-
-
     const [uploadedImages, setUploadedImages] = useState([]);
     const [listIdImage, setListIdImage] = useState([]);
 
-    const { dataImage, loadingImage, errorImage } = useSelector((state) => state.createImage);
 
 
     const navigation = useNavigation();
@@ -160,6 +159,16 @@ const CreateNewProduct = () => {
         console.log("error", errorProductInfor);
         dispatch(resetProductInformation())
         toastError('Tạo sản phẩm', 'không thành công')
+    }
+
+    if(loading || loadingCate || loadingImage || loadingProductInfor)
+    {
+        <Loading/>
+    }
+    if(errorCate || errorImage || errorProductInfor || error)
+    {
+        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+        return <Loading />;
     }
 
     return (

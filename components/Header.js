@@ -25,8 +25,14 @@ const HeaderComp = ({init = "Start"}) => {
     const dispatch = useDispatch();
 
     const goBack = () => {
-        navigation.goBack();
-        // console.log("Log number id: ", 111);
+        // Kiểm tra xem có thể quay lại màn hình trước đó không
+        if (navigation.canGoBack()) {
+          // Nếu có, thực hiện goBack()
+          navigation.goBack();
+        } else {
+          // Nếu không, navigate tới màn hình khác
+          navigation.navigate('Start');
+        }
       };
 
 

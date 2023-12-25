@@ -62,6 +62,14 @@ const Sale = (props) => {
     const handleEditproduct = (id) => {
         navigation.navigate('EditSale', { saleId: id })
     }
+    if(error)
+    {
+        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+        return <Loading />;}
+    if(loading)
+    {
+        <Loading/>
+    }
     return (
         <View style={styles.container}>
             <View style={styles.header}>

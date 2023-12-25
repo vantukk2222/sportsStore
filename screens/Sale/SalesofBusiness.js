@@ -6,6 +6,7 @@ import Loading from '../../components/loading';
 import { useNavigation } from '@react-navigation/native';
 import { fetchSaleByDiscount } from '../../redux/reducers/Sale/getSaleByDiscount';
 import { colors } from '../../constants';
+import { toastError } from '../../components/toastCustom';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -38,9 +39,9 @@ const SalesofBusiness = () => {
 
 
     if (errorSalebyDiscount) {
-        return <View style={{ flex: 1, backgroundColor: 'gray' }}>
-            <Text style={{ color: 'white' }}>Not found sales</Text>
-        </View>
+        
+        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+        return <Loading />;
     }
     if (loadingSalebyDiscount) {
         return <Loading />

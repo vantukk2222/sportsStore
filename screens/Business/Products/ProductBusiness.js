@@ -120,7 +120,12 @@ const ProductBusiness = (props) => {
             console.log('Go to the previous page');
         }
     };
-
+    if( error || errorState || errorProductbyBusi)
+    {
+        
+        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+        return <Loading />;
+    }
     return (
         <View style={styles.container}>
             <View style={styles.header}>

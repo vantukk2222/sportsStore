@@ -34,6 +34,7 @@ import { formatMoneyVND } from '../../utilies/validation';
 import { logout } from '../../redux/reducers/Login/signinReducer';
 import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
 import FlatListSale from '../Sale/FlatListSale';
+import { toastError } from '../../components/toastCustom';
 // import { fetchUserByID } from '../../redux/reducers/User/userInfor';
 // >>>>>>> NewD
 
@@ -132,7 +133,8 @@ const Start = () => {
     }
 
     if (error) {
-        return <Text style={{ color: 'red' }}>Error: {error}</Text>;
+        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+        return <Loading />;
     }
 
     return (

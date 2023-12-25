@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
+import { toastError } from '../../components/toastCustom';
 const ProductList = (props) => {
 
     const dispatch = useDispatch();
@@ -86,8 +87,9 @@ const ProductList = (props) => {
     }
 
     if (error || errorSearch) {
-        return <Text style={{ color: 'red' }}>Error: {error}</Text>;
-    }
+
+        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+        return <Loading />;    }
     return (
 
 

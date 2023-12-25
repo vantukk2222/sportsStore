@@ -9,6 +9,7 @@ import { createSale } from '../../../redux/reducers/Sale/createNewSale';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../../constants';
+import Loading from '../../../components/loading';
 const ProductForm = (props) => {
     const {
         saleState,
@@ -73,6 +74,15 @@ const ProductForm = (props) => {
         }
         console.log('Form data submitted:', formData);
     };
+    if(loading)
+    {
+        <Loading/>
+    }
+    if(error)
+    {
+        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+        return <Loading />;
+    }
     // console.log(data?.id);
     return (
         <ScrollView style={styles.container}>

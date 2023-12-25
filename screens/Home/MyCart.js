@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 // import InAppBrowser from 'react-native-inappbrowser-reborn';
 
-import {isEqual} from 'lodash';
+import { isEqual } from 'lodash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {COLOURS, Items} from '../database/Database';
 // {Items}
@@ -33,73 +33,87 @@ import { toastError, toastsuccess } from '../../components/toastCustom';
 import Loading from '../../components/loading';
 import { removePaymentState, savePayment } from '../../redux/reducers/Payment/paymentReducer';
 import WebView from 'react-native-webview';
+import CheckBox from '@react-native-community/checkbox';
 // import MaterialCommunityIcons
 // {Items}
-const MyCart = ({ route, navigation}, props) => {
+const MyCart = ({ route, navigation }, props) => {
   const {
     cartState,
     // paymentState
   } = props;
+
   const { id_user } = route.params
   const dispatch = useDispatch()
+
   const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer)
 
-  // console.log("data Cart: ", dataCart);
   const [product, setProduct] = useState(cartState?.dataCart);
-  const [total, setTotal] = useState(null);
+  const [total, setTotal] = useState(0);
   const [link, setlink] = useState(null)
-  // const groupedProductsByBusinessWithQuantity = new Map();
-
-
-  // const [transformedData, settransformedData] = useState([...groupedProductsByBusinessWithQuantity].map(([business, products]) => ({
-  //   business,
-  //   products,
-  // }))) 
 
   const [groupedProducts, setGroupedProducts] = useState([]);
   const [visible, setVisible] = useState(false)
-  // useEffect(() => {
-  //   // console.log("i = ", i);
 
-  //   const groupedByBusiness = {};
+  const [sale, setSale] = useState({});
+  const [id_buy, setID_Buy] = useState([])
+  const [toggleCheckBox, setToggleCheckBox] = useState({})
 
-  //   product?.forEach(item => {
-    
-  //     const productDetails = {
-  //       ...item.product,
-  //       quantity_cart: item.quantity, // Số lượng sản phẩm trong giỏ hàng
-  //       id_Cart : item.id
-  //     };
+  
+
+  const getID_Buy = (key, value) => {
+    if (key === "remove") {
+      console.log("price of id", value);
+      setTotal(total - sale[value])
+      const updatedItems = id_buy.filter(item => item !== value); // Lọc ra các phần tử khác với giá trị cần loại bỏ
+      setID_Buy(updatedItems);
+    }
+    if (key === "add") {
       
-  //     const { business, product } = item;
-  //     if (!groupedByBusiness[business.id]) {
-  //       groupedByBusiness[business.id] = {
-  //         business,
-  //         products: [productDetails],
-  //       };
-  //     } else {
-  //       groupedByBusiness[business.id].products.push(productDetails);
-  //     }
+      console.log("price of id", value);
+      setTotal(total + sale[value])
 
-  //   });
+      setID_Buy(prev => ([...prev, value]))
+    }
 
-  //   const groupedProductsArray = Object.values(groupedByBusiness);
-  //   setGroupedProducts(groupedProductsArray);
+  }
+  const handleItemBusiness = (key, value) => {
+    if (key === "check") {
+      value?.products?.forEach((eachProduct) => {
+        if (!id_buy?.includes(eachProduct?.id_product_information)) {
+          setID_Buy(prevState => [...prevState, eachProduct?.id_product_information]);
+          setTotal((prevTotal) => prevTotal + sale[eachProduct?.id_product_information]);
+        }
+      });
+    }
+    if (key === "uncheck") {
+      value?.products?.forEach((eachProduct) => {
+        setID_Buy(prevState => prevState.filter(item => item !== eachProduct?.id_product_information));
+        setTotal((prevTotal) => prevTotal - sale[eachProduct?.id_product_information]);
 
-  // }, []); // Chạy chỉ một lần khi component mount
+      });
+    }
+
+  };
+
+  const handleSalePress = (key, value) => {
+    // Xử lý giá trị từ component con ở đây
+    setSale(prevDictionary => ({
+      ...prevDictionary,
+      [key]: value,
+    }));
+  };
+  // useEffect(() => {
   useEffect(() => {
-    // Update groupedProducts whenever product changes
-    // Ensure product has values before updating groupedProducts
     if (product && product.length > 0) {
       const groupedByBusiness = {};
-  
+
       product.forEach((item) => {
         const productDetails = {
           ...item.product,
           quantity_cart: item.quantity,
           id_Cart: item.id,
         };
-  
+
         const { business } = item;
         if (!groupedByBusiness[business.id]) {
           groupedByBusiness[business.id] = {
@@ -110,13 +124,12 @@ const MyCart = ({ route, navigation}, props) => {
           groupedByBusiness[business.id].products.push(productDetails);
         }
       });
-  
+
       const groupedProductsArray = Object.values(groupedByBusiness);
       setGroupedProducts(groupedProductsArray);
     }
   }, [product]);
 
-  // Kết quả: mảng sản phẩm đã được nhóm theo business
   console.log("data cart:", groupedProducts);
 
 
@@ -134,6 +147,8 @@ const MyCart = ({ route, navigation}, props) => {
     }
   }, [id_user]);
 
+
+
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
       // Hủy bỏ sự kiện trước khi rời khỏi màn hình để tránh chuyển đi không cần thiết
@@ -150,46 +165,52 @@ const MyCart = ({ route, navigation}, props) => {
     };
   }, [navigation, updateCartAPI]);
 
-  useEffect(() => {
-    // setTriggerRerender(true);
-    setTotal(getTotal(product))
-  }, [product]);
+  // useEffect(() => {
+  //   // setTriggerRerender(true);
+  //   setTotal(getTotal(product))
+  // }, [id_buy]);
+  useEffect(()=>{
+    groupedProducts?.map((eachproductItem)=>{
+      setToggleCheckBox({
+      [eachproductItem?.business?.id]: false
+      })
+    })
+  },[])
 
-  
   useEffect(() => {
-    if (!isEqual(product,dataCart)){
-    // console.log('dataCart in Cart:', dataCart);
-    dispatch(listCartByIdUser(id_user))
-    setProduct(dataCart)
+    if (!isEqual(product, dataCart)) {
+      // console.log('dataCart in Cart:', dataCart);
+      dispatch(listCartByIdUser(id_user))
+      setProduct(dataCart)
     }
     // console.log('id_user in cart: ', id_user);
-  }, [dataCart])
+  }, [dataCart, product])
 
-  const getTotal = (cartProducts) => {
-    let totalPrice = 0;
+  // const getTotal = (cartProducts) => {
+  //   let totalPrice = 0;
 
-    cartProducts?.forEach((cartItem) => {
-      console.log("product in Mycart:", cartItem);
-      totalPrice += cartItem?.product?.price * cartItem?.quantity
-    });
+  //   cartProducts?.forEach((cartItem) => {
+  //     console.log("product in Mycart:", cartProducts);
+  //     totalPrice += cartItem?.product?.price * cartItem?.quantity * (1 - sale[cartItem?.product?.id_product_information]/100)
+  //   });
 
-    return totalPrice;
-  };
+  //   return totalPrice;
+  // };
   //remove data from Cart
 
 
   //checkout
 
-//   const openBrowser = async () => {
-//   const url = dataMOMO;
-//   const supported = await Linking.canOpenURL(url);
+  //   const openBrowser = async () => {
+  //   const url = dataMOMO;
+  //   const supported = await Linking.canOpenURL(url);
 
-//   if (supported) {
-//     await Linking.openURL(url);
-//   } else {
-//     console.error('Cannot open URL');
-//   }
-// };
+  //   if (supported) {
+  //     await Linking.openURL(url);
+  //   } else {
+  //     console.error('Cannot open URL');
+  //   }
+  // };
 
   // const openLinkInWebView = () => setVisible(true)
   const checkOut = async () => {
@@ -197,18 +218,20 @@ const MyCart = ({ route, navigation}, props) => {
       const getlink = await dispatch(savePayment(id_user));
       console.log("Momo Link previous:", getlink);
       setlink(getlink)
-      await Linking.openURL(getlink)
-      toastsuccess("Thành công", "Thanh toán thành công");
-      dispatch(listCartByIdUser(id_user))
-      setProduct(dataCart)
+      await Linking.openURL(getlink).then(() => {
+        navigation.navigate("Start")
+        toastsuccess("Thành công", "Thanh toán thành công");
+        dispatch(listCartByIdUser(id_user))
+        setProduct(dataCart)
+      })
     } catch (error) {
       toastError("Xin lỗi", "Đã có lỗi xảy ra với máy chủ");
       return error;
     }
     setVisible(true);
   };
-  
- 
+
+
   return (
     <View
       style={{
@@ -217,7 +240,7 @@ const MyCart = ({ route, navigation}, props) => {
         backgroundColor: COLOURS.white,
         position: 'relative',
       }}>
-        {/* <Modal
+      {/* <Modal
           visible={visible}
           presentationStyle={'pageSheet'}
           animationType={'slide'}
@@ -232,7 +255,7 @@ const MyCart = ({ route, navigation}, props) => {
             flexDirection: 'row',
             paddingTop: 16,
             paddingHorizontal: 16,
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
             alignItems: 'center',
           }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -249,71 +272,77 @@ const MyCart = ({ route, navigation}, props) => {
           </TouchableOpacity>
           <Text
             style={{
-              fontSize: 14,
-              color: COLOURS.black,
-              fontWeight: '400',
+              paddingLeft: 20,
+              fontSize: 18,
+              color: COLOURS.blue,
+              fontWeight: '600',
             }}>
-            Chi tiết đơn hàng
+            Giỏ hàng
           </Text>
           <View></View>
         </View>
-        <Text
-          style={{
-            fontSize: 20,
-            color: COLOURS.black,
-            fontWeight: '500',
-            letterSpacing: 1,
-            paddingTop: 20,
-            paddingLeft: 16,
-            marginBottom: 10,
-          }}>
-          Đơn hàng của tôi
-        </Text>
+
         {/* {console.log(`cartItem:`, product.map((productItem) => productItem))} */}
         {groupedProducts.map((productItem, index) => {
           console.log(`cartItem map ${index} `, productItem);
+          
           return (
             <View key={index} style={{ margin: 10 }}>
               <View style={{
                 backgroundColor: 'white',
                 borderRadius: 8,
-                padding: 16,
+                flexDirection: 'row',
+                flex: 10,
+                padding: 12,
+                // marginBottom: 5,
                 elevation: 3,
-                marginTop: 20
+                marginTop: 20,
+                paddingStart: 0,
+                alignContent: 'center',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}>
-                <ShopInfo business={productItem.business} />
+                <CheckBox
+                  style={{ flex: 1 }}
+                  disabled={false}
+                  value={toggleCheckBox[productItem?.business?.id]}
+                  onValueChange={(newValue) => {
+                    if (newValue) {
+                      handleItemBusiness("check", productItem)
+                      const currentState = { ...toggleCheckBox };
+                    currentState[productItem?.business?.id] = newValue
+                    console.log("checkbox",  productItem?.business?.id + " \t"+toggleCheckBox[productItem?.business?.id]);
+                    setToggleCheckBox(currentState)
+                      //   onHandleGetID("check",buss?.id)
+                    }
+                    else {
+                      handleItemBusiness("uncheck", productItem)
+                      const currentState = { ...toggleCheckBox };
+                    currentState[productItem?.business?.id] = newValue
+                    console.log("checkbox " , productItem?.business?.id + " \t"+ toggleCheckBox[productItem?.business?.id]);
+                    setToggleCheckBox(currentState)
+                      //   onHandleGetID("uncheck",buss?.id)
+                    }
+                    
+                    
+                  }} />
+                <View style={{ flex: 9 }}>
+                  <ShopInfo business={productItem.business} inCart={true} />
+
+                </View>
               </View>
-              {/* <View style={{ backgroundColor: '#F1F1F1', padding: 10, marginBottom: 5, flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
-                
-                <Text style={{ fontSize: 16, color: 'black', fontStyle: 'italic' }}>{(String(productItem.businessId)).toUpperCase()}</Text>
-                <Icon name="angle-right" size={30} onPress={() => {}} />
-              </View> */}
-              <View style={{ paddingBottom: 20, marginBottom: 45, minHeight:150, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
+
+              <View style={{ paddingBottom: 20, marginBottom: 45, minHeight: 150, borderRadius: 5, borderColor: 'gray', borderWidth: 2 }} nestedScrollEnabled={true}>
                 {/* {console.log('productItem: ', productItem.productSet[0].size.product)} */}
                 {/* {console.log('eachItem in prodductItem',productItem)} */}
                 {productItem.products ? productItem.products.map((eachproductItem, eachindex) => {
-                  return <RenderProducts data={eachproductItem} />;
+                  return <RenderProducts data={eachproductItem} onHandleSale={handleSalePress} id_buy={id_buy} onHandleGetID={getID_Buy} />;
                 }) : null}
               </View>
-             </View>
-           );
-         })}
-         {/* <View style={{margin:10}}>
-          <View style={{backgroundColor:'#F1F1F1', padding:10, marginBottom:5, flexDirection:'row',display: 'flex',justifyContent: 'space-between'}}>
-            <Text style={{fontSize:16, color:'black'}}>Tên cừa hàng</Text>
-            <Icon name="angle-right" size={30} onPress={() => {  }} />
-          </View> 
-        <ScrollView style={{padding: 8,marginBottom:45, height: 280, borderRadius:5, borderColor:'gray',  borderWidth:2}} nestedScrollEnabled={true}>
-        {product ? product.map((productItem, index) => renderProducts(productItem, index)) : null}
+            </View>
+          );
+        })}
 
-        </ScrollView> 
-
-         <ScrollView style={{padding: 8, marginBottom:45, height: 280,  borderRadius:5, borderColor:'gray',  borderWidth:2}} nestedScrollEnabled={true}>
-        {product ? product.map((productItem, index) => renderProducts(productItem, index)) : null} 
-
-         </ScrollView>
-
-        </View>  */}
         <View>
           <View
             style={{
@@ -362,6 +391,7 @@ const MyCart = ({ route, navigation}, props) => {
                 </View>
                 <View>
                   <Text
+                    onPress={() => { console.log("data Sale test in Cart", id_buy[1]) }}
                     style={{
                       fontSize: 14,
                       color: COLOURS.black,
@@ -528,7 +558,7 @@ const MyCart = ({ route, navigation}, props) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                {formatMoneyVND(total/20)}
+                {formatMoneyVND(total / 20)}
               </Text>
             </View>
             <View
@@ -553,7 +583,7 @@ const MyCart = ({ route, navigation}, props) => {
                   fontWeight: '500',
                   color: COLOURS.black,
                 }}>
-                {formatMoneyVND(total *1.05)}
+                {formatMoneyVND(total * 1.05)}
               </Text>
             </View>
           </View>
@@ -569,7 +599,7 @@ const MyCart = ({ route, navigation}, props) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-          {/* <OpenURLButton url={'https://google.com'} > Mở trang web</OpenURLButton> */}
+        {/* <OpenURLButton url={'https://google.com'} > Mở trang web</OpenURLButton> */}
         <TouchableOpacity
           onPress={() => (total != 0 ? checkOut() : null)}
           style={{
@@ -588,7 +618,7 @@ const MyCart = ({ route, navigation}, props) => {
               color: COLOURS.white,
               textTransform: 'uppercase',
             }}>
-            Thanh toán ({formatMoneyVND(total *1.05)} )
+            Thanh toán ({formatMoneyVND(total * 1.05)} )
           </Text>
         </TouchableOpacity>
       </View>
