@@ -7,6 +7,11 @@ const ListSale = ({ sales, onDetail, onEdit }) => {
     handleChangeTimeType = (time) => {
         return moment(time).format("DD/MM/YYYY");
     }
+    const isExpired = (endDate) => {
+        const currentDate = moment();
+        const expirationDate = moment(endDate);
+        return expirationDate.isBefore(currentDate);
+    };
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.row}>
@@ -15,14 +20,17 @@ const ListSale = ({ sales, onDetail, onEdit }) => {
                     <Text style={{ color: 'black', fontSize: 15, fontWeight: '500' }}>{item.name}</Text>
                     <Text style={{ color: 'red' }}>Giảm {item.discount}%</Text>
                 </View>
-                <View style={styles.columnButton}>
-                    <TouchableOpacity style={styles.button} >
-                        <Text style={{ color: 'black', fontSize: 15, fontWeight: '500' }}>Sửa</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => onDetail(item.id)}>
-                        <Text style={{ color: 'black', fontSize: 15, fontWeight: '500' }}>Xem</Text>
-                    </TouchableOpacity>
-                </View>
+                {isExpired(item?.ended_at) ?
+                    <Text style={{ color: 'red' }}>Hết hạn</Text> :
+                    <View style={styles.columnButton}>
+                        <TouchableOpacity style={styles.button}
+                            onPress={() => onEdit(item.id)} >
+                            <Text style={{ color: 'black', fontSize: 15, fontWeight: '500' }}>Sửa</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => onDetail(item.id)}>
+                            <Text style={{ color: 'black', fontSize: 15, fontWeight: '500' }}>Xem</Text>
+                        </TouchableOpacity>
+                    </View>}
 
             </View>
             <View style={styles.dateColumn}>

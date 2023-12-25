@@ -7,6 +7,7 @@ import { colors } from '../../../constants';
 import { connect, useSelector } from 'react-redux';
 import Loading from '../../../components/loading';
 import ListSale from './ListSale';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Sale = (props) => {
 
@@ -23,14 +24,16 @@ const Sale = (props) => {
     const [state, setState] = useState(0)
     const [totalPage, setTotalPage] = useState(0)
     const [sales, setSales] = useState([])
+    const [reload, setReload] = useState(false)
 
 
     useEffect(() => {
+        console.log(reload);
         fetchSalesByBusiness(data?.id, page, pageSize, sort, desc)
         return () => {
             resetSaleByBusiness();
         }
-    }, [data, page, pageSize, sort, desc, state])
+    }, [data, page, pageSize, sort, desc, state, reload])
     useEffect(() => {
         // console.log('total page ', initialState?.dataSalebyBusi?.totalPages);
         setSales(initialState?.dataSalebyBusi?.content)
@@ -56,10 +59,27 @@ const Sale = (props) => {
     const handleGetProductofSale = (saleId) => {
         navigation.navigate('setProductinSale', { saleId: saleId, businessId: data?.id })
     }
+    const handleEditproduct = (id) => {
+        navigation.navigate('EditSale', { saleId: id })
+    }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Các sự kiện</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log(reload);
+                        setReload(reload == true ? false : true)
+                    }}>
+                    <Icon
+                        name='retweet'
+                        size={26}
+                        color={'gray'}
+                        style={{ alignSelf: 'flex-end', padding: 4 }}
+
+                    />
+                </TouchableOpacity>
+
                 {/* <View style={{ borderRadius: 4, marginLeft: 10, borderWidth: 0.8, borderColor: 'black' }}>
                     {removeState === false ?
                         <Icon name='trash' size={26} color={'gray'} style={{ alignContent: 'flex-end', padding: 4 }} onPress={() => {
@@ -83,6 +103,7 @@ const Sale = (props) => {
                 <ListSale
                     sales={sales}
                     onDetail={handleGetProductofSale}
+                    onEdit={handleEditproduct}
                 />
             }
             <View style={styles.navigation}>

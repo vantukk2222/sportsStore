@@ -11,11 +11,11 @@ import { removerProductInfor } from '../../../redux/reducers/productReducer/dele
 const CreateSize = ({ navigation }, props) => {
     const route = useRoute();
     const id_productinformation = route.params?.id_productinformation || null;
+    const isEdit = route.params?.isEdit || false;
     // const { dataProductSize, loadingProductSize, errorProductSize } = useSelector((state) => state.createProductSize)
     const {
         initialState,
         initialDeleteProState,
-        createProductSizes,
     } = props;
 
     console.log("CreateSize", id_productinformation);
@@ -44,7 +44,7 @@ const CreateSize = ({ navigation }, props) => {
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            if (!hasSizes) {
+            if (!hasSizes && !isEdit) {
                 // Hiển thị cảnh báo nếu không có kích thước
                 Alert.alert(
                     'Cảnh báo',
@@ -98,7 +98,8 @@ const CreateSize = ({ navigation }, props) => {
     const handleSaveSizes = () => {
         // TODO: Gửi sizes lên server hoặc xử lý theo yêu cầu của bạn
         sizes.map(item => {
-            createProductSizes(createSizeObject(item.price, item.size, item.quantity));
+            const proD = createSizeObject(item.price, item.size, item.quantity);
+            dispatch(createProductSizes(proD))
         });
         console.log('Saved Sizes:', sizes);
         setHasSizes(true)
@@ -211,6 +212,5 @@ const mapStateToProps = (state) => ({
 
 })
 const mapDispatchToProps = {
-    createProductSizes
 }
-export default connect(mapStateToProps, { ...mapDispatchToProps, removerProductInfor })(CreateSize);
+export default connect(mapStateToProps, { ...mapDispatchToProps })(CreateSize);

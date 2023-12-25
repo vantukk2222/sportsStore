@@ -12,9 +12,9 @@ import { findMainImage } from '../../Category/ListProductByCategory';
 import { addProductSale, resetProductInSale } from '../../../redux/reducers/Sale/addProductInSale';
 import Loading from '../../../components/loading';
 import { ActivityIndicator } from 'react-native-paper';
-import removeProduct from '../../../redux/reducers/Sale/removeProduct';
+import { removeProInSale, resetRemoveProductinforSale } from '../../../redux/reducers/Sale/removeProduct';
 
-
+{ }
 const setProductinSale = (props) => {
     const route = useRoute();
     const navigation = useNavigation();
@@ -26,7 +26,9 @@ const setProductinSale = (props) => {
         initialState,
         fetchProductsByBusiness,
         productOfSaleState,
-        addProductSale
+        addProductSale,
+        removeProductState,
+        removeProInSale
     } = props
 
     const [selectedProducts, setSelectedProducts] = useState([]);
@@ -48,11 +50,18 @@ const setProductinSale = (props) => {
             resetProductbySale()
             resetProductByBusiness()
             resetProductInSale()
+            resetRemoveProductinforSale()
         }
     }, [saleId, businessId, page, pageSize, sort, desc, state])
-    useEffect(() => {
-        console.log(productOfSaleState?.dataProductOfSale);
-    }, [productOfSaleState?.dataProductOfSale])
+    // useEffect(() => {
+    //     if (removeProductState?.dataRemoveProduct === 202) {
+    //         console.log("status remove product", removeProductState?.dataRemoveProduct);
+    //     }
+    // }, [removeProductState?.dataRemoveProduct])
+
+    // useEffect(() => {
+    //     console.log("status add product", productOfSaleState?.dataProductOfSale);
+    // }, [productOfSaleState?.dataProductOfSale])
     useEffect(() => {
         if (isAdd === false) {
             setProducts([])
@@ -122,13 +131,27 @@ const setProductinSale = (props) => {
             toastsuccess('Cảnh báo', 'Không có sản phẩm nào được chọn')
             return
         }
+        if (productOfSaleState?.loadingProductbySale) {
+            return
+        }
         addProductSale(saleId, selectedProducts)
-        navigation.navigate('Sale')
+        setSelectedProducts([])
+        navigation.goBack('Sale')
         //setIsAdd(false)
 
     }
     const handleRemove = () => {
-
+        console.log("select delete", selectedProducts)
+        if (selectedProducts.length <= 0) {
+            toastsuccess('Cảnh báo', 'Không có sản phẩm nào được chọn')
+            return
+        }
+        if (initialState?.loadingProductbyBusi) {
+            return
+        }
+        removeProInSale(selectedProducts)
+        setSelectedProducts([])
+        navigation.goBack('Sale')
     }
     const renderItem = ({ item }) => (
 
@@ -225,8 +248,8 @@ const setProductinSale = (props) => {
                     </TouchableOpacity> :
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={handleSubmit}>
-                        {productSaleState?.loadingProductbySale === true ? <ActivityIndicator size="large" color={colors.primary} /> :
+                        onPress={handleRemove}>
+                        {initialState?.loadingProductbyBusi === true ? <ActivityIndicator size="large" color={colors.primary} /> :
                             <Text style={{ color: 'white', fontWeight: '500' }}>Xóa</Text>
                         }
                     </TouchableOpacity>
@@ -238,7 +261,7 @@ const setProductinSale = (props) => {
                     <Text style={{ color: 'white', fontWeight: '500' }}>Trang sau</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
     );
 };
 //}
@@ -330,6 +353,6 @@ const mapDispatchToProps = {
     fetchProductbySale,
     fetchProductsByBusiness,
     addProductSale,
-    removeProduct
+    removeProInSale
 }
 export default connect(mapStateToProps, { ...mapDispatchToProps })(setProductinSale);

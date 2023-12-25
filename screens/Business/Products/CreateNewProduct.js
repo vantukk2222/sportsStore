@@ -138,14 +138,6 @@ const CreateNewProduct = () => {
         setParentArray(ArrayP)
     }, [dataCate])
 
-    // useEffect(() => {
-    //     console.log("mang cate", selectedCategories)
-    // }, [selectedCategories])
-
-    // useEffect(() => {
-    //     console.log('upload image', uploadedImages);
-    // }, [uploadedImages])
-
     useEffect(() => {
         const ArrayC = getChildArrayById(selectedCParent)
         //console.log(ArrayC);

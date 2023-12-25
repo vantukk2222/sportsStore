@@ -5,7 +5,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaFrameContext } from 'react-native-safe-area-context';
 import { toastError, toastsuccess } from '../../../components/toastCustom';
 import { colors } from '../../../constants';
-const ImagePickerComponent = ({ onListUrlChange, onUrlChange, isSale = false }) => {
+const ImagePickerComponent = ({ onListUrlChange, onUrlChange, isSale = false, oldUrl = null }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [listImages, setListImages] = useState([]);
     const [listUrl, setListUrl] = useState([]);
@@ -26,6 +26,14 @@ const ImagePickerComponent = ({ onListUrlChange, onUrlChange, isSale = false }) 
             //console.log(response);
         })
     }
+    useEffect(() => {
+        if (oldUrl && oldUrl !== "") {
+            console.log(oldUrl);
+            setListImages([oldUrl])
+        }
+
+    }, [oldUrl])
+
     // useEffect(() => {
     //     console.log("list url", listUrl);
     //     console.log("list image", listImages);
@@ -56,13 +64,15 @@ const ImagePickerComponent = ({ onListUrlChange, onUrlChange, isSale = false }) 
                         setListUrl((preUrl) => [...preUrl, uploadedFileUrl])
                         setListImages((preImages) => [...preImages, response.assets[0].uri])
                         setSelectedImage(null)
-                        toastsuccess('Thêm ảnh', 'Thành công')
+                        //toastsuccess('Thêm ảnh', 'Thành công')
                         {
-                            isSale === false ?
-                                onListUrlChange([...listUrl, uploadedFileUrl])
+                            isSale === false ? onListUrlChange([...listUrl, uploadedFileUrl])
+
                                 :
                                 onUrlChange('url', uploadedFileUrl);
                         }
+
+
                         // Lưu URL vào trạng thái hoặc thực hiện các thao tác khác tại đây
                         // setSelectedImage(response.)
                     }

@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import getProductById from "../../../API/Product/getProductById";
 import { logout } from "../Login/signinReducer";
 import { store } from "../../store";
+import { toastsuccess } from "../../../components/toastCustom";
 
-const initialState = {
+const productinforState = {
     data: {},
     loading: false,
     error: null
@@ -11,7 +12,7 @@ const initialState = {
 
 const productDetailSlice = createSlice({
     name: 'productDetail',
-    initialState,
+    initialState: productinforState,
     reducers: {
         getStart: (state) => {
             //console.log("state details:", state)
@@ -29,7 +30,7 @@ const productDetailSlice = createSlice({
             state.loading = false;
         },
         resetProductDetail: (state) => {
-            return initialState; // Reset the productDetail state to its initial state
+            return productinforState; // Reset the productDetail state to its initial state
         },
     }
 });
@@ -39,11 +40,12 @@ export const fetchProductbyId = (id) => async (dispatch) => {
         dispatch(getStart());
         const data = await getProductById(id);
         // <<<<<<< categoryDat
-        console.log("getproductbyid\n", id + data);
+        //console.log("getproductbyid\n", id + data);
         // =======
         // console.log("ID product and data product in redux product detail: "+ id+ "\t" + JSON.stringify(data));
         // >>>>>>> NewD
         dispatch(getSuccess(data));
+
     } catch (error) {
         let errorMessage = 'Error fetching data';
 

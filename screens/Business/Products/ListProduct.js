@@ -17,7 +17,7 @@ const ListProduct = ({ products, onEdit, onDelete, removeState, onRecover }) => 
                 removeState === false ?
 
                     <View style={styles.columnButton}>
-                        <TouchableOpacity style={styles.button} onPress={() => console.log('img:', findMainImage(item?.imageSet))}>
+                        <TouchableOpacity style={styles.button} onPress={() => onEdit(item.id)}>
                             <Text style={{ color: 'white' }}>Sửa</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.button} onPress={() => onDelete(item.id)}>

@@ -3,16 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 import { store } from "../../store";
 import { startMapper } from "react-native-reanimated";
 import { postImage } from "../../../API/Images/postImage";
+import { toastError } from "../../../components/toastCustom";
 
 
-const initialState = {
+const imageState = {
     dataImage: null,
     loadingImage: false,
     errorImage: null
 }
 const createImageSlice = createSlice({
     name: 'createImage',
-    initialState,
+    initialState: imageState,
     reducers: {
         getStart: (state) => {
             state.loadingImage = true;
@@ -29,7 +30,7 @@ const createImageSlice = createSlice({
             state.loadingImage = false;
         },
         resetImage: (state) => {
-            return initialState
+            return imageState
         }
     }
 });
@@ -45,6 +46,7 @@ export const createImages = (Image) => async (dispatch, getState) => {
     } catch (error) {
         // store.dispatch(logout())
         console.log(('reducer set user error ', error.message));
+        toastError('Lổi', 'Không thể thêm ảnh')
         dispatch(getFailure(error.message))
     }
     // return data

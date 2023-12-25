@@ -1,56 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { ScrollView, View, Text, TextInput, TouchableOpacity, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { fetchProductbyId, resetProductDetail } from "../../../redux/reducers/productReducer/getDetailProduct"
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { toastConfig, toastError, toastsuccess } from '../../../components/toastCustom';
+import ImagePickerComponent from '../Products/UploadImages';
+import moment from 'moment'
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { colors } from '../../../constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories } from '../../../redux/reducers/Caregory/getAllCategories';
+import { fetchCategories, resetCategory } from '../../../redux/reducers/Caregory/getAllCategories';
 import { SelectList } from 'react-native-dropdown-select-list';
-import ImagePickerComponent from './UploadImages';
 import { createImages, resetImage } from '../../../redux/reducers/Images/ImageReducer';
-import { toastError } from '../../../components/toastCustom';
-import { createProductInfor, resetProductInformation } from '../../../redux/reducers/productReducer/createProductInformation';
-import { useNavigation } from '@react-navigation/native';
-
-
-const EditProduct = () => {
-    const [name, setName] = useState('');
-    const [detail, setDetail] = useState('');
-    const [attribute, setAttribute] = useState('');
-    const [id_business, setIdBusiness] = useState(0);
-    const [state, setState] = useState(2);
+import { editProductinf, resetEditProduct } from '../../../redux/reducers/productReducer/editProduct';
+import Loading from '../../../components/loading';
+const EditProductInfor = (props) => {
+    const route = useRoute()
+    const navigation = useNavigation();
+    const productId = route.params.productId;
     const [selectedCategories, setSelectedCategories] = useState([]);
-
-    const [selectedCParent, setSelectedCParent] = useState();
-    const [selectedImage, setSelectedImage] = useState(null);
-    const { data, loading, error } = useSelector((state) => state.userData)
-    const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories)
-    const { dataProductInfor, loadingProductInfor, errorProductInfor } = useSelector((state) => state.createProductInformation)
+    const [urlImage, seturlImage] = useState([])
+    const [product, setProduct] = useState({
+        name: '',
+        detail: '',
+        attribute: '',
+        id_business: 0,
+        id_sale: null,
+        created_at: null,
+        updated_at: null,
+        id_categorySet: [],
+        id_imageSet: [],
+    })
+    const {
+        productinforState,
+        fetchProductbyId,
+        initialState,
+        fetchCategories,
+        imageState,
+        createImages,
+        editProductState,
+        editProductinf,
+    } = props
     const [parentArray, setParentArray] = useState([])
     const [childArray, setChildArray] = useState([])
-    const dispatch = useDispatch();
+    const [selectedCParent, setSelectedCParent] = useState();
+    const dispatch = useDispatch()
+    useEffect(() => {
+        fetchProductbyId(productId)
+        fetchCategories()
+        return () => {
+            dispatch(resetCategory())
+            dispatch(resetProductDetail())
+            // dispatch(resetImage())
+            dispatch(resetEditProduct())
+        }
+    }, [productId])
+    useEffect(() => {
+        const p = productinforState?.data[productId]
+        //console.log('data ', p.state);
+        categorySet = p?.categorySet
+        imageSet = p?.imageSet
+        setProduct({
+            name: p?.name,
+            detail: p?.detail,
+            attribute: p?.attribute,
+            id_business: p?.business?.id,
+            id_sale: p?.sale?.id,
+            created_at: p?.created_at ? new Date(p?.created_at) : new Date(),
+            updated_at: p?.updated_at ? new Date(p?.updated_at) : new Date(),
+            id_categorySet: categorySet?.map(item => (item.id)),
+            id_imageSet: imageSet?.map(item => (item.id))
 
-
-    const [uploadedImages, setUploadedImages] = useState([]);
-    const [listIdImage, setListIdImage] = useState([]);
-
-    const { dataImage, loadingImage, errorImage } = useSelector((state) => state.createImage);
-
-
-    const navigation = useNavigation();
-    const getChildArrayById = (parentId) => {
-        const parentItem = dataCate?.find(item => item.id === parentId);
-        // Kiểm tra xem có tồn tại parentItem và có thuộc tính categorySet không
-        if (parentItem && parentItem.categorySet) {
-            // Chuyển đổi mảng con sang dạng { key, value }
-            return parentItem.categorySet.map(item => ({
+        });
+        setSelectedCategories(categorySet?.map(item => ({ key: item.id, value: item.name })))
+    }, [productinforState?.data])
+    useEffect(() => {
+        // console.log(dataCate[0].categorySet);
+        const ArrayP = initialState?.dataCate?.map(item => {
+            return {
                 key: item.id,
                 value: item.name,
-            }));
-        }
+            };
+        });
+        setParentArray(ArrayP)
+    }, [initialState?.dataCate])
 
-        // Nếu không tìm thấy hoặc không có categorySet, trả về mảng trống
-        return [];
-    }
+
+    const handleInputChange = (field, value) => {
+        // console.log(field, value);
+        setProduct((preProduct) => ({ ...preProduct, [field]: value }));
+    };
     const handlePress = (item) => {
         const isSelected = selectedCategories.some(selectedItem => selectedItem.key === item.key);
 
@@ -59,126 +97,156 @@ const EditProduct = () => {
             setSelectedCategories(updatedCategories);
         }
     };
+    const getChildArrayById = (parentId) => {
+        const parentItem = initialState?.dataCate?.find(item => item.id === parentId);
+        if (parentItem && parentItem.categorySet) {
+            // Chuyển đổi mảng con sang dạng { key, value }
+            return parentItem.categorySet.map(item => ({
+                key: item.id,
+                value: item.name,
+            }));
+        }
+        return [];
+    }
+    useEffect(() => {
+        const ArrayC = getChildArrayById(selectedCParent)
+        setChildArray(ArrayC)
+    }, [selectedCParent])
 
     const addToArrIfKeyNotExists = (arr, object) => {
         const { key, value } = object;
-        if (!arr.some(item => item.key === key || item.value === value)) {
+        console.log(object);
+        if (!arr.some(item => item.key == key || item.value == value)) {
+            console.log(object, selectedCategories);
             setSelectedCategories(prevState => [...prevState, object]);
         }
     };
-
     const searchByKey = (arr, inputKey) => {
         const foundItem = arr.find(item => item.key === inputKey);
         return foundItem || null;
     };
 
-
-    //Tao product
-    const handleCreateProduct = (name, detail, attribute, id_business, id_categorySet, id_imageSet) => {
-        console.log(id_categorySet, id_imageSet);
-        return {
-            name: name || '',
-            detail: detail || '',
-            attribute: attribute || '',
-            id_business: id_business,
-            id_sale: null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            id_categorySet: id_categorySet || [], // Extracting keys from selectedCategories
-            id_imageSet: id_imageSet || [], // You may set this value accordingly
-        };
-    };
-    //tao Image
-    const createImageObject = (name, url, is_main) => {
-        return {
-            name: name || '',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            is_main: is_main,
-            url: url || '',
-        };
-    };
     useEffect(() => {
-        // console.log(name, detail);
-        dispatch(fetchCategories());
-        setIdBusiness(data.id)
-        return () => {
-            dispatch(resetImage())
-            dispatch(resetProductInformation());
-        }
-    }, [data])
-    //data id image
-    useEffect(() => {
-        console.log("data image id", dataImage);
-        console.log(listIdImage);
-        if (dataImage) {
+        const id_categorySet = selectedCategories?.map(category => category.key);
+        handleInputChange('id_categorySet', id_categorySet);
+    }, [selectedCategories])
 
-            setListIdImage((preId) => [...preId, dataImage])
-        }
+    const handleSubmit = () => {
+        editProductinf(productId, product)
+        navigation.goBack('Home')
 
-    }, [dataImage])
-    useEffect(() => {
-        if (listIdImage.length > 0 && listIdImage.length === uploadedImages.length && !listIdImage.some(element => element === null)) {
-            //console.log('imageSet', listIdImage);
-            const id_categorySet = selectedCategories.map(category => category.key);
-            dispatch(createProductInfor(handleCreateProduct(name, detail, attribute, id_business, id_categorySet, listIdImage)))
 
-            setListIdImage([])
-        }
-    }, [listIdImage])
-
-    useEffect(() => {
-        // console.log(dataCate[0].categorySet);
-        const ArrayP = dataCate?.map(item => {
-            return {
-                key: item.id,
-                value: item.name,
-            };
-        });
-        setParentArray(ArrayP)
-    }, [dataCate])
-
-    // useEffect(() => {
-    //     console.log("mang cate", selectedCategories)
-    // }, [selectedCategories])
-
-    // useEffect(() => {
-    //     console.log('upload image', uploadedImages);
-    // }, [uploadedImages])
-
-    useEffect(() => {
-        const ArrayC = getChildArrayById(selectedCParent)
-        //console.log(ArrayC);
-        setChildArray(ArrayC)
-        //console.log("parent", selectedCParent);
-    }, [selectedCParent])
-    useEffect(() => {
-        console.log('id product information', dataProductInfor);
-        if (dataProductInfor) {
-            navigation.navigate('CreateSize', { id_productinformation: dataProductInfor })
-        }
-
-    }, [dataProductInfor, navigation])
-
-    const handleListUrlChange = (newListUrl) => {
-        setUploadedImages(newListUrl);
-    };
-
-    if (errorProductInfor) {
-        console.log("error", errorProductInfor);
-        dispatch(resetProductInformation())
-        toastError('Tạo sản phẩm', 'không thành công')
     }
-
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.header}>Thêm sản phẩm</Text>
+            <Text style={styles.header}>Chỉnh sửa sản phẩm</Text>
+            {productinforState?.loading ?
+                <TouchableOpacity
+                    style={{
+                        marginTop: 5,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: 'skyblue',
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }} >
+                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                </TouchableOpacity> :
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('EditandDelete', { productId: productId })}
+                    style={{
+                        marginTop: 5,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: 'skyblue',
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }} >
+                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                </TouchableOpacity>
+
+
+            }
+            {productinforState?.loading ?
+                <TouchableOpacity
+                    style={{
+                        marginTop: 5,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: 'skyblue',
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }} >
+                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                </TouchableOpacity> :
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('EditProductSize', { productinforId: productId })}
+                    style={{
+                        marginTop: 5,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: 'skyblue',
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }} >
+                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Kích thước</Text>}
+                </TouchableOpacity>
+            }
+            {productinforState?.loading ?
+                <TouchableOpacity
+                    style={{
+                        marginTop: 5,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: 'skyblue',
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }} >
+                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                </TouchableOpacity> :
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('CreateSize', { id_productinformation: productId, isEdit: true })}
+                    style={{
+                        marginTop: 5,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: 'skyblue',
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }} >
+                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Thêm kích thước</Text>}
+                </TouchableOpacity>
+            }
             <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Tên sản phẩm:</Text>
             <TextInput
                 color={colors.denNhe}
                 placeholderTextColor={'gray'}
-                value={name}
-                onChangeText={setName}
+                value={product?.name}
+                onChangeText={(value) => handleInputChange('name', value)}
                 placeholder="Nhập tên sản phẩm"
             />
 
@@ -186,8 +254,8 @@ const EditProduct = () => {
             <TextInput
                 color={colors.denNhe}
                 placeholderTextColor={'gray'}
-                value={detail}
-                onChangeText={setDetail}
+                value={product?.detail}
+                onChangeText={(value) => handleInputChange('detail', value)}
                 placeholder="Nhập chi tiết sản phẩm"
                 style={{ height: 90 }}
             />
@@ -195,8 +263,8 @@ const EditProduct = () => {
             <TextInput
                 color={colors.denNhe}
                 placeholderTextColor={'gray'}
-                value={attribute}
-                onChangeText={setAttribute}
+                value={product?.attribute}
+                onChangeText={(value) => handleInputChange('attribute', value)}
                 placeholder="Thuộc tính sản phẩm"
                 style={{ height: 90 }}
             />
@@ -242,8 +310,6 @@ const EditProduct = () => {
                 {
                     childArray.length > 0 && < SelectList
                         setSelected={(val) => {
-                            //setSelectedCParent(val)
-                            // { console.log(searchByKey(parentArray, selectedCParent), searchByKey(childArray, val)); }
                             addToArrIfKeyNotExists(selectedCategories, searchByKey(parentArray, selectedCParent))
                             addToArrIfKeyNotExists(selectedCategories, searchByKey(childArray, val))
                         }}
@@ -258,39 +324,37 @@ const EditProduct = () => {
 
 
 
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Hình ảnh:</Text>
+            {/* <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Hình ảnh:</Text> */}
             {/* <Button title="Chọn ảnh" onPress={handleImageUpload} />
 
             <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>ID Hình ảnh: {id_imageSet}</Text> */}
-            <ImagePickerComponent onListUrlChange={handleListUrlChange} />
-            <TouchableOpacity title="Tạo sản phẩm"
-                onPress={() => {
+            {/* <ImagePickerComponent onEditUrl={handleListUrlChange} listOldUrl={urlImage} /> */}
 
-                    uploadedImages.forEach((item, index) => {
+            {productinforState?.loading ? <Loading /> :
+                <TouchableOpacity
+                    onPress={() => handleSubmit()}
+                    style={{
+                        marginTop: 25,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: 'green',
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }} >
+                    {productinforState?.loadingProductInfor ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Lưu</Text>}
+                </TouchableOpacity>
+            }
 
-                        const isMain = index === 0
-                        dispatch(createImages(createImageObject(`Image${id_business}${index}`, item, isMain)))
-                    });
-
-
-                }}
-                style={{
-                    marginTop: 5,
-                    height: 50,
-                    width: 200,
-                    backgroundColor: 'skyblue',
-                    borderRadius: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    marginBottom: 20,
-                }} >
-                {loadingProductInfor ? <ActivityIndicator size="large" color={colors.success} /> :
-                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Tạo sản phẩm</Text>}
-            </TouchableOpacity>
         </ScrollView >
     );
-};
+
+
+
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -309,5 +373,16 @@ const styles = StyleSheet.create({
 
     },
 })
-
-export default EditProduct;
+const mapStateToProps = (state) => ({
+    productinforState: state.productDetail,
+    initialState: state.categories,
+    imageState: state.createImage,
+    editProductState: state.editProduct
+})
+const mapDispatchToProps = {
+    fetchProductbyId,
+    fetchCategories,
+    createImages,
+    editProductinf
+}
+export default connect(mapStateToProps, { ...mapDispatchToProps })(EditProductInfor)

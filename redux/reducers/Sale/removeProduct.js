@@ -36,7 +36,7 @@ const removeProductinforSaleSlice = createSlice({
     }
 });
 
-export const removeProduct = (productIds) => async (dispatch, getState) => {
+export const removeProInSale = (productIds) => async (dispatch, getState) => {
     //console.log('product infor redux', Product);
     try {
         dispatch(getStart());

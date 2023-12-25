@@ -24,6 +24,9 @@ const groupCategorySlice = createSlice({
         getFailure: (state, action) => {
             state.errorCate = action.payload;
             state.loadingCate = false;
+        },
+        resetCategory: (state) => {
+            return initialState
         }
     }
 });
@@ -44,5 +47,5 @@ export const fetchCategories = () => async (dispatch) => {
         dispatch(getFailure(errorMessage));
     }
 };
-export const { getStart, getSuccess, getFailure } = groupCategorySlice.actions;
+export const { getStart, getSuccess, getFailure, resetCategory } = groupCategorySlice.actions;
 export default groupCategorySlice.reducer;

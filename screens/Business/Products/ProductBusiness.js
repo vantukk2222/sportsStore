@@ -26,7 +26,7 @@ const ProductBusiness = (props) => {
     const dispatch = useDispatch();
     const [products, setProducts] = useState()
     const [page, setPage] = useState(0)
-    const [pageSize, setPageSize] = useState(5)
+    const [pageSize, setPageSize] = useState(10)
     const [sort, setSort] = useState('name')
     const [desc, setDesc] = useState(true)
     const [state, setState] = useState(0)
@@ -50,7 +50,8 @@ const ProductBusiness = (props) => {
 
     const handleEdit = (productId) => {
         // Xử lý sự kiện sửa sản phẩm
-        console.log('Edit product with ID:', productId);
+        navigation.navigate('EditProductInfor', { productId: productId })
+        // console.log('Edit product with ID:', productId);
     };
     const handleRecover = (productId) => {
         setHireProduct(productId, false)// bo an 
@@ -129,10 +130,14 @@ const ProductBusiness = (props) => {
                         <Icon name='trash' size={26} color={'gray'} style={{ alignContent: 'flex-end', padding: 4 }} onPress={() => {
                             setState(2)
                             setRemoveState(true)
+                            setPage(0)
+                            setTotalPage(0)
                         }} /> :
                         <Icon name='list' size={26} color={'gray'} style={{ alignContent: 'flex-end', padding: 4 }} onPress={() => {
                             setState(0)
                             setRemoveState(false)
+                            setPage(0)
+                            setTotalPage(0)
                         }} />
 
                     }
