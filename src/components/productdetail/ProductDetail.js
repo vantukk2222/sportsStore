@@ -44,7 +44,7 @@ const ProductDetail = () => {
         setQuantity(e.quantity);
         setPrice(e.price);
         setSize(e.size);
-        console.log(e.size);
+        //  console.log(e.size);
     };
     const addToCart = (product) => {
         const id2 = product.productSet?.find((e) => e.size == size).id;
@@ -57,7 +57,26 @@ const ProductDetail = () => {
             const id = check.id;
             const quantity = check.quantity;
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-            putCart(id, quantity + 1, authToken).then(() => dispatch(listCartByIdUser(user.id)));
+            const fetchData = async () => {
+                try {
+                    setLoading(true);
+                    const response = await getUnAuth(`product/${id2}`);
+                    if (!response) {
+                        throw new Error('Network response was not ok');
+                    }
+                    if (response.quantity > quantity)
+                        putCart(id, quantity + 1, authToken).then(() => dispatch(listCartByIdUser(user.id)));
+                    else {
+                        putCart(id, response.quantity, authToken).then(() => dispatch(listCartByIdUser(user.id)));
+                        alert('Loại bạn muốn mua đã tối đa');
+                    }
+                } catch (error) {
+                    setError(error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchData();
         } else {
             const user = JSON.parse(localStorage.getItem('User'));
             const authToken = JSON.parse(localStorage.getItem('authToken'));
@@ -83,7 +102,7 @@ const ProductDetail = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                //   console.log(response);
+                //console.log(response);
                 response.productSet.sort((a, b) => a.id - b.id);
 
                 setProductItem(response);
@@ -161,15 +180,18 @@ const ProductDetail = () => {
                             <p className="product-size">
                                 <strong>Size:</strong>
                                 {productItem.productSet &&
-                                    productItem.productSet.map((e, index) => (
-                                        <button
-                                            className={`sort ${e.id == id ? 'clicked' : ''}`}
-                                            key={index}
-                                            onClick={() => handleSize(e)}
-                                        >
-                                            {e.size}
-                                        </button>
-                                    ))}
+                                    productItem.productSet.map((e, index) => {
+                                        if (e.quantity > 0)
+                                            return (
+                                                <button
+                                                    className={`sort ${e.id == id ? 'clicked' : ''}`}
+                                                    key={index}
+                                                    onClick={() => handleSize(e)}
+                                                >
+                                                    {e.size}
+                                                </button>
+                                            );
+                                    })}
                             </p>
                             <button onClick={() => handleAdd(productItem)} className="add-to-cart-button">
                                 Thêm vào giỏ hàng

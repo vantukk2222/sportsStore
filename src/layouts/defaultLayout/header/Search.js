@@ -8,7 +8,6 @@ import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 const Search = ({ id }) => {
     const dispatch = useDispatch();
     const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
-    const cart = JSON.parse(localStorage.getItem('Cart'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     window.addEventListener('scroll', function () {
@@ -25,25 +24,7 @@ const Search = ({ id }) => {
         setShowMenu(value.trim() != '');
     };
     useEffect(() => {
-        dispatch(listCartByIdUser(id));
-    }, []);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const response = await getUnAuth(`cart/get-by-id-user/${id}`);
-                if (!response) {
-                    throw new Error('Network response was not ok');
-                }
-                // console.log(response);
-                localStorage.setItem('Cart', JSON.stringify(response));
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        if (id) fetchData();
+        if (id) dispatch(listCartByIdUser(id));
     }, [id]);
     return (
         <>

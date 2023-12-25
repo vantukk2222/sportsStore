@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { api } from './url';
-const deleteCart = async (prop) => {
+const deleteCart = async (prop,authToken) => {
     try {
         const response = await axios.delete(`${api}cart/delete/${prop}`, {
             headers: {
                 'Content-Type': 'application/json',
-                Accept: '*/*',
+                accept: '*/*',
+                Authorization: `Bearer ${authToken}`,
             },
         });
     } catch (error) {
