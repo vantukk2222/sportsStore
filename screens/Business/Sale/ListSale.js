@@ -21,7 +21,17 @@ const ListSale = ({ sales, onDetail, onEdit }) => {
                     <Text style={{ color: 'red' }}>Giảm {item.discount}%</Text>
                 </View>
                 {isExpired(item?.ended_at) ?
-                    <Text style={{ color: 'red' }}>Hết hạn</Text> :
+                    <View style={styles.columnButton}>
+                        <View style={{ borderRadius: 2, borderColor: 'red', borderWidth: 0.6, width: 80, marginLeft: 4 }}>
+                            <Text style={{ color: 'red', height: 30, paddingLeft: 10, paddingTop: 5 }}>Hết hạn</Text>
+                        </View>
+                        <TouchableOpacity style={styles.button}
+
+                            onPress={() => onEdit(item.id)} >
+                            <Text style={{ color: 'black', fontSize: 15, fontWeight: '500' }}>Sửa</Text>
+                        </TouchableOpacity>
+
+                    </View> :
                     <View style={styles.columnButton}>
                         <TouchableOpacity style={styles.button}
                             onPress={() => onEdit(item.id)} >
@@ -84,9 +94,11 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     button: {
-        backgroundColor: colors.success,
+        backgroundColor: colors.trangXam,
         padding: 5,
         borderRadius: 5,
+        borderWidth: 0.6,
+        borderColor: 'gray',
         margin: 5,
         alignItems: 'center',
         width: 80

@@ -9,25 +9,31 @@ import { createProductSizes, resetProductSize } from '../../../redux/reducers/pr
 import { removerProductInfor } from '../../../redux/reducers/productReducer/deleteProductInformation';
 import { fetchProductSizebyId, resetGetProductSize } from '../../../redux/reducers/productReducer/ProductSize/getProductSize';
 import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
-import { editProductSizes } from '../../../redux/reducers/productReducer/ProductSize/editProductSize';
+import { editProductSizes, resetEditProductSize } from '../../../redux/reducers/productReducer/ProductSize/editProductSize';
 import Loading from '../../../components/loading';
+import { deleteProductSize, resetDeleteSize } from '../../../redux/reducers/Size/DeleteSize';
 
 
 const EditProductSize = (props) => {
     const route = useRoute();
     const productinforId = route.params.productinforId
     const navigation = useNavigation()
+    const dispatch = useDispatch()
     const {
         fetchProductSizebyId,
         getProductSizeState,
         editProductSizes,
-        editProductSizeState
+        editProductSizeState,
+        deleteSizeState,
+        deleteProductSize
     } = props
 
     useEffect(() => {
         fetchProductSizebyId(productinforId)
         return () => {
-            resetGetProductSize()
+            dispatch(resetGetProductSize())
+            dispatch(resetEditProductSize())
+            dispatch(resetDeleteSize())
         }
     }, [productinforId])
     const [sizes, setSizes] = useState([])
@@ -61,17 +67,43 @@ const EditProductSize = (props) => {
     useEffect(() => {
         console.log(' console.log(sizes);', sizes);
     }, [sizes])
-    const handleDeleteSize = (index) => {
+    const handleDeleteSize = (index, size) => {
         if (sizes.length === 1) {
             // Nếu chỉ còn 1 size, không cho phép xóa
             toastError('Xoá', 'Không thể xóa, phải có 1 size');
             return;
         }
+        else {
+            Alert.alert(
+                'Cảnh báo',
+                'Bạn có muốn xóa kích thước?',
+                [
+                    { text: 'Không', onPress: () => { } },
+                    {
+                        text: 'Có', onPress: () => {
+                            {
+                                deleteProductSize(size?.id)
+                                const updatedSizes = sizes.filter((_, i) => i !== index);
+                                setSizes(updatedSizes);
+                                // toastError('Xoá', 'Xóa thành công');
+                                if (deleteSizeState?.errorDeleteSize) {
+                                    return;
+                                } else {
+                                    navigation.navigate('BusinessBottomNavigator')
+                                }
+
+                            }
+
+
+                        }
+                    }, // Chuyển hướng về màn hình chính
+                ]
+            );
+            // return navigation.navigate('BusinessBottomNavigator');
+        }
         //them alert hoi co muon xoa k 
         // goi api xoa size 
-        const updatedSizes = sizes.filter((_, i) => i !== index);
-        setSizes(updatedSizes);
-        toastError('Xoá', 'Xóa thành công');
+
     };
 
 
@@ -80,7 +112,7 @@ const EditProductSize = (props) => {
             < View key={index} style={styles.sizeContainer} >
                 <Text style={styles.label}>Size {index + 1}</Text>
                 <TouchableOpacity
-                    onPress={() => handleDeleteSize(index)}
+                    onPress={() => handleDeleteSize(index, size)}
                     style={{ position: 'absolute', right: 10, top: 5 }}>
                     <Text style={{ color: 'red', fontSize: 18 }}>Xóa</Text>
                 </TouchableOpacity>
@@ -206,10 +238,12 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => ({
     getProductSizeState: state.getProductSize,
-    editProductSizeState: state.editProductSize
+    editProductSizeState: state.editProductSize,
+    deleteSizeState: state.deleteSize
 })
 const mapDispatchToProps = {
     fetchProductSizebyId,
-    editProductSizes
+    editProductSizes,
+    deleteProductSize
 }
 export default connect(mapStateToProps, { ...mapDispatchToProps })(EditProductSize);

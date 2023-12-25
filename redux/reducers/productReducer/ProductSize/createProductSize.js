@@ -4,6 +4,7 @@ import { store } from "../../store";
 import { startMapper } from "react-native-reanimated";
 import { postProductInformation } from "../../../API/Product/postProductInformation";
 import { postProductSize } from "../../../../API/Product/postProductSize";
+import { toastsuccess } from "../../../../components/toastCustom";
 
 
 const initialState = {
@@ -43,6 +44,10 @@ export const createProductSizes = (ProductSize) => async (dispatch, getState) =>
         //  console.log("token", authToken);
         const data = await postProductSize(ProductSize, authToken);
         console.log('API create id product', data);
+        if (data.status === 202 || data.status === 200) {
+            toastsuccess('Thêm kích thước', 'Thành công')
+        }
+
         dispatch(getSuccess(data));
     } catch (error) {
         console.log(('reducer create product size error ', error.message));

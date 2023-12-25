@@ -31,8 +31,13 @@ const EditSale = (props) => {
         content: '',
         url: '',
     });
+    const [selectedStartDate, setSelectedStartDate] = useState(new Date(saleByIdState?.dataSalebyId?.started_at || new Date()));
+    const [selectedEndDate, setSelectedEndDate] = useState(new Date(saleByIdState?.dataSalebyId?.ended_at || new Date()));
     const [showStartDatePicker, setShowStartDatePicker] = useState(false);
     const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+
     useEffect(() => {
         fetchSaleById(saleId)
     }, [saleId])
@@ -49,11 +54,14 @@ const EditSale = (props) => {
             content: sale?.content,
             url: sale?.url
         })
+        // Đặt ngày bắt đầu và kết thúc cho DateTimePicker
+        setStartDate(sale?.started_at ? new Date(sale?.started_at) : new Date());
+        setEndDate(sale?.ended_at ? new Date(sale?.ended_at) : new Date());
     }, [saleByIdState?.dataSalebyId])
     console.log('sale', formData);
-    const handleDateChange = (event, selectedDate) => {
+    const handleDateChange = (event, date) => {
         if (event.type === 'set') {
-            const currentDate = selectedDate || formData.started_at;
+            const currentDate = date || formData.started_at;
             setShowStartDatePicker(false);
             setShowEndDatePicker(false);
 
@@ -67,6 +75,7 @@ const EditSale = (props) => {
             setShowEndDatePicker(false);
         }
     };
+
 
     const handleInputChange = (field, value) => {
         console.log(field, value);
@@ -90,7 +99,8 @@ const EditSale = (props) => {
         else {
             console.log(formData);
             editSale(formData, saleId);
-            navigation.goBack('Home');
+            navigation.navigate('BusinessBottomNavigator')
+            //navigation.goBack('Home');
         }
         console.log('Form data submitted:', formData);
     };
@@ -100,7 +110,7 @@ const EditSale = (props) => {
             <Text style={styles.field}>Mức giảm giá (từ 1% đến 100%)</Text>
             <TextInput
                 style={styles.input}
-                value={formData.discount.toString()}
+                value={formData?.discount?.toString()}
                 onChangeText={(value) => handleInputChange('discount', value)}
                 keyboardType="numeric"
 
@@ -112,41 +122,52 @@ const EditSale = (props) => {
                 onPress={() => setShowStartDatePicker(true)}
             /> */}
             <Button
-                title={formData?.started_at ? moment(formData.started_at).format('YYYY-MM-DD') : 'Select Start Date'}
-                onPress={() => setShowStartDatePicker(true)}
+                title={moment(selectedStartDate).format('YYYY-MM-DD')}
+                onPress={() => {
+                    setShowStartDatePicker(true);
+                }}
             />
 
             {showStartDatePicker && (
                 <DateTimePicker
-                    value={formData.started_at}
+                    value={selectedStartDate}
                     mode="date"
                     is24Hour={true}
                     display="default"
-                    onChange={(event, selectedDate) =>
-                        handleDateChange({ type: 'set', target: 'started_at' }, selectedDate)
-                    }
+                    onChange={(event, date) => {
+                        setShowStartDatePicker(false);
+                        if (event.type === 'set') {
+                            setSelectedStartDate(date || selectedStartDate);
+                            handleDateChange({ type: 'set', target: 'started_at' }, date || selectedStartDate);
+                        }
+                    }}
                 />
             )}
-
             <Text style={styles.field}>End Date</Text>
             {/* <Button
                 title={formData?.ended_at ? new Date(formData.ended_at).toISOString().split('T')[0] : 'Select End Date'}
                 onPress={() => setShowEndDatePicker(true)}
             /> */}
             <Button
-                title={formData?.ended_at ? moment(formData.ended_at).format('YYYY-MM-DD') : 'Select End Date'}
-                onPress={() => setShowEndDatePicker(true)}
+                title={moment(selectedEndDate).format('YYYY-MM-DD')}
+                onPress={() => {
+                    setShowEndDatePicker(true);
+                }}
             />
 
             {showEndDatePicker && (
                 <DateTimePicker
-                    value={formData.ended_at}
+                    value={selectedEndDate}
                     mode="date"
                     is24Hour={true}
                     display="default"
-                    onChange={(event, selectedDate) =>
-                        handleDateChange({ type: 'set', target: 'ended_at' }, selectedDate)
-                    }
+                    onChange={(event, date) => {
+                        setShowEndDatePicker(false);
+                        if (event.type === 'set') {
+                            setSelectedEndDate(date || selectedEndDate);
+                            handleDateChange({ type: 'set', target: 'ended_at' }, date || selectedEndDate);
+                        }
+                    }}
                 />
             )}
 

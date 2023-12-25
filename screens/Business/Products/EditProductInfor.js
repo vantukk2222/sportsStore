@@ -140,134 +140,91 @@ const EditProductInfor = (props) => {
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Chỉnh sửa sản phẩm</Text>
-            {productinforState?.loading ?
-                <TouchableOpacity
-                    style={{
-                        marginTop: 5,
-                        height: 50,
-                        width: 200,
-                        backgroundColor: 'skyblue',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                        marginBottom: 20,
-                    }} >
-                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                </TouchableOpacity> :
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('EditandDelete', { productId: productId })}
-                    style={{
-                        marginTop: 5,
-                        height: 50,
-                        width: 200,
-                        backgroundColor: 'skyblue',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                        marginBottom: 20,
-                    }} >
-                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                </TouchableOpacity>
+            <ScrollView style={{
+                flexDirection: 'row',
+                borderBottomColor: 'gray',
+                borderBottomWidth: 0.8,
+                borderTopWidth: 0.8,
+                borderTopColor: 'black'
+            }} horizontal>
+                {productinforState?.loading ?
+                    <TouchableOpacity
+                        style={styles.buttonEdit} >
+                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                    </TouchableOpacity> :
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('EditandDelete', { productId: productId })}
+                        style={styles.buttonEdit}>
+                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                    </TouchableOpacity>
 
 
-            }
-            {productinforState?.loading ?
-                <TouchableOpacity
-                    style={{
-                        marginTop: 5,
-                        height: 50,
-                        width: 200,
-                        backgroundColor: 'skyblue',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                        marginBottom: 20,
-                    }} >
-                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                </TouchableOpacity> :
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('EditProductSize', { productinforId: productId })}
-                    style={{
-                        marginTop: 5,
-                        height: 50,
-                        width: 200,
-                        backgroundColor: 'skyblue',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                        marginBottom: 20,
-                    }} >
-                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Kích thước</Text>}
-                </TouchableOpacity>
-            }
-            {productinforState?.loading ?
-                <TouchableOpacity
-                    style={{
-                        marginTop: 5,
-                        height: 50,
-                        width: 200,
-                        backgroundColor: 'skyblue',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                        marginBottom: 20,
-                    }} >
-                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                </TouchableOpacity> :
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('CreateSize', { id_productinformation: productId, isEdit: true })}
-                    style={{
-                        marginTop: 5,
-                        height: 50,
-                        width: 200,
-                        backgroundColor: 'skyblue',
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                        marginBottom: 20,
-                    }} >
-                    {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Thêm kích thước</Text>}
-                </TouchableOpacity>
-            }
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Tên sản phẩm:</Text>
-            <TextInput
-                color={colors.denNhe}
-                placeholderTextColor={'gray'}
-                value={product?.name}
-                onChangeText={(value) => handleInputChange('name', value)}
-                placeholder="Nhập tên sản phẩm"
-            />
-
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Chi tiết:</Text>
-            <TextInput
-                color={colors.denNhe}
-                placeholderTextColor={'gray'}
-                value={product?.detail}
-                onChangeText={(value) => handleInputChange('detail', value)}
-                placeholder="Nhập chi tiết sản phẩm"
-                style={{ height: 90 }}
-            />
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Thuộc tính:</Text>
-            <TextInput
-                color={colors.denNhe}
-                placeholderTextColor={'gray'}
-                value={product?.attribute}
-                onChangeText={(value) => handleInputChange('attribute', value)}
-                placeholder="Thuộc tính sản phẩm"
-                style={{ height: 90 }}
-            />
+                }
+                {productinforState?.loading ?
+                    <TouchableOpacity
+                        style={styles.buttonEdit}>
+                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                    </TouchableOpacity> :
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('EditProductSize', { productinforId: productId })}
+                        style={styles.buttonEdit} >
+                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Kích thước</Text>}
+                    </TouchableOpacity>
+                }
+                {productinforState?.loading ?
+                    <TouchableOpacity
+                        style={styles.buttonEdit}>
+                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
+                    </TouchableOpacity> :
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('CreateSize', { id_productinformation: productId, isEdit: true })}
+                        style={styles.buttonEdit} >
+                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
+                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Thêm kích thước</Text>}
+                    </TouchableOpacity>
+                }
+            </ScrollView>
+            <View style={styles.inputView}>
+                <Text style={styles.inputText}>Tên sản phẩm:</Text>
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    placeholderTextColor={'gray'}
+                    value={product?.name}
+                    onChangeText={(value) => handleInputChange('name', value)}
+                    placeholder="Nhập tên sản phẩm"
+                />
+            </View>
+            <View style={styles.inputView}>
+                <Text style={styles.inputText}>Chi tiết:</Text>
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    placeholderTextColor={'gray'}
+                    value={product?.detail}
+                    onChangeText={(value) => handleInputChange('detail', value)}
+                    placeholder="Nhập chi tiết sản phẩm"
+                />
+            </View>
+            <View style={styles.inputView}>
+                <Text style={styles.inputText}>Thuộc tính:</Text>
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    placeholderTextColor={'gray'}
+                    value={product?.attribute}
+                    onChangeText={(value) => handleInputChange('attribute', value)}
+                    placeholder="Thuộc tính sản phẩm"
+                />
+            </View>
             {/* <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Doanh nghiệp ID: {id_business}</Text> */}
 
             <Text style={{ color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10 }}>Danh mục:</Text>
@@ -345,7 +302,7 @@ const EditProductInfor = (props) => {
                         marginBottom: 20,
                     }} >
                     {productinforState?.loadingProductInfor ? <ActivityIndicator size="large" color={colors.success} /> :
-                        <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Lưu</Text>}
+                        <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Lưu</Text>}
                 </TouchableOpacity>
             }
 
@@ -370,8 +327,38 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 25,
         color: 'black',
+        marginTop: 5
 
     },
+    buttonEdit: {
+        // marginTop: 5,
+        height: 50,
+        width: 200,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        borderWidth: 0.5,
+        borderColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginVertical: 10,
+        marginLeft: 8
+    },
+    inputView: {
+        padding: 10,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+        marginVertical: 10
+    },
+    inputText: {
+        color: 'black'
+        , fontSize: 20
+        , fontWeight: '500'
+    },
+    input: {
+        marginTop: 10,
+        borderRadius: 8,
+    }
 })
 const mapStateToProps = (state) => ({
     productinforState: state.productDetail,

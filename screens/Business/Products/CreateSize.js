@@ -86,6 +86,7 @@ const CreateSize = ({ navigation }, props) => {
         const updatedSizes = [...sizes];
         updatedSizes[index][field] = value;
         setSizes(updatedSizes);
+
     };
     const createSizeObject = (price, size, quantity) => {
         return {
@@ -103,6 +104,9 @@ const CreateSize = ({ navigation }, props) => {
         });
         console.log('Saved Sizes:', sizes);
         setHasSizes(true)
+        if (isEdit) {
+            navigation.navigate('BusinessBottomNavigator')
+        }
     };
     const handleDeleteSize = (index) => {
         if (sizes.length === 1) {
