@@ -1,5 +1,3 @@
-// Cart.js
-
 import React, { useState, useLayoutEffect, useEffect } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
@@ -181,7 +179,12 @@ const Cart = () => {
         <>
             {check ? (
                 <>
-                    <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Xác nhận">
+                    <Modal
+                        className="modalcart"
+                        isOpen={isModalOpen}
+                        onRequestClose={closeModal}
+                        contentLabel="Xác nhận"
+                    >
                         <h2>Xác nhận</h2>
                         <p>Bạn có chắc chắn muốn tiếp tục?</p>
                         <button onClick={handleConfirmation}>Có</button>
