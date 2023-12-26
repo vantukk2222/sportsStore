@@ -275,7 +275,11 @@ const Cart = () => {
                                                             <h3>{item.product.name_product_information}</h3>
                                                             <h4> Phân loại hàng: {item.product.size}</h4>
                                                             <h4>
-                                                                {item.product.price} Vnđ x {item.quantity}
+                                                                <span className="crossedNumber">
+                                                                    {item.product.price}
+                                                                </span>
+                                                                Vnđ
+                                                                <span>x {item.quantity} </span>
                                                                 <span>Thành tiền: {productQty} Vnđ</span>
                                                             </h4>
                                                         </div>
@@ -311,20 +315,26 @@ const Cart = () => {
                                     </div>
                                 )}
                             </div>
+
                             <div className="cart-total product">
                                 <h2>Thanh toán giỏ hàng</h2>
+
                                 <div className=" d_flex">
                                     <h4>Tổng tiền :</h4>
                                     <h3>{totalPrice} Vnđ</h3>
                                 </div>
                                 {dataCart?.length > 0 && (
                                     <>
-                                        <button className="payButton" onClick={handleCheckout}>
-                                            THANH TOÁN
-                                        </button>
-                                        <button className="payButton" onClick={handleDeleteSelected}>
-                                            Xóa Đã Chọn
-                                        </button>
+                                        <div className="buttoncart">
+                                            <button className="payButton" onClick={handleCheckout}>
+                                                THANH TOÁN
+                                            </button>
+                                            {checkedItems.length > 0 && (
+                                                <button className="deletecart" onClick={handleDeleteSelected}>
+                                                    Xóa Đã Chọn
+                                                </button>
+                                            )}
+                                        </div>
                                     </>
                                 )}
                             </div>

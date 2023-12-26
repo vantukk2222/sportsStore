@@ -114,11 +114,6 @@
     margin-top: 30px;
     height: 130px;
 }
-.payButton {
-    background-color: #606eca;
-    margin-top: 50px;
-    margin-left: 35%;
-}
 
 .checkbox-container {
 }
@@ -204,4 +199,17 @@
     .modalcart {
         width: 80%;
     }
+}
+
+.buttoncart {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 30px;
+}
+
+.payButton {
+    background-color: #606eca;
+}
+.deletecart {
+    background-color: #606eca;
 }

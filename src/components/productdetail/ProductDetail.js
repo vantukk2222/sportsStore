@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './ProductDetail.css';
-import getUnAuth from '~/API/get';
+import { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { FaArrowLeft } from 'react-icons/fa6';
-import Loading from '../loading/Loading';
-import Shopdetail from './Shopdetail';
-import Detail from './Detail';
-import Comment from './Comment';
-import postCart from '~/API/postCart';
 import { useDispatch, useSelector } from 'react-redux';
-import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
+import { useLocation, useNavigate } from 'react-router-dom';
+import getUnAuth from '~/API/get';
+import postCart from '~/API/postCart';
 import putCart from '~/API/putCart';
+import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
+import Loading from '../loading/Loading';
+import Comment from './Comment';
+import Detail from './Detail';
+import './ProductDetail.css';
+import Shopdetail from './Shopdetail';
 const ProductDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -166,7 +166,8 @@ const ProductDetail = () => {
                         </div>
                         <div className="product-info-container">
                             <h2 className="product-name">{productItem.name}</h2>
-                            <p className="product-price">${price}</p>
+                            <p className="product-price crossedNumber">{price}đ</p>
+                            <p className="product-price ">{price}đ</p>
                             <p className="product-description">{productItem.detail}</p>
                             <p className="product-attribute">
                                 <strong>Attribute:</strong> {productItem.attribute}

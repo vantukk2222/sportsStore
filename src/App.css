@@ -497,3 +497,6 @@ button {
     background-color: #007bff;
     color: #fff;
 }
+.crossedNumber {
+    text-decoration: line-through;
+  }
