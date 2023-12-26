@@ -7,7 +7,6 @@ const postMomo = async (list_id, method_payment, authToken) => {
         const response = await axios.post(api + `cart/buy-with-momo?requestType=${method_payment}`, list_id, {
             headers: {
                 'Content-Type': 'application/json',
-                accept: '/',
                 Authorization: ` Bearer ${authToken}`,
             },
         });
