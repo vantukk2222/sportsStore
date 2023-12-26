@@ -1,13 +1,13 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
-import './style.css';
-import { useNavigate } from 'react-router-dom';
-import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../loading/Loading';
+import { useNavigate } from 'react-router-dom';
+import deleteCart from '~/API/deleteCart';
 import getUnAuth from '~/API/get';
 import putCart from '~/API/putCart';
-import deleteCart from '~/API/deleteCart';
-import Modal from 'react-modal';
+import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
+import Loading from '../loading/Loading';
+import './style.css';
 Modal.setAppElement('#root');
 const Cart = () => {
     const navigate = useNavigate();
@@ -24,6 +24,11 @@ const Cart = () => {
         (price, item) => (checkedItems.includes(item.id) ? price + item.quantity * item.product.price : price),
         0,
     );
+
+    const areAllItemsChecked = (businessName) => {
+        const businessItems = dataCart.filter((item) => item.business.name === businessName);
+        return businessItems.every((item) => checkedItems.includes(item.id));
+    };
 
     const toggleCheckbox = (id, businessName) => {
         setCheckedItems((prevItems) => {
@@ -50,6 +55,7 @@ const Cart = () => {
 
     const handleShopCheckbox = (businessName) => {
         const existingShops = [...selectedShops];
+
         if (existingShops.includes(businessName)) {
             const index = existingShops.indexOf(businessName);
             existingShops.splice(index, 1);
@@ -58,19 +64,13 @@ const Cart = () => {
         }
 
         setSelectedShops(existingShops);
+
         setCheckedItems((prevItems) => {
+            const businessItems = dataCart.filter((item) => item.business.name === businessName);
+
             return existingShops.includes(businessName)
-                ? [
-                      ...prevItems,
-                      ...dataCart.filter((item) => item.business.name === businessName).map((item) => item.id),
-                  ]
-                : prevItems.filter(
-                      (item) =>
-                          !dataCart
-                              .filter((item) => item.business.name === businessName)
-                              .map((item) => item.id)
-                              .includes(item),
-                  );
+                ? [...prevItems, ...businessItems.map((item) => item.id)]
+                : prevItems.filter((item) => !businessItems.map((item) => item.id).includes(item));
         });
     };
 
@@ -175,6 +175,33 @@ const Cart = () => {
         localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
         navigate('/checkout', { state: { selectedItems: selectedItems } });
     };
+    const handleDeleteSelected = () => {
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        const selectedItems = dataCart.filter((item) => checkedItems.includes(item.id));
+
+        Promise.all(selectedItems.map((item) => deleteCart(item.id, authToken)))
+            .then(() => {
+                dispatch(listCartByIdUser(selectedItems[0].user.id));
+                setCheckedItems([]);
+            })
+            .catch((error) => {
+                setError(error);
+            });
+    };
+    const sortDataCartByBusiness = (cartItems) => {
+        return cartItems.slice().sort((a, b) => {
+            const nameA = a.business.name.toUpperCase();
+            const nameB = b.business.name.toUpperCase();
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0;
+        });
+    };
+    const sortedDataCart = sortDataCartByBusiness(dataCart);
 
     return (
         <>
@@ -194,15 +221,16 @@ const Cart = () => {
                     <section className="cart-items">
                         <div className="container d_flex">
                             <div className="cart-details">
-                                {dataCart?.length === 0 ? (
+                                {sortedDataCart?.length === 0 ? (
                                     <h1 className="no-items product">Không có sản phẩm trong giỏ hàng</h1>
                                 ) : (
                                     <div>
-                                        {dataCart?.map((item, index) => {
+                                        {sortedDataCart?.map((item, index) => {
                                             const productQty = item.product.price * item.quantity;
 
                                             const isNewBusiness =
-                                                index === 0 || item.business.name !== dataCart[index - 1].business.name;
+                                                index === 0 ||
+                                                item.business.name !== sortedDataCart[index - 1].business.name;
 
                                             return (
                                                 <div
@@ -214,7 +242,7 @@ const Cart = () => {
                                                             <label>
                                                                 <input
                                                                     type="checkbox"
-                                                                    checked={selectedShops.includes(item.business.name)}
+                                                                    checked={areAllItemsChecked(item.business.name)}
                                                                     onChange={() =>
                                                                         handleShopCheckbox(item.business.name)
                                                                     }
@@ -290,9 +318,14 @@ const Cart = () => {
                                     <h3>{totalPrice} Vnđ</h3>
                                 </div>
                                 {dataCart?.length > 0 && (
-                                    <button className="payButton" onClick={handleCheckout}>
-                                        THANH TOÁN
-                                    </button>
+                                    <>
+                                        <button className="payButton" onClick={handleCheckout}>
+                                            THANH TOÁN
+                                        </button>
+                                        <button className="payButton" onClick={handleDeleteSelected}>
+                                            Xóa Đã Chọn
+                                        </button>
+                                    </>
                                 )}
                             </div>
                         </div>
