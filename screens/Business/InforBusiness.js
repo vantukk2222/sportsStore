@@ -15,7 +15,7 @@ import { isEqual } from 'lodash'
 import { toastError } from "../../components/toastCustom";
 import Toast from "react-native-toast-message";
 const Information = () => {
-    const { userName, isLoading, error:errorUser } = useSelector((state) => state.login)
+    const { userName, isLoading, error: errorUser } = useSelector((state) => state.login)
 
     const { data, loading, error } = useSelector((state) => state.userData)
     const dispatch = useDispatch();
@@ -44,10 +44,12 @@ const Information = () => {
         );
         // console.log("data logout:", data);
     }
-    if(error)
-    {
+    if (error) {
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;
+        // return <Loading />;
+    }
+    if (loading) {
+        return <Loading />
     }
     return (
         <View style={styles.container}>

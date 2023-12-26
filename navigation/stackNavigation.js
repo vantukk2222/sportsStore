@@ -32,6 +32,7 @@ import EditSale from "../screens/Business/Sale/EditSale"
 import EditProductInfor from "../screens/Business/Products/EditProductInfor"
 import EditandDelete from "../screens/Business/Products/SetImage/EditandDelete"
 import EditProductSize from "../screens/Business/Products/EditProductSize"
+import StatisticScreen from "../screens/Business/Statistics/StatisticScreen"
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
     return (
@@ -48,6 +49,9 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="EditProductInfor" component={EditProductInfor} options={{ headerShown: false }} />
             <Stack.Screen name="EditandDelete" component={EditandDelete} options={{ headerShown: false }} />
             <Stack.Screen name="EditProductSize" component={EditProductSize} options={{ headerShown: false }} />
+            <Stack.Screen name="StatisticScreen" component={StatisticScreen} options={{ headerShown: false }} />
+
+
         </Stack.Navigator>
     )
 }

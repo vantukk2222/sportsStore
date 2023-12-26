@@ -42,6 +42,7 @@ import editProductSlice from './reducers/productReducer/editProduct';
 import getProductSizeSlice from './reducers/productReducer/ProductSize/getProductSize';
 import editProductSizeSlice from './reducers/productReducer/ProductSize/editProductSize';
 import deleteSizeSlice from './reducers/Size/DeleteSize';
+import getStatisticSlice from './reducers/Statistic/getStatistic';
 // {userSlice}
 // >>>>>>> NewD
 
@@ -84,6 +85,7 @@ const rootReducer = combineReducers({
   getProductSize: getProductSizeSlice,
   editProductSize: editProductSizeSlice,
   deleteSize: deleteSizeSlice,
+  getStatistic: getStatisticSlice,
 })
 const persistConfig = {
   key: 'root',

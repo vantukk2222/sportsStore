@@ -80,8 +80,10 @@ const setProductinSale = (props) => {
             setProducts([]);
             if (initialState?.dataProductbyBusi?.content && initialState?.dataProductbyBusi?.content.length > 0) {
                 const filteredProducts = initialState?.dataProductbyBusi?.content.filter(product => product.sale?.id !== saleId);
+
                 setProducts(filteredProducts);
-                setTotalPage(filteredProducts?.totalPages || 0);
+                console.log(initialState?.dataProductbyBusi?.totalPages);
+                setTotalPage(initialState?.dataProductbyBusi?.totalPages || 0);
             }
         }
 

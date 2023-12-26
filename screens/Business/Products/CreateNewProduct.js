@@ -18,7 +18,7 @@ const CreateNewProduct = () => {
     const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories)
     const { dataProductInfor, loadingProductInfor, errorProductInfor } = useSelector((state) => state.createProductInformation)
     const { dataImage, loadingImage, errorImage } = useSelector((state) => state.createImage);
-   
+
     const [name, setName] = useState('');
     const [detail, setDetail] = useState('');
     const [attribute, setAttribute] = useState('');
@@ -161,12 +161,10 @@ const CreateNewProduct = () => {
         toastError('Tạo sản phẩm', 'không thành công')
     }
 
-    if(loading || loadingCate || loadingImage || loadingProductInfor)
-    {
-        <Loading/>
+    if (loading || loadingCate || loadingImage || loadingProductInfor) {
+        <Loading />
     }
-    if(errorCate || errorImage || errorProductInfor || error)
-    {
+    if (errorCate || errorImage || errorProductInfor || error) {
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
         return <Loading />;
     }
