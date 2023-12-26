@@ -4,7 +4,7 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react
 import { colors } from '../../../constants';
 import { findMainImage } from '../../Category/ListProductByCategory';
 
-const ListProduct = ({ products, onEdit, onDelete, removeState, onRecover }) => {
+const ListProduct = ({ order, onConfirm, onDelete, removeState, onRecover }) => {
     const renderItem = ({ item }) => (
 
         <View style={styles.row}>

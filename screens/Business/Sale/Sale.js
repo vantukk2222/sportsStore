@@ -8,6 +8,7 @@ import { connect, useSelector } from 'react-redux';
 import Loading from '../../../components/loading';
 import ListSale from './ListSale';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { toastError } from '../../../components/toastCustom';
 
 const Sale = (props) => {
 
@@ -62,13 +63,13 @@ const Sale = (props) => {
     const handleEditproduct = (id) => {
         navigation.navigate('EditSale', { saleId: id })
     }
-    if(error)
-    {
-        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;}
-    if(loading)
-    {
-        <Loading/>
+    if (error) {
+        toastError("Xin lỗi", "Bạn cần đăng nhập")
+        return <Loading />;
+    }
+    if (loading) {
+        console.log("load");
+        <Loading />
     }
     return (
         <View style={styles.container}>
