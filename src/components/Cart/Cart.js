@@ -8,6 +8,7 @@ import getUnAuth from '~/API/get';
 import putCart from '~/API/putCart';
 import deleteCart from '~/API/deleteCart';
 import Modal from 'react-modal';
+Modal.setAppElement('#root');
 const Cart = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
