@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const ListCheckout = ({ selectedItems }) => {
     const [cartItems, setCartItems] = useState([]);
+    const [message, setMessage] = useState('');
+    const [shippingProvider, setShippingProvider] = useState('');
 
     useEffect(() => {
         setCartItems(selectedItems);
@@ -23,12 +25,13 @@ const ListCheckout = ({ selectedItems }) => {
         return groupedItems;
     };
 
-    const getTotalPrice = (items) => {
-        return items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     };
 
-    const [message, setMessage] = useState('');
-    const [shippingProvider, setShippingProvider] = useState('');
+    const getTotalPrice = (items) => {
+        return formatCurrency(items.reduce((total, item) => total + item.product.price * item.quantity, 0));
+    };
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -70,9 +73,9 @@ const ListCheckout = ({ selectedItems }) => {
                                             <p>Loại: {item.product.size}</p>
                                         </div>
                                     </td>
-                                    <td>${item.product.price?.toFixed(2) || 'N/A'}</td>
+                                    <td>{formatCurrency(item.product.price) || 'N/A'}</td>
                                     <td>{item.quantity || 'N/A'}</td>
-                                    <td>${(item.product.price * item.quantity)?.toFixed(2) || 'N/A'}</td>
+                                    <td>{formatCurrency(item.product.price * item.quantity) || 'N/A'}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -80,15 +83,15 @@ const ListCheckout = ({ selectedItems }) => {
                     <div className="ship-listcheckout">
                         <p>Lời nhắn</p>
                         <input type="text" name="message" value={message} onChange={handleInputChange} />
-                        <p>Đơn vị vận chuyển</p>
+                        <p>Mã giảm giá</p>
                         <select name="shippingProvider" value={shippingProvider} onChange={handleInputChange}>
-                            <option value="">Chọn đơn vị vận chuyển</option>
-                            <option value="shipping1">Đơn vị vận chuyển 1</option>
-                            <option value="shipping2">Đơn vị vận chuyển 2</option>
+                            <option value="">Chọn mã giảm giá</option>
+                            <option value="shipping1">Mã giảm giá của Shop</option>
+                            <option value="shipping2">Mã giảm giá của bạn</option>
                         </select>
                     </div>
                     <div className="total-listCheckout">
-                        <h4>Tổng cộng: ${getTotalPrice(items)?.toFixed(2) || 'N/A'}</h4>
+                        <h4>Tổng cộng: {getTotalPrice(items) || 'N/A'}</h4>
                     </div>
                 </div>
             ))}
