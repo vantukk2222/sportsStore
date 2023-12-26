@@ -77,22 +77,16 @@ function Login(props) {
     if (data && handleCheckArray(data?.roles, "ROLE_CUSTOMER")) {
       console.log("hereeeeee");
       dispatch(setRole('ROLE_CUSTOMER'))
-    // navigation.navigate('LoginBottomNavigator')
 
-      navigation.navigate
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
           routes: [{ name: 'LoginBottomNavigator' }],
-
-          // Thay 'Home' bằng màn hình bạn muốn quay về
         })
       );
     }
     else if (data) {
       dispatch(setRole('ROLE_BUSINESS'))
-    // navigation.navigate('BusinessBottomNavigator')
-
       navigation.dispatch(
         CommonActions.reset({
           index: 0,

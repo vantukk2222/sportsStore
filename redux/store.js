@@ -87,6 +87,7 @@ const rootReducer = combineReducers({
   deleteSize: deleteSizeSlice,
   getStatistic: getStatisticSlice,
 })
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
