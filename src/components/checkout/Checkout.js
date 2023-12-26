@@ -18,7 +18,7 @@ const Checkout = () => {
                 <ListCheckout selectedItems={selectedItems} />
             </div>
             <div className="payment">
-                <Payment />
+                <Payment selectedItems={selectedItems} />
             </div>
         </div>
     );
