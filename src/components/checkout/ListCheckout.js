@@ -73,7 +73,15 @@ const ListCheckout = ({ selectedItems }) => {
                                             <p>Loại: {item.product.size}</p>
                                         </div>
                                     </td>
-                                    <td className="crossedNumber">{formatCurrency(item.product.price) || 'N/A'}</td>
+                                    <td>
+                                        <div className="tdtable">
+                                            <p className="crossedNumber">
+                                                {formatCurrency(item.product.price) || 'N/A'}
+                                            </p>
+                                            <p>{formatCurrency(item.product.price)} </p>
+                                        </div>
+                                    </td>
+
                                     <td>{item.quantity || 'N/A'}</td>
                                     <td>{formatCurrency(item.product.price * item.quantity) || 'N/A'}</td>
                                 </tr>

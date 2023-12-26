@@ -166,8 +166,10 @@ const ProductDetail = () => {
                         </div>
                         <div className="product-info-container">
                             <h2 className="product-name">{productItem.name}</h2>
-                            <p className="product-price crossedNumber">{price}đ</p>
-                            <p className="product-price ">{price}đ</p>
+                            <div className="tdtable">
+                                <p className="product-price crossedNumber">{price}đ</p>
+                                <p className="product-price ">{price}đ</p>
+                            </div>
                             <p className="product-description">{productItem.detail}</p>
                             <p className="product-attribute">
                                 <strong>Attribute:</strong> {productItem.attribute}

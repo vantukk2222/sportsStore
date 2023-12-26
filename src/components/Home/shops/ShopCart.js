@@ -1,6 +1,4 @@
-import { current } from '@reduxjs/toolkit';
-import { useEffect, useRef } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import getUnAuth from '~/API/get';
 import Loading from '~/components/loading/Loading';
@@ -62,7 +60,8 @@ const ShopCart = ({ categoryItems }) => {
                                 <div className="product-details">
                                     <h3>{value.name}</h3>
                                     <div className="price">
-                                        <h4>${value.price_min}đ </h4>
+                                        <h4 className="">{value.price_min}đ </h4>
+                                        <h4 className="crossedNumber">{value.price_min}đ </h4>
                                     </div>
                                 </div>
                             </div>

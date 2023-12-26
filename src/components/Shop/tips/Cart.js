@@ -14,7 +14,8 @@ const Cart = ({ productItems }) => {
                                 <img src={val.imageSet.find((e) => e.is_main === true).url} alt="" />
                             </div>
                             <h4>{val.name}</h4>
-                            <span>${val.price_min}</span>
+                            <span className="crossedNumber">${val.price_min}</span>
+                            <span className="">${val.price_min}</span>
                         </div>
                     );
                 })}

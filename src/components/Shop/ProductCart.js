@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 
 const ProductCart = ({ productItems }) => {
     const navigate = useNavigate();
@@ -24,6 +23,7 @@ const ProductCart = ({ productItems }) => {
                         <div className="product-details">
                             <h3>{product.name}</h3>
                             <div className="price">
+                                <h4 className="crossedNumber">{product.price_min}vnđ </h4>
                                 <h4>{product.price_min}vnđ </h4>
                             </div>
                         </div>

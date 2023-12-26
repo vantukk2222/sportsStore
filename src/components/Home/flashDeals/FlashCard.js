@@ -1,8 +1,8 @@
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import getUnAuth from '~/API/get';
 import Loading from '~/components/loading/Loading';
 const SampleNextArrow = (props) => {
@@ -80,8 +80,9 @@ const FlashCard = () => {
                                     </div>
                                     <div className="product-details">
                                         <span className="spanname">{productItems.name}</span>
-                                        <div className="price">
+                                        <div className="price ">
                                             <h4>${productItems.price_min}đ </h4>
+                                            <h4 className="crossedNumber">${productItems.price_min}đ </h4>
                                         </div>
                                     </div>
                                 </div>

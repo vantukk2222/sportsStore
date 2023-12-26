@@ -279,6 +279,8 @@ const Cart = () => {
                                                                     {item.product.price}
                                                                 </span>
                                                                 Vnđ
+                                                                <span>{item.product.price}</span>
+                                                                Vnđ
                                                                 <span>x {item.quantity} </span>
                                                                 <span>Thành tiền: {productQty} Vnđ</span>
                                                             </h4>
