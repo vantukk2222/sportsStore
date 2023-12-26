@@ -34,13 +34,12 @@ const savePaymentSlice = createSlice({
     },
 });
 
-export const savePayment = (id_user) => async (dispatch, getState) => {
+export const savePayment = (id_user,id_buy) => async (dispatch, getState) => {
     try {
-
         dispatch(savePaymentRequest()); // Dispatch addToCartRequest action
         const authToken = getState().login.authToken
         console.log("Token PaymentReducer:", authToken);
-        const response = await savePaymentAPI(id_user, authToken) // Call addToCartPage API
+        const response = await savePaymentAPI(id_user,id_buy, authToken) // Call addToCartPage API
         console.log("data in Payment Reducer: ", response); // Log received data
         dispatch(savePaymentSuccess( response)); // Dispatch addToCartSuccess with received data
         console.log("Thanh cong nhe ^^");

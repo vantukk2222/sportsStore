@@ -11,7 +11,7 @@ const ShopInfo = (props) => {
     //console.log(buss);
     const navigation = useNavigation();
     return (
-        <View >
+        <View style = {{backgroundColor:'white'}}>
             <View style={styles.shopContainer}>
             
                 <Image source={{ uri: 'https://endlessicons.com/wp-content/uploads/2012/12/female-avatar-icon-614x460.png' }} style={styles.shopImage} />

@@ -16,7 +16,6 @@ const Tab = createBottomTabNavigator();
 export const LoginBottomNavigator = (props) => {
     return (
         <Tab.Navigator
-        unmountOnBlur={true}
             initialRouteName="Home"
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, size, color }) => {

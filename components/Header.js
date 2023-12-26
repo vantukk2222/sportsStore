@@ -52,16 +52,16 @@ const HeaderComp = ({init = "Start"}) => {
     },[userName])
     return (
         <View style={styles.headerContainer}>
-            {init === "Start"? "":(<TouchableOpacity onPress={()=>{goBack()}}>
+            {init === "Start"? <View style={{width:30}}/>:(<TouchableOpacity onPress={()=>{goBack()}}>
                 <Icon name="angle-left" size={30} style={styles.iconBuffer}></Icon>
             </TouchableOpacity>)}
             {/* {init == "Start"? "":(<Icon name="angle-left" size={30} style={styles.iconBuffer} onPress={() => { goBack}} />)} */}
             <View style={{ display: 'flex', flexDirection: 'row' }}>
-                {/* <View style={styles.location}>
-                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 25 }}>
-                        HOME
+                <View style={styles.location}>
+                    <Text style={{  color: 'black', fontSize: 18 }}>
+                        {init ==="Start" ? "Trang chủ" : init}
                     </Text>
-                </View> */}
+                </View>
             </View>
             <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{userName? navigation.navigate("Cart", {id_user:dataUser?.id}) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")}}/>
         </View>
@@ -93,12 +93,12 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginRight: 15
     },
-    // location: {
-    //     display: 'flex',
-    //     justifyContent: 'center',
-    //     alignItems:'center',
-    //     marginLeft: 10,
-    // }
+    location: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems:'center',
+        marginLeft: 15,
+    }
 });
 
 export default HeaderComp;
