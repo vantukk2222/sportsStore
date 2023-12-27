@@ -31,6 +31,7 @@ const SellerHomeScreen = () => {
             id: '3',
             name: 'Quản lý đơn hàng',
             iconName: 'shopping-cart',
+            naviga: 'OrderScreen'
 
             //image: require('./images/product2.jpg'),
         },

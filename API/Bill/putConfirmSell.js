@@ -14,20 +14,8 @@ const putConfirmSell = async (isConfirm, listSell, authToken) => {
         }
         );
 
-        // const response = await axios.put(
-        //     urlAPI + `/api/v1/product-information/change-state/${id}?state=${state}`,
-        //     {},
-        //     {
-        //         headers: {
-        //             'Authorization': `Bearer ${authToken}`,
-        //             'Content-Type': 'application/json',
-        //             'accept': '*/*'
-        //         },
-        //     }
-        // );
 
-
-        console.log('response confirm', response);
+        console.log(' status response confirm ?', response.status);
         return response.status;
     } catch (error) {
         console.error("error put change state", error.response);
@@ -35,4 +23,4 @@ const putConfirmSell = async (isConfirm, listSell, authToken) => {
     }
 };
 
-export default putChangeState;
+export default putConfirmSell;
