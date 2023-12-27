@@ -30,7 +30,16 @@ const ListCheckout = ({ selectedItems }) => {
     };
 
     const getTotalPrice = (items) => {
-        return formatCurrency(items.reduce((total, item) => total + item.product.price * item.quantity, 0));
+        return formatCurrency(
+            items.reduce(
+                (total, item) =>
+                    total +
+                    (item.product.sale
+                        ? ((item.product.price * (100 - item.product.sale?.discount)) / 100) * item.quantity
+                        : item.product.price * item.quantity),
+                0,
+            ),
+        );
     };
 
     const handleInputChange = (event) => {
@@ -60,43 +69,70 @@ const ListCheckout = ({ selectedItems }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {items.map((item) => (
-                                <tr key={item.id}>
-                                    <td>
-                                        <div className="info-listcheck">
-                                            <img
-                                                src={item.product.image_product_information}
-                                                alt=""
-                                                style={{ width: '50px', height: '50px' }}
-                                            />
-                                            <p>{item.product.name_product_information}</p>
-                                            <p>Loại: {item.product.size}</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="tdtable">
-                                            <p className="crossedNumber">
-                                                {formatCurrency(item.product.price) || 'N/A'}
-                                            </p>
-                                            <p>{formatCurrency(item.product.price)} </p>
-                                        </div>
-                                    </td>
+                            {items.map((item) => {
+                                let givenTimeStr = item.product.sale?.ended_at || null;
+                                if (givenTimeStr) {
+                                    const givenTime = new Date(givenTimeStr);
+                                    const currentTime = new Date();
+                                    if (givenTime > currentTime) givenTimeStr = true;
+                                    else givenTimeStr = false;
+                                } else givenTimeStr = false;
+                                return (
+                                    <tr key={item.id}>
+                                        <td>
+                                            <div className="info-listcheck">
+                                                <img
+                                                    src={item.product.image_product_information}
+                                                    alt=""
+                                                    style={{ width: '50px', height: '50px' }}
+                                                />
+                                                <p>{item.product.name_product_information}</p>
+                                                <p>Loại: {item.product.size}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="tdtable">
+                                                {givenTimeStr && (
+                                                    <p className="crossedNumber">
+                                                        {formatCurrency(item.product.price) || 'N/A'}
+                                                    </p>
+                                                )}
+                                                <p>
+                                                    {formatCurrency(
+                                                        item.product.sale
+                                                            ? (item.product.price *
+                                                                  (100 - item.product.sale?.discount)) /
+                                                                  100
+                                                            : item.product.price,
+                                                    )}{' '}
+                                                </p>
+                                            </div>
+                                        </td>
 
-                                    <td>{item.quantity || 'N/A'}</td>
-                                    <td>{formatCurrency(item.product.price * item.quantity) || 'N/A'}</td>
-                                </tr>
-                            ))}
+                                        <td>{item.quantity || 'N/A'}</td>
+                                        <td>
+                                            {formatCurrency(
+                                                item.product.sale
+                                                    ? ((item.product.price * (100 - item.product.sale?.discount)) /
+                                                          100) *
+                                                          item.quantity
+                                                    : item.product.price * item.quantity,
+                                            ) || 'N/A'}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                     <div className="ship-listcheckout">
                         <p>Lời nhắn</p>
                         <input type="text" name="message" value={message} onChange={handleInputChange} />
-                        <p>Mã giảm giá</p>
+                        {/* <p>Mã giảm giá</p>
                         <select name="shippingProvider" value={shippingProvider} onChange={handleInputChange}>
                             <option value="">Chọn mã giảm giá</option>
                             <option value="shipping1">Mã giảm giá của Shop</option>
                             <option value="shipping2">Mã giảm giá của bạn</option>
-                        </select>
+                        </select> */}
                     </div>
                     <div className="total-listCheckout">
                         <h4>Tổng cộng: {getTotalPrice(items) || 'N/A'}</h4>

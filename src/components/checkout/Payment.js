@@ -6,8 +6,17 @@ const formatCurrency = (amount) => {
 const Payment = ({ selectedItems }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const total = formatCurrency(selectedItems.reduce((total, item) => total + item.product.price * item.quantity, 0));
-    useEffect(() => {
+    const total = formatCurrency(
+        selectedItems.reduce(
+            (total, item) =>
+                total +
+                (item.product.sale
+                    ? ((item.product.price * (100 - item.product.sale?.discount)) / 100) * item.quantity
+                    : item.product.price * item.quantity),
+            0,
+        ),
+    );
+    const handlePayment = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
@@ -28,8 +37,8 @@ const Payment = ({ selectedItems }) => {
                 setLoading(false);
             }
         };
-    }, []);
-
+        fetchData();
+    };
     return (
         <div className="payment">
             <div className="lispayment">
@@ -38,12 +47,12 @@ const Payment = ({ selectedItems }) => {
             <div className="boxpayment">
                 <div className="paymentbox">
                     <p>Tổng tiền: {total || 'N/A'}</p>
-                    <p>Giảm giá</p>
+                    {/* <p>Giảm giá</p> */}
                     <p>Tổng thanh toán: {total || 'N/A'}</p>
                 </div>
             </div>
             <div className="paymentbutton">
-                <button>ĐẶT HÀNG</button>
+                <button onClick={handlePayment}>ĐẶT HÀNG</button>
             </div>
         </div>
     );

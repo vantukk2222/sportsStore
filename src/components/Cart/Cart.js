@@ -22,7 +22,13 @@ const Cart = () => {
     const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
     console.log(dataCart);
     const totalPrice = dataCart?.reduce(
-        (price, item) => (checkedItems.includes(item.id) ? price + item.quantity * item.product.price : price),
+        (price, item) =>
+            checkedItems.includes(item.id)
+                ? price +
+                  (item.product.sale
+                      ? ((item.product.price * (100 - item.product.sale?.discount)) / 100) * item.quantity
+                      : item.product.price * item.quantity)
+                : price,
         0,
     );
 
@@ -227,12 +233,16 @@ const Cart = () => {
                                 ) : (
                                     <div>
                                         {sortedDataCart?.map((item, index) => {
-                                            const productQty = item.product.price * item.quantity;
-
                                             const isNewBusiness =
                                                 index === 0 ||
                                                 item.business.name !== sortedDataCart[index - 1].business.name;
-
+                                            let givenTimeStr = item.product.sale?.ended_at || null;
+                                            if (givenTimeStr) {
+                                                const givenTime = new Date(givenTimeStr);
+                                                const currentTime = new Date();
+                                                if (givenTime > currentTime) givenTimeStr = true;
+                                                else givenTimeStr = false;
+                                            } else givenTimeStr = false;
                                             return (
                                                 <div
                                                     className={`cart-item ${isNewBusiness ? 'new-business' : ''}`}
@@ -276,14 +286,33 @@ const Cart = () => {
                                                             <h3>{item.product.name_product_information}</h3>
                                                             <h4> Phân loại hàng: {item.product.size}</h4>
                                                             <h4>
-                                                                <span className="crossedNumber">
-                                                                    {item.product.price}
-                                                                </span>
-                                                                Vnđ
-                                                                <span>{item.product.price}</span>
-                                                                Vnđ
+                                                                {givenTimeStr && (
+                                                                    <span className="crossedNumber">
+                                                                        {item.product.price}đ
+                                                                    </span>
+                                                                )}
+
+                                                                {
+                                                                    <span>
+                                                                        {item.product.sale
+                                                                            ? (item.product.price *
+                                                                                  (100 - item.product.sale?.discount)) /
+                                                                              100
+                                                                            : item.product.price}
+                                                                        đ
+                                                                    </span>
+                                                                }
                                                                 <span>x {item.quantity} </span>
-                                                                <span>Thành tiền: {productQty} Vnđ</span>
+                                                                <span>
+                                                                    Thành tiền:
+                                                                    {item.product.sale
+                                                                        ? ((item.product.price *
+                                                                              (100 - item.product.sale?.discount)) /
+                                                                              100) *
+                                                                          item.quantity
+                                                                        : item.product.price * item.quantity}
+                                                                    đ
+                                                                </span>
                                                             </h4>
                                                         </div>
                                                         <div className="cart-items-function">
