@@ -5,8 +5,6 @@ import Login from '~/components/Login_Signup/Login';
 import Register from '~/components/Login_Signup/Register';
 import notFound from '~/components/NotFound/notFound';
 import Shop from '~/components/Shop/Shop';
-import Address from '~/components/adress/Address';
-import BankPage from '~/components/bank/BankPage';
 import Checkout from '~/components/checkout/Checkout';
 import Contact from '~/components/contact/Contact';
 import Order from '~/components/order/Order';
@@ -32,8 +30,6 @@ const VRoutes = [
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/order', component: Order, layout: defaultLayout },
-    { path: '/address', component: Address, layout: defaultLayout },
-    { path: '/bank', component: BankPage, layout: defaultLayout },
 ];
 
 export { VRoutes };

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './head.css';
 const Head = ({ userName }) => {
     const handleLogout = (e) => {
@@ -32,7 +32,7 @@ const Head = ({ userName }) => {
                                         <Link to="/profile">👤 Hồ sơ của tôi</Link>
                                     </li>
                                     <li>
-                                        <Link to="/track">🛒 Đơn hàng</Link>
+                                        <Link to="/order">🛒 Đơn hàng</Link>
                                     </li>
                                     <li>
                                         <Link onClick={(e) => handleLogout(e)}>🚪 Đăng xuất</Link>

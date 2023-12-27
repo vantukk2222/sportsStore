@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import getUnAuth from '~/API/get';
-import imgProfile from './shop1.png';
 
 const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
@@ -12,7 +11,9 @@ const EditProfile = () => {
         username: '',
         name: '',
         phone: '',
+        address: '',
         dob: '',
+        image_url: '',
     });
 
     useEffect(() => {
@@ -28,7 +29,7 @@ const EditProfile = () => {
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
                 setUser(response);
-                setEditedUser(response); // Initialize editedUser with user data
+                setEditedUser(response);
             } catch (error) {
                 setError(error);
             } finally {
@@ -39,12 +40,59 @@ const EditProfile = () => {
     }, []);
 
     const handleInputChange = (e) => {
-        setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        let updatedValue = value;
+
+        switch (name) {
+            case 'email':
+                const emailRegex = /^\S+@\S+\.\S+$/;
+                updatedValue = emailRegex.test(value) ? value : editedUser.email;
+                break;
+            case 'phone':
+                const phoneRegex = /^\d+$/;
+                updatedValue = phoneRegex.test(value) ? value : editedUser.phone;
+                break;
+            default:
+                break;
+        }
+
+        setEditedUser({ ...editedUser, [name]: updatedValue });
+    };
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/drkqkovpr/image/upload';
+        const CLOUDINARY_UPLOAD_PRESET = 'qxvropzd';
+
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+        try {
+            const response = await fetch(CLOUDINARY_URL, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setEditedUser({ ...editedUser, image_url: data.secure_url });
+                console.log('check data ', data);
+            } else {
+                console.error('Error uploading image to Cloudinary');
+            }
+        } catch (error) {
+            console.error('Error uploading image to Cloudinary:', error);
+        }
     };
 
     const handleSave = async () => {
         try {
             setLoading(true);
+            if (!validateFormData()) {
+                return;
+            }
+
             const response = await updateUserData(editedUser);
             console.log('User data updated successfully:', response);
         } catch (error) {
@@ -56,6 +104,13 @@ const EditProfile = () => {
 
     const updateUserData = async (userData) => {
         return { success: true };
+    };
+
+    const validateFormData = () => {
+        if (!editedUser.email || !editedUser.phone) {
+            return false;
+        }
+        return true;
     };
 
     return (
@@ -104,8 +159,20 @@ const EditProfile = () => {
                     <input
                         className="input-edit"
                         type="tel"
-                        name="phoneNumber"
+                        name="phone"
                         value={editedUser.phone}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Địa chỉ:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="text"
+                        name="address"
+                        value={editedUser.address}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -126,9 +193,9 @@ const EditProfile = () => {
                 </button>
             </div>
             <div className="img-edit">
-                <img src={imgProfile} alt="" />
+                <img src={editedUser.image_url || 'default_image_url'} alt="" />{' '}
                 <div className="text">Ảnh của bạn </div>
-                <input className="input-img" type="file" id="profileImage" />
+                <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} />
             </div>
         </div>
     );

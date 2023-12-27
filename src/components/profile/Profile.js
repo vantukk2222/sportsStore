@@ -14,7 +14,7 @@ const Profile = () => {
                                 <h2>HỒ SƠ CỦA TÔI</h2>
                             </div>
                         </div>
-                        <div className="product-content  grid1">
+                        <div className="product-content ">
                             <EditProfile />
                         </div>
                         <div></div>

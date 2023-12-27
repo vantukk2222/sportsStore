@@ -50,8 +50,6 @@ a {
     cursor: pointer;
 }
 
-
-
 .lableprofile {
     display: block;
     margin-bottom: 5px;
@@ -92,18 +90,14 @@ a {
     margin-right: 10px;
 }
 
-
-
 .input-edit {
-    width: 100%;
+    width: 400px;
     padding: 15px;
     flex: 2;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
 }
-
-
 
 .gender {
     width: 100%;
@@ -124,7 +118,6 @@ a {
     max-width: 50%;
     height: auto;
     border-radius: 50%;
-
 }
 
 .input-img {
@@ -137,7 +130,6 @@ a {
 }
 
 .text {
-
     margin-top: 10px;
     font-size: 16px;
 }
@@ -147,7 +139,6 @@ a {
     align-items: center;
     margin-bottom: 15px;
     white-space: nowrap;
-
 }
 
 .label-edit {
