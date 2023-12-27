@@ -21,7 +21,7 @@ const Cart = ({ productItems }) => {
                                 <img src={val.imageSet.find((e) => e.is_main === true).url} alt="" />
                             </div>
                             <h4>{val.name}</h4>
-                            {givenTimeStr && <h4 className="crossedNumber">{val.price_min}đ </h4>}
+                            {givenTimeStr && <span className="crossedNumber">{val.price_min}đ </span>}
                             <span className="">
                                 {val.sale ? (val.price_min * (100 - val.sale?.discount)) / 100 : val.price_min}đ
                             </span>
