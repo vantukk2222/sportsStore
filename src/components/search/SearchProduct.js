@@ -31,7 +31,7 @@ const SearchProduct = () => {
         };
         fetchData();
     }, [location]);
-    console.log(productItems);
+    //console.log(productItems);
     return (
         <>
             <section className="shop background">

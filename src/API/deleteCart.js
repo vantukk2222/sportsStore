@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
-const deleteCart = async (prop,authToken) => {
+const deleteCart = async (prop, authToken) => {
     try {
         const response = await axios.delete(`${api}cart/delete/${prop}`, {
             headers: {

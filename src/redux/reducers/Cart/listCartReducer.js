@@ -39,6 +39,7 @@ export const listCartByIdUser = (id_user) => async (dispatch, getState) => {
         dispatch(listCartRequest()); // Dispatch addToCartRequest action
         // console.log('Listcart request success');
         if (id_user) {
+           // console.log(id_user);
             const data = await getUnAuth(`cart/get-by-id-user/${id_user}`); // Call addToCartPage API
             // console.log('Listcart get api success');
 

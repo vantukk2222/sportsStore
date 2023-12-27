@@ -15,6 +15,7 @@ const EditProfile = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
+                console.log(response);
                 const date = new Date(response.dob);
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
