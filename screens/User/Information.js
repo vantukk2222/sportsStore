@@ -82,7 +82,7 @@ const Information = () => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.infoItem}
                     onPress={() => {
-                        navigation.navigate('OrderHistory')
+                        navigation.navigate('OrderHistory' , {id_user:data?.id})
                     }}
                 >
                     <Text style={styles.infoText}>Đơn mua</Text>
@@ -94,12 +94,14 @@ const Information = () => {
                         style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 10 }}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.infoItem}>
+                <TouchableOpacity style={styles.infoItem}
+                onPress={() => {
+                    //  navigation.navigate('Cart')
+                    console.log("ID user in information: ",data?.id);
+                }}>
                     <Text style={styles.infoText}>Địa chỉ của tôi</Text>
                     <Icon
-                        onPress={() => {
-                            //  navigation.navigate('Cart')
-                        }}
+                        
                         name="chevron-circle-right"
                         size={24}
                         color={colors.denNhe}

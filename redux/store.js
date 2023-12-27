@@ -43,9 +43,8 @@ import getProductSizeSlice from './reducers/productReducer/ProductSize/getProduc
 import editProductSizeSlice from './reducers/productReducer/ProductSize/editProductSize';
 import deleteSizeSlice from './reducers/Size/DeleteSize';
 import getStatisticSlice from './reducers/Statistic/getStatistic';
-// {userSlice}
-// >>>>>>> NewD
-
+import getAllBillSlice from './reducers/Bill/getBillUserReducer'
+import getBusinessByIDSlice from './reducers/Business/getBusinessByID'
 const rootReducer = combineReducers({
   product: productSlice,
   productDetail: productDetailSlice,
@@ -86,8 +85,10 @@ const rootReducer = combineReducers({
   editProductSize: editProductSizeSlice,
   deleteSize: deleteSizeSlice,
   getStatistic: getStatisticSlice,
+  getAllBillReducer: getAllBillSlice,
+  getBusinessByIDReducer: getBusinessByIDSlice,
 })
-
+// {getBusinessByIDSlice}
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
