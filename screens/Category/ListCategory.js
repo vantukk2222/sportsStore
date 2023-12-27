@@ -33,7 +33,6 @@ const ListCategory = () => {
 
     useEffect(() => {
         setCategories(dataCate);
-
     }, [dataCate])
 
     const navigation = useNavigation();

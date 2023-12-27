@@ -14,6 +14,8 @@ import { resetListCart, resetStateListCart } from "../../redux/reducers/Cart/lis
 import { isEqual } from 'lodash'
 import { toastError } from "../../components/toastCustom";
 import Toast from "react-native-toast-message";
+import { setRole } from "../../redux/reducers/Role/roleReducer";
+import { asyncStorage } from "../../utilies/asyncStorage";
 const Information = () => {
     const { userName, isLoading, error: errorUser } = useSelector((state) => state.login)
 
@@ -32,22 +34,27 @@ const Information = () => {
         navigation.navigate("Login")
     }
     const handleLogout = async () => {
-        dispatch(logout())
+        await asyncStorage.setUsername('')
+        
         dispatch(resetStateListCart())
         dispatch(resetStateUser())
+        dispatch(logout())
+        dispatch(setRole(''))
         // const data = await AsyncStorage.getItem('persist:root')
         navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'LoginBottomNavigator' }], // Thay 'Home' bằng màn hình bạn muốn quay về
-            })
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'LoginBottomNavigator' }],
+  
+            // Thay 'Home' bằng màn hình bạn muốn quay về
+          })
         );
         // console.log("data logout:", data);
     }
-    if (error) {
-        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        // return <Loading />;
-    }
+    // if (error) {
+    //     toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
+    //     // return <Loading />;
+    // }
     if (loading) {
         return <Loading />
     }

@@ -36,15 +36,15 @@ const DetailProduct = ({ navigation, route }) => {
         return (price * (1 - discount / 100))
     }
     const findMainImage = (Listimg) => {
-        for (let i = 0; i < Listimg.length; i++) {
-            if (Listimg[i].is_main === true) {
+        for (let i = 0; i < Listimg?.length; i++) {
+            if (Listimg[i]?.is_main === true) {
                 //console.log(images[i].url)
-                var img = Listimg[i].url
+                var img = Listimg[i]?.url
                 //  setImages(im)
-                return Listimg[i].url;
+                return Listimg[i]?.url;
             }
         }
-        return Listimg.length > 0 ? Listimg[0].url : null;
+        return Listimg?.length > 0 ? Listimg[0]?.url : null;
     }
 
     useEffect(() => {
@@ -59,7 +59,7 @@ const DetailProduct = ({ navigation, route }) => {
     }, [userName]);
     //console.log(item)
     useEffect(() => {
-        dispatch(fetchProductbyId(item.id))//item.id
+        dispatch(fetchProductbyId(item?.id))//item.id
         // console.log('item.id\n', item.id)
         return () => {
             // item = null;
@@ -68,18 +68,18 @@ const DetailProduct = ({ navigation, route }) => {
     }, [item])
 
     useEffect(() => {
-        setProduct(data[item.id])
-        setSale(data[item.id]?.sale)
+        setProduct(data[item?.id])
+        setSale(data[item?.id]?.sale)
         // console.log('productDetail\n', data.sale)
         return () => {
             setProduct('')
         }
-    }, [data[item.id]])
+    }, [data[item?.id]])
     // console.log("product", item);
     handleAddtocart = () =>
     {
         dataUser?.id ? navigation.navigate('ModalBuyProduct', {product:product ,id_user: dataUser?.id}) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
-            console.log("id_information: ",product.id)
+            console.log("id_information: ",product?.id)
     }
     // Xử
     if (loading) {
@@ -88,7 +88,7 @@ const DetailProduct = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={{ flex: 100 }}>
-            <HeaderComp init="Detail"/>
+            <HeaderComp init="Chi tiết"/>
             <ScrollView style={styles.container} nestedScrollEnabled={true}>
                 {product?.imageSet?.length > 0 ?
                     images !== null ?

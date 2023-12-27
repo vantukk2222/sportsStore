@@ -57,7 +57,6 @@ const ListProductByCategory = ({ route, navigation }) => {
         if (dataProductbyCate) {
             setProducts(dataProductbyCate.content)
         }
-
         //console.log("datacategoryapi: \n ", dataProductbyCate.content)
     }, [dataProductbyCate])
 

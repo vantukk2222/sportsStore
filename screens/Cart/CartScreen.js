@@ -51,7 +51,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
     // else{
     //   onHandleGetID("remove", data?.id_product_information)
     // }
-    setToggleCheckBox(id_buy?.includes(data?.id_product_information));
+    setToggleCheckBox(id_buy?.includes(data?.id));
   }, [id_buy]);
 
   // const [informationProduct, setInformationProduct] = useState(dataDetail)
@@ -88,7 +88,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
     const valueToPass = hasSaleInfo ? quantity_buy * data?.price * (1 - dataDetail[productIdInfo]?.sale?.discount / 100) : quantity_buy * data?.price;
 
     // Call onHandleSale with the determined value
-    onHandleSale(productIdInfo, valueToPass);
+    onHandleSale(data?.id, valueToPass);
     // if(id_buy?.includes(data?.id_product_information)){onHandleGetID("add", data?.id_product_information)}
     // else{
     //   onHandleGetID("remove", data?.id_product_information)
@@ -111,22 +111,21 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
   // if(isLoading) return (<Loading></Loading>)
   // console.log("ID_BUY in renderProducts", id_buy);
   return (
-    <View
-      onPress={() => {
-        // console.log("data detail product", dataDetail[data?.id_product_information]);
-        //   navigation.navigate('DetailProduct', {
-        //     item: dataDetail[data?.id_product_information],
-        //     // id_user: dataUser?.id,
-        // });
+    <TouchableOpacity
+    onPress={() => {
+      console.log("data detail product", dataDetail[data?.id_product_information]);
+      navigation.navigate('DetailProduct',  {item: dataDetail[data?.id_product_information]} ),
+          // id_user: dataUser?.id,
+      
 
-        // console.log("detail product in renderProducts in cart:", dataDetail[data.id_product_information]?.sale?.discount);
+      console.log("detail product in renderProducts in cart:", dataDetail[data.id_product_information]?.sale?.discount);
 
-      }}
+    }}
       key={data?.id_cart}
       // onPress={() => navigation.navigate('ProductInfo', {productID: data.id})}
       style={{
         width: '100%',
-        height: 120,
+        height: 140,
         marginVertical: 6,
         // paddingBottom: 25,
         flexDirection: 'row',
@@ -138,10 +137,10 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
         value={toggleCheckBox}
         onValueChange={(newValue) => {
           if (newValue) {
-            onHandleGetID("add", data?.id_product_information)
+            onHandleGetID("add", data?.id)
           }
           else {
-            onHandleGetID("remove", data?.id_product_information)
+            onHandleGetID("remove", data?.id)
 
           }
           setToggleCheckBox(newValue)
@@ -342,7 +341,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

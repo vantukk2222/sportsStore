@@ -33,6 +33,7 @@ import EditProductInfor from "../screens/Business/Products/EditProductInfor"
 import EditandDelete from "../screens/Business/Products/SetImage/EditandDelete"
 import EditProductSize from "../screens/Business/Products/EditProductSize"
 import StatisticScreen from "../screens/Business/Statistics/StatisticScreen"
+import OrderHistoryScreen from "../screens/Cart/OrderHistory"
 import OrderScreen from "../screens/Business/Order/OrderScreen"
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
@@ -72,6 +73,7 @@ export const LoginScreenNavigator = () => {
             <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
             <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
             <Stack.Screen name='setInfor' component={setInfor} options={{ headerShown: false }} />
+            <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} options={{ headerShown: false }} />
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
             {/* // <<<<<<< categoryDat */}
             <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
