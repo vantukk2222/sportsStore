@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import postMomo from '~/API/postMomo';
+import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 };
 const Payment = ({ selectedItems }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const dispatch = useDispatch();
     const total = formatCurrency(
         selectedItems.reduce(
             (total, item) =>
@@ -37,7 +40,8 @@ const Payment = ({ selectedItems }) => {
                 setLoading(false);
             }
         };
-        fetchData();
+        const user = localStorage.getItem('User');
+        fetchData().then(() => dispatch(listCartByIdUser(user.id)));
     };
     return (
         <div className="payment">
