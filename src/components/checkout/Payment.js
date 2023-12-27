@@ -15,14 +15,21 @@ const Payment = ({ selectedItems }) => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const total = formatCurrency(
-        selectedItems.reduce(
-            (total, item) =>
+        selectedItems.reduce((total, item) => {
+            let givenTimeStr = item.product.sale?.ended_at || null;
+            if (givenTimeStr) {
+                const givenTime = new Date(givenTimeStr);
+                const currentTime = new Date();
+                if (givenTime > currentTime) givenTimeStr = true;
+                else givenTimeStr = false;
+            } else givenTimeStr = false;
+            return (
                 total +
-                (item.product.sale
+                (givenTimeStr
                     ? ((item.product.price * (100 - item.product.sale?.discount)) / 100) * item.quantity
-                    : item.product.price * item.quantity),
-            0,
-        ),
+                    : item.product.price * item.quantity)
+            );
+        }, 0),
     );
     const handlePayment = () => {
         const fetchData = async () => {

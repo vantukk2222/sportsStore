@@ -31,14 +31,21 @@ const ListCheckout = ({ selectedItems }) => {
 
     const getTotalPrice = (items) => {
         return formatCurrency(
-            items.reduce(
-                (total, item) =>
+            items.reduce((total, item) => {
+                let givenTimeStr = item.product.sale?.ended_at || null;
+                if (givenTimeStr) {
+                    const givenTime = new Date(givenTimeStr);
+                    const currentTime = new Date();
+                    if (givenTime > currentTime) givenTimeStr = true;
+                    else givenTimeStr = false;
+                } else givenTimeStr = false;
+                return (
                     total +
-                    (item.product.sale
+                    (givenTimeStr
                         ? ((item.product.price * (100 - item.product.sale?.discount)) / 100) * item.quantity
-                        : item.product.price * item.quantity),
-                0,
-            ),
+                        : item.product.price * item.quantity)
+                );
+            }, 0),
         );
     };
 
@@ -99,7 +106,7 @@ const ListCheckout = ({ selectedItems }) => {
                                                 )}
                                                 <p>
                                                     {formatCurrency(
-                                                        item.product.sale
+                                                        givenTimeStr
                                                             ? (item.product.price *
                                                                   (100 - item.product.sale?.discount)) /
                                                                   100
@@ -112,7 +119,7 @@ const ListCheckout = ({ selectedItems }) => {
                                         <td>{item.quantity || 'N/A'}</td>
                                         <td>
                                             {formatCurrency(
-                                                item.product.sale
+                                                givenTimeStr
                                                     ? ((item.product.price * (100 - item.product.sale?.discount)) /
                                                           100) *
                                                           item.quantity

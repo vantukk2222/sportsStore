@@ -22,13 +22,25 @@ const Cart = () => {
     const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
     //console.log(dataCart);
     const totalPrice = dataCart?.reduce(
-        (price, item) =>
-            checkedItems.includes(item.id)
-                ? price +
-                  (item.product.sale
-                      ? ((item.product.price * (100 - item.product.sale?.discount)) / 100) * item.quantity
-                      : item.product.price * item.quantity)
-                : price,
+        (price, item) => {
+            if (checkedItems.includes(item.id)) {
+                let givenTimeStr = item.product.sale?.ended_at || null;
+                if (givenTimeStr) {
+                    const givenTime = new Date(givenTimeStr);
+                    const currentTime = new Date();
+                    if (givenTime > currentTime) givenTimeStr = true;
+                    else givenTimeStr = false;
+                } else givenTimeStr = false;
+                // console.log(givenTimeStr);
+                return (
+                    price +
+                    (givenTimeStr
+                        ? ((item.product.price * (100 - item.product.sale?.discount)) / 100) * item.quantity
+                        : item.product.price * item.quantity)
+                );
+            } else return price;
+        },
+
         0,
     );
 
@@ -97,7 +109,7 @@ const Cart = () => {
     };
 
     const handleAdd = (item) => {
-   //     console.log(item);
+        //     console.log(item);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
@@ -143,7 +155,7 @@ const Cart = () => {
         closeModal();
     };
     const handleRemove = (item) => {
-    //    console.log(item);
+        //    console.log(item);
         localStorage.setItem('Item', JSON.stringify(item));
         setIsModalOpen(true);
     };
@@ -152,7 +164,7 @@ const Cart = () => {
         localStorage.removeItem('Item');
     };
     const handleMinus = (item) => {
-     //   console.log(item);
+        //   console.log(item);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
@@ -294,7 +306,7 @@ const Cart = () => {
 
                                                                 {
                                                                     <span>
-                                                                        {item.product.sale
+                                                                        {givenTimeStr
                                                                             ? (item.product.price *
                                                                                   (100 - item.product.sale?.discount)) /
                                                                               100
@@ -305,7 +317,7 @@ const Cart = () => {
                                                                 <span>x {item.quantity} </span>
                                                                 <span>
                                                                     Thành tiền:
-                                                                    {item.product.sale
+                                                                    {givenTimeStr
                                                                         ? ((item.product.price *
                                                                               (100 - item.product.sale?.discount)) /
                                                                               100) *
