@@ -57,11 +57,13 @@ const Payment = ({ selectedItems }) => {
                     {/* <p>Giảm giá</p> */}
                     <p>Tổng thanh toán: {total || 'N/A'}</p>
                     {paymentResponseUrl && (
-                        <h3>
-                            <a href={paymentResponseUrl} target="_blank" rel="noopener noreferrer">
-                                Thanh toán bằng MOMO
-                            </a>
-                        </h3>
+                        <>
+                            <button className="sort">
+                                <a href={paymentResponseUrl} target="_blank" rel="noopener noreferrer">
+                                    Thanh toán bằng MOMO
+                                </a>
+                            </button>
+                        </>
                     )}
                 </div>
             </div>

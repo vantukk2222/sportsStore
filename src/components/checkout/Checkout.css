@@ -176,3 +176,7 @@
 .lispayment {
     padding-left: 10px;
 }
+.buttonpayment {
+    background-color: #606eca;
+    color: white;
+}
