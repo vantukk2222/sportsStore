@@ -28,7 +28,6 @@ const Payment = ({ selectedItems }) => {
                 setLoading(false);
             }
         };
-        fetchData();
     }, []);
 
     return (

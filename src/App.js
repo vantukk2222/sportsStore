@@ -1,9 +1,11 @@
 import './App.css';
 import { VRoutes } from '~/routes';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 function App() {
     const routers = VRoutes;
+    const authToken = localStorage.getItem('authToken');
+    // useEffect(()=>{},[])
     return (
         <Router>
             <div className="App">
@@ -16,8 +18,8 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    <Layout >
-                                        <Page  />
+                                    <Layout>
+                                        <Page />
                                     </Layout>
                                 }
                             />

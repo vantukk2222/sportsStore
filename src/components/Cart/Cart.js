@@ -20,6 +20,7 @@ const Cart = () => {
     const [check, setCheck] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
+    console.log(dataCart);
     const totalPrice = dataCart?.reduce(
         (price, item) => (checkedItems.includes(item.id) ? price + item.quantity * item.product.price : price),
         0,

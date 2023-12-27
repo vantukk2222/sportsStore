@@ -25,7 +25,9 @@ const Shop = () => {
                     throw new Error('Network response was not ok');
                 }
                 setShopItem(response);
-                response = await getUnAuth(`product-information/find-by-business/${id}?page=${page}&page_size=20`);
+                response = await getUnAuth(
+                    `product-information/find-by-business/${id}?page=${page}&page_size=20&state=0`,
+                );
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }

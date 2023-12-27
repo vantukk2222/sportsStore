@@ -16,7 +16,7 @@ const SlideCard = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await getUnAuth(`product-information?page=0&page_size=5`);
+                const response = await getUnAuth(`product-information?page=0&page_size=5&state=0`);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }

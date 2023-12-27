@@ -12,7 +12,7 @@ const Tips = ({ shopItem }) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await getUnAuth(`product-information/find-by-business/${shopItem.id}`);
+                const response = await getUnAuth(`product-information/find-by-business/${shopItem.id}?state=0`);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }

@@ -36,10 +36,11 @@ const FlashCard = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await getUnAuth(`product-information?page=0&page_size=10`);
+                const response = await getUnAuth(`product-information?page=0&page_size=20&state=0`);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
+                console.log(response.content);
                 setProductItems(response.content);
                 sessionStorage.setItem('flash_product', JSON.stringify(response.content));
             } catch (error) {
@@ -68,26 +69,43 @@ const FlashCard = () => {
             {productItems ? (
                 <Slider {...settings}>
                     {productItems.map((productItems) => {
-                        return (
-                            <div className="box" key={productItems.id} onClick={() => handleClick(productItems.id)}>
-                                <div className="product mtop">
-                                    <div className="img">
-                                        <img
-                                            className="imgflashcard"
-                                            src={productItems.imageSet.find((e) => e.is_main === true).url}
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="product-details">
-                                        <span className="spanname">{productItems.name}</span>
-                                        <div className="price ">
-                                            <h4>${productItems.price_min}đ </h4>
-                                            <h4 className="crossedNumber">${productItems.price_min}đ </h4>
+                        let givenTimeStr = productItems.sale?.ended_at || null;
+                        if (givenTimeStr) {
+                            const givenTime = new Date(givenTimeStr);
+                            const currentTime = new Date();
+                            if (givenTime > currentTime) givenTimeStr = true;
+                            else givenTimeStr = false;
+                        } else givenTimeStr = false;
+                        if (givenTimeStr)
+                            return (
+                                <div className="box" key={productItems.id} onClick={() => handleClick(productItems.id)}>
+                                    <div className="product mtop">
+                                        <div className="img">
+                                            <img
+                                                className="imgflashcard"
+                                                src={productItems.imageSet.find((e) => e.is_main === true).url}
+                                                alt=""
+                                            />
+                                        </div>
+                                        <div className="product-details">
+                                            <span className="spanname">{productItems.name}</span>
+                                            <div className="price ">
+                                                {givenTimeStr && (
+                                                    <h4 className="crossedNumber">{productItems.price_min}đ </h4>
+                                                )}
+                                                <h4>
+                                                    {productItems.sale
+                                                        ? (productItems.price_min *
+                                                              (100 - productItems.sale?.discount)) /
+                                                          100
+                                                        : productItems.price_min}
+                                                    đ
+                                                </h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
+                            );
                     })}
                 </Slider>
             ) : (

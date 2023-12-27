@@ -18,7 +18,7 @@ const SearchProduct = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await getUnAuth(`product-information/search?name=${name}`);
+                const response = await getUnAuth(`product-information/search?name=${name}?state=0`);
                 setProductItems(response.content);
                 if (!response) {
                     throw new Error('Network response was not ok');

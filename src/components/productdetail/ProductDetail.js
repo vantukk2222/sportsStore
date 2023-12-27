@@ -26,6 +26,7 @@ const ProductDetail = () => {
     const [price, setPrice] = useState(0);
     const [id, setId] = useState(0);
     const [size, setSize] = useState('');
+    const [sale, setSale] = useState(false);
     const showNextImages = () => {
         const totalImages = productItem.imageSet.length;
         const imagesToShow = 3;
@@ -108,6 +109,14 @@ const ProductDetail = () => {
                 setProductItem(response);
                 setQuantity(response.productSet.reduce((r, e) => r + e.quantity, 0));
                 setPrice(response.price_min);
+                let givenTimeStr = response.sale?.ended_at || null;
+                if (givenTimeStr) {
+                    const givenTime = new Date(givenTimeStr);
+                    const currentTime = new Date();
+                    if (givenTime > currentTime) setSale(true);
+                    else setSale(false);
+                } else setSale(false);
+
                 setStart(response.imageSet.find((e) => e.is_main === true).id);
             } catch (error) {
                 setError(error);
@@ -167,8 +176,10 @@ const ProductDetail = () => {
                         <div className="product-info-container">
                             <h2 className="product-name">{productItem.name}</h2>
                             <div className="tdtable">
-                                <p className="product-price crossedNumber">{price}đ</p>
-                                <p className="product-price ">{price}đ</p>
+                                {sale && <p className="product-price crossedNumber">{price}đ</p>}
+                                <p className="product-price ">
+                                    {sale ? (price * (100 - productItem.sale?.discount)) / 100 : price}đ
+                                </p>
                             </div>
                             <p className="product-description">{productItem.detail}</p>
                             <p className="product-attribute">
@@ -206,7 +217,7 @@ const ProductDetail = () => {
                         </div>
                     </div>
                     <Shopdetail business={productItem.business} />
-                    <Detail productItem={productItem} />
+                    {/* <Detail productItem={productItem} /> */}
                     <Comment />
                 </>
             ) : (

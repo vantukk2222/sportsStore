@@ -14,22 +14,36 @@ const ProductCart = ({ productItems }) => {
     };
     return (
         <>
-            {productItems?.map((product, index) => (
-                <div key={index} className="box" onClick={() => handleClick(product.id)}>
-                    <div className="product mtop">
-                        <div key={product.id} className="img">
-                            <img src={product.imageSet.find((e) => e.is_main === true).url} alt="" />
-                        </div>
-                        <div className="product-details">
-                            <h3>{product.name}</h3>
-                            <div className="price">
-                                <h4 className="crossedNumber">{product.price_min}vnđ </h4>
-                                <h4>{product.price_min}vnđ </h4>
+            {productItems?.map((product, index) => {
+                let givenTimeStr = product.sale?.ended_at || null;
+                if (givenTimeStr) {
+                    const givenTime = new Date(givenTimeStr);
+                    const currentTime = new Date();
+                    if (givenTime > currentTime) givenTimeStr = true;
+                    else givenTimeStr = false;
+                } else givenTimeStr = false;
+                return (
+                    <div key={index} className="box" onClick={() => handleClick(product.id)}>
+                        <div className="product mtop">
+                            <div key={product.id} className="img">
+                                <img src={product.imageSet.find((e) => e.is_main === true).url} alt="" />
+                            </div>
+                            <div className="product-details">
+                                <h3>{product.name}</h3>
+                                <div className="price">
+                                    {givenTimeStr && <h4 className="crossedNumber">{product.price_min}đ </h4>}
+                                    <h4>
+                                        {product.sale
+                                            ? (product.price_min * (100 - product.sale?.discount)) / 100
+                                            : product.price_min}
+                                        đ
+                                    </h4>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </>
     );
 };
