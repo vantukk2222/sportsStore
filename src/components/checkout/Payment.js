@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import postMomo from '~/API/postMomo';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
+
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 };
 const Payment = ({ selectedItems }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [paymentResponseUrl, setPaymentResponseUrl] = useState(null);
+
     const dispatch = useDispatch();
     const total = formatCurrency(
         selectedItems.reduce(
@@ -30,7 +33,9 @@ const Payment = ({ selectedItems }) => {
                 const response = await postMomo(list_id, 'captureWallet', authToken);
                 localStorage.removeItem('selectedItems');
                 selectedItems = [];
-                console.log(response);
+                console.log('check response', response);
+                setPaymentResponseUrl(response);
+
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
@@ -40,19 +45,24 @@ const Payment = ({ selectedItems }) => {
                 setLoading(false);
             }
         };
+
         const user = localStorage.getItem('User');
         fetchData().then(() => dispatch(listCartByIdUser(user.id)));
     };
     return (
         <div className="payment">
-            <div className="lispayment">
-                <h2>Thanh toán bằng MoMo</h2>
-            </div>
             <div className="boxpayment">
                 <div className="paymentbox">
                     <p>Tổng tiền: {total || 'N/A'}</p>
                     {/* <p>Giảm giá</p> */}
                     <p>Tổng thanh toán: {total || 'N/A'}</p>
+                    {paymentResponseUrl && (
+                        <h3>
+                            <a href={paymentResponseUrl} target="_blank" rel="noopener noreferrer">
+                                Thanh toán bằng MOMO
+                            </a>
+                        </h3>
+                    )}
                 </div>
             </div>
             <div className="paymentbutton">

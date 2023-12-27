@@ -355,7 +355,7 @@ const Cart = () => {
                                     <h4>Tổng tiền :</h4>
                                     <h3>{totalPrice} Vnđ</h3>
                                 </div>
-                                {dataCart?.length > 0 && (
+                                {checkedItems.length > 0 && (
                                     <>
                                         <div className="buttoncart">
                                             <button className="payButton" onClick={handleCheckout}>
