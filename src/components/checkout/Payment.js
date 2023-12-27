@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import postMomo from '~/API/postMomo';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 
@@ -7,10 +8,11 @@ const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 };
 const Payment = ({ selectedItems }) => {
+    const check = JSON.parse(localStorage.getItem('selectedItems'));
+    const navigate = useNavigate();
+    if (!check) navigate('/');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [paymentResponseUrl, setPaymentResponseUrl] = useState(null);
-
     const dispatch = useDispatch();
     const total = formatCurrency(
         selectedItems.reduce(
@@ -29,12 +31,17 @@ const Payment = ({ selectedItems }) => {
                 const list_id = [];
                 selectedItems.forEach((e) => list_id.push(e.id));
                 const authToken = JSON.parse(localStorage.getItem('authToken'));
-                console.log(list_id);
-                const response = await postMomo(list_id, 'captureWallet', authToken);
+                // console.log(list_id);
+                const response = await postMomo(list_id, 'captureWallet', authToken).then((res) => {
+                    // console.log(res);
+                    const user = JSON.parse(localStorage.getItem('User'));
+                    // console.log(user.id);
+                    dispatch(listCartByIdUser(user.id));
+                    return res;
+                });
                 localStorage.removeItem('selectedItems');
-                selectedItems = [];
-                console.log('check response', response);
-                setPaymentResponseUrl(response);
+                //   console.log('check response', response);
+                window.location.href = response;
 
                 if (!response) {
                     throw new Error('Network response was not ok');
@@ -45,9 +52,7 @@ const Payment = ({ selectedItems }) => {
                 setLoading(false);
             }
         };
-
-        const user = localStorage.getItem('User');
-        fetchData().then(() => dispatch(listCartByIdUser(user.id)));
+        fetchData();
     };
     return (
         <div className="payment">
@@ -56,15 +61,6 @@ const Payment = ({ selectedItems }) => {
                     <p>Tổng tiền: {total || 'N/A'}</p>
                     {/* <p>Giảm giá</p> */}
                     <p>Tổng thanh toán: {total || 'N/A'}</p>
-                    {paymentResponseUrl && (
-                        <>
-                            <button className="sort">
-                                <a href={paymentResponseUrl} target="_blank" rel="noopener noreferrer">
-                                    Thanh toán bằng MOMO
-                                </a>
-                            </button>
-                        </>
-                    )}
                 </div>
             </div>
             <div className="paymentbutton">

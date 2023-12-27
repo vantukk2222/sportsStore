@@ -20,7 +20,7 @@ const Cart = () => {
     const [check, setCheck] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
-    console.log(dataCart);
+    //console.log(dataCart);
     const totalPrice = dataCart?.reduce(
         (price, item) =>
             checkedItems.includes(item.id)
@@ -97,7 +97,7 @@ const Cart = () => {
     };
 
     const handleAdd = (item) => {
-        console.log(item);
+   //     console.log(item);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
@@ -143,7 +143,7 @@ const Cart = () => {
         closeModal();
     };
     const handleRemove = (item) => {
-        console.log(item);
+    //    console.log(item);
         localStorage.setItem('Item', JSON.stringify(item));
         setIsModalOpen(true);
     };
@@ -152,7 +152,7 @@ const Cart = () => {
         localStorage.removeItem('Item');
     };
     const handleMinus = (item) => {
-        console.log(item);
+     //   console.log(item);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {

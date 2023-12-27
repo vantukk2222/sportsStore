@@ -16,7 +16,7 @@ const SearchallShop = () => {
                 setLoading(true);
                 const name = location.pathname.slice(location.pathname.lastIndexOf('/') + 1);
                 const response = await getUnAuth(`business/search?name=${name}`);
-                console.log(response);
+             //   console.log(response);
                 setShops(response.content);
                 if (!response) {
                     throw new Error('Network response was not ok');

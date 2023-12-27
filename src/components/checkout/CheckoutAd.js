@@ -21,7 +21,7 @@ const CheckoutAd = ({ selectedItems }) => {
     }, [selectedItems]);
 
     const handleChangeAddress = () => {
-        console.log('Changing address...');
+       // console.log('Changing address...');
     };
 
     return (
