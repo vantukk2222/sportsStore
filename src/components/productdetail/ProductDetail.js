@@ -91,7 +91,7 @@ const ProductDetail = () => {
     const handleBuy = (product) => {
         if (size != '') {
             addToCart(product);
-            navigate('/cart');
+            setTimeout(() => navigate('/cart'), 500);
         } else alert('Hãy chọn loại sản phẩm mua trước khi mua ngay');
     };
     useEffect(() => {
