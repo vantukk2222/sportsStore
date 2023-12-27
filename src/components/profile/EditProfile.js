@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import getUnAuth from '~/API/get';
 import imgProfile from './shop1.png';
+import { putUser } from '~/API/putUser';
 
 const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
@@ -23,7 +24,7 @@ const EditProfile = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                console.log(response);
+                // console.log(response);
                 const date = new Date(response.dob);
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
@@ -45,19 +46,15 @@ const EditProfile = () => {
     const handleSave = async () => {
         try {
             setLoading(true);
-            const response = await updateUserData(editedUser);
-            console.log('User data updated successfully:', response);
+            const authToken = localStorage.getItem('authToken');
+            putUser(s.id, editedUser, authToken);
         } catch (error) {
             setError(error);
         } finally {
             setLoading(false);
         }
     };
-
-    const updateUserData = async (userData) => {
-        return { success: true };
-    };
-
+    // console.log(user, editedUser);
     return (
         <div className="edit-profile">
             <div className="text-edit">
