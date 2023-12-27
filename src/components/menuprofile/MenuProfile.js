@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import './Profile.css'; // Import file CSS
+import '../profile/Profile.css';
 
 const MenuProfile = () => {
     return (
@@ -11,7 +11,7 @@ const MenuProfile = () => {
                         <Link to="/profile">👤Hồ sơ</Link>
                     </label>
                     <label className="lableprofile">
-                        <Link to="/adress">📍Địa chỉ</Link>
+                        <Link to="/address">📍Địa chỉ</Link>
                     </label>
                     <label className="lableprofile">
                         <Link to="/bank"> 💳Ngân Hàng</Link>

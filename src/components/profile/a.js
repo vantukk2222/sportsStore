@@ -6,14 +6,8 @@ const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [user, setUser] = useState([]);
-    const [editedUser, setEditedUser] = useState({
-        email: '',
-        username: '',
-        name: '',
-        phone: '',
-        dob: '',
-    });
+    const [user, setUser] = useState({});
+    const [editedUser, setEditedUser] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +21,7 @@ const EditProfile = () => {
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
                 setUser(response);
-                setEditedUser(response); // Initialize editedUser with user data
+                setEditedUser(response);
             } catch (error) {
                 setError(error);
             } finally {
@@ -38,14 +32,19 @@ const EditProfile = () => {
     }, []);
 
     const handleInputChange = (e) => {
-        setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setEditedUser((prevUser) => ({ ...prevUser, [name]: value }));
     };
 
-    const handleSave = async () => {
+    const handleSaveChanges = async () => {
         try {
             setLoading(true);
-            const response = await updateUserData(editedUser);
-            console.log('User data updated successfully:', response);
+            const response = await saveChangesApiCall(editedUser);
+            if (!response) {
+                throw new Error('Failed to save changes');
+            }
+            setUser(editedUser);
+            console.log('Changes saved successfully:', editedUser);
         } catch (error) {
             setError(error);
         } finally {
@@ -53,9 +52,7 @@ const EditProfile = () => {
         }
     };
 
-    const updateUserData = async (userData) => {
-        return { success: true };
-    };
+    const saveChangesApiCall = async (userData) => {};
 
     return (
         <div className="edit-profile">
@@ -68,7 +65,7 @@ const EditProfile = () => {
                         className="input-edit"
                         type="email"
                         name="email"
-                        value={editedUser.email}
+                        value={editedUser.email || ''}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -80,7 +77,7 @@ const EditProfile = () => {
                         className="input-edit"
                         type="text"
                         name="username"
-                        value={editedUser.username}
+                        value={editedUser.username || ''}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -92,7 +89,7 @@ const EditProfile = () => {
                         className="input-edit"
                         type="text"
                         name="fullName"
-                        value={editedUser.name}
+                        value={editedUser.fullName || ''}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -104,7 +101,7 @@ const EditProfile = () => {
                         className="input-edit"
                         type="tel"
                         name="phoneNumber"
-                        value={editedUser.phone}
+                        value={editedUser.phoneNumber || ''}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -115,12 +112,12 @@ const EditProfile = () => {
                     <input
                         className="input-edit"
                         type="date"
-                        name="dob"
-                        value={editedUser.dob}
+                        name="birthDate"
+                        value={editedUser.birthDate || ''}
                         onChange={handleInputChange}
                     />
                 </div>
-                <button className="edit-button" type="button" onClick={handleSave}>
+                <button className="edit-button" type="button" onClick={handleSaveChanges}>
                     Lưu
                 </button>
             </div>

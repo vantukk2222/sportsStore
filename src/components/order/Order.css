@@ -1,0 +1,111 @@
+/* OrderContainer styles */
+.order-container {
+    border: 1px solid #ebebeb;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    background-color: white;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* OrderHeader styles */
+.order-header {
+    color: #ee4d2d;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* DateText styles */
+.date-text {
+    color: #555;
+    font-size: 14px;
+}
+
+/* ItemList styles */
+.item-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* Item styles */
+.item {
+    margin-bottom: 8px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+/* Item image styles */
+.item-image {
+    width: 120px;
+    height: 120px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+/* Item details styles */
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+/* TotalText and StateText container styles */
+.total-state-container {
+    display: flex;
+    justify-content: space-between;
+    /* Dịch sang phải */
+    align-items: flex-end;
+    /* Đẩy về cuối cùng theo chiều dọc */
+}
+
+/* TotalText styles */
+.total-text {
+    font-weight: bold;
+    color: #ee4d2d;
+    font-size: 16px;
+}
+
+/* StateText styles */
+.state-text {
+    color: #009688;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
+
+/* Menu.css */
+.menu {
+    display: flex;
+    overflow: hidden;
+    background-color: white;
+    padding-bottom: 10px;
+    border: 1px solid #ebebeb;
+    border-radius: 8px;
+  }
+  
+  .menu p {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .menu p:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .menu p.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  

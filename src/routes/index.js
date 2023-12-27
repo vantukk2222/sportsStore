@@ -3,17 +3,20 @@ import Cart from '~/components/Cart/Cart';
 import Home from '~/components/Home';
 import Login from '~/components/Login_Signup/Login';
 import Register from '~/components/Login_Signup/Register';
-import Contact from '~/components/contact/Contact';
-import defaultLayout from '~/layouts/defaultLayout/defaultLayout';
-import layout_login from '~/layouts/layout_login/layout_login';
 import notFound from '~/components/NotFound/notFound';
 import Shop from '~/components/Shop/Shop';
+import Address from '~/components/adress/Address';
+import BankPage from '~/components/bank/BankPage';
+import Checkout from '~/components/checkout/Checkout';
+import Contact from '~/components/contact/Contact';
+import Order from '~/components/order/Order';
 import ProductDetail from '~/components/productdetail/ProductDetail';
-import layout_res from '~/layouts/layout_login/layout_res';
+import Profile from '~/components/profile/Profile';
 import SearchProduct from '~/components/search/SearchProduct';
 import SearchallShop from '~/components/search/searchallShop/SearchallShop';
-import Profile from '~/components/profile/Profile';
-import Checkout from '~/components/checkout/Checkout';
+import defaultLayout from '~/layouts/defaultLayout/defaultLayout';
+import layout_login from '~/layouts/layout_login/layout_login';
+import layout_res from '~/layouts/layout_login/layout_res';
 const VRoutes = [
     { path: '/shop/:id', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound, layout: defaultLayout },
@@ -28,6 +31,9 @@ const VRoutes = [
     { path: '/searchProduct/:name', component: SearchProduct, layout: defaultLayout },
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
+    { path: '/order', component: Order, layout: defaultLayout },
+    { path: '/address', component: Address, layout: defaultLayout },
+    { path: '/bank', component: BankPage, layout: defaultLayout },
 ];
 
 export { VRoutes };
