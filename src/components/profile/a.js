@@ -6,9 +6,7 @@ const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [user, setUser] = useState({});
-    const [editedUser, setEditedUser] = useState({});
-
+    const [user, setUser] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -21,7 +19,6 @@ const EditProfile = () => {
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
                 setUser(response);
-                setEditedUser(response);
             } catch (error) {
                 setError(error);
             } finally {
@@ -30,30 +27,6 @@ const EditProfile = () => {
         };
         fetchData();
     }, []);
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditedUser((prevUser) => ({ ...prevUser, [name]: value }));
-    };
-
-    const handleSaveChanges = async () => {
-        try {
-            setLoading(true);
-            const response = await saveChangesApiCall(editedUser);
-            if (!response) {
-                throw new Error('Failed to save changes');
-            }
-            setUser(editedUser);
-            console.log('Changes saved successfully:', editedUser);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const saveChangesApiCall = async (userData) => {};
-
     return (
         <div className="edit-profile">
             <div className="text-edit">
@@ -61,63 +34,42 @@ const EditProfile = () => {
                     <label className="lable-edit">
                         <p>Email:</p>
                     </label>
-                    <input
-                        className="input-edit"
-                        type="email"
-                        name="email"
-                        value={editedUser.email || ''}
-                        onChange={handleInputChange}
-                    />
+                    <input className="input-edit" type="email" name="email" value={user.email} />
                 </div>
                 <div className="label-input-container">
                     <label className="lable-edit">
                         <p>Username:</p>
                     </label>
-                    <input
-                        className="input-edit"
-                        type="text"
-                        name="username"
-                        value={editedUser.username || ''}
-                        onChange={handleInputChange}
-                    />
+                    <input className="input-edit" type="text" name="username" value={user.username} />
                 </div>
                 <div className="label-input-container">
                     <label className="lable-edit">
                         <p>Họ và tên:</p>
                     </label>
-                    <input
-                        className="input-edit"
-                        type="text"
-                        name="fullName"
-                        value={editedUser.fullName || ''}
-                        onChange={handleInputChange}
-                    />
+                    <input className="input-edit" type="text" name="fullName" value={user.name} />
                 </div>
                 <div className="label-input-container">
                     <label className="lable-edit">
                         <p>Số điện thoại:</p>
                     </label>
-                    <input
-                        className="input-edit"
-                        type="tel"
-                        name="phoneNumber"
-                        value={editedUser.phoneNumber || ''}
-                        onChange={handleInputChange}
-                    />
+                    <input className="input-edit" type="tel" name="phoneNumber" value={user.phone} />
                 </div>
+                {/* <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Giới tính:</p>
+                    </label>
+                    <select className="gender" value={user.name}>
+                        <option value="male">Nam</option>
+                        <option value="female">Nữ</option>
+                    </select>
+                </div> */}
                 <div className="label-input-container">
                     <label className="lable-edit">
                         <p>Ngày sinh:</p>
                     </label>
-                    <input
-                        className="input-edit"
-                        type="date"
-                        name="birthDate"
-                        value={editedUser.birthDate || ''}
-                        onChange={handleInputChange}
-                    />
+                    <input className="input-edit" type="date" name="birthDate" value={user.dob} />
                 </div>
-                <button className="edit-button" type="button" onClick={handleSaveChanges}>
+                <button className="edit-button" type="submit">
                     Lưu
                 </button>
             </div>
