@@ -9,18 +9,18 @@ const MyOrder = ({ orders }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const handleSm = (id) => {
-        console.log(id);
+     //   console.log(id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         putConfirmReceive(id, authToken);
     };
     const hanldeRePay = (id) => {
-        console.log(id);
+     //   console.log(id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
                 setLoading(true);
                 const response = await getUnAuth(`bill/get_refresh_payment/${id}`);
-                console.log(response);
+           //     console.log(response);
                 window.location.href = response;
                 if (!response) {
                     throw new Error('Network response was not ok');

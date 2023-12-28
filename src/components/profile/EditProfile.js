@@ -29,7 +29,7 @@ const EditProfile = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                console.log(response);
+                //    console.log(response);
                 const date = new Date(response.dob);
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
@@ -48,7 +48,12 @@ const EditProfile = () => {
         const { name, value } = e.target;
         let updatedValue = value;
 
-        setEditedUser({ ...editedUser, [name]: updatedValue });
+        setEditedUser((prevEditedUser) => {
+            return {
+                ...prevEditedUser,
+                [name]: updatedValue,
+            };
+        });
     };
 
     const handleEmailBlur = () => {
@@ -102,7 +107,7 @@ const EditProfile = () => {
             if (response.ok) {
                 const data = await response.json();
                 setEditedUser({ ...editedUser, image_url: data.secure_url });
-                console.log('check data ', data);
+             //   console.log('check data ', data);
             } else {
                 console.error('Error uploading image to Cloudinary');
             }
@@ -144,7 +149,7 @@ const EditProfile = () => {
                     <input
                         className="input-edit"
                         type="text"
-                        name="fullName"
+                        name="name"
                         value={editedUser.name}
                         onChange={handleInputChange}
                     />

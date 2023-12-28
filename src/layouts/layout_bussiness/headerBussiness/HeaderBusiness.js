@@ -26,7 +26,7 @@ const HeaderBusiness = () => {
                     {user && (
                         <div className="account-menu">
                             <label>
-                                <Link to="/profile">👤 {user.un}</Link>
+                                <Link to="/profile">👤 {user.name}</Link>
                             </label>
                             <ul>
                                 <li>
@@ -38,9 +38,6 @@ const HeaderBusiness = () => {
                             </ul>
                         </div>
                     )}
-                    <label className="label-left lableheaderlogin">
-                        <Link to="/contact"> Bạn cần giúp đỡ gì?</Link>
-                    </label>
                 </div>
             </section>
         </>

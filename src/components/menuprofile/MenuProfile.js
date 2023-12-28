@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 
 import '../profile/Profile.css';
-
+import { useSelector } from 'react-redux';
 const MenuProfile = () => {
+    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     return (
         <>
             <div className="category">
@@ -10,9 +11,11 @@ const MenuProfile = () => {
                     <label className="lableprofile">
                         <Link to="/profile">👤Hồ sơ</Link>
                     </label>
-                    <label className="lableprofile">
-                        <Link to="/order">🔔Đơn hàng</Link>
-                    </label>
+                    {dataRole[0] != 'ROLE_BUSINESS' && (
+                        <label className="lableprofile">
+                            <Link to="/order">🔔Đơn hàng</Link>
+                        </label>
+                    )}
                 </div>
             </div>
         </>

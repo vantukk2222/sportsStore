@@ -40,7 +40,7 @@ const BRoutes = [
     { path: '/', component: Business, layout: layout_bussiness },
     { path: '/login', component: Login, layout: layout_login },
     { path: '/register', component: Register, layout: layout_res },
-    { path: '/profile', component: Profile, layout: defaultLayout },
+    { path: '/profile', component: Profile, layout: layout_bussiness },
     { path: '/businessproduct', component: BusinessProduct, layout: layout_bussiness },
     { path: '/businessrevenue', component: BusinessRevenue, layout: layout_bussiness },
     { path: '/businesssale', component: BusinessSale, layout: layout_bussiness },
