@@ -16,7 +16,9 @@ const Head = ({ userName }) => {
                         📞
                         <label> +03 99 23 52 54</label>
                         ✉️
-                        <label> dt5@gmail.com</label>
+                        <label>
+                            <Link to="/bussiness">Kênh người bán</Link>
+                        </label>
                     </div>
                     <div className="right row RText">
                         <label>

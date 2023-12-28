@@ -5,6 +5,11 @@ import Login from '~/components/Login_Signup/Login';
 import Register from '~/components/Login_Signup/Register';
 import notFound from '~/components/NotFound/notFound';
 import Shop from '~/components/Shop/Shop';
+import Business from '~/components/business/Business';
+import BusinessProduct from '~/components/business/product/BusinessProduct';
+import BusinessRevenue from '~/components/business/revenue/BusinessRevenue';
+import BusinessSale from '~/components/business/sale/BusinessSale';
+import BusinessTrack from '~/components/business/track/BusinessTrack';
 import Checkout from '~/components/checkout/Checkout';
 import Contact from '~/components/contact/Contact';
 import Order from '~/components/order/Order';
@@ -13,6 +18,7 @@ import Profile from '~/components/profile/Profile';
 import SearchProduct from '~/components/search/SearchProduct';
 import SearchallShop from '~/components/search/searchallShop/SearchallShop';
 import defaultLayout from '~/layouts/defaultLayout/defaultLayout';
+import layout_bussiness from '~/layouts/layout_bussiness/layout_bussiness';
 import layout_login from '~/layouts/layout_login/layout_login';
 import layout_res from '~/layouts/layout_login/layout_res';
 const VRoutes = [
@@ -30,6 +36,11 @@ const VRoutes = [
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/order', component: Order, layout: defaultLayout },
+    { path: '/bussiness', component: Business, layout: layout_bussiness },
+    { path: '/businessproduct', component: BusinessProduct, layout: layout_bussiness },
+    { path: '/businessrevenue', component: BusinessRevenue, layout: layout_bussiness },
+    { path: '/businesssale', component: BusinessSale, layout: layout_bussiness },
+    { path: '/businesstrack', component: BusinessTrack, layout: layout_bussiness },
 ];
 
 export { VRoutes };

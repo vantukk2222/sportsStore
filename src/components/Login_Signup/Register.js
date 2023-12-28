@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './style.css';
 import postRegister from '~/API/postsignup';
+import './style.css';
 
 const Register = () => {
     const [userData, setUserData] = useState({
