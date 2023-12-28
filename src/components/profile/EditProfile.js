@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import getUnAuth from '~/API/get';
-
+import imgprofile from './shop1.png';
 const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
     const [loading, setLoading] = useState(false);
@@ -193,9 +193,11 @@ const EditProfile = () => {
                 </button>
             </div>
             <div className="img-edit">
+                <img src={imgprofile} alt="" />{' '}
+                {/* 
                 <img src={editedUser.image_url || 'default_image_url'} alt="" />{' '}
                 <div className="text">Ảnh của bạn </div>
-                <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} />
+                <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} /> */}
             </div>
         </div>
     );
