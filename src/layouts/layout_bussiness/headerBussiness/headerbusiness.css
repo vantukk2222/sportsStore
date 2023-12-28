@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-.header-container {
+.headercontainer {
     display: flex;
     align-items: center;
     padding-left: 30px;
@@ -29,4 +29,10 @@
 .label-left {
     margin-right: auto; /* Đẩy label này về bên trái */
     font-size: 20;
+}
+.menuhearbussiness {
+    margin-left: 350px;
+}
+.h3dn {
+    margin-left: 320px;
 }

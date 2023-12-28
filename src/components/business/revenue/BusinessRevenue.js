@@ -1,29 +1,24 @@
-import React from 'react'
-import MenuBusiness from '../MenuBusiness'
-import Revenue from './Revenue'
-import "../Business.css"
-
+import '../Business.css';
+import MenuBusiness from '../MenuBusiness';
+import Revenue from './Revenue';
 
 const BusinessRevenue = () => {
     return (
         <>
-            <section className='shop background'>
-                <div className='container d_flex'>
+            <section className="shop background">
+                <div className="d_flex">
                     <MenuBusiness />
-                    <div className='contentWidth'>
-                        <div className='heading d_flex'>
-                        </div>
-                        <div className='heading d_flex'>
-                            <div className='heading-left row  f_flex'>
-                                <h2>KÊNH NGƯỜI BÁN</h2>
-                            </div>
+                    <div className="contentWidth">
+                        <div className="heading d_flex"></div>
+                        <div className="heading d_flex">
+                            <div className="heading-left row  f_flex"></div>
                         </div>
                         <Revenue />
                     </div>
                 </div>
             </section>
         </>
-    )
-}
+    );
+};
 
-export default BusinessRevenue
+export default BusinessRevenue;

@@ -1,27 +1,23 @@
-import React from 'react'
-import MenuBusiness from '../MenuBusiness'
-import BProduct from './BProduct'
-import "../Business.css"
+import '../Business.css';
+import MenuBusiness from '../MenuBusiness';
+import BProduct from './BProduct';
 const BusinessProduct = () => {
     return (
         <>
-            <section className='shop background'>
-                <div className='container d_flex'>
+            <section className="shop background">
+                <div className="d_flex">
                     <MenuBusiness />
-                    <div className='contentWidth'>
-                        <div className='heading d_flex'>
-                        </div>
-                        <div className='heading d_flex'>
-                            <div className='heading-left row  f_flex'>
-                                <h2>KÊNH NGƯỜI BÁN</h2>
-                            </div>
+                    <div className="contentWidth">
+                        <div className="heading d_flex"></div>
+                        <div className="heading d_flex">
+                            <div className="heading-left row  f_flex"></div>
                         </div>
                         <BProduct />
                     </div>
                 </div>
             </section>
         </>
-    )
-}
+    );
+};
 
-export default BusinessProduct
+export default BusinessProduct;

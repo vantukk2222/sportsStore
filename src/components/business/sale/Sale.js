@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Sale = () => {
@@ -35,9 +35,11 @@ const Sale = () => {
 
     return (
         <div className="track-container">
-       <Link to="/addsale">
-        <button className='action-button'>Thêm sự kiện</button>
-      </Link>
+            <h2>Quản lý sự kiện</h2>
+
+            <Link to="/addsale">
+                <button className="track-container button">Thêm sự kiện</button>
+            </Link>
             <div className="tracking-header">
                 <div>Mã sự kiện</div>
                 <div>Tên sự kiện</div>
@@ -59,13 +61,12 @@ const Sale = () => {
                     <div>{event.fromDate}</div>
                     <div>{event.toDate}</div>
                     <div>
-                    <Link to="/viewsale">
-        <button className='action-button'>Xem</button>
-      </Link>
-      <Link to="/editsale">
-        <button className='action-button'>Sửa</button>
-      </Link>
-                   
+                        <Link to="/viewsale">
+                            <button className="action-button">Xem</button>
+                        </Link>
+                        <Link to="/editsale">
+                            <button className="action-button">Sửa</button>
+                        </Link>
                     </div>
                 </div>
             ))}

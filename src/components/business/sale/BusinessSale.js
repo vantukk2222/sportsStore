@@ -1,28 +1,23 @@
-import React from 'react'
-import MenuBusiness from '../MenuBusiness'
-import Sale from './Sale'
-
+import MenuBusiness from '../MenuBusiness';
+import Sale from './Sale';
 
 const BusinessSale = () => {
     return (
         <>
-            <section className='shop background'>
-                <div className='container d_flex'>
+            <section className="shop background">
+                <div className="d_flex">
                     <MenuBusiness />
-                    <div className='contentWidth'>
-                        <div className='heading d_flex'>
-                        </div>
-                        <div className='heading d_flex'>
-                            <div className='heading-left row  f_flex'>
-                                <h2>QUẢN LÝ SỰ KIỆN</h2>
-                            </div>
+                    <div className="contentWidth">
+                        <div className="heading d_flex"></div>
+                        <div className="heading d_flex">
+                            <div className="heading-left row  f_flex"></div>
                         </div>
                         <Sale />
                     </div>
                 </div>
             </section>
         </>
-    )
-}
+    );
+};
 
-export default BusinessSale
+export default BusinessSale;

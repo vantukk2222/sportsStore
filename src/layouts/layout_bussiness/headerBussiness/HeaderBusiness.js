@@ -1,8 +1,8 @@
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import './headerbusiness.css';
-import { useDispatch, useSelector } from 'react-redux';
-import logoImage from './logooo.png';
 import { roleByUserName } from '~/redux/reducers/Role/role';
+import './headerbusiness.css';
+import logoImage from './logooo.png';
 const HeaderBusiness = () => {
     const user = JSON.parse(localStorage.getItem('User'));
     const navigate = useNavigate();
@@ -16,26 +16,31 @@ const HeaderBusiness = () => {
     return (
         <>
             <section className="headlogin">
-                <div className="header-container">
+                <div className="headercontainer">
                     <Link to="/">
                         <img src={logoImage} className="imgheaderlogin" alt="Logo" />
                     </Link>
                     <label className="dn">
-                        <h3>KÊNH NGƯỜI BÁN</h3>
+                        <h3>DT5 SPORT</h3>
+                    </label>
+                    <label className="dn">
+                        <h3 className="h3dn">KÊNH NGƯỜI BÁN</h3>
                     </label>
                     {user && (
-                        <div className="account-menu">
-                            <label>
-                                <Link to="/profile">👤 {user.name}</Link>
-                            </label>
-                            <ul>
-                                <li>
-                                    <Link to="/profile">👤 Hồ sơ của tôi</Link>
-                                </li>
-                                <li>
-                                    <Link onClick={(e) => handleLogout(e)}>🚪 Đăng xuất</Link>
-                                </li>
-                            </ul>
+                        <div className="menuhearbussiness">
+                            <div className="account-menu">
+                                <label>
+                                    <Link to="/profile">👤 {user.name}</Link>
+                                </label>
+                                <ul>
+                                    <li>
+                                        <Link to="/profile">👤 Hồ sơ của tôi</Link>
+                                    </li>
+                                    <li>
+                                        <Link onClick={(e) => handleLogout(e)}>🚪 Đăng xuất</Link>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     )}
                 </div>

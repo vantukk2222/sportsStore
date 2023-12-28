@@ -1,16 +1,15 @@
 /* Business.css */
-
-.category {
-    display: flex;
+.menubusiness {
+    padding: 10px;
+    height: 1000px;
+    width: 270px;
+    border: 1px solid #ccc;
+    background-color: white;
 }
-
 .menu-business {
     margin: 10px;
     padding: 10px;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f9f9f9;
-    
 }
 
 .menu-business label {
@@ -36,7 +35,6 @@
 .menu-business a:hover {
     text-decoration: underline;
 }
-
 
 /* track .................*/
 /* Track.css */
@@ -109,26 +107,60 @@
     .edit {
         background-color: blue;
         width: 100px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
     .delete {
         background-color: red;
         width: 100px;
-
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 }
-.actiontrack{
-    
-    .action-button{
-        background-color: blue;
-        width: 100px;
+/* Add these styles to your CSS file or style block */
 
-    }
-    .delete {
-        background-color: red;
-        width: 100px;
+.action-button,
+.delete {
+    display: inline-block;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    }
+.action-button {
+    background-color: #007bff;
+    width: 100px;
+}
+
+.delete {
+    background-color: #dc3545;
+    width: 100px;
+}
+
+/* Hover effect */
+.action-button:hover,
+.delete:hover {
+    background-color: #0056b3;
 }
 
 .tracking-header {
@@ -195,15 +227,10 @@ textarea {
     background-color: blue;
 }
 
-
-
-
 .checkbox-track {
-    width: 20px; 
-    height: 20px; 
-    margin-right: 10px; 
-  }
-  
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
 
 /* CustomModal.css */
-
