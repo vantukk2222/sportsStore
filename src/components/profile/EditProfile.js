@@ -77,7 +77,7 @@ const EditProfile = () => {
     const handleSave = async () => {
         try {
             setLoading(true);
-            const authToken = localStorage.getItem('authToken');
+            const authToken = JSON.parse(localStorage.getItem('authToken'));
             putUser(s.id, editedUser, authToken);
         } catch (error) {
             setError(error);
