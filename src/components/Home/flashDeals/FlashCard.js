@@ -37,7 +37,7 @@ const FlashCard = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await getUnAuth(`product-information?page=0&page_size=30&state=0`);
+                const response = await getUnAuth(`product-information?page=0&page_size=100&state=0`);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
