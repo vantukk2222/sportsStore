@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import getUnAuth from '~/API/get';
-
+import { putUser } from '~/API/putUser';
+import imgprofile from './shop1.png';
 const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [user, setUser] = useState([]);
     const [editedUser, setEditedUser] = useState({
-        email: '',
-        username: '',
         name: '',
-        phone: '',
-        address: '',
+        email: '',
         dob: '',
+        phone: '',
+        cic: '',
+        address: '',
         image_url: '',
     });
 
@@ -29,7 +30,7 @@ const EditProfile = () => {
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
                 setUser(response);
-                setEditedUser(response); // Initialize editedUser with user data
+                setEditedUser(response);
             } catch (error) {
                 setError(error);
             } finally {
@@ -43,23 +44,6 @@ const EditProfile = () => {
         const { name, value } = e.target;
         let updatedValue = value;
 
-        // Perform validation based on the input name
-        switch (name) {
-            case 'email':
-                // Validate email format
-                const emailRegex = /^\S+@\S+\.\S+$/;
-                updatedValue = emailRegex.test(value) ? value : editedUser.email;
-                break;
-            case 'phone':
-                // Validate phone number format
-                const phoneRegex = /^\d+$/;
-                updatedValue = phoneRegex.test(value) ? value : editedUser.phone;
-                break;
-            // Add more cases for other fields if needed
-            default:
-                break;
-        }
-
         setEditedUser({ ...editedUser, [name]: updatedValue });
     };
 
@@ -67,7 +51,7 @@ const EditProfile = () => {
         const file = e.target.files[0];
         const formData = new FormData();
         const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/drkqkovpr/image/upload';
-        const CLOUDINARY_UPLOAD_PRESET = 'moox1jnq';
+        const CLOUDINARY_UPLOAD_PRESET = 'qxvropzd';
 
         formData.append('file', file);
         formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -93,21 +77,13 @@ const EditProfile = () => {
     const handleSave = async () => {
         try {
             setLoading(true);
-            if (!validateFormData()) {
-                return;
-            }
-
-            const response = await updateUserData(editedUser);
-            console.log('User data updated successfully:', response);
+            const authToken = JSON.parse(localStorage.getItem('authToken'));
+            putUser(s.id, editedUser, authToken);
         } catch (error) {
             setError(error);
         } finally {
             setLoading(false);
         }
-    };
-
-    const updateUserData = async (userData) => {
-        return { success: true };
     };
 
     const validateFormData = () => {
@@ -120,16 +96,89 @@ const EditProfile = () => {
     return (
         <div className="edit-profile">
             <div className="text-edit">
-                {/* ... (các input khác) */}
                 <div className="label-input-container">
                     <label className="lable-edit">
-                        <p>Ảnh đại diện:</p>
+                        <p>Họ và tên:</p>
                     </label>
-                    <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} />
+                    <input
+                        className="input-edit"
+                        type="text"
+                        name="fullName"
+                        value={editedUser.name}
+                        onChange={handleInputChange}
+                    />
                 </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Email:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="email"
+                        name="email"
+                        value={editedUser.email}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Ngày sinh:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="date"
+                        name="dob"
+                        value={editedUser.dob}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Số điện thoại:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="tel"
+                        name="phone"
+                        value={editedUser.phone}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Căn cứ:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="tel"
+                        name="phone"
+                        value={editedUser.cic}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Địa chỉ:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="text"
+                        name="address"
+                        value={editedUser.address}
+                        onChange={handleInputChange}
+                    />
+                </div>
+
                 <button className="edit-button" type="button" onClick={handleSave}>
                     Lưu
                 </button>
+            </div>
+            <div className="img-edit">
+                <img src={imgprofile} alt="" />{' '}
+                {/* 
+                <img src={editedUser.image_url || 'default_image_url'} alt="" />{' '}
+                <div className="text">Ảnh của bạn </div>
+                <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} /> */}
             </div>
         </div>
     );

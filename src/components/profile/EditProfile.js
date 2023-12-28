@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import getUnAuth from '~/API/get';
-import imgprofile from './shop1.png';
 import { putUser } from '~/API/putUser';
+import imgprofile from './shop1.png';
+
 const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [validationError, setValidationError] = useState(false);
     const [user, setUser] = useState([]);
     const [editedUser, setEditedUser] = useState({
         name: '',
@@ -47,6 +51,39 @@ const EditProfile = () => {
         setEditedUser({ ...editedUser, [name]: updatedValue });
     };
 
+    const handleEmailBlur = () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(editedUser.email)) {
+            toast.error('Địa chỉ Email không hợp lệ ', { autoClose: 5000 });
+            setValidationError(true);
+        } else {
+            setValidationError(false);
+        }
+    };
+
+    const handlePhoneBlur = () => {
+        const phoneRegex = /^\d+$/;
+
+        if (!phoneRegex.test(editedUser.phone)) {
+            toast.error('Số điện thoại không hợp lệ (chỉ chấp nhận chữ số)', { autoClose: 5000 });
+            setValidationError(true);
+        } else {
+            setValidationError(false);
+        }
+    };
+
+    const handleCicBlur = () => {
+        const cicRegex = /^\d+$/;
+
+        if (!cicRegex.test(editedUser.cic)) {
+            toast.error('Số Căn cước không hợp lệ (chỉ chấp nhận chữ số)', { autoClose: 5000 });
+            setValidationError(true);
+        } else {
+            setValidationError(false);
+        }
+    };
+
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();
@@ -78,14 +115,18 @@ const EditProfile = () => {
         try {
             setLoading(true);
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-            putUser(s.id, editedUser, authToken);
+
+            if (!validationError) {
+                putUser(s.id, editedUser, authToken);
+            } else {
+                console.error('Validation errors. Please correct the fields.');
+            }
         } catch (error) {
             setError(error);
         } finally {
             setLoading(false);
         }
     };
-
     const validateFormData = () => {
         if (!editedUser.email || !editedUser.phone) {
             return false;
@@ -118,6 +159,7 @@ const EditProfile = () => {
                         name="email"
                         value={editedUser.email}
                         onChange={handleInputChange}
+                        onBlur={handleEmailBlur}
                     />
                 </div>
                 <div className="label-input-container">
@@ -142,6 +184,7 @@ const EditProfile = () => {
                         name="phone"
                         value={editedUser.phone}
                         onChange={handleInputChange}
+                        onBlur={handlePhoneBlur}
                     />
                 </div>
                 <div className="label-input-container">
@@ -151,9 +194,10 @@ const EditProfile = () => {
                     <input
                         className="input-edit"
                         type="tel"
-                        name="phone"
+                        name="cic"
                         value={editedUser.cic}
                         onChange={handleInputChange}
+                        onBlur={handleCicBlur}
                     />
                 </div>
                 <div className="label-input-container">
@@ -168,18 +212,18 @@ const EditProfile = () => {
                         onChange={handleInputChange}
                     />
                 </div>
-
-                <button className="edit-button" type="button" onClick={handleSave}>
+                <button className="edit-button" type="button" onClick={handleSave} disabled={validationError}>
                     Lưu
                 </button>
             </div>
             <div className="img-edit">
-                <img src={imgprofile} alt="" />{' '}
+                <img src={imgprofile} alt="" />
                 {/* 
                 <img src={editedUser.image_url || 'default_image_url'} alt="" />{' '}
                 <div className="text">Ảnh của bạn </div>
                 <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} /> */}
             </div>
+            <ToastContainer position="top-center" style={{ top: '50%', transform: 'translateY(-50%)' }} />
         </div>
     );
 };

@@ -1,6 +1,4 @@
 // MyOrder.js
-import React from 'react';
-import Loading from '../loading/Loading';
 
 const MyOrder = ({ orders }) => {
     console.log(orders);
@@ -22,11 +20,11 @@ const MyOrder = ({ orders }) => {
                                             <img src={item.product.image_product_information} className="item-image" />
                                         )}
                                         <div className="item-details">
-                                            <span>{item.product.name_product_information}</span>
+                                            <h3>{item.product.name_product_information}</h3>
                                             <span>Số lượng: {item.quantity}</span>
                                             {/* <span>Mô tả: {item.detail}</span> */}
                                             <span>Size: {item.product.size}</span>
-                                            <span>Giá tiền: ${item.price}</span>
+                                            <span>Giá tiền: {item.price}vnđ</span>
                                         </div>
                                     </li>
                                 ))}
@@ -34,7 +32,13 @@ const MyOrder = ({ orders }) => {
                             <div className="total-state-container">
                                 <p className="total-text">Tổng tiền: ${order.total}</p>
                                 <p className="state-text">Trạng thái: {state[order.state]}</p>
-                                {order.state == 0 && <button className="total-text">Xác nhận đã giao hàng</button>}
+                                {order.state === 0 && <button className="total-text">Xác nhận đã giao hàng</button>}
+                                {order.state === 1 && (
+                                    <button className="total-text">Xác nhận giao hàng thành công</button>
+                                )}
+                                {order.state === 2 && <button className="total-text">Thanh toán lại</button>}
+                                {order.state === 3 && <button className="total-text">Xác nhận đã thanh toán</button>}
+                                {order.state === 4 && <button className="total-text">Xác nhận đơn đã hủy</button>}
                             </div>
                         </div>
                     );
