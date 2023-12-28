@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import getUnAuth from '~/API/get';
 import imgprofile from './shop1.png';
+import { putUser } from '~/API/putUser';
 const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
     const [loading, setLoading] = useState(false);
@@ -43,19 +44,6 @@ const EditProfile = () => {
         const { name, value } = e.target;
         let updatedValue = value;
 
-        switch (name) {
-            case 'email':
-                const emailRegex = /^\S+@\S+\.\S+$/;
-                updatedValue = emailRegex.test(value) ? value : editedUser.email;
-                break;
-            case 'phone':
-                const phoneRegex = /^\d+$/;
-                updatedValue = phoneRegex.test(value) ? value : editedUser.phone;
-                break;
-            default:
-                break;
-        }
-
         setEditedUser({ ...editedUser, [name]: updatedValue });
     };
 
@@ -89,21 +77,13 @@ const EditProfile = () => {
     const handleSave = async () => {
         try {
             setLoading(true);
-            if (!validateFormData()) {
-                return;
-            }
-
-            const response = await updateUserData(editedUser);
-            console.log('User data updated successfully:', response);
+            const authToken = localStorage.getItem('authToken');
+            putUser(s.id, editedUser, authToken);
         } catch (error) {
             setError(error);
         } finally {
             setLoading(false);
         }
-    };
-
-    const updateUserData = async (userData) => {
-        return { success: true };
     };
 
     const validateFormData = () => {
@@ -161,6 +141,18 @@ const EditProfile = () => {
                         type="tel"
                         name="phone"
                         value={editedUser.phone}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Căn cứ:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="tel"
+                        name="phone"
+                        value={editedUser.cic}
                         onChange={handleInputChange}
                     />
                 </div>
