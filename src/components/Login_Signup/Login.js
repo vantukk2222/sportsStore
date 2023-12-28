@@ -7,7 +7,6 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const store = JSON.parse(localStorage.getItem('authToken'));
     useEffect(() => {
