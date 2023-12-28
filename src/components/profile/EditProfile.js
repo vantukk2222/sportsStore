@@ -7,12 +7,12 @@ const EditProfile = () => {
     const [error, setError] = useState(null);
     const [user, setUser] = useState([]);
     const [editedUser, setEditedUser] = useState({
-        email: '',
-        username: '',
         name: '',
-        phone: '',
-        address: '',
+        email: '',
         dob: '',
+        phone: '',
+        cic: '',
+        address: '',
         image_url: '',
     });
 
