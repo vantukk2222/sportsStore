@@ -35,6 +35,8 @@ import EditProductSize from "../screens/Business/Products/EditProductSize"
 import StatisticScreen from "../screens/Business/Statistics/StatisticScreen"
 import OrderHistoryScreen from "../screens/Cart/OrderHistory"
 import DetailOrderScreen from "../screens/Cart/detailOrder"
+import OrderScreen from "../screens/Business/Order/OrderScreen"
+
 
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
@@ -53,6 +55,9 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="EditandDelete" component={EditandDelete} options={{ headerShown: false }} />
             <Stack.Screen name="EditProductSize" component={EditProductSize} options={{ headerShown: false }} />
             <Stack.Screen name="StatisticScreen" component={StatisticScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="OrderScreen" component={OrderScreen} options={{ headerShown: false }} />
+
+
 
 
         </Stack.Navigator>
@@ -70,6 +75,7 @@ export const LoginScreenNavigator = () => {
             <Stack.Screen name='ProductList' component={ProductList} options={{ headerShown: false }} />
             <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
             <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
+            
             <Stack.Screen name='setInfor' component={SetInfor} options={{ headerShown: false }} />
             <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} options={{headerShown :false}}/>
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />

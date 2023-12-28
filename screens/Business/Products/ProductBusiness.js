@@ -9,7 +9,7 @@ import { resetState, setStateProduct } from '../../../redux/reducers/productRedu
 import { reset } from '../../../redux/reducers/User/setInforUser';
 import { toastError, toastsuccess } from '../../../components/toastCustom';
 
-import hireProduct, { setHireProduct } from '../../../redux/reducers/productReducer/hireProduct';
+import { setHireProduct } from '../../../redux/reducers/productReducer/hireProduct';
 import { colors } from '../../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
@@ -120,9 +120,8 @@ const ProductBusiness = (props) => {
             console.log('Go to the previous page');
         }
     };
-    if( error || errorState || errorProductbyBusi)
-    {
-        
+    if (error || errorState || errorProductbyBusi) {
+
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
         return <Loading />;
     }

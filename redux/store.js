@@ -43,6 +43,10 @@ import getProductSizeSlice from './reducers/productReducer/ProductSize/getProduc
 import editProductSizeSlice from './reducers/productReducer/ProductSize/editProductSize';
 import deleteSizeSlice from './reducers/Size/DeleteSize';
 import getStatisticSlice from './reducers/Statistic/getStatistic';
+// {userSlice}
+// >>>>>>> NewD
+import getBillbyIdBusiSlice from './reducers/Bill/getBillbyIdBusiness';
+import confirmBillSlice from './reducers/Bill/confirmBill';
 import getAllBillSlice from './reducers/Bill/getBillUserReducer'
 import getBusinessByIDSlice from './reducers/Business/getBusinessByID'
 import cancelBillSlice from './reducers/Bill/billCancelReducer'
@@ -89,6 +93,8 @@ const rootReducer = combineReducers({
   getAllBillReducer: getAllBillSlice,
   getBusinessByIDReducer: getBusinessByIDSlice,
   cancelBillReducer :cancelBillSlice,
+  getBillbyIdBusi: getBillbyIdBusiSlice,
+  confirmBill: confirmBillSlice
 })
 // {getBusinessByIDSlice}
 const persistConfig = {
