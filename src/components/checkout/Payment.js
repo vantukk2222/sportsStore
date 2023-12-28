@@ -39,7 +39,7 @@ const Payment = ({ selectedItems }) => {
                 selectedItems.forEach((e) => list_id.push(e.id));
                 const authToken = JSON.parse(localStorage.getItem('authToken'));
                 // console.log(list_id);
-                const response = await postMomo(list_id, 'captureWallet', authToken).then((res) => {
+                const response = await postMomo(list_id, 'payWithATM', authToken).then((res) => {
                     // console.log(res);
                     const user = JSON.parse(localStorage.getItem('User'));
                     // console.log(user.id);

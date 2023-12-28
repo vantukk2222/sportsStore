@@ -19,6 +19,14 @@ const Register = () => {
         <div className="loginn">
             <div className="login-container ">
                 <div className="title">ĐĂNG KÝ</div>
+                <div className="text">User name </div>
+                <input
+                    className="input"
+                    type="text"
+                    placeholder="User name..."
+                    value={name}
+                    onChange={(event) => setname(event.target.value)}
+                />
                 <div className="text">Nhập họ và tên </div>
                 <input
                     className="input"
@@ -27,11 +35,19 @@ const Register = () => {
                     value={name}
                     onChange={(event) => setname(event.target.value)}
                 />
-                <div className="text">Email hoặc tên đăng nhập </div>
+                <div className="text">Email </div>
                 <input
                     className="input"
                     type="text"
-                    placeholder="Email hoặc tên đăng nhập..."
+                    placeholder="Email..."
+                    value={email}
+                    onChange={(event) => setemail(event.target.value)}
+                />
+                <div className="text">Số điện thoại </div>
+                <input
+                    className="input"
+                    type="text"
+                    placeholder="Số điện thoại..."
                     value={email}
                     onChange={(event) => setemail(event.target.value)}
                 />
@@ -56,9 +72,6 @@ const Register = () => {
                         className={isShowPassword === true ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'}
                         onClick={() => setIsShowPassword(!isShowPassword)}
                     ></i>
-                    <div className="text">Ảnh của bạn </div>
-
-                    <input className="input" type="file" id="profileImage" />
                 </div>
                 <p className="p">Bạn đã có tài khoản ?</p>
                 <button

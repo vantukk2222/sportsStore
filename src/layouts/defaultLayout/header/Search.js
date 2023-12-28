@@ -12,7 +12,7 @@ const Search = ({ id }) => {
     const [error, setError] = useState(null);
     window.addEventListener('scroll', function () {
         const search = document.querySelector('.search');
-        search.classList.toggle('active', window.scrollY > 100);
+        search?.classList.toggle('active', window.scrollY > 100);
     });
     const [searchValue, setSearchValue] = useState('');
 
