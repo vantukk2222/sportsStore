@@ -1,19 +1,17 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import './headerbusiness.css';
 import logoImage from './logooo.png';
+import './headerlogin.css';
 
-const HeaderBusiness = () => {
+const HeaderLogin = () => {
     return (
         <>
             <section className="headlogin">
                 <div className="header-container">
-                    <Link to="/">
-                        <img src={logoImage} className="imgheaderlogin" alt="Logo" />
-                    </Link>
+                    <img src={logoImage} className="imgheaderlogin"></img>
                     <label className="dn">
-                        <h3>KÊNH NGƯỜI BÁN</h3>
+                        <h2>ĐĂNG NHẬP</h2>
                     </label>
-
                     <label className="label-left lableheaderlogin">
                         <Link to="/contact"> Bạn cần giúp đỡ gì?</Link>
                     </label>
@@ -23,4 +21,4 @@ const HeaderBusiness = () => {
     );
 };
 
-export default HeaderBusiness;
+export default HeaderLogin;

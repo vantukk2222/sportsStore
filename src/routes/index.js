@@ -21,7 +21,7 @@ import defaultLayout from '~/layouts/defaultLayout/defaultLayout';
 import layout_bussiness from '~/layouts/layout_bussiness/layout_bussiness';
 import layout_login from '~/layouts/layout_login/layout_login';
 import layout_res from '~/layouts/layout_login/layout_res';
-const VRoutes = [
+const CRoutes = [
     { path: '/shop/:id', component: Shop, layout: defaultLayout },
     { path: '*', component: notFound, layout: defaultLayout },
     { path: `/product/:id`, component: ProductDetail, layout: defaultLayout },
@@ -31,16 +31,19 @@ const VRoutes = [
     { path: '/register', component: Register, layout: layout_res },
     { path: '/cart', component: Cart, layout: defaultLayout },
     { path: '/checkout', component: Checkout, layout: defaultLayout },
-
     { path: '/searchProduct/:name', component: SearchProduct, layout: defaultLayout },
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/order', component: Order, layout: defaultLayout },
-    { path: '/bussiness', component: Business, layout: layout_bussiness },
+];
+const BRoutes = [
+    { path: '/', component: Business, layout: layout_bussiness },
+    { path: '/login', component: Login, layout: layout_login },
+    { path: '/register', component: Register, layout: layout_res },
+    { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/businessproduct', component: BusinessProduct, layout: layout_bussiness },
     { path: '/businessrevenue', component: BusinessRevenue, layout: layout_bussiness },
     { path: '/businesssale', component: BusinessSale, layout: layout_bussiness },
     { path: '/businesstrack', component: BusinessTrack, layout: layout_bussiness },
 ];
-
-export { VRoutes };
+export { CRoutes, BRoutes };

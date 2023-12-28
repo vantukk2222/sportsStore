@@ -1,11 +1,20 @@
 import './App.css';
-import { VRoutes } from '~/routes';
+import { CRoutes, BRoutes } from '~/routes';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import getUnAuth from './API/get';
+import { useSelector } from 'react-redux';
 function App() {
-    const routers = VRoutes;
-    const authToken = localStorage.getItem('authToken');
-    // useEffect(()=>{},[])
+    const [routers, setRouters] = useState(CRoutes);
+    const authToken = JSON.parse(localStorage.getItem('authToken'));
+    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
+    useEffect(() => {
+        console.log(dataRole);
+        if (dataRole) {
+            if (dataRole[0] == 'ROLE_BUSINESS') setRouters(BRoutes);
+            if (dataRole[0] == 'ROLE_CUSTOMER') setRouters(CRoutes);
+        } else setRouters(CRoutes);
+    }, [dataRole]);
     return (
         <Router>
             <div className="App">

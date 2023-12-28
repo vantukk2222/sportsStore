@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import loginPage from '~/API/postAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { roleByUserName } from '~/redux/reducers/Role/role';
 const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -9,6 +11,8 @@ const Login = () => {
     const [loading, setLoading] = useState(true);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const store = JSON.parse(localStorage.getItem('authToken'));
+    const dispatch = useDispatch();
+    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     useEffect(() => {
         if (store) navigate('/');
     }, []);
@@ -24,6 +28,7 @@ const Login = () => {
             if (token) {
                 //     console.log(response);
                 localStorage.setItem('User', JSON.stringify(un));
+                dispatch(roleByUserName(un));
                 navigate('/');
             }
         } catch (error) {
@@ -63,6 +68,7 @@ const Login = () => {
                     ></i>
                 </div>
                 {/* <p className="p">forgot password?</p> */}
+
                 <button
                     className={username && password ? 'button-1' : ''}
                     disabled={username && password ? false : true}
