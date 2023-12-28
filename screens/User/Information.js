@@ -82,7 +82,7 @@ const Information = () => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.infoItem}
                     onPress={() => {
-                        navigation.navigate('OrderHistory' , {id_user:data?.id})
+                        data?.id ? navigation.navigate('OrderHistory' , {id_user:data?.id}) : toastError("Bạn chưa đăng nhập","Xin vui lòng đăng nhập")
                     }}
                 >
                     <Text style={styles.infoText}>Đơn mua</Text>

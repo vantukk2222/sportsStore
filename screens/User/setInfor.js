@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reset, setUserInformation } from "../../redux/reducers/User/setInforUser";
 import { fetchUserByUserName } from "../../redux/reducers/User/userInfor";
 import { useNavigation } from "@react-navigation/native";
-const setInfor = ({ route }) => {
+const SetInfor = ({ route }) => {
 
     const TxtName = useRef();
     const TxtEmail = useRef();
@@ -187,4 +187,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default setInfor;
+export default SetInfor;

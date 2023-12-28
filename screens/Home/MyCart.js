@@ -589,7 +589,7 @@ const MyCart = ({ route, navigation }, props) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                {formatMoneyVND(total / 20)}
+                {formatMoneyVND(total > 1000000 ? total/ 40: 0)}
               </Text>
             </View>
             <View

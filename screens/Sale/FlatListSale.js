@@ -56,6 +56,7 @@ const FlatListSale = () => {
             <View style={styles.viewsale}>
                 <Text style={styles.textTitle}>Sale</Text>
                 <TouchableOpacity
+                
                     onPress={() => { navigation.navigate('SalesofBusiness') }}
                 >
                     <Text style={styles.viewAll}>View all</Text>

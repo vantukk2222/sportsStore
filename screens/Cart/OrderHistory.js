@@ -12,7 +12,7 @@ const _spacing = 10;
 const OrderHistoryScreen = ({route}) => {
     const {id_user} = route.params
     const [index, setIndex] = useState(0);
-    const [orderStatus, setorderStatus] = useState(["Đang giao hàng","Đã giao", "Chưa thanh toán", "Chờ lấy hàng",  "Đã huỷ", "Trả hàng"]);
+    const [orderStatus, setorderStatus] = useState(["Đang giao hàng","Đã giao", "Chưa thanh toán", "Chờ lấy hàng",  "Đã huỷ"]);
     const ref = useRef(null);
     const [viewPosition, setViewPosition] = useState(0)
     const [stateOrder, setStateOrder] = useState(0)
@@ -75,15 +75,10 @@ const OrderHistoryScreen = ({route}) => {
         )
     }
 
-    return (<View>
+    return (<View style={{flex:100}}>
         <HeaderComp init="Đơn mua"></HeaderComp>
-        <ScrollView nestedScrollEnabled={true}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginVertical: 5, }}>
-                {/* // <<<<<<< categoryDat */}
-
-                {/* // ======= */}
-                {/* //             {console.log(categories.length)} */}
-                {/* // >>>>>>> NewD */}
+        <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical: 5, }}>
+               {/* In ra menu order */}
                 <FlatList
                     ref={ref}
                     initialScrollIndex={index}
@@ -99,7 +94,7 @@ const OrderHistoryScreen = ({route}) => {
                                 // navigation.navigate('ListProductByCategory', {
                                 //     item: item,
                                 // });
-                                setStateOrder(setOrderState(item))
+                                setStateOrder(fIndex)
                                 setIndex(fIndex)
                                 console.log("index:", fIndex);
                             }}>
@@ -121,16 +116,12 @@ const OrderHistoryScreen = ({route}) => {
                     }}
                 />
             </View>
-            {/* {eachItemOrderComp} */}
-            {/* <FlatList
-                data={orderByState}
-                renderItem={eachItemOrderComp}
-                keyExtractor={(item) => item.id}
-                showsVerticalScrollIndicator={false}
-            /> */}
+        <ScrollView nestedScrollEnabled={true}>
+            
+            
             <View>
             {orderByState && orderByState[0]?.state === index ? orderByState.map((eachproductItem, eachindex) => {
-                  return <EachItemOrderComp item={eachproductItem}/>;
+                  return <EachItemOrderComp item={eachproductItem} key ={eachindex}/>;
                 }) : <Text style={{alignContent:'center'}}> Chưa có đơn nào</Text>}
             </View>
 

@@ -12,6 +12,7 @@ import ShopInfo from '../Business/ShopInfo';
 import HeaderComp from '../../components/Header';
 import { toastError } from '../../components/toastCustom';
 import { logout } from '../../redux/reducers/Login/signinReducer';
+import moment from 'moment';
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
@@ -31,7 +32,11 @@ const DetailProduct = ({ navigation, route }) => {
     // console.log("id_User Detail:", id_user);
 
     const dispatch = useDispatch()
-
+    const isExpired = (endDate) => {
+        const currentDate = moment();
+        const expirationDate = moment(endDate);
+        return expirationDate.isBefore(currentDate);
+    };
     const priceAfterSale = (price, discount) => {
         return (price * (1 - discount / 100))
     }
@@ -69,7 +74,11 @@ const DetailProduct = ({ navigation, route }) => {
 
     useEffect(() => {
         setProduct(data[item?.id])
-        setSale(data[item?.id]?.sale)
+        if(!isExpired(data[item?.id]?.sale?.ended_at))
+        {
+            setSale(data[item?.id]?.sale)
+        }
+        else{}
         // console.log('productDetail\n', data.sale)
         return () => {
             setProduct('')
@@ -130,8 +139,10 @@ const DetailProduct = ({ navigation, route }) => {
                             }}>Not found</Text>
                         }
                     </View>
-                    {sale !== null ?
-                        <View>
+                    { sale &&!isExpired(sale?.ended_at)?
+                        <TouchableOpacity onPress={()=>{
+                            console.log("sale in detailProduct,",sale?.ended_at);
+                        }}>
                             <Text style={styles.priceSale}>{formatMoneyVND(product?.price_min)}</Text>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
@@ -151,7 +162,7 @@ const DetailProduct = ({ navigation, route }) => {
                                 </View>
                             </View>
 
-                        </View>
+                        </TouchableOpacity>
                         : <Text style={styles.priceNotSale}>{formatMoneyVND(product?.price_min)}</Text>}
 
 

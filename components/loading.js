@@ -1,31 +1,38 @@
 import React from 'react';
-import { colors } from '../constants/index'
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { View, Modal, ActivityIndicator, StyleSheet } from 'react-native';
 
-const Loading = () => (
-    <View style={[styles.container, styles.horizontal]}>
-        <View style={styles.overlay}>
-            <ActivityIndicator size="large" color={colors.primary} />
+const LoadingModal = ({ isLoading }) => {
+  return (
+    <Modal
+      transparent={true}
+      animationType={'none'}
+      visible={isLoading}
+      onRequestClose={() => {}}>
+      <View style={styles.modalBackground}>
+        <View style={styles.activityIndicatorWrapper}>
+          <ActivityIndicator animating={isLoading} color="#fff" />
         </View>
-    </View>
-);
+      </View>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    horizontal: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 10,
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: '#E3E3E3', // Độ trong suốt của màu đen
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
 });
 
-export default Loading;
+export default LoadingModal;

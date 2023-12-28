@@ -18,7 +18,7 @@ import { COLOURS } from '../Home/Database';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
-import { formatMoneyVND } from '../../utilies/validation';
+import { formatMoneyVND, isExpired } from '../../utilies/validation';
 import ShopInfo from '../Business/ShopInfo';
 import getDetailProduct, { fetchProductbyId } from '../../redux/reducers/productReducer/getDetailProduct';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
@@ -72,17 +72,19 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
       }
     })
   }
+
   useEffect(() => {
     // console.log("data in renderProducts",dataDetail[data?.id_product_information]);
     dispatch(fetchProductbyId(data?.id_product_information))
     
     // setInformationProduct({...informationProduct, dataDetail})
   }, [data])
+
   useEffect(() => {
     const productIdInfo = data?.id_product_information;
 
     // Check if the sale information for the product exists and is not null
-    const hasSaleInfo = productIdInfo && dataDetail[productIdInfo]?.sale !== null;
+    const hasSaleInfo = productIdInfo && dataDetail[productIdInfo]?.sale !== null && !isExpired(dataDetail[productIdInfo]?.sale?.ended_at);
 
     // Determine the value based on whether sale information exists
     const valueToPass = hasSaleInfo ? quantity_buy * data?.price * (1 - dataDetail[productIdInfo]?.sale?.discount / 100) : quantity_buy * data?.price;
@@ -110,6 +112,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
   }, [quantity_buy])
   // if(isLoading) return (<Loading></Loading>)
   // console.log("ID_BUY in renderProducts", id_buy);
+  
   return (
     <TouchableOpacity
     onPress={() => {

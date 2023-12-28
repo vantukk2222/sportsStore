@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { formatNumber } from 'react-native-localize';
 
 export const isValidEmail = (mail) => {
@@ -21,4 +22,9 @@ export const formatMoneyVND = (amount) => {
     maximumFractionDigits: 0,
   }).format(amount);
   return formattedAmount;
+};
+export const isExpired = (endDate) => {
+  const currentDate = moment();
+  const expirationDate = moment(endDate);
+  return expirationDate.isBefore(currentDate);
 };

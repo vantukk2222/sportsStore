@@ -7,7 +7,7 @@ import { Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSizeProduct } from '../../redux/reducers/Size/getProduct';
 import Loading from '../../components/loading';
-import { formatMoneyVND } from '../../utilies/validation';
+import { formatMoneyVND, isExpired } from '../../utilies/validation';
 import addToCart from '../../API/Cart/addToCart';
 import { addToCartUser } from '../../redux/reducers/Cart/cartReducer';
 import { toastsuccess } from '../../components/toastCustom';
@@ -38,7 +38,7 @@ const ModalBuyProduct = ({ route }) => {
     }, [dataSizeProduct])
 
     const handleSizeSelect = (size, id) => {
-    console.log("data product in modalBuy:", product);
+        console.log("data product in modalBuy:", product);
 
         setQuantity(1);
         setselectedSizeId(size);
@@ -50,13 +50,19 @@ const ModalBuyProduct = ({ route }) => {
     };
     const handleBuyPress = () => {
         // console.log("ID_User: ",id_user + "\t" + "ID_Product: ", selectedID_Product + "\t" +"Quantity: ", quantity);
-        dispatch(addToCartUser(id_user,selectedID_Product,quantity))
+        dispatch(addToCartUser(id_user, selectedID_Product, quantity))
         navigation.goBack()
         toastsuccess("Thành công", "Bạn đã thêm sản phẩm vào giỏ hàng", 1000)
-        
+
     };
     const handleTotalBefore = (sl, gia) => {
-        return formatMoneyVND(product?.sale ? (sl * gia*(100-product?.sale)) : (sl * gia));
+        // return formatMoneyVND(sl*gia)
+        if (product?.sale && !isExpired(product?.sale?.ended_at)) {
+            return formatMoneyVND((sl * gia * (100 - product?.sale.discount) / 100))
+
+        }
+        else { return formatMoneyVND(sl * gia) }
+
     }
     return (
 
@@ -96,7 +102,7 @@ const ModalBuyProduct = ({ route }) => {
                                 styles.selectionButton,
                                 selectedSizeId === eachSize.id && styles.selectedButton,
                             ]}
-                            onPress={() => {handleSizeSelect(eachSize.id,eachSize.id)}}>
+                            onPress={() => { handleSizeSelect(eachSize.id, eachSize.id) }}>
                             <Text style={styles.buttonText}>{eachSize.size}</Text>
                         </TouchableOpacity>
                     )) : <Text style={styles.buttonText}>FreeSize</Text>}
@@ -141,6 +147,15 @@ const ModalBuyProduct = ({ route }) => {
                                     <Text style={styles.quantityButtonText}>+</Text>
                                 </TouchableOpacity>
                             </View>
+                            {product?.sale && <View style={{ flexDirection: 'row' }}>
+                                <Text style={{
+                                    paddingVertical: 10,
+                                    
+                                    fontSize: 15,
+                                    fontWeight: 'bold',
+                                    color: 'red'
+                                }}>Giảm {product?.sale?.discount}%</Text>
+                            </View>}
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={styles.labelPrice}>Giá:</Text>
                                 <View style={styles.quantityContainer}>
@@ -199,10 +214,10 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     labelPrice: {
-        paddingTop: 20,
-        fontSize: 16,
+        // paddingTop: 20,
+        fontSize: 15,
         fontWeight: 'bold',
-        marginBottom: 8,
+        // marginBottom: 8,
         color: 'black'
     },
     buttonContainer: {
@@ -241,7 +256,6 @@ const styles = StyleSheet.create({
     quantityContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 5,
     },
     quantityButton: {
         backgroundColor: colors.trangXam,
@@ -264,7 +278,7 @@ const styles = StyleSheet.create({
         color: colors.denNhe,
     },
     price: {
-        fontSize: 18,
+        fontSize: 15,
         marginHorizontal: 26,
         fontWeight: 'bold',
         color: colors.denNhe,

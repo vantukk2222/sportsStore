@@ -45,6 +45,7 @@ import deleteSizeSlice from './reducers/Size/DeleteSize';
 import getStatisticSlice from './reducers/Statistic/getStatistic';
 import getAllBillSlice from './reducers/Bill/getBillUserReducer'
 import getBusinessByIDSlice from './reducers/Business/getBusinessByID'
+import cancelBillSlice from './reducers/Bill/billCancelReducer'
 const rootReducer = combineReducers({
   product: productSlice,
   productDetail: productDetailSlice,
@@ -87,6 +88,7 @@ const rootReducer = combineReducers({
   getStatistic: getStatisticSlice,
   getAllBillReducer: getAllBillSlice,
   getBusinessByIDReducer: getBusinessByIDSlice,
+  cancelBillReducer :cancelBillSlice,
 })
 // {getBusinessByIDSlice}
 const persistConfig = {
@@ -96,12 +98,13 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export const store = configureStore({
 
+export const store = configureStore({
   reducer: persistedReducer,
-  // middleware: getDefaultMiddleware => getDefaultMiddleware({
-  //     serializableCheck:false
-  // })
-})
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: false,
+    }),
+});
 export const persistor = persistStore(store)
 

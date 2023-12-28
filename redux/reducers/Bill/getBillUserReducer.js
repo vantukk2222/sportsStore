@@ -30,7 +30,7 @@ const getAllBillSlice = createSlice({
 
   export const getAllBillByIDUser = (id_user) => async (dispatch) =>{
     try {
-        dispatch(getAllBillStart)
+        dispatch(getAllBillStart())
         const data = await getAllBillUser(id_user)
         dispatch(getAllBillSuccess(data))
         console.log("dispatch get all bill by id user DONE");

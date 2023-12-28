@@ -16,7 +16,7 @@ import FlatListSale from "../screens/Sale/FlatListSale"
 import ListProductofSale from "../screens/Sale/ListProductofSale"
 import SalesofBusiness from "../screens/Sale/SalesofBusiness"
 import Information from "../screens/User/Information"
-import setInfor from "../screens/User/setInfor"
+import SetInfor from "../screens/User/setInfor"
 import CreateNewProduct from "../screens/Business/Products/CreateNewProduct"
 
 import { LoginBottomNavigator } from "./bottomNavigation"
@@ -34,6 +34,7 @@ import EditandDelete from "../screens/Business/Products/SetImage/EditandDelete"
 import EditProductSize from "../screens/Business/Products/EditProductSize"
 import StatisticScreen from "../screens/Business/Statistics/StatisticScreen"
 import OrderHistoryScreen from "../screens/Cart/OrderHistory"
+import DetailOrderScreen from "../screens/Cart/detailOrder"
 
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
@@ -69,11 +70,13 @@ export const LoginScreenNavigator = () => {
             <Stack.Screen name='ProductList' component={ProductList} options={{ headerShown: false }} />
             <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
             <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
-            <Stack.Screen name='setInfor' component={setInfor} options={{ headerShown: false }} />
+            <Stack.Screen name='setInfor' component={SetInfor} options={{ headerShown: false }} />
             <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} options={{headerShown :false}}/>
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
             {/* // <<<<<<< categoryDat */}
             <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
+            <Stack.Screen name="detailOrder" component={DetailOrderScreen} options={{ headerShown: false }} />
+
 
             {/* // ======= */}
             {/* //             <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} /> */}

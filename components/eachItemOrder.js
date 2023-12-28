@@ -8,16 +8,22 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebugValue, useEffect } from "react";
 import { getInforBusinessByID } from "../redux/reducers/Business/getBusinessByID";
+import { useNavigation } from "@react-navigation/native";
+import { cancelBillByID } from "../redux/reducers/Bill/billCancelReducer";
+import { toastError, toastsuccess } from "./toastCustom";
+import addToCart from "../API/Cart/addToCart";
+import { addToCartUser } from "../redux/reducers/Cart/cartReducer";
 
-const EachItemOrderComp = ({ item }) => {
+const EachItemOrderComp = ({ item, setStateOrder, setIndex }) => {
     // const data = item
-    const {businessInfor, isLoading, error} = useSelector((state)=> state.getBusinessByIDReducer)
+    const { businessInfor, isLoading, error } = useSelector((state) => state.getBusinessByIDReducer)
     const dispatch = useDispatch();
-    useEffect(()=>{
+    const navigation = useNavigation();
+    useEffect(() => {
         dispatch(getInforBusinessByID(item?.id_business))
-    },[item?.id_business])
-    const setOrderState = (state) => {
-        
+    }, [item?.id_business])
+    const setOrderButton = (state) => {
+
         const currentDate = new Date();
         const pastDate = new Date(item?.created_at);
         const differenceInTime = currentDate - pastDate;
@@ -29,10 +35,10 @@ const EachItemOrderComp = ({ item }) => {
         // Kiểm tra nếu sự khác biệt lớn hơn 30 ngày
 
         if (state === 0) {
-            if (differenceInDays > 7 && differenceInDays < 10) {
+            if (differenceInDays > 1 && differenceInDays < 7) {
                 return "Đã nhận được hàng"
             }
-            if (differenceInDays > 10 && differenceInDays < 30) {
+            if (differenceInDays > 7 && differenceInDays < 30) {
                 return "Đánh giá"
             }
             if (differenceInDays > 30) {
@@ -55,8 +61,63 @@ const EachItemOrderComp = ({ item }) => {
         if (state === 4) { return "Mua lại" }
 
     }
+    const handleButton = (text) =>{
+        if(text === "Huỷ đơn")
+        {
+            dispatch(cancelBillByID(item?.id,"cancel")).then((status) =>{
+                if(status === 200 || status ===201 || status ===202 || status ===203 || status ===204)
+                {
+                    toastsuccess("Cảm ơn","Quý khách đã huỷ đơn thành công.")
+                    setIndex(0)
+                    setStateOrder(0)
+                }
+                else
+                {
+                    toastError("Xin lỗi",status)
+                }
+            })
+        }
+        if(text === "Mua lại")
+        {
+            const promises = item?.bill_detailSet?.map((eachProductItem) => {
+                return dispatch(addToCartUser(item?.id_user, eachProductItem?.product?.id, eachProductItem.quantity));
+            });
+            
+            Promise.all(promises)
+                .then((results) => {
+                    // Đã hoàn thành tất cả các promises
+                    console.log('All addToCartUser operations completed:', results);
+                    toastsuccess("Xong","Đã thêm lại vào giỏ hàng")
+            
+                    // Thực hiện công việc tiếp theo sau khi map và dispatch đã hoàn thành ở đây
+                })
+                .catch((error) => {
+                    // Xử lý lỗi nếu có
+                    console.error('Error during addToCartUser operations:', error);
+                    toastError("Xin lỗi","Đã có lỗi xảy ra")
+                });
+
+            // dispatch()
+        }
+        if(text ==="Đã nhận được hàng")
+        {
+            dispatch(cancelBillByID(item?.id,"receive")).then((status) =>{
+                if(status === 200 || status ===201 || status ===202 || status ===203 || status ===204)
+                {
+                    toastsuccess("Cảm ơn","Đơn của bạn đã hoàn thành.")
+                    setIndex(0)
+                    setStateOrder(0)
+                }
+                else
+                {
+                    toastError("Xin lỗi",status)
+                }
+            })
+        }
+
+    }
     const setOrderText = (state) => {
-        
+
         const currentDate = new Date();
         const pastDate = new Date(item?.created_at);
         const differenceInTime = currentDate - pastDate;
@@ -68,36 +129,39 @@ const EachItemOrderComp = ({ item }) => {
         // Kiểm tra nếu sự khác biệt lớn hơn 30 ngày
 
         if (state === 0) {
-            if (differenceInDays > 7 && differenceInDays < 10) {
-                return "Chỉ nhấn 'Đã nhận được hàng' khi không có sự cố nào xảy ra"
+            if (differenceInDays > 1 && differenceInDays < 7) {
+                return "Chỉ nhấn 'Đã nhận được hàng' khi không có sự cố nào xảy ra."
             }
-            if (differenceInDays > 10 && differenceInDays < 30) {
-                return "Bạn hãy đánh giá sản phẩm trước " + futureDate +" nhé"
+            if (differenceInDays > 7 && differenceInDays < 30) {
+                return "Bạn hãy đánh giá sản phẩm trước " + futureDate + " nhé."
             }
             if (differenceInDays > 30) {
                 return ""
             }
-            return "Đơn hàng đang trên đường giao tới cho bạn"
+            return "Đơn hàng đang trên đường giao tới cho bạn."
         }
         if (state === 1) {
             if (differenceInDays > 30) {
                 return ""
             }
-            return "Bạn hãy đánh giá sản phẩm trước " + futureDate +" nhé"
+            return "Bạn hãy đánh giá sản phẩm trước " + futureDate + " nhé."
         }
         if (state === 2) {
-            return "Đơn hàng chưa thanh toán, xin vui lòng đợi Shop xác nhận"
+            return "Đơn hàng chưa thanh toán, hãy thanh toán nếu không đơn sẽ bị huỷ."
         }
         if (state === 3) {
-            return "Đơn hàng đang được shipper đi lấy"
+            return "Đơn đang được SHOP xác nhận."
         }
-        if (state === 4) { return "Đơn đã bị huỷ" }
+        if (state === 4) { return "Đơn đã bị huỷ." }
 
     }
+
     return (
         <TouchableOpacity
             onPress={() => {
-                console.log("data detail product", businessInfor[item?.id_business]);
+                // console.log("data detail product", businessInfor[item?.id_business]);
+                navigation.navigate("detailOrder", { orderByState: item, businessInfor: businessInfor })
+
                 //   navigation.navigate('DetailProduct',  {item: dataDetail[data?.id_product_information]} ),
                 // id_user: dataUser?.id,
                 // console.log("detail product in renderProducts in cart:", item);
@@ -122,13 +186,9 @@ const EachItemOrderComp = ({ item }) => {
                         height: 100,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        // backgroundColor: COLOURS?.backgroundLight,
                         borderRadius: 10,
                         marginRight: 22,
                         marginLeft: 5,
-                        // paddingBottom:5,
-                        // marginBottom:5
-                        // overflow: 'hidden', // Thêm dòng này
                     }}>
                     <Image
                         source={{ uri: item?.bill_detailSet[0]?.product?.image_product_information }}
@@ -196,16 +256,16 @@ const EachItemOrderComp = ({ item }) => {
                                 {formatMoneyVND(item?.bill_detailSet[0]?.product?.price)}
                             </Text>
                         </View>
-                        
+
                     </View>
                     <View style={{
-                            flexDirection: 'row',
-                            opacity: 0.6,
-                        }}>
-                            <Text style={{ fontSize: 16, color: 'black', alignItems:'flex-start' }}>
-                                {item?.bill_detailSet.length+" sản phẩm"}
-                            </Text>
-                        </View>
+                        flexDirection: 'row',
+                        opacity: 0.6,
+                    }}>
+                        <Text style={{ fontSize: 16, color: 'black', alignItems: 'flex-start' }}>
+                            {item?.bill_detailSet.length + " sản phẩm"}
+                        </Text>
+                    </View>
                 </View>
             </View>
             <View style={{
@@ -246,28 +306,34 @@ const EachItemOrderComp = ({ item }) => {
                 backgroundColor: 'white',
                 alignItems: 'center',
                 justifyContent: 'space-between', // Đây là phần cập nhật
-                opacity: 0.6,
+                // opacity: 1,
             }}>
                 <Text style={{ paddingLeft: 40, color: 'black', fontSize: 12, width: 200 }} numberOfLines={4}>{setOrderText(item?.state)}</Text>
-                <TouchableOpacity style={{
-                    marginRight: 10,
-                    width: 120,
-                    paddingVertical: 12,
-                    borderWidth: 1,
-                    backgroundColor: "red",
-                    borderColor: "#ccc",
-                    marginVertical: 5,
-                    alignItems: 'center'
-                }}
+                <TouchableOpacity
+                    style={{
+                        marginRight: 10,
+                        width: 120,
+                        paddingVertical: 12,
+                        borderWidth: 1,
+                        backgroundColor: "red",
+                        borderColor: "#ccc",
+                        marginVertical: 5,
+                        alignItems: 'center',
+                        opacity: 1,
+
+                    }}
                     onPress={() => {
-                        // handleLogin()
+                        handleButton(setOrderButton(item?.state))
+                        // console.log("data", item)
+                        // 
                     }}>
                     <Text style={{
+                        opacity: 1,
+
                         fontSize: 16,
-                        color: '#FFFFFF'
-                    }}>{setOrderState(item?.state)}</Text>
+                        color: 'white'
+                    }}>{setOrderButton(item?.state)}</Text>
                 </TouchableOpacity>
-                {/* <UIButton isSelected={true} title="OK"></UIButton> */}
             </View>
         </TouchableOpacity>
 
