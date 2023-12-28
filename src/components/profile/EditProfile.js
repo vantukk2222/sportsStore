@@ -118,6 +118,18 @@ const EditProfile = () => {
             <div className="text-edit">
                 <div className="label-input-container">
                     <label className="lable-edit">
+                        <p>Họ và tên:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="text"
+                        name="fullName"
+                        value={editedUser.name}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
                         <p>Email:</p>
                     </label>
                     <input
@@ -130,25 +142,13 @@ const EditProfile = () => {
                 </div>
                 <div className="label-input-container">
                     <label className="lable-edit">
-                        <p>Username:</p>
+                        <p>Ngày sinh:</p>
                     </label>
                     <input
                         className="input-edit"
-                        type="text"
-                        name="username"
-                        value={editedUser.username}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="label-input-container">
-                    <label className="lable-edit">
-                        <p>Họ và tên:</p>
-                    </label>
-                    <input
-                        className="input-edit"
-                        type="text"
-                        name="fullName"
-                        value={editedUser.name}
+                        type="date"
+                        name="dob"
+                        value={editedUser.dob}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -176,18 +176,7 @@ const EditProfile = () => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div className="label-input-container">
-                    <label className="lable-edit">
-                        <p>Ngày sinh:</p>
-                    </label>
-                    <input
-                        className="input-edit"
-                        type="date"
-                        name="dob"
-                        value={editedUser.dob}
-                        onChange={handleInputChange}
-                    />
-                </div>
+
                 <button className="edit-button" type="button" onClick={handleSave}>
                     Lưu
                 </button>
