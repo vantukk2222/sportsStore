@@ -1,119 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MenuBusiness from '../MenuBusiness';
 import Track from './Track';
+import getUnAuth from '~/API/get';
 
 const BusinessTrack = () => {
-    const [orderStatus, setOrderStatus] = useState('Tất cả');
-
-    const [orders] = useState([
-        {
-            id: 'Bussiness1',
-            date: '2023-11-26',
-            items: [
-                {
-                    id: 1,
-                    name: 'Giày thể thao đá bóng',
-                    quantity: 2,
-                    price: 10,
-                    img: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/30/969136/Cristiano-Ronaldo4.jpg',
-                    size: 'XL',
-                    detail: 'giày nam số một thị trường dành cho nhưng cầu thủ, sử dụng cho môi trường làm việc với công suất lớn ',
-                },
-                {
-                    id: 2,
-                    name: 'Giày thể thao đá bóng',
-                    quantity: 1,
-                    price: 20,
-                    img: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/30/969136/Cristiano-Ronaldo4.jpg',
-                    size: 'XL',
-                    detail: 'giày nam số một thị trường dành cho nhưng cầu thủ, sử dụng cho môi trường làm việc với công suất lớn ',
-                },
-            ],
-            total: 50,
-            state: 'Đang giao hàng',
-        },
-        {
-            id: 'Bussiness2',
-            date: '2023-11-26',
-            items: [
-                {
-                    id: 1,
-                    name: 'Giày thể thao đá bóng',
-                    quantity: 2,
-                    price: 10,
-                    img: 'logo.png',
-                    size: 'XL',
-                    detail: 'giày nam số một thị trường dành cho nhưng cầu thủ, sử dụng cho môi trường làm việc với công suất lớn ',
-                },
-            ],
-            total: 50,
-            state: 'Giao thành công',
-        },
-        {
-            id: 'Bussiness3',
-            date: '2023-11-26',
-            items: [
-                {
-                    id: 1,
-                    name: 'Giày thể thao đá bóng',
-                    quantity: 2,
-                    price: 10,
-                    img: 'logo.png',
-                    size: 'XL',
-                    detail: 'giày nam số một thị trường dành cho nhưng cầu thủ, sử dụng cho môi trường làm việc với công suất lớn ',
-                },
-            ],
-            total: 50,
-            state: 'Chờ xác nhận',
-        },
-        {
-            id: 'Bussiness10',
-            date: '2023-11-26',
-            items: [
-                {
-                    id: 1,
-                    name: 'Giày thể thao đá bóng',
-                    quantity: 2,
-                    price: 10,
-                    img: 'logo.png',
-                    size: 'XL',
-                    detail: 'giày nam số một thị trường dành cho nhưng cầu thủ, sử dụng cho môi trường làm việc với công suất lớn ',
-                },
-            ],
-            total: 50,
-            state: 'Chờ xác nhận',
-        },
-        {
-            id: 'Bussiness4',
-            date: '2023-11-26',
-            items: [
-                {
-                    id: 1,
-                    name: 'Giày thể thao đá bóng',
-                    quantity: 2,
-                    price: 10,
-                    img: 'logo.png',
-                    size: 'XL',
-                    detail: 'giày nam số một thị trường dành cho nhưng cầu thủ, sử dụng cho môi trường làm việc với công suất lớn ',
-                },
-                {
-                    id: 2,
-                    name: 'Giày thể thao đá bóng',
-                    quantity: 1,
-                    price: 20,
-                    img: 'logo.png',
-                    size: 'XL',
-                    detail: 'giày nam số một thị trường dành cho nhưng cầu thủ, sử dụng cho môi trường làm việc với công suất lớn ',
-                },
-                // Add more items
-            ],
-            total: 50,
-            state: 'Đã hủy đơn',
-        },
-    ]);
-
-    const filteredOrders = orderStatus === 'Tất cả' ? orders : orders.filter((order) => order.state === orderStatus);
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [orderstate, setOrderstate] = useState(5);
+    const [orders, setOrders] = useState([]);
+    const user = JSON.parse(localStorage.getItem('User'));
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const response = await getUnAuth(`bill/get-by-business/${user.id}`);
+                console.log(response);
+                setOrders(response.content);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+    const filteredOrders = orderstate === 5 ? orders : orders.filter((order) => order.state === orderstate);
     return (
         <>
             <section className="shop background">
@@ -121,19 +35,19 @@ const BusinessTrack = () => {
                     <MenuBusiness />
                     <div className="contentWidth">
                         <div className="menu">
-                            <p className="menu-item" onClick={() => setOrderStatus('Tất cả')}>
+                            <p className="menu-item" onClick={() => setOrderstate(5)}>
                                 Tất cả
                             </p>
-                            <p className="menu-item" onClick={() => setOrderStatus('Chờ xác nhận')}>
+                            <p className="menu-item" onClick={() => setOrderstate(3)}>
                                 Chờ xác nhận
                             </p>
-                            <p className="menu-item" onClick={() => setOrderStatus('Đang giao hàng')}>
+                            <p className="menu-item" onClick={() => setOrderstate(0)}>
                                 Đang giao hàng
                             </p>
-                            <p className="menu-item" onClick={() => setOrderStatus('Giao thành công')}>
+                            <p className="menu-item" onClick={() => setOrderstate(1)}>
                                 Giao thành công
                             </p>
-                            <p className="menu-item" onClick={() => setOrderStatus('Đã hủy đơn')}>
+                            <p className="menu-item" onClick={() => setOrderstate(4)}>
                                 Đã hủy đơn
                             </p>
                         </div>
