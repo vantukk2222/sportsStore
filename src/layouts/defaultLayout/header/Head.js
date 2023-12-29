@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './head.css';
+import { useEffect, useState } from 'react';
 const Head = () => {
     const handleLogout = (e) => {
         e.preventDefault();
@@ -9,8 +10,10 @@ const Head = () => {
         else window.location.assign('/');
     };
     const user = JSON.parse(localStorage.getItem('User'));
-    //  console.log(user);
-
+    const [name, setName] = useState(null);
+    useEffect(() => {
+        setName(user?.name);
+    }, [user]);
     return (
         <>
             <section className="head">
@@ -30,7 +33,7 @@ const Head = () => {
                         {user ? (
                             <div className="account-menu">
                                 <label>
-                                    <Link to="/profile">👤 {user.name}</Link>
+                                    <Link to="/profile">👤 {name}</Link>
                                 </label>
                                 <ul>
                                     <li>

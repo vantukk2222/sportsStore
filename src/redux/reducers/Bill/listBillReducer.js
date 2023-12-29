@@ -33,7 +33,7 @@ const listBillSlice = createSlice({
     },
 });
 
-export const listBillById = (id, role) => async (dispatch, getState) => {
+export const listBillById = (id, role, page, pageSize) => async (dispatch, getState) => {
     try {
         // console.log('Listcart request start');
         dispatch(listBillRequest()); // Dispatch addToCartRequest action
@@ -45,7 +45,7 @@ export const listBillById = (id, role) => async (dispatch, getState) => {
                 dispatch(listBillSuccess({ data: data }));
             }
             if (role == 'ROLE_BUSINESS') {
-                const data = await getUnAuth(`bill/get-by-business/${id}`);
+                const data = await getUnAuth(`bill/get-by-business/${id}?state=3`);
                 dispatch(listBillSuccess({ data: data.content }));
             }
         }

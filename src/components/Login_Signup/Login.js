@@ -5,6 +5,7 @@ import loginPage from '~/API/postAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { roleByUserName } from '~/redux/reducers/Role/role';
 import getUnAuth from '~/API/get';
+import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -13,6 +14,7 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const store = JSON.parse(localStorage.getItem('authToken'));
+    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     const dispatch = useDispatch();
     useEffect(() => {
         if (store) navigate('/');
@@ -52,6 +54,10 @@ const Login = () => {
                 };
                 fetchData()
                     .then(dispatch(roleByUserName(un)))
+                    .then(() => {
+                        const user = JSON.parse(localStorage.getItem('User'));
+                        dispatch(listBillById(user.id, dataRole));
+                    })
                     .then(navigate('/'));
             }
         } catch (error) {

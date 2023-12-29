@@ -12,6 +12,7 @@ const MyOrder = ({ orders }) => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('User'));
+    const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     const navigate = useNavigate();
     const handleSm = (id) => {
