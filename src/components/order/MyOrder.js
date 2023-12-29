@@ -5,22 +5,23 @@ import getUnAuth from '~/API/get';
 import putConfirmReceive from '~/API/putConfirmReceive';
 
 const MyOrder = ({ orders }) => {
-    //console.log(orders);
+    //  console.log(orders);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const handleSm = (id) => {
-     //   console.log(id);
+        //   console.log(id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         putConfirmReceive(id, authToken);
     };
     const hanldeRePay = (id) => {
-     //   console.log(id);
+        //   console.log(id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
                 setLoading(true);
+                console.log(id);
                 const response = await getUnAuth(`bill/get_refresh_payment/${id}`);
-           //     console.log(response);
+                //     console.log(response);
                 window.location.href = response;
                 if (!response) {
                     throw new Error('Network response was not ok');
@@ -33,50 +34,79 @@ const MyOrder = ({ orders }) => {
         };
         fetchData();
     };
+    if (orders) {
+        let i = 0;
+        let t = 0;
+        let result = orders.reduce((a, e) => {
+            //   console.log(a);
+            if (a.length > 0) {
+                if (t === e.transaction.id && e.state == 2) {
+                    a[i] = [...a[i], e];
+                } else {
+                    t = e.transaction.id;
+                    i++;
+                    a.push([e]);
+                }
+            } else {
+                t = e.transaction.id;
+                a.push([e]);
+            }
+            return a;
+        }, []);
+        orders = result;
+    }
+    //  console.log(orders);
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
         <div className="order-list">
             {orders.length > 0 ? (
-                orders?.map((order) => {
-                    let date = new Date(order.updated_at);
+                orders?.map((orders) => {
+                    let date = new Date(orders[0].updated_at);
                     date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                    console.log(orders);
                     return (
-                        <div key={order.id} className="order-container">
-                            <h3 className="order-header">Đơn hàng #{order.id}</h3>
-                            <p className="date-text">Ngày mua: {date}</p>
-                            <ul className="item-list">
-                                {order.bill_detailSet?.map((item) => (
-                                    <li key={item.id} className="item">
-                                        {item.product.image_product_information && (
-                                            <img src={item.product.image_product_information} className="item-image" />
-                                        )}
-                                        <div className="item-details">
-                                            <h3>{item.product.name_product_information}</h3>
-                                            <span>Số lượng: {item.quantity}</span>
-                                            {/* <span>Mô tả: {item.detail}</span> */}
-                                            <span>Size: {item.product.size}</span>
-                                            <span>Giá tiền: {item.price}vnđ</span>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
+                        <div key={orders[0].id} className="order-container">
+                            {orders.map((order) => (
+                                <>
+                                    <h3 className="order-header">{order.name}</h3>
+                                    <p className="date-text">Ngày mua: {date}</p>
+                                    <ul className="item-list">
+                                        {order.bill_detailSet?.map((item) => (
+                                            <li key={item.id} className="item">
+                                                {item.product.image_product_information && (
+                                                    <img
+                                                        src={item.product.image_product_information}
+                                                        className="item-image"
+                                                    />
+                                                )}
+                                                <div className="item-details">
+                                                    <h3>{item.product.name_product_information}</h3>
+                                                    <span>Số lượng: {item.quantity}</span>
+                                                    {/* <span>Mô tả: {item.detail}</span> */}
+                                                    <span>Size: {item.product.size}</span>
+                                                    <span>Giá tiền: {item.price}vnđ</span>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </>
+                            ))}
                             <div className="total-state-container">
-                                <p className="total-text">Tổng tiền: ${order.total}</p>
-                                <p className="state-text">Trạng thái: {state[order.state]}</p>
-                                {order.state === 0 && (
-                                    <button className="total-text" onClick={() => handleSm(order.id)}>
+                                <p className="total-text">Tổng tiền: ${orders.reduce((t, e) => t + e.total, 0)}</p>
+                                <p className="state-text">Trạng thái: {state[orders[0].state]}</p>
+                                {orders[0].state === 0 && (
+                                    <button className="total-text" onClick={() => handleSm(orders[0].id)}>
                                         Xác nhận đã giao hàng
                                     </button>
                                 )}
-                                {/* {order.state === 1 && (
-                                    <button className="total-text">Xác nhận giao hàng thành công</button>
-                                )} */}
-                                {order.state === 2 && (
-                                    <button className="total-text" onClick={() => hanldeRePay(order.id)}>
+                                {orders[0].state === 2 && (
+                                    <button
+                                        className="total-text"
+                                        onClick={() => hanldeRePay(orders[0].transaction.id)}
+                                    >
                                         Thanh toán lại
                                     </button>
                                 )}
-                                {/* {order.state === 3 && <button className="total-text">Xác nhận đã thanh toán</button>} */}
                                 {/* {order.state === 4 && <button className="total-text">Mua lại</button>} */}
                             </div>
                         </div>

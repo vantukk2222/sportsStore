@@ -4,15 +4,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import loginPage from '~/API/postAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { roleByUserName } from '~/redux/reducers/Role/role';
+import getUnAuth from '~/API/get';
 const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const store = JSON.parse(localStorage.getItem('authToken'));
     const dispatch = useDispatch();
-    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     useEffect(() => {
         if (store) navigate('/');
     }, []);
@@ -26,10 +27,32 @@ const Login = () => {
             localStorage.setItem('authToken', JSON.stringify(token));
             sessionStorage.clear();
             if (token) {
-                //     console.log(response);
                 localStorage.setItem('User', JSON.stringify(un));
-                dispatch(roleByUserName(un));
-                navigate('/');
+                const fetchData = async () => {
+                    try {
+                        setLoading(true);
+                        let response = await getUnAuth(`user/get-by-username/${un}`);
+                        if (!response) {
+                            throw new Error('Network response was not ok');
+                        }
+                        localStorage.setItem(
+                            'User',
+                            JSON.stringify({
+                                id: response.id,
+                                un: response.username,
+                                name: response.name,
+                            }),
+                        );
+                        //  console.log(response);
+                    } catch (error) {
+                        setError(error);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+                fetchData()
+                    .then(dispatch(roleByUserName(un)))
+                    .then(navigate('/'));
             }
         } catch (error) {
             alert('Bạn đã đăng nhập thất bại kiểm tra lại mật khẩu và tài khoản của bạn');

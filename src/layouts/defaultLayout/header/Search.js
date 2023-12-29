@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 
-const Search = ({ id }) => {
+const Search = () => {
     const dispatch = useDispatch();
     const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const user = JSON.parse(localStorage.getItem('User'));
     window.addEventListener('scroll', function () {
         const search = document.querySelector('.search');
         search?.classList.toggle('active', window.scrollY > 100);
@@ -24,8 +25,8 @@ const Search = ({ id }) => {
         setShowMenu(value.trim() != '');
     };
     useEffect(() => {
-        if (id) dispatch(listCartByIdUser(id));
-    }, [id]);
+        if (user?.id) dispatch(listCartByIdUser(user.id));
+    }, [user?.id]);
     return (
         <>
             <section className="search">

@@ -13,12 +13,15 @@ const BusinessTrack = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
+                // if (user.id) {
+                console.log(user.id);
                 const response = await getUnAuth(`bill/get-by-business/${user.id}`);
                 console.log(response);
                 setOrders(response.content);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
+                // }
             } catch (error) {
                 setError(error);
             } finally {

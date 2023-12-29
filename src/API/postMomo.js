@@ -2,7 +2,7 @@ import axios from 'axios';
 import { api } from './url';
 
 const postMomo = async (list_id, method_payment, authToken) => {
-    // console.log('payment MOMOAPI:', method_payment, list_id, authToken);
+    //console.log('payment MOMOAPI:', method_payment, list_id, authToken);
     try {
         const response = await axios.post(api + `cart/buy-with-momo?requestType=${method_payment}`, list_id, {
             headers: {

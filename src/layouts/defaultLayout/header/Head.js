@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './head.css';
-const Head = ({ userName }) => {
+const Head = () => {
     const handleLogout = (e) => {
         e.preventDefault();
         localStorage.clear();
@@ -8,6 +8,9 @@ const Head = ({ userName }) => {
         if (path == '/') window.location.reload();
         else window.location.assign('/');
     };
+    const user = JSON.parse(localStorage.getItem('User'));
+    //  console.log(user);
+
     return (
         <>
             <section className="head">
@@ -24,10 +27,10 @@ const Head = ({ userName }) => {
                         <label>
                             <Link to="/contact">📧 Liên hệ</Link>
                         </label>
-                        {userName ? (
+                        {user ? (
                             <div className="account-menu">
                                 <label>
-                                    <Link to="/profile">👤 {userName}</Link>
+                                    <Link to="/profile">👤 {user.name}</Link>
                                 </label>
                                 <ul>
                                     <li>

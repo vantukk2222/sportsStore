@@ -131,16 +131,16 @@ const ListCheckout = ({ selectedItems }) => {
                             })}
                         </tbody>
                     </table>
-                    <div className="ship-listcheckout">
+                    {/* <div className="ship-listcheckout">
                         <p>Lời nhắn</p>
                         <input type="text" name="message" value={message} onChange={handleInputChange} />
-                        {/* <p>Mã giảm giá</p>
+                        <p>Mã giảm giá</p>
                         <select name="shippingProvider" value={shippingProvider} onChange={handleInputChange}>
-                            <option value="">Chọn mã giảm giá</option>
-                            <option value="shipping1">Mã giảm giá của Shop</option>
-                            <option value="shipping2">Mã giảm giá của bạn</option>
-                        </select> */}
-                    </div>
+                            <option value="">Phương thức thanh toán</option>
+                            <option value="shipping1">payWithATM</option>
+                            <option value="shipping2">captureWallet</option>
+                        </select>
+                    </div> */}
                     <div className="total-listCheckout">
                         <h4>Tổng cộng: {getTotalPrice(items) || 'N/A'}</h4>
                     </div>

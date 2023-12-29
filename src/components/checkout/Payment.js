@@ -10,6 +10,7 @@ const formatCurrency = (amount) => {
 const Payment = ({ selectedItems }) => {
     const check = JSON.parse(localStorage.getItem('selectedItems'));
     const navigate = useNavigate();
+    const [shippingProvider, setShippingProvider] = useState('');
     if (!check) navigate('/');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,6 +32,12 @@ const Payment = ({ selectedItems }) => {
             );
         }, 0),
     );
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        if (name === 'shippingProvider') {
+            setShippingProvider(value);
+        }
+    };
     const handlePayment = () => {
         const fetchData = async () => {
             try {
@@ -39,7 +46,7 @@ const Payment = ({ selectedItems }) => {
                 selectedItems.forEach((e) => list_id.push(e.id));
                 const authToken = JSON.parse(localStorage.getItem('authToken'));
                 // console.log(list_id);
-                const response = await postMomo(list_id, 'payWithATM', authToken).then((res) => {
+                const response = await postMomo(list_id, shippingProvider, authToken).then((res) => {
                     // console.log(res);
                     const user = JSON.parse(localStorage.getItem('User'));
                     // console.log(user.id);
@@ -59,7 +66,8 @@ const Payment = ({ selectedItems }) => {
                 setLoading(false);
             }
         };
-        fetchData();
+        if (shippingProvider) fetchData();
+        else alert('Hãy chọn phương thức thanh toán');
     };
     return (
         <div className="payment">
@@ -68,6 +76,15 @@ const Payment = ({ selectedItems }) => {
                     <p>Tổng tiền: {total || 'N/A'}</p>
                     {/* <p>Giảm giá</p> */}
                     <p>Tổng thanh toán: {total || 'N/A'}</p>
+                    <div className="ship-listcheckout">
+                        {/* <p>Lời nhắn</p>
+                        <input type="text" name="message" value={message} onChange={handleInputChange} /> */}
+                        <select name="shippingProvider" value={shippingProvider} onChange={handleInputChange}>
+                            <option value="">Phương thức thanh toán</option>
+                            <option value="payWithATM">thanh toán bằng ATM</option>
+                            <option value="captureWallet">thanh toán bằng Momo</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div className="paymentbutton">
