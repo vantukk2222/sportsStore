@@ -2,34 +2,20 @@ import { useEffect, useState } from 'react';
 import MenuProfile from '../menuprofile/MenuProfile';
 import MyOrder from './MyOrder';
 import './Order.css';
-import getUnAuth from '~/API/get';
+import { useDispatch, useSelector } from 'react-redux';
+import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 
 const Order = () => {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [orderstate, setOrderstate] = useState(5);
-    const [orders, setOrders] = useState([]);
     const user = JSON.parse(localStorage.getItem('User'));
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const response = await getUnAuth(`bill/get-by-id-user/${user.id}`);
-                //   console.log(response);
-                setOrders(response);
-                if (!response) {
-                    throw new Error('Network response was not ok');
-                }
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-    const filteredOrders = orderstate === 5 ? orders : orders.filter((order) => order.state === orderstate);
+    const dispatch = useDispatch();
+    const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
+    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
+    const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
     //   console.log(filteredOrders);
+    useEffect(() => {
+        dispatch(listBillById(user.id, dataRole));
+    }, []);
     return (
         <>
             <section className="shop background">

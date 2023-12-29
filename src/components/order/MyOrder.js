@@ -3,18 +3,22 @@
 import { useState } from 'react';
 import getUnAuth from '~/API/get';
 import putConfirmReceive from '~/API/putConfirmReceive';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
+import { useNavigate } from 'react-router';
 const MyOrder = ({ orders }) => {
-    //  console.log(orders);
+    console.log(orders);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('User'));
+    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
+    const navigate = useNavigate();
     const handleSm = (id) => {
-        //   console.log(id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
-        putConfirmReceive(id, authToken);
+        putConfirmReceive(id, authToken).then(dispatch(listBillById(user.id, dataRole)));
     };
     const hanldeRePay = (id) => {
-        //   console.log(id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
@@ -55,6 +59,9 @@ const MyOrder = ({ orders }) => {
         }, []);
         orders = result;
     }
+    const handleClick = (id) => {
+        if (id) navigate(`/product/${id}`);
+    };
     //  console.log(orders);
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
@@ -77,6 +84,7 @@ const MyOrder = ({ orders }) => {
                                                     <img
                                                         src={item.product.image_product_information}
                                                         className="item-image"
+                                                        onClick={() => handleClick(item.product.id_product_information)}
                                                     />
                                                 )}
                                                 <div className="item-details">

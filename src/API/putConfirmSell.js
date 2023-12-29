@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { api } from './url';
-const putConfirmSell = async (id, authToken) => {
-    //console.log(`${api}bill/confirm-receive/true`, id, authToken);
+const putConfirmSell = async (id, sell, authToken) => {
+    console.log(`${api}bill/confirm-sell/true`, id, authToken);
     try {
         await axios({
             method: 'put',
-            url: `${api}bill/confirm-sell/true`,
+            url: `${api}bill/confirm-sell/${sell}`,
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
