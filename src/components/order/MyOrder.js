@@ -17,7 +17,9 @@ const MyOrder = ({ orders }) => {
     const navigate = useNavigate();
     const handleSm = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
-        putConfirmReceive(id, authToken).then(dispatch(listBillById(user.id, dataRole)));
+        putConfirmReceive(id, authToken)
+            .then(dispatch(listBillById(user.id, dataRole)))
+            .then(() => window.location.reload());
     };
     const hanldeRePay = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));

@@ -9,7 +9,9 @@ const Track = ({ orders }) => {
     const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
     const handleSell = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
-        putConfirmSell(id, 'true', authToken).then(dispatch(listBillById(user.id, dataRole)));
+        putConfirmSell(id, 'true', authToken)
+            .then(dispatch(listBillById(user.id, dataRole)))
+            .then(() => window.location.reload());
     };
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
