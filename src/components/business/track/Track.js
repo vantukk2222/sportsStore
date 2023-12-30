@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import putConfirmSell from '~/API/putConfirmSell';
 import { useDispatch, useSelector } from 'react-redux';
+import putConfirmSell from '~/API/putConfirmSell';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 const Track = ({ orders }) => {
     const dispatch = useDispatch();
@@ -18,6 +17,12 @@ const Track = ({ orders }) => {
             .then(dispatch(listBillById(user.id, dataRole)))
             .then(() => window.location.reload());
     };
+    const handleCancel = (id) => {
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        // cancelOrder(id, authToken)
+        //     .then(dispatch(listBillById(user.id, dataRole)))
+        //     .then(() => window.location.reload());
+    };
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
         <div className="order-list">
@@ -30,6 +35,8 @@ const Track = ({ orders }) => {
                             <div key={order.id} className="order-container">
                                 <h3 className="order-header">Đơn hàng #{order.id}</h3>
                                 <p className="date-text">Ngày mua: {date}</p>
+                                <p className="date-text">Người mua: {user.name}</p>
+
                                 <ul className="item-list">
                                     {order.bill_detailSet?.map((item) => (
                                         <li key={item.id} className="item">
@@ -50,7 +57,7 @@ const Track = ({ orders }) => {
                                     ))}
                                 </ul>
                                 <div className="total-state-container">
-                                    <p className="total-text">Tổng tiền: ${order.total}</p>
+                                    <p className="total-text">Tổng tiền: {order.total}vnđ</p>
                                     <p className="state-text">Trạng thái:{state[order.state]}</p>
                                     {order.state === 3 && (
                                         <div className="actiontrack">
@@ -59,6 +66,14 @@ const Track = ({ orders }) => {
                                             </button>
                                             <button className="delete" onClick={() => handleNotSell(order.id)}>
                                                 Xóa
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {order.state === 2 && (
+                                        <div className="actiontrack">
+                                            <button className="delete" onClick={() => handleCancel(order.id)}>
+                                                Hủy đơn
                                             </button>
                                         </div>
                                     )}

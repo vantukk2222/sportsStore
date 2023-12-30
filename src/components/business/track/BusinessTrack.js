@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import MenuBusiness from '../MenuBusiness';
-import Track from './Track';
 import { useDispatch, useSelector } from 'react-redux';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
+import MenuBusiness from '../MenuBusiness';
+import Track from './Track';
 const BusinessTrack = () => {
     const [orderstate, setOrderstate] = useState(() => {
         const state = JSON.parse(localStorage.getItem('State'));
@@ -36,6 +36,9 @@ const BusinessTrack = () => {
                             </p>
                             <p className="menu-item" onClick={() => setOrderstate(1)}>
                                 Giao thành công
+                            </p>
+                            <p className="menu-item" onClick={() => setOrderstate(2)}>
+                                Chưa thanh toán
                             </p>
                             <p className="menu-item" onClick={() => setOrderstate(4)}>
                                 Đã hủy đơn

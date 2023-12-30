@@ -23,16 +23,11 @@ const BProduct = () => {
         },
     ]);
 
-    const handleNewProduct = () => {
-        // Use Link to navigate to the new-product route
-    };
-
-    const handleEditProduct = () => {
-        // Use Link to navigate to the editp route
-    };
-
-    const handleDeleteProduct = () => {
-        // Implement delete logic
+    const handleDeleteProduct = (index) => {
+        // Implement delete logic here
+        const updatedTrackingInfo = [...trackingInfo];
+        updatedTrackingInfo.splice(index, 1);
+        setTrackingInfo(updatedTrackingInfo);
     };
 
     return (
@@ -42,13 +37,13 @@ const BProduct = () => {
                 <button type="submit">Thêm sản phẩm</button>
             </Link>
             <div className="tracking-header">
-                <div>Tên sản phẩm</div>
-                <div>Phân loại</div>
-                <div>Hình ảnh</div>
-                <div>Giá tiền</div>
-                <div>Mô tả sản phẩm</div>
-                <div>Ngày giao hàng</div>
-                <div>Action</div>
+                <div className="">Tên sản phẩm</div>
+                <div className="">Phân loại</div>
+                <div className="">Hình ảnh</div>
+                <div className="">Giá tiền</div>
+                <div className="">Mô tả sản phẩm</div>
+                <div className="">Ngày giao hàng</div>
+                <div className="">Thao tác</div>
             </div>
 
             {trackingInfo.map((product, index) => (
@@ -62,11 +57,11 @@ const BProduct = () => {
                     <div>{product.status}</div>
                     <div>{product.estimatedDelivery}</div>
                     <div>
-                        <button className="edit" onClick={handleEditProduct}>
-                            Edit
-                        </button>
-                        <button className="delete" onClick={handleDeleteProduct}>
-                            Delete
+                        <Link to={`/edit-product/${product.orderNumber}`}>
+                            <button className="edit">Sửa</button>
+                        </Link>
+                        <button className="delete" onClick={() => handleDeleteProduct(index)}>
+                            Xóa
                         </button>
                     </div>
                 </div>

@@ -50,12 +50,12 @@
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    font-size: 14px;
 }
 
 .track-container h2 {
     color: #333;
     font-size: 24px;
-    margin-bottom: 20px;
 }
 
 .track-container p {
@@ -95,7 +95,9 @@
 .track-container button:hover {
     background-color: #45a049;
 }
-
+.tracking-info {
+    height: 120px;
+}
 .tracking-header,
 .tracking-info {
     display: grid;
@@ -106,7 +108,7 @@
 
     .edit {
         background-color: blue;
-        width: 100px;
+        width: 70px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -120,7 +122,20 @@
 
     .delete {
         background-color: red;
-        width: 100px;
+        width: 70px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .view {
+        background-color: rgb(255, 153, 0);
+        width: 70px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -157,7 +172,6 @@
     width: 100px;
 }
 
-/* Hover effect */
 .action-button:hover,
 .delete:hover {
     background-color: #0056b3;
@@ -165,12 +179,18 @@
 
 .tracking-header {
     font-weight: bold;
-    background-color: #f2f2f2;
+    background-color: #606eca;
+    margin-top: 20px;
 }
 
 .tracking-info img {
     max-width: 70px;
     border-radius: 4px;
+}
+.divbussiness {
+    font-weight: bold;
+    padding: 10px;
+    color: #333;
 }
 
 /* NEWPRODUCT */
@@ -232,5 +252,3 @@ textarea {
     height: 20px;
     margin-right: 10px;
 }
-
-/* CustomModal.css */

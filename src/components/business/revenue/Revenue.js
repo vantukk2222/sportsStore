@@ -55,13 +55,13 @@
 // };
 
 // export default Revenue;
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Revenue = () => {
     const [trackingInfo, setTrackingInfo] = useState([
         {
-            name_product: "giày",
-            img: "track1.png",
+            name_product: 'giày',
+            img: 'track1.png',
             total: '30,000 VND',
             orderNumber: '123456',
             status: 'Đã giao hàng',
@@ -69,8 +69,8 @@ const Revenue = () => {
             estimatedDelivery: '10 Tháng 12, 2023',
         },
         {
-            name_product: "áo",
-            img: "track2.png",
+            name_product: 'áo',
+            img: 'track2.png',
             total: '50,000 VND',
             orderNumber: '789012',
             status: 'Chưa giao hàng',
@@ -141,7 +141,6 @@ const Revenue = () => {
                     <div>Trạng thái</div>
                     <div>Địa chỉ</div>
                     <div>Ngày giao hàng</div>
-
                 </div>
 
                 {trackingInfo.map((product, index) => (
@@ -155,7 +154,6 @@ const Revenue = () => {
                         <div>{product.status}</div>
                         <div>{product.estimatedDelivery}</div>
                         <div>{product.estimatedDelivery}</div>
-
                     </div>
                 ))}
             </div>

@@ -38,7 +38,7 @@ const Sale = () => {
             <h2>Quản lý sự kiện</h2>
 
             <Link to="/addsale">
-                <button className="track-container button">Thêm sự kiện</button>
+                <button className="submit">Thêm sự kiện</button>
             </Link>
             <div className="tracking-header">
                 <div>Mã sự kiện</div>
@@ -47,7 +47,7 @@ const Sale = () => {
                 <div>Giảm giá</div>
                 <div>Từ ngày</div>
                 <div>Đến ngày</div>
-                <div>Action</div>
+                <div>Thao tác</div>
             </div>
 
             {eventInfo.map((event, index) => (
@@ -62,10 +62,10 @@ const Sale = () => {
                     <div>{event.toDate}</div>
                     <div>
                         <Link to="/viewsale">
-                            <button className="action-button">Xem</button>
+                            <button className="view">Xem</button>
                         </Link>
                         <Link to="/editsale">
-                            <button className="action-button">Sửa</button>
+                            <button className="edit">Sửa</button>
                         </Link>
                     </div>
                 </div>
