@@ -5,6 +5,7 @@ import './headerbusiness.css';
 import logoImage from './logooo.png';
 const HeaderBusiness = () => {
     const user = JSON.parse(localStorage.getItem('User'));
+   // console.log(user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleLogout = (e) => {

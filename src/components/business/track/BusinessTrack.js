@@ -12,9 +12,9 @@ const BusinessTrack = () => {
     const dispatch = useDispatch();
     const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
-    console.log(dataBill);
     useEffect(() => {
         dispatch(listBillById(user.id, dataRole));
+        console.log(dataBill);
     }, []);
     const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
     localStorage.setItem('State', JSON.stringify(orderstate));

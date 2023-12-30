@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { api } from './url';
 const putConfirmSell = async (id, sell, authToken) => {
-    console.log(`${api}bill/confirm-sell/true`, id, authToken);
+    console.log(`${api}bill/confirm-sell/${sell}`, id, authToken);
     try {
         await axios({
             method: 'put',

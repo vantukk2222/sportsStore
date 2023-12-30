@@ -4,26 +4,23 @@ import MyOrder from './MyOrder';
 import './Order.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
-import { useLocation } from 'react-router';
 
 const Order = () => {
-    const [orderstate, setOrderstate] = useState(5);
+    const [orderstate, setOrderstate] = useState(() => {
+        const state = JSON.parse(localStorage.getItem('State'));
+        return state;
+    });
     const user = JSON.parse(localStorage.getItem('User'));
-    const location = useLocation();
     const dispatch = useDispatch();
     const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
-    const [filteredOrders, setFilteredOrders] = useState([]);
-    //const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
     useEffect(() => {
-        const id = parseInt(location.pathname.slice(location.pathname.lastIndexOf('/') + 1));
-        dispatch(listBillById(user.id, dataRole)).then(setOrderstate(id));
-        // console.log(dataBill, orderstate);
-        setFilteredOrders(orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate));
+        dispatch(listBillById(user.id, dataRole));
     }, []);
-    useEffect(() => {
-        setFilteredOrders(orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate));
-    }, [orderstate]);
+    console.log(orderstate, dataBill);
+    const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
+    console.log(filteredOrders);
+    localStorage.setItem('State', JSON.stringify(orderstate));
     return (
         <>
             <section className="shop background">

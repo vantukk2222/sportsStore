@@ -6,20 +6,19 @@ import putConfirmReceive from '~/API/putConfirmReceive';
 import { useDispatch, useSelector } from 'react-redux';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 import { useNavigate } from 'react-router';
-const MyOrder = ({ orders, orderstate }) => {
+const MyOrder = ({ orders }) => {
     //   console.log(orders);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('User'));
-    const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     const navigate = useNavigate();
     const handleSm = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         putConfirmReceive(id, authToken)
             .then(dispatch(listBillById(user.id, dataRole)))
-            .then(() => window.location.assign(`/order/${orderstate}`));
+            .then(() => window.location.reload());
     };
     const hanldeRePay = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));

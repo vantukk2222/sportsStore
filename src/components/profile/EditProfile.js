@@ -107,7 +107,7 @@ const EditProfile = () => {
             if (response.ok) {
                 const data = await response.json();
                 setEditedUser({ ...editedUser, image_url: data.secure_url });
-             //   console.log('check data ', data);
+                //   console.log('check data ', data);
             } else {
                 console.error('Error uploading image to Cloudinary');
             }
@@ -122,7 +122,34 @@ const EditProfile = () => {
             const authToken = JSON.parse(localStorage.getItem('authToken'));
 
             if (!validationError) {
-                putUser(s.id, editedUser, authToken);
+                putUser(s.id, editedUser, authToken)
+                    .then(() => {
+                        const fetchData = async () => {
+                            try {
+                                setLoading(true);
+                                const user = JSON.parse(localStorage.getItem('User'));
+                                let response = await getUnAuth(`user/get-by-username/${user.un}`);
+                                if (!response) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                localStorage.setItem(
+                                    'User',
+                                    JSON.stringify({
+                                        id: response.id,
+                                        un: response.username,
+                                        name: response.name,
+                                    }),
+                                );
+                                //  console.log(response);
+                            } catch (error) {
+                                setError(error);
+                            } finally {
+                                setLoading(false);
+                            }
+                        };
+                        fetchData();
+                    })
+                    .then(() => window.location.reload()); 
             } else {
                 console.error('Validation errors. Please correct the fields.');
             }

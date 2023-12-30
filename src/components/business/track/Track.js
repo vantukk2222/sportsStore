@@ -12,6 +12,11 @@ const Track = ({ orders }) => {
             .then(dispatch(listBillById(user.id, dataRole)))
             .then(() => window.location.reload());
     };
+    const handleNotSell = (id) => {
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        putConfirmSell(id, 'false', authToken).then(dispatch(listBillById(user.id, dataRole)));
+        //   .then(() => window.location.reload());
+    };
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
         <div className="order-list">
@@ -51,7 +56,9 @@ const Track = ({ orders }) => {
                                             <button onClick={() => handleSell(order.id)} className="action-button">
                                                 Xác nhận
                                             </button>
-                                            <button className="delete">Xóa</button>
+                                            <button className="delete" onClick={() => handleNotSell(order.id)}>
+                                                Xóa
+                                            </button>
                                         </div>
                                     )}
                                 </div>

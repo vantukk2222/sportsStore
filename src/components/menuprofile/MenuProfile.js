@@ -13,7 +13,7 @@ const MenuProfile = () => {
                     </label>
                     {dataRole[0] != 'ROLE_BUSINESS' && (
                         <label className="lableprofile">
-                            <Link to="/order/5">🔔Đơn hàng</Link>
+                            <Link to="/order">🔔Đơn hàng</Link>
                         </label>
                     )}
                 </div>
