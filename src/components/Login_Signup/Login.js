@@ -14,6 +14,7 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const store = JSON.parse(localStorage.getItem('authToken'));
+    localStorage.setItem('State', JSON.stringify(5));
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     const dispatch = useDispatch();
     useEffect(() => {

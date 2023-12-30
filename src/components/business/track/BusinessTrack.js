@@ -4,9 +4,10 @@ import Track from './Track';
 import { useDispatch, useSelector } from 'react-redux';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 const BusinessTrack = () => {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [orderstate, setOrderstate] = useState(5);
+    const [orderstate, setOrderstate] = useState(() => {
+        const state = JSON.parse(localStorage.getItem('State'));
+        return state;
+    });
     const user = JSON.parse(localStorage.getItem('User'));
     const dispatch = useDispatch();
     const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
@@ -16,6 +17,7 @@ const BusinessTrack = () => {
         dispatch(listBillById(user.id, dataRole));
     }, []);
     const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
+    localStorage.setItem('State', JSON.stringify(orderstate));
     return (
         <>
             <section className="shop background">

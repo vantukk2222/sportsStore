@@ -34,7 +34,7 @@ const CRoutes = [
     { path: '/searchProduct/:name', component: SearchProduct, layout: defaultLayout },
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
-    { path: '/order', component: Order, layout: defaultLayout },
+    { path: '/order/:state', component: Order, layout: defaultLayout },
 ];
 const BRoutes = [
     { path: '/', component: Business, layout: layout_bussiness },

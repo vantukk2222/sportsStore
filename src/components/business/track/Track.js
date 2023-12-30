@@ -6,7 +6,6 @@ const Track = ({ orders }) => {
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('User'));
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
-    const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
     const handleSell = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         putConfirmSell(id, 'true', authToken)

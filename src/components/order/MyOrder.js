@@ -6,8 +6,8 @@ import putConfirmReceive from '~/API/putConfirmReceive';
 import { useDispatch, useSelector } from 'react-redux';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 import { useNavigate } from 'react-router';
-const MyOrder = ({ orders }) => {
-    console.log(orders);
+const MyOrder = ({ orders, orderstate }) => {
+    //   console.log(orders);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const MyOrder = ({ orders }) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         putConfirmReceive(id, authToken)
             .then(dispatch(listBillById(user.id, dataRole)))
-            .then(() => window.location.reload());
+            .then(() => window.location.assign(`/order/${orderstate}`));
     };
     const hanldeRePay = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
@@ -73,11 +73,11 @@ const MyOrder = ({ orders }) => {
                 orders?.map((orders) => {
                     let date = new Date(orders[0].updated_at);
                     date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-                    console.log(orders);
+                    //console.log(orders);
                     return (
                         <div key={orders[0].id} className="order-container">
                             {orders.map((order) => (
-                                <>
+                                <div key={order.id}>
                                     <h3 className="order-header">{order.name}</h3>
                                     <p className="date-text">Ngày mua: {date}</p>
                                     <ul className="item-list">
@@ -100,7 +100,7 @@ const MyOrder = ({ orders }) => {
                                             </li>
                                         ))}
                                     </ul>
-                                </>
+                                </div>
                             ))}
                             <div className="total-state-container">
                                 <p className="total-text">Tổng tiền: ${orders.reduce((t, e) => t + e.total, 0)}</p>
