@@ -14,8 +14,9 @@ const Track = ({ orders }) => {
     };
     const handleNotSell = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
-        putConfirmSell(id, 'false', authToken).then(dispatch(listBillById(user.id, dataRole)));
-        //   .then(() => window.location.reload());
+        putConfirmSell(id, 'false', authToken)
+            .then(dispatch(listBillById(user.id, dataRole)))
+            .then(() => window.location.reload());
     };
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
