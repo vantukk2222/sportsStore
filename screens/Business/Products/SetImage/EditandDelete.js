@@ -90,6 +90,10 @@ const EditandDelete = (props) => {
 
 
     }, [imageState?.dataImage])
+    if (productinforState?.error) {
+        toastError('Lổi', 'Kết nối lại');
+        navigation.goBack();
+    }
     console.log(product);
     //useEffect(()=>Ơ)
     const createImageObject = (name, url, is_main) => {

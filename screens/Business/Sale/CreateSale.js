@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../../constants';
 import Loading from '../../../components/loading';
+import { isValidInteger } from '../../../utilies/validation';
 const ProductForm = (props) => {
     const {
         saleState,
@@ -26,7 +27,7 @@ const ProductForm = (props) => {
         content: '',
         url: '',
     });
-
+    const [validateDiscount, setValidateDiscount] = useState('')
 
     const [showStartDatePicker, setShowStartDatePicker] = useState(false);
     const [showEndDatePicker, setShowEndDatePicker] = useState(false);
@@ -50,7 +51,10 @@ const ProductForm = (props) => {
 
     const handleInputChange = (field, value) => {
         console.log(field, value);
+
+
         setFormData({ ...formData, [field]: value });
+
     };
 
     const handleSubmit = () => {
@@ -74,78 +78,105 @@ const ProductForm = (props) => {
         }
         console.log('Form data submitted:', formData);
     };
-    if(loading)
-    {
-        <Loading/>
+    if (loading) {
+        <Loading />
     }
-    if(error)
-    {
+    if (error) {
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;
+        // return <Loading />;
     }
     // console.log(data?.id);
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.field}>ID Business {data?.id}</Text>
-            <Text style={styles.field}>Mức giảm giá (từ 1% đến 100%)</Text>
-            <TextInput
-                style={styles.input}
-                value={formData.discount.toString()}
-                onChangeText={(value) => handleInputChange('discount', value)}
-                keyboardType="numeric"
+            <Text style={styles.header}>Thêm sự kiện</Text>
+            <View style={{ height: 1, backgroundColor: 'gray' }}></View>
+            {/* <Text style={styles.field}>ID Business {data?.id}</Text> */}
+            <View style={styles.inputView}>
+                <Text style={styles.field}>Mức giảm giá (từ 1% đến 100%)</Text>
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    value={formData.discount.toString()}
+                    onChangeText={(value) => {
+                        // value = parseInt(value, 10)
+                        if (isValidInteger(value) && parseInt(value, 10) <= 100 || value === null) {
+                            setValidateDiscount()
+                            handleInputChange('discount', value);
+                            //return;
+                        } else {
+                            setValidateDiscount('Mức giảm giá phải là số nguyên và nhỏ hơn 100%')
+                            handleInputChange('discount', '');
+                        }
+                    }}
+                    keyboardType="numeric"
 
-            />
-
-            <Text style={styles.field}>Start Date</Text>
-            <Button
-                title={formData.started_at.toISOString().split('T')[0]}
-                onPress={() => setShowStartDatePicker(true)}
-            />
-            {showStartDatePicker && (
-                <DateTimePicker
-                    value={formData.started_at}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
-                    onChange={(event, selectedDate) =>
-                        handleDateChange({ type: 'set', target: 'started_at' }, selectedDate)
-                    }
                 />
-            )}
-
-            <Text style={styles.field}>End Date</Text>
-            <Button
-                title={formData.ended_at.toISOString().split('T')[0]}
-                onPress={() => setShowEndDatePicker(true)}
-            />
-            {showEndDatePicker && (
-                <DateTimePicker
-                    value={formData.ended_at}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
-                    onChange={(event, selectedDate) =>
-                        handleDateChange({ type: 'set', target: 'ended_at' }, selectedDate)
-                    }
+                <Text style={{
+                    marginVertical: 5,
+                    padding: 2,
+                    color: 'red',
+                    fontWeight: '300',
+                    fontSize: 14
+                }}>{validateDiscount}</Text>
+            </View>
+            <View style={styles.inputView}>
+                <Text style={styles.field}>Ngày bắt đầu: </Text>
+                <Button
+                    title={formData.started_at.toISOString().split('T')[0]}
+                    onPress={() => setShowStartDatePicker(true)}
                 />
-            )}
+                {showStartDatePicker && (
+                    <DateTimePicker
+                        value={formData.started_at}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={(event, selectedDate) =>
+                            handleDateChange({ type: 'set', target: 'started_at' }, selectedDate)
+                        }
+                    />
+                )}
 
-            <Text style={styles.field}>Name</Text>
-            <TextInput
-                style={styles.input}
-                value={formData.name}
-                onChangeText={(value) => handleInputChange('name', value)}
-            />
-
-            <Text style={styles.field}>Content</Text>
-            <TextInput
-                style={styles.input}
-                value={formData.content}
-                onChangeText={(value) => handleInputChange('content', value)}
-                multiline
-            />
-
-            <Text style={styles.field}>URL</Text>
+                <Text style={styles.field}>Ngày kết thúc: </Text>
+                <Button
+                    title={formData.ended_at.toISOString().split('T')[0]}
+                    onPress={() => setShowEndDatePicker(true)}
+                />
+                {showEndDatePicker && (
+                    <DateTimePicker
+                        value={formData.ended_at}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={(event, selectedDate) =>
+                            handleDateChange({ type: 'set', target: 'ended_at' }, selectedDate)
+                        }
+                    />
+                )}
+            </View>
+            <View style={styles.inputView}>
+                <Text style={styles.field}>Tên sự kiện</Text>
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    value={formData.name}
+                    onChangeText={(value) => handleInputChange('name', value)}
+                />
+            </View>
+            <View style={styles.inputView}>
+                <Text style={styles.field}>Nội dung</Text>
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    value={formData.content}
+                    onChangeText={(value) => handleInputChange('content', value)}
+                    multiline
+                />
+            </View>
+            <Text style={styles.field}>Ảnh</Text>
             {/* <TextInput
                 style={styles.input}
                 value={formData.url}
@@ -169,7 +200,7 @@ const ProductForm = (props) => {
                 {saleState?.loadingSale ? <ActivityIndicator size="large" color={colors.success} /> :
                     <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Tạo sự kiện</Text>}
             </TouchableOpacity>
-        </ScrollView>
+        </ScrollView >
     );
 };
 
@@ -177,14 +208,14 @@ const styles = StyleSheet.create({
     container: {
         padding: 16,
     },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 16,
-        padding: 8,
-        color: 'black'
-    },
+    // input: {
+    //     height: 40,
+    //     borderColor: 'gray',
+    //     borderWidth: 1,
+    //     marginBottom: 16,
+    //     padding: 8,
+    //     color: 'black'
+    // },
     field: {
         marginBottom: 10,
         padding: 2,
@@ -192,7 +223,24 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 16
 
-    }
+    },
+    input: {
+        marginTop: 10,
+        borderRadius: 8,
+    },
+    inputView: {
+        padding: 10,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+        marginVertical: 10
+    },
+    header: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 15,
+        color: 'black',
+
+    },
 });
 const mapStateToProps = (state) => ({
     saleState: state.createNewSale

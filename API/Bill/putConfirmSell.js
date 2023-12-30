@@ -1,5 +1,6 @@
 import axios from "axios";
 import { urlAPI } from "../apiAddress";
+import { toastError } from "../../components/toastCustom";
 const putConfirmSell = async (isConfirm, listSell, authToken) => {
 
     //var authToken = await asyncStorage.getAuthToken();
@@ -18,7 +19,8 @@ const putConfirmSell = async (isConfirm, listSell, authToken) => {
         console.log(' status response confirm ?', response.status);
         return response.status;
     } catch (error) {
-        console.error("error put change state", error.response);
+        // console.error("error put change state", error.response);
+        toastError("Lổi", "Bạn cần đăng nhập lại")
         throw error;
     }
 };

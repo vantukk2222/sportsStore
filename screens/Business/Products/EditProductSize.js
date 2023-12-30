@@ -12,6 +12,7 @@ import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer
 import { editProductSizes, resetEditProductSize } from '../../../redux/reducers/productReducer/ProductSize/editProductSize';
 import Loading from '../../../components/loading';
 import { deleteProductSize, resetDeleteSize } from '../../../redux/reducers/Size/DeleteSize';
+import { isValidInteger } from '../../../utilies/validation';
 
 
 const EditProductSize = (props) => {
@@ -38,6 +39,9 @@ const EditProductSize = (props) => {
     }, [productinforId])
     const [sizes, setSizes] = useState([])
     const [hasSizes, setHasSizes] = useState(false);
+
+    const [validatePrice, setValidatePrice] = useState('');
+    const [validateQuantity, setValidateQuantity] = useState('');
     useEffect(() => {
         setSizes(getProductSizeState?.dataGetProductSize)
     }, [getProductSizeState?.dataGetProductSize])
@@ -121,9 +125,25 @@ const EditProductSize = (props) => {
                     placeholder={size?.price.toString()}
                     placeholderTextColor={'gray'}
                     value={size.price}
-                    onChangeText={(value) => handleSizeChange(index, 'price', value)}
+                    onChangeText={(value) => {
+                        if (isValidInteger(value) || value == null) {
+                            setValidatePrice()
+                            handleSizeChange(index, 'price', value)
+                        } else {
+                            setValidatePrice('Mức giá phải là số nguyên')
+                            handleSizeChange(index, 'price', '')
+                        }
+                    }}
                     keyboardType='numeric'
                 />
+                {validatePrice && <Text style={{
+                    marginHorizontal: 5,
+                    padding: 2,
+                    color: 'red',
+                    fontWeight: '300',
+                    fontSize: 14
+                }}>{validatePrice}</Text>
+                }
                 <TextInput
                     style={styles.input}
                     placeholder={size?.size || 'Freesize'}
@@ -136,26 +156,50 @@ const EditProductSize = (props) => {
                     placeholder={size?.quantity.toString()}
                     placeholderTextColor={'gray'}
                     value={size?.quantity}
-                    onChangeText={(value) => handleSizeChange(index, 'quantity', value)}
+                    onChangeText={(value) => {
+                        // console.log(value);
+                        if (isValidInteger(value) || value == null) {
+                            setValidateQuantity()
+                            handleSizeChange(index, 'quantity', value)
+                        } else {
+                            setValidateQuantity('Số lượng phải là số nguyên')
+                            handleSizeChange(index, 'quantity', '')
+                        }
+                    }
+                    }
                     keyboardType='numeric'
                 />
+                {validateQuantity &&
+                    <Text style={{
+                        marginHorizontal: 5,
+                        padding: 2,
+                        color: 'red',
+                        fontWeight: '300',
+                        fontSize: 14
+                    }}>{validateQuantity}</Text>
+                }
             </View>
 
         ))
     }
 
     const createSizeObject = (price, size, quantity) => {
-        return {
-            id_product_information: productinforId,
-            price: price || 1,
-            size: size || 'FreeSize',
-            quantity: quantity || 1,
-        };
+        if (price > 0 && size && quantity > 0) {
+            return {
+                id_product_information: productinforId,
+                price: price || 1,
+                size: size || 'FreeSize',
+                quantity: quantity || 1,
+            };
+        }
+        return false;
     };
     const handleSaveSizes = () => {
         // TODO: Gửi sizes lên server hoặc xử lý theo yêu cầu của bạn
         sizes.map(item => {
-            editProductSizes(item.id, createSizeObject(item.price, item.size, item.quantity));
+            if (createSizeObject(item.price, item.size, item.quantity)) {
+                editProductSizes(item.id, createSizeObject(item.price, item.size, item.quantity));
+            }
         });
         console.log('Saved Sizes:', sizes);
         setHasSizes(true)

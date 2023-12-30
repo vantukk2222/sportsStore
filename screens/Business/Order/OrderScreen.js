@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         marginRight: 10,
-        flex: 1
+        flex: 1,
         //backgroundColor: 'red'
     },
     scrollViewContainer: {

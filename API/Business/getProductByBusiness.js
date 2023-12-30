@@ -2,6 +2,7 @@ import axios from "axios";
 import { asyncStorage } from "../../utilies/asyncStorage";
 import { urlAPI } from "../apiAddress";
 const getProductByBusiness = async (idBusi, page, pageSize, sort, desc, state) => {
+    // console.log(idBusi, page, pageSize, sort, desc, state);
     try {
         const response = await axios.get(urlAPI + `/api/v1/product-information/find-by-business/${idBusi}`, {
             // headers: {
@@ -21,7 +22,7 @@ const getProductByBusiness = async (idBusi, page, pageSize, sort, desc, state) =
 
         return response.data;
     } catch (error) {
-        console.error("Error get product by business: ", error.response.data.message);
+        console.error("Error get product by business: ", error.response);
         throw error;
     }
 };

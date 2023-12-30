@@ -7,11 +7,11 @@ export const isValidEmail = (mail) => {
 
 export function isValidPassword(pw) {
 
-  return /[A-Z]/       .test(pw) &&
-         /[a-z]/       .test(pw) &&
-         /[0-9]/       .test(pw) &&
-         /[^A-Za-z0-9]/.test(pw) &&
-         pw.length > 4;
+  return /[A-Z]/.test(pw) &&
+    /[a-z]/.test(pw) &&
+    /[0-9]/.test(pw) &&
+    /[^A-Za-z0-9]/.test(pw) &&
+    pw.length > 4;
 
 }
 export const formatMoneyVND = (amount) => {
@@ -28,3 +28,11 @@ export const isExpired = (endDate) => {
   const expirationDate = moment(endDate);
   return expirationDate.isBefore(currentDate);
 };
+export function isValidDouble(value) {
+  // Kiểm tra xem giá trị có phải là số thực hay không
+  return /^\d+(\.\d+)?$/.test(value);
+}
+
+export function isValidInteger(value) {
+  return /^\d+$/.test(value);
+}

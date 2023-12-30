@@ -10,6 +10,7 @@ import { toastError } from '../../components/toastCustom';
 const SellerHomeScreen = () => {
 
     const { data, loading, error } = useSelector((state) => state.userData)
+    console.log(data)
     // Giả sử danh sách sản phẩm của người bán
     const tabs = [
         {
@@ -35,12 +36,12 @@ const SellerHomeScreen = () => {
 
             //image: require('./images/product2.jpg'),
         },
-        {
-            id: '4',
-            name: 'Phản hồi',
-            iconName: 'comments',
-            //image: require('./images/product2.jpg'),
-        },
+        // {
+        //     id: '4',
+        //     name: 'Phản hồi',
+        //     iconName: 'comments',
+        //     //image: require('./images/product2.jpg'),
+        // },
         // ...Thêm sản phẩm khác
     ];
 
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: 10,
         color: 'white',
-
+        padding: 10
     },
     productContainer: {
         flex: 1,

@@ -81,8 +81,8 @@ const CreateNewProduct = () => {
             attribute: attribute || '',
             id_business: id_business,
             id_sale: null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
+            // created_at: new Date().toISOString(),
+            // updated_at: new Date().toISOString(),
             id_categorySet: id_categorySet || [], // Extracting keys from selectedCategories
             id_imageSet: id_imageSet || [], // You may set this value accordingly
         };
@@ -166,39 +166,52 @@ const CreateNewProduct = () => {
     }
     if (errorCate || errorImage || errorProductInfor || error) {
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;
+        navigation.goBack();
+        // return <Loading />;
     }
 
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Thêm sản phẩm</Text>
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Tên sản phẩm:</Text>
-            <TextInput
-                color={colors.denNhe}
-                placeholderTextColor={'gray'}
-                value={name}
-                onChangeText={setName}
-                placeholder="Nhập tên sản phẩm"
-            />
+            <View style={{ height: 1, backgroundColor: 'gray' }}></View>
+            <View style={styles.inputView}>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Tên sản phẩm:</Text>
 
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Chi tiết:</Text>
-            <TextInput
-                color={colors.denNhe}
-                placeholderTextColor={'gray'}
-                value={detail}
-                onChangeText={setDetail}
-                placeholder="Nhập chi tiết sản phẩm"
-                style={{ height: 90 }}
-            />
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Thuộc tính:</Text>
-            <TextInput
-                color={colors.denNhe}
-                placeholderTextColor={'gray'}
-                value={attribute}
-                onChangeText={setAttribute}
-                placeholder="Thuộc tính sản phẩm"
-                style={{ height: 90 }}
-            />
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    placeholderTextColor={'gray'}
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="Nhập tên sản phẩm"
+                />
+            </View>
+            <View style={styles.inputView}>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Chi tiết:</Text>
+                <TextInput
+                    color={colors.denNhe}
+                    placeholderTextColor={'gray'}
+                    value={detail}
+                    onChangeText={setDetail}
+                    placeholder="Nhập chi tiết sản phẩm"
+                    backgroundColor={'white'}
+                    style={styles.input}
+                />
+            </View>
+            <View style={styles.inputView}>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Thuộc tính:</Text>
+                <TextInput
+                    backgroundColor={'white'}
+                    style={styles.input}
+                    color={colors.denNhe}
+                    placeholderTextColor={'gray'}
+                    value={attribute}
+                    onChangeText={setAttribute}
+                    placeholder="Thuộc tính sản phẩm"
+                //  style={{ height: 90 }}
+                />
+            </View>
             {/* <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Doanh nghiệp ID: {id_business}</Text> */}
 
             <Text style={{ color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10 }}>Danh mục:</Text>
@@ -243,7 +256,7 @@ const CreateNewProduct = () => {
                         setSelected={(val) => {
                             //setSelectedCParent(val)
                             // { console.log(searchByKey(parentArray, selectedCParent), searchByKey(childArray, val)); }
-                            addToArrIfKeyNotExists(selectedCategories, searchByKey(parentArray, selectedCParent))
+                            // addToArrIfKeyNotExists(selectedCategories, searchByKey(parentArray, selectedCParent))
                             addToArrIfKeyNotExists(selectedCategories, searchByKey(childArray, val))
                         }}
                         data={childArray}
@@ -277,15 +290,15 @@ const CreateNewProduct = () => {
                     marginTop: 5,
                     height: 50,
                     width: 200,
-                    backgroundColor: 'skyblue',
-                    borderRadius: 20,
+                    backgroundColor: '#3144BA',
+                    borderRadius: 8,
                     justifyContent: 'center',
                     alignItems: 'center',
                     alignSelf: 'center',
                     marginBottom: 20,
                 }} >
                 {loadingProductInfor ? <ActivityIndicator size="large" color={colors.success} /> :
-                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Tạo sản phẩm</Text>}
+                    <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Tạo sản phẩm</Text>}
             </TouchableOpacity>
         </ScrollView >
     );
@@ -303,9 +316,19 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 25,
+        marginBottom: 15,
         color: 'black',
 
+    },
+    input: {
+        marginTop: 10,
+        borderRadius: 8,
+    },
+    inputView: {
+        padding: 10,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+        marginVertical: 10
     },
 })
 
