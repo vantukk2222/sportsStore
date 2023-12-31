@@ -1,23 +1,16 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const EditProductModal = ({ product, onClose, onSave }) => {
     const [editedProduct, setEditedProduct] = useState({
         name_product: '',
         set_img: [],
-        total: '',
+        priceSizePairs: [{ price: '', size: '' }],
         category: '',
         sale: '',
-        size: '',
         detail: '',
     });
-
-    // useEffect(() => {
-    //     if (product) {
-    //         setEditedProduct({ ...product });
-    //     }
-    // }, [product]);
 
     const handleSaveProduct = () => {
         onSave(editedProduct);
@@ -48,6 +41,23 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                 set_img: updatedImages,
             };
         });
+    };
+
+    const handleAddPriceSizePair = () => {
+        setEditedProduct((prevProduct) => ({
+            ...prevProduct,
+            priceSizePairs: [...prevProduct.priceSizePairs, { price: '', size: '' }],
+        }));
+    };
+
+    const handlePriceSizeChange = (index, field, value) => {
+        const updatedPairs = [...editedProduct.priceSizePairs];
+        updatedPairs[index][field] = value;
+
+        setEditedProduct((prevProduct) => ({
+            ...prevProduct,
+            priceSizePairs: updatedPairs,
+        }));
     };
 
     return (
@@ -99,16 +109,32 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     )}
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="total">Giá tiền:</label>
-                    <input
-                        type="text"
-                        id="total"
-                        name="total"
-                        value={editedProduct.total}
-                        onChange={handleInputChange}
-                    />
+                <div className="">
+                    {editedProduct.priceSizePairs.map((pair, index) => (
+                        <div className="form-group" key={index}>
+                            <input
+                                className="inputform"
+                                type="text"
+                                style={{ marginLeft: '150px' }}
+                                placeholder="Giá tiền"
+                                value={pair.price}
+                                onChange={(e) => handlePriceSizeChange(index, 'price', e.target.value)}
+                            />
+                            <input
+                                className="inputform"
+                                type="text"
+                                style={{}}
+                                placeholder="Size"
+                                value={pair.size}
+                                onChange={(e) => handlePriceSizeChange(index, 'size', e.target.value)}
+                            />
+                        </div>
+                    ))}
                 </div>
+                <button onClick={handleAddPriceSizePair} style={{ marginLeft: '150px', marginBottom: '20px' }}>
+                    +
+                </button>
+
                 <div className="form-group">
                     <label htmlFor="sale">Mã giảm giá:</label>
                     <input type="text" id="sale" name="sale" value={editedProduct.sale} onChange={handleInputChange} />
@@ -133,11 +159,6 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                         value={editedProduct.detail}
                         onChange={handleInputChange}
                     />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="size">SIZE:</label>
-                    <input type="text" id="size" name="size" value={editedProduct.size} onChange={handleInputChange} />
                 </div>
 
                 <div className="modal-buttons">
