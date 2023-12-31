@@ -7,7 +7,7 @@ import moment from 'moment';
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
 
-const ListOrder = ({ bills, isConfirm = false, stateBill = 3, onConfirm, onDelete }) => {
+const ListOrder = ({ bills = [], isConfirm = false, stateBill = 3, onConfirm, onDelete }) => {
     const formattedDate = (originalDateString) => {
         return moment(originalDateString).format('DD-MM-YYYY');
     }
@@ -51,7 +51,7 @@ const ListOrder = ({ bills, isConfirm = false, stateBill = 3, onConfirm, onDelet
                 tintColors={{ true: 'green', false: 'gray' }}
             />}
             <TouchableOpacity style={styles.column}
-                onPress={() => { console.log(item); }}>
+                onPress={() => { navigation.navigate("Orderdetail", { billDetail: item }) }}>
                 <Text style={{ color: 'black' }}>{item.name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={{ color: 'blue', }}>Tạo lúc : {formattedDate(item.created_at)}</Text>

@@ -7,23 +7,26 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { startMapper } from 'react-native-reanimated';
 import { createProductSizes, resetProductSize } from '../../../redux/reducers/productReducer/ProductSize/createProductSize';
 import { removerProductInfor } from '../../../redux/reducers/productReducer/deleteProductInformation';
+import { isValidInteger } from '../../../utilies/validation';
 
 const CreateSize = ({ navigation }, props) => {
     const route = useRoute();
     const id_productinformation = route.params?.id_productinformation || null;
     const isEdit = route.params?.isEdit || false;
+    const [validatePrice, setValidatePrice] = useState('')
+    const [validateQuantity, setValidateQuantity] = useState('')
     // const { dataProductSize, loadingProductSize, errorProductSize } = useSelector((state) => state.createProductSize)
     const {
         initialState,
         initialDeleteProState,
     } = props;
 
-    console.log("CreateSize", id_productinformation);
+    // console.log("CreateSize", id_productinformation);
     const dispatch = useDispatch();
     const [hasSizes, setHasSizes] = useState(false);
 
     const [sizes, setSizes] = useState([
-        { price: 1, size: 'FreeSize', quantity: 1 }
+        { price: 0, size: 'FreeSize', quantity: 0 }
     ]);
     useEffect(() => {
         return () => {
@@ -44,6 +47,10 @@ const CreateSize = ({ navigation }, props) => {
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+
+            if (hasSizes) {
+                navigation.navigate('BusinessBottomNavigator')
+            }
             if (!hasSizes && !isEdit) {
                 // Hiển thị cảnh báo nếu không có kích thước
                 Alert.alert(
@@ -89,18 +96,26 @@ const CreateSize = ({ navigation }, props) => {
 
     };
     const createSizeObject = (price, size, quantity) => {
-        return {
-            id_product_information: id_productinformation,
-            price: price || 1,
-            size: size || 'FreeSize',
-            quantity: quantity || 1,
-        };
+        if (price > 0 && size && quantity > 0) {
+            // console.log(price, size, quantity);
+            return {
+                id_product_information: id_productinformation,
+                price: price || 1,
+                size: size || 'FreeSize',
+                quantity: quantity || 1,
+            };
+        }
+        return false;
+
     };
     const handleSaveSizes = () => {
         // TODO: Gửi sizes lên server hoặc xử lý theo yêu cầu của bạn
         sizes.map(item => {
             const proD = createSizeObject(item.price, item.size, item.quantity);
-            dispatch(createProductSizes(proD))
+            if (proD) {
+                console.log('proD', proD);
+                dispatch(createProductSizes(proD))
+            }
         });
         console.log('Saved Sizes:', sizes);
         setHasSizes(true)
@@ -125,7 +140,7 @@ const CreateSize = ({ navigation }, props) => {
     }
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.header}>Tạo Size cho Product Information</Text>
+            <Text style={styles.header}>Tạo kích thước</Text>
 
             {sizes.map((size, index) => (
                 <View key={index} style={styles.sizeContainer}>
@@ -137,12 +152,30 @@ const CreateSize = ({ navigation }, props) => {
                     </TouchableOpacity>
                     <TextInput
                         style={styles.input}
-                        placeholder="Price"
+                        placeholder="Giá"
                         placeholderTextColor={'gray'}
                         value={size.price}
-                        onChangeText={(value) => handleSizeChange(index, 'price', value)}
+                        onChangeText={(value) => {
+                            // console.log(value);
+                            if (isValidInteger(value) || value == null) {
+                                setValidatePrice()
+                                handleSizeChange(index, 'price', value)
+                            } else {
+                                setValidatePrice('Mức giá phải là số nguyên')
+                                handleSizeChange(index, 'price', '')
+                            }
+                        }}
                         keyboardType='numeric'
                     />
+                    {validatePrice &&
+                        <Text style={{
+                            marginHorizontal: 5,
+                            padding: 2,
+                            color: 'red',
+                            fontWeight: '300',
+                            fontSize: 14
+                        }}>{validatePrice}</Text>
+                    }
                     <TextInput
                         style={styles.input}
                         placeholder={size.size}
@@ -151,22 +184,42 @@ const CreateSize = ({ navigation }, props) => {
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Quantity"
+                        placeholder="Số lượng"
                         placeholderTextColor={'gray'}
                         value={size.quantity}
-                        onChangeText={(value) => handleSizeChange(index, 'quantity', value)}
+                        onChangeText={(value) => {
+                            {
+                                // console.log(value);
+                                if (isValidInteger(value) || value == null) {
+                                    setValidateQuantity()
+                                    handleSizeChange(index, 'quantity', value)
+                                } else {
+                                    setValidateQuantity('Số lượng phải là số nguyên')
+                                    handleSizeChange(index, 'quantity', '')
+                                }
+                            }
+                        }}
                         keyboardType='numeric'
                     />
+                    {validateQuantity &&
+                        <Text style={{
+                            marginHorizontal: 5,
+                            padding: 2,
+                            color: 'red',
+                            fontWeight: '300',
+                            fontSize: 14
+                        }}>{validateQuantity}</Text>
+                    }
                 </View>
             ))}
             <View
                 style={{ justifyContent: 'space-around', flexDirection: 'row', marginTop: 10, marginBottom: 10, flex: 1 }}>
                 <TouchableOpacity onPress={handleAddSize} style={{ marginBottom: 10, backgroundColor: 'blue', height: 40, width: 150, marginHorizontal: 30, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>Thêm size</Text>
+                    <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>Thêm</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={handleSaveSizes} style={{ marginBottom: 10, backgroundColor: 'blue', height: 40, width: 150, marginHorizontal: 30, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>Lưu size</Text>
+                    <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>Lưu</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>

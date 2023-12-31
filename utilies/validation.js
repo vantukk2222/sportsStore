@@ -39,3 +39,11 @@ export const isExpired = (endDate) => {
   const expirationDate = moment(endDate);
   return expirationDate.isBefore(currentDate);
 };
+export function isValidDouble(value) {
+  // Kiểm tra xem giá trị có phải là số thực hay không
+  return /^\d+(\.\d+)?$/.test(value);
+}
+
+export function isValidInteger(value) {
+  return /^\d+$/.test(value);
+}

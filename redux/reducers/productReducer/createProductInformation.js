@@ -35,7 +35,7 @@ const createProductInformationSlice = createSlice({
 });
 
 export const createProductInfor = (Product) => async (dispatch, getState) => {
-    //console.log('product infor redux', Product);
+    console.log('product infor redux', Product);
     try {
         dispatch(getStart());
         const authToken = getState().login.authToken

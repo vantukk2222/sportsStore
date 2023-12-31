@@ -36,7 +36,7 @@ const ProductBusiness = (props) => {
 
     const { dataState, loadingSate, errorState } = useSelector((state) => state.putStateProduct)
     useEffect(() => {
-        //console.log(data);
+        console.log(data);
         dispatch(fetchProductsByBusiness(data?.id, page, pageSize, sort, desc, state))
         return () => {
             setTotalPage(0)
@@ -87,7 +87,7 @@ const ProductBusiness = (props) => {
                     onPress: () => {
                         console.log("product", productId, 'business', data?.id);
                         setHireProduct(productId, true)
-                        console.log('Status hire', hireState?.dataStatusHire);
+                        //  console.log('Status hire', hireState?.dataStatusHire);
                         if (hireState?.dataStatusHire.status === 202) {
                             // Xử lý sự kiện xóa sản phẩm
                             setProducts((prevProducts) =>
@@ -122,8 +122,10 @@ const ProductBusiness = (props) => {
     };
     if (error || errorState || errorProductbyBusi) {
 
-        toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;
+        toastError("Xin lỗi", "Đã xảy ra lổi, thử lại sau")
+        //setProducts()
+        //   navigation.navigate('Home')
+        // return <View></View>
     }
     return (
         <View style={styles.container}>
@@ -151,6 +153,8 @@ const ProductBusiness = (props) => {
             </View>
 
             <View style={{ height: 1, backgroundColor: 'black' }}>
+
+
 
             </View>
             {loadingProductbyBusi === true ? <Loading /> :
