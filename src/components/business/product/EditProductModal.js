@@ -13,11 +13,11 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         detail: '',
     });
 
-    useEffect(() => {
-        if (product) {
-            setEditedProduct({ ...product });
-        }
-    }, [product]);
+    // useEffect(() => {
+    //     if (product) {
+    //         setEditedProduct({ ...product });
+    //     }
+    // }, [product]);
 
     const handleSaveProduct = () => {
         onSave(editedProduct);

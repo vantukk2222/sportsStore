@@ -1,30 +1,13 @@
 // Import useState and the modal components
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
+import getUnAuth from '~/API/get';
 
 const BProduct = () => {
-    const [trackingInfo, setTrackingInfo] = useState([
-        {
-            name_product: 'giày',
-            set_img: ['track1.png', 'track2.png', 'track3.png', 'track4.png'],
-            total: '30,000 VND',
-            category: 'giày',
-            sale: '30%',
-            size: 'S',
-            detail: 'giày đẹp',
-        },
-        {
-            name_product: 'áo',
-            set_img: ['track5.png', 'track6.png', 'track7.png', 'track8.png'],
-            total: '50,000 VND',
-            category: 'áo',
-            sale: '30%',
-            size: 'S',
-            detail: 'áo đẹp',
-        },
-    ]);
-
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
@@ -48,24 +31,31 @@ const BProduct = () => {
     };
 
     const handleSaveProduct = (editedProduct) => {
-        const updatedTrackingInfo = [...trackingInfo];
-        if (editIndex !== null) {
-            updatedTrackingInfo[editIndex] = editedProduct;
-        } else {
-            updatedTrackingInfo.push(editedProduct);
-        }
-        setTrackingInfo(updatedTrackingInfo);
         setEditIndex(null);
         setIsAddModalOpen(false);
         setIsEditModalOpen(false);
     };
 
-    const handleDeleteProduct = (index) => {
-        const updatedTrackingInfo = [...trackingInfo];
-        updatedTrackingInfo.splice(index, 1);
-        setTrackingInfo(updatedTrackingInfo);
-    };
-
+    const handleDeleteProduct = (index) => {};
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const user = JSON.parse(localStorage.getItem('User'));
+                const response = await getUnAuth(`product-information/find-by-business/${user.id}`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+                setProducts(response.content);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+    console.log(products[editIndex]);
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
@@ -83,18 +73,22 @@ const BProduct = () => {
                 <div>Thao tác</div>
             </div>
 
-            {trackingInfo.map((product, index) => (
+            {products.map((product, index) => (
                 <div className="tracking-info" key={index}>
-                    <div>{product.name_product}</div>
+                    <div>{product.name}</div>
                     <div>
-                        <img src={product.set_img[0]} alt={`Product ${index + 1}`} />
+                        <img src={product.imageSet.find((e) => e.is_main === true).url} alt={`Product ${index + 1}`} />
                     </div>
-                    <div>{product.detail}</div>
+                    <div>{product.detail ? product.detail : 'Không có'}</div>
 
-                    <div>{product.size}</div>
-                    <div>{product.category}</div>
-                    <div>{product.total}</div>
-                    <div>{product.sale}</div>
+                    <div>
+                        {product.productSet[0].size
+                            ? product.productSet.reduce((a, e) => a + `${e.size},`, '')
+                            : 'Không có'}
+                    </div>
+                    <div>{product.categorySet.reduce((a, e) => a + `${e.name},`, '')}</div>
+                    <div>{product.price_min}đ</div>
+                    <div>{product.sale ? product.sale : 'Không có'}</div>
 
                     <div>
                         <button className="editproduct" onClick={() => handleOpenEditModal(index)}>
@@ -111,7 +105,7 @@ const BProduct = () => {
             {isAddModalOpen && <AddProductModal onClose={handleCloseAddModal} onSave={handleSaveProduct} />}
             {isEditModalOpen && (
                 <EditProductModal
-                    product={editIndex !== null ? trackingInfo[editIndex] : null}
+                    product={products[editIndex]}
                     onClose={handleCloseEditModal}
                     onSave={handleSaveProduct}
                 />
