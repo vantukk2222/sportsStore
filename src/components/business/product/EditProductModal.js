@@ -1,10 +1,11 @@
-// EditProductModal.js
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
 const EditProductModal = ({ product, onClose, onSave }) => {
     const [editedProduct, setEditedProduct] = useState({
         name_product: '',
-        img: '',
+        set_img: [],
         total: '',
         category: '',
         sale: '',
@@ -28,14 +29,25 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     };
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setEditedProduct({ ...editedProduct, img: reader.result });
-            };
-            reader.readAsDataURL(file);
+        const files = e.target.files;
+        if (files) {
+            const imagesArray = Array.from(files).map((file) => URL.createObjectURL(file));
+            setEditedProduct((prevProduct) => ({
+                ...prevProduct,
+                set_img: [...prevProduct.set_img, ...imagesArray],
+            }));
         }
+    };
+
+    const handleRemoveImage = (index) => {
+        setEditedProduct((prevProduct) => {
+            const updatedImages = [...prevProduct.set_img];
+            updatedImages.splice(index, 1);
+            return {
+                ...prevProduct,
+                set_img: updatedImages,
+            };
+        });
     };
 
     return (
@@ -54,11 +66,36 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="img">Hình ảnh:</label>
-                    <input type="file" accept="image/*" id="img" name="img" onChange={handleImageChange} />
-                    {editedProduct.img && (
-                        <img src={editedProduct.img} alt="Product" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                <div className="formgroupimg">
+                    <div className="form-group">
+                        <label htmlFor="img">Hình ảnh:</label>
+                        <input type="file" accept="image/*" id="img" name="img" onChange={handleImageChange} multiple />
+                    </div>
+                    {editedProduct.set_img.length > 0 && (
+                        <div className="formimggroup">
+                            {editedProduct.set_img.map((image, index) => (
+                                <div key={index} style={{ position: 'relative', marginBottom: '10px' }}>
+                                    <img
+                                        className="imgaddproduct"
+                                        src={image}
+                                        alt={`Preview ${index + 1}`}
+                                        style={{ maxWidth: '100%', marginTop: '10px' }}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faTrash}
+                                        onClick={() => handleRemoveImage(index)}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '12px',
+                                            right: '5px',
+                                            cursor: 'pointer',
+                                            color: 'black',
+                                            fontSize: '18px',
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     )}
                 </div>
 
