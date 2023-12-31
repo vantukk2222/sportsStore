@@ -1,3 +1,5 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
 const AddProductModal = ({ onClose }) => {
@@ -50,6 +52,15 @@ const AddProductModal = ({ onClose }) => {
         }));
     };
 
+    const handleRemoveImage = (index) => {
+        const updatedImages = [...newProduct.set_img];
+        updatedImages.splice(index, 1);
+        setNewProduct((prevProduct) => ({
+            ...prevProduct,
+            set_img: updatedImages,
+        }));
+    };
+
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
@@ -74,13 +85,26 @@ const AddProductModal = ({ onClose }) => {
                     {newProduct.set_img.length > 0 && (
                         <div className="formimggroup">
                             {newProduct.set_img.map((image, index) => (
-                                <img
-                                    key={index}
-                                    className="imgaddproduct"
-                                    src={image}
-                                    alt={`Preview ${index + 1}`}
-                                    style={{ maxWidth: '100%' }}
-                                />
+                                <div key={index} style={{ position: 'relative', marginBottom: '10px' }}>
+                                    <img
+                                        className="imgaddproduct"
+                                        src={image}
+                                        alt={`Preview ${index + 1}`}
+                                        style={{ maxWidth: '100%' }}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faTrash}
+                                        onClick={() => handleRemoveImage(index)}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '12px',
+                                            right: '5px',
+                                            cursor: 'pointer',
+                                            color: 'black',
+                                            fontSize: '18px',
+                                        }}
+                                    />
+                                </div>
                             ))}
                         </div>
                     )}
