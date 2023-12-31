@@ -45,7 +45,7 @@ export const listBillById = (id, role, page, pageSize) => async (dispatch, getSt
                 dispatch(listBillSuccess({ data: data }));
             }
             if (role == 'ROLE_BUSINESS') {
-                const data = await getUnAuth(`bill/get-by-business/${id}?state=3`);
+                const data = await getUnAuth(`bill/get-by-business/${id}`);
                 dispatch(listBillSuccess({ data: data.content }));
             }
         }

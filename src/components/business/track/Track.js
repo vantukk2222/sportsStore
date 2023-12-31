@@ -30,13 +30,13 @@ const Track = ({ orders }) => {
                 orders?.map((order) => {
                     if (order.state != 2) {
                         let date = new Date(order.updated_at);
+                        //      console.log(order);
                         date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                         return (
                             <div key={order.id} className="order-container">
                                 <h3 className="order-header">Đơn hàng #{order.id}</h3>
                                 <p className="date-text">Ngày mua: {date}</p>
-                                <p className="date-text">Người mua: {user.name}</p>
-
+                                {/*  <p className="date-text">Người mua: {user.name}</p> */}
                                 <ul className="item-list">
                                     {order.bill_detailSet?.map((item) => (
                                         <li key={item.id} className="item">
