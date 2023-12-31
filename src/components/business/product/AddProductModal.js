@@ -4,10 +4,9 @@ const AddProductModal = ({ onClose }) => {
     const [newProduct, setNewProduct] = useState({
         name_product: '',
         set_img: [],
-        total: '',
+        priceSizePairs: [{ price: '', size: '' }],
         category: '',
         sale: '',
-        size: '',
         detail: '',
     });
 
@@ -22,8 +21,8 @@ const AddProductModal = ({ onClose }) => {
 
     const handleImageChange = (e) => {
         const files = e.target.files;
-
         const newImages = [];
+
         for (let i = 0; i < files.length; i++) {
             newImages.push(URL.createObjectURL(files[i]));
         }
@@ -31,6 +30,23 @@ const AddProductModal = ({ onClose }) => {
         setNewProduct((prevProduct) => ({
             ...prevProduct,
             set_img: [...prevProduct.set_img, ...newImages],
+        }));
+    };
+
+    const handleAddPriceSizePair = () => {
+        setNewProduct((prevProduct) => ({
+            ...prevProduct,
+            priceSizePairs: [...prevProduct.priceSizePairs, { price: '', size: '' }],
+        }));
+    };
+
+    const handlePriceSizeChange = (index, field, value) => {
+        const updatedPairs = [...newProduct.priceSizePairs];
+        updatedPairs[index][field] = value;
+
+        setNewProduct((prevProduct) => ({
+            ...prevProduct,
+            priceSizePairs: updatedPairs,
         }));
     };
 
@@ -70,11 +86,31 @@ const AddProductModal = ({ onClose }) => {
                     )}
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="total">Giá tiền:</label>
-                    <input type="text" id="total" name="total" value={newProduct.total} onChange={handleInputChange} />
+                <div className="">
+                    {newProduct.priceSizePairs.map((pair, index) => (
+                        <div className="form-group" key={index}>
+                            <input
+                                className="inputform"
+                                type="text"
+                                style={{ marginLeft: '150px' }}
+                                placeholder="Giá tiền"
+                                value={pair.price}
+                                onChange={(e) => handlePriceSizeChange(index, 'price', e.target.value)}
+                            />
+                            <input
+                                className="inputform"
+                                type="text"
+                                style={{}}
+                                placeholder="Size"
+                                value={pair.size}
+                                onChange={(e) => handlePriceSizeChange(index, 'size', e.target.value)}
+                            />
+                        </div>
+                    ))}
                 </div>
-
+                <button onClick={handleAddPriceSizePair} style={{ marginLeft: '150px', marginBottom: '20px' }}>
+                    +
+                </button>
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
                     <input
@@ -100,11 +136,6 @@ const AddProductModal = ({ onClose }) => {
                 <div className="form-group">
                     <label htmlFor="sale">Mã giảm giá:</label>
                     <input type="text" id="sale" name="sale" value={newProduct.sale} onChange={handleInputChange} />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="size">Kích thước:</label>
-                    <input type="text" id="size" name="size" value={newProduct.size} onChange={handleInputChange} />
                 </div>
 
                 <div className="modal-buttons">

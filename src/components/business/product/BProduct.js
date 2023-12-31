@@ -1,8 +1,8 @@
 // Import useState and the modal components
 import { useEffect, useState } from 'react';
+import getUnAuth from '~/API/get';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
-import getUnAuth from '~/API/get';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
