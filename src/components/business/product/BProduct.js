@@ -1,3 +1,4 @@
+// Import useState and the modal components
 import { useState } from 'react';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
@@ -6,7 +7,7 @@ const BProduct = () => {
     const [trackingInfo, setTrackingInfo] = useState([
         {
             name_product: 'giày',
-            img: 'track1.png',
+            set_img: ['track1.png', 'track2.png', 'track3.png', 'track4.png'],
             total: '30,000 VND',
             category: 'giày',
             sale: '30%',
@@ -15,12 +16,12 @@ const BProduct = () => {
         },
         {
             name_product: 'áo',
-            img: 'track2.png',
+            set_img: ['track5.png', 'track6.png', 'track7.png', 'track8.png'],
             total: '50,000 VND',
             category: 'áo',
             sale: '30%',
             size: 'S',
-            detail: 'giày đẹp',
+            detail: 'áo đẹp',
         },
     ]);
 
@@ -86,7 +87,7 @@ const BProduct = () => {
                 <div className="tracking-info" key={index}>
                     <div>{product.name_product}</div>
                     <div>
-                        <img src={product.img} alt={`Product ${index + 1}`} />
+                        <img src={product.set_img[0]} alt={`Product ${index + 1}`} />
                     </div>
                     <div>{product.detail}</div>
 

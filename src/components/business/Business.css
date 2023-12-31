@@ -353,6 +353,25 @@
     align-items: center;
     flex-direction: row;
 }
+.formgroupimg {
+    margin-bottom: 16px; /* Để tạo khoảng cách giữa các nhóm hình ảnh và phần còn lại của form */
+}
+
+.formimggroup {
+    display: flex;
+    flex-wrap: wrap; /* Để hỗ trợ xuống dòng khi không đủ không gian */
+    gap: 10px; /* Để tạo khoảng cách giữa các hình ảnh */
+    padding-left: 150px;
+}
+
+.formimggroup label {
+    margin-bottom: 8px;
+}
+
+.imgaddproduct {
+    width: 120px;
+    height: 100px;
+}
 
 .form-group input {
     flex: 1;
@@ -364,7 +383,7 @@
     width: 150px;
 }
 .form-group img {
-    height: 50px;
+    height: 150px;
     width: 150px;
     margin-left: 8px;
 }
