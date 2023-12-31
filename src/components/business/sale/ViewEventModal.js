@@ -26,11 +26,6 @@ const ViewEventModal = ({ event, products, onClose, onSelectProducts }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="img">Hình ảnh:</label>
-                    <img src={event.img} alt={`Event`} style={{ maxWidth: '100%' }} />
-                </div>
-
-                <div className="form-group">
                     <label htmlFor="discount">Giảm giá:</label>
                     <input type="text" id="discount" value={event.discount} readOnly />
                 </div>

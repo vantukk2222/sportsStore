@@ -54,12 +54,6 @@ const AddEventModal = ({ onClose, onSave }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="img">Hình ảnh:</label>
-                    <input type="file" id="img" name="img" onChange={handleInputChange} accept="image/*" />
-                    {newEvent.img && <img src={newEvent.img} alt="Preview" style={{ maxWidth: '100%' }} />}
-                </div>
-
-                <div className="form-group">
                     <label htmlFor="discount">Giảm giá:</label>
                     <input
                         type="text"

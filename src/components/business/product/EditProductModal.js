@@ -7,8 +7,9 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         img: '',
         total: '',
         category: '',
-        status: '',
+        sale: '',
         size: '',
+        detail: '',
     });
 
     useEffect(() => {
@@ -24,6 +25,17 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedProduct({ ...editedProduct, [name]: value });
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setEditedProduct({ ...editedProduct, img: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     return (
@@ -44,7 +56,10 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
                 <div className="form-group">
                     <label htmlFor="img">Hình ảnh:</label>
-                    <input type="text" id="img" name="img" value={editedProduct.img} onChange={handleInputChange} />
+                    <input type="file" accept="image/*" id="img" name="img" onChange={handleImageChange} />
+                    {editedProduct.img && (
+                        <img src={editedProduct.img} alt="Product" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                    )}
                 </div>
 
                 <div className="form-group">
@@ -57,7 +72,10 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                         onChange={handleInputChange}
                     />
                 </div>
-
+                <div className="form-group">
+                    <label htmlFor="sale">Mã giảm giá:</label>
+                    <input type="text" id="sale" name="sale" value={editedProduct.sale} onChange={handleInputChange} />
+                </div>
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
                     <input
@@ -70,12 +88,12 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="status">Mô tả sản phẩm:</label>
+                    <label htmlFor="detail">Mô tả sản phẩm:</label>
                     <input
                         type="text"
-                        id="status"
-                        name="status"
-                        value={editedProduct.status}
+                        id="detail"
+                        name="detail"
+                        value={editedProduct.detail}
                         onChange={handleInputChange}
                     />
                 </div>

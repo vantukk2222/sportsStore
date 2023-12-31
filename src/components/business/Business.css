@@ -46,7 +46,7 @@
 .track-container {
     max-width: 100%;
     margin: auto;
-    padding: 30px;
+    padding: 10px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -101,14 +101,14 @@
 .tracking-header,
 .tracking-info {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     align-items: center;
     padding: 15px;
     border-bottom: 1px solid #ddd;
 
     .editproduct {
         background-color: blue;
-        width: 53px;
+        width: 48px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -122,7 +122,7 @@
 
     .deleteproduct {
         background-color: red;
-        width: 53px;
+        width: 47px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -135,7 +135,7 @@
     }
     .unproduct {
         background-color: rgb(255, 153, 0);
-        width: 53px;
+        width: 47px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -187,7 +187,95 @@
         transition: background-color 0.3s ease;
     }
 }
-/* Add these styles to your CSS file or style block */
+.tracking-headersale,
+.tracking-infosale {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+
+    .editproduct {
+        background-color: blue;
+        width: 48px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .deleteproduct {
+        background-color: red;
+        width: 47px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .unproduct {
+        background-color: rgb(255, 153, 0);
+        width: 47px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .view {
+        background-color: rgb(255, 153, 0);
+        width: 70px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .edit {
+        background-color: blue;
+        width: 70px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .delete {
+        background-color: red;
+        width: 70px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+}
 
 .action-button,
 .delete {
@@ -222,6 +310,11 @@
     background-color: #606eca;
     margin-top: 20px;
 }
+.tracking-headersale {
+    font-weight: bold;
+    background-color: #606eca;
+    margin-top: 20px;
+}
 
 .tracking-info img {
     max-width: 70px;
@@ -233,8 +326,6 @@
     color: #333;
 }
 
-/* AddProductModal.css */
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -245,106 +336,47 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 12px;
 }
 
 .modalnewproduct {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 300px; /* Adjust the width as needed */
-    text-align: center;
-}
-
-.modalnewproduct h2 {
-    margin-bottom: 16px;
-}
-
-.modalnewproduct label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.modalnewproduct input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 16px;
-    box-sizing: border-box;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.modal-buttons button {
-    padding: 8px 16px;
-    cursor: pointer;
-}
-
-/* AddProductModal.css */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* AddProductModal.css */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modalnewproduct {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 500px; /* Adjust the width as needed */
+    width: 800px;
     text-align: center;
     position: relative;
 }
 
-.modalnewproduct h2 {
-    margin-bottom: 16px;
-}
-
 .form-group {
-    margin-bottom: 16px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.form-group label {
-    margin-bottom: 8px;
+    align-items: center;
+    flex-direction: row;
 }
 
 .form-group input {
-    width: 100%;
+    flex: 1;
     padding: 8px;
     box-sizing: border-box;
 }
 
+.form-group label {
+    width: 150px;
+}
+.form-group img {
+    height: 50px;
+    width: 150px;
+    margin-left: 8px;
+}
+
 .modal-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    margin-left: 300px;
 }
 
 .modal-buttons button {
     padding: 8px 16px;
     cursor: pointer;
+    margin-right: 30px; /* Thêm margin nếu bạn muốn khoảng cách giữa các nút */
 }

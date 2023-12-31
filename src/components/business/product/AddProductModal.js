@@ -6,8 +6,9 @@ const AddProductModal = ({ onClose }) => {
         img: '',
         total: '',
         category: '',
-        status: '',
+        sale: '',
         size: '',
+        detail: '',
     });
 
     const handleAddProduct = () => {
@@ -30,7 +31,6 @@ const AddProductModal = ({ onClose }) => {
         <div className="modal-overlay">
             <div className="modalnewproduct">
                 <h2>Thêm sản phẩm</h2>
-
                 <div className="form-group">
                     <label htmlFor="name_product">Tên sản phẩm:</label>
                     <input
@@ -41,18 +41,22 @@ const AddProductModal = ({ onClose }) => {
                         onChange={handleInputChange}
                     />
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="img">Hình ảnh:</label>
                     <input type="file" id="img" name="img" accept="image/*" onChange={handleImageChange} />
-                    {newProduct.img && <img src={newProduct.img} alt="Preview" style={{ maxWidth: '100%' }} />}
-                </div>
-
+                    {newProduct.img && (
+                        <img
+                            className="imgaddproduct"
+                            src={newProduct.img}
+                            alt="Preview"
+                            style={{ maxWidth: '100%' }}
+                        />
+                    )}
+                </div>{' '}
                 <div className="form-group">
                     <label htmlFor="total">Giá tiền:</label>
                     <input type="text" id="total" name="total" value={newProduct.total} onChange={handleInputChange} />
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
                     <input
@@ -63,23 +67,24 @@ const AddProductModal = ({ onClose }) => {
                         onChange={handleInputChange}
                     />
                 </div>
-
                 <div className="form-group">
-                    <label htmlFor="status">Trạng thái:</label>
+                    <label htmlFor="status">Mô tả:</label>
                     <input
                         type="text"
                         id="status"
                         name="status"
-                        value={newProduct.status}
+                        value={newProduct.detail}
                         onChange={handleInputChange}
                     />
                 </div>
-
+                <div className="form-group">
+                    <label htmlFor="status">Mã giảm giá:</label>
+                    <input type="text" id="status" name="status" value={newProduct.sale} onChange={handleInputChange} />
+                </div>
                 <div className="form-group">
                     <label htmlFor="size">Kích thước:</label>
                     <input type="text" id="size" name="size" value={newProduct.size} onChange={handleInputChange} />
                 </div>
-
                 <div className="modal-buttons">
                     <button onClick={handleAddProduct}>Thêm</button>
                     <button onClick={onClose}>Đóng</button>

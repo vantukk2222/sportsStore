@@ -88,7 +88,7 @@ const Sale = () => {
             <button className="submit" onClick={handleOpenAddModal}>
                 Thêm sự kiện
             </button>
-            <div className="tracking-header">
+            <div className="tracking-headersale">
                 <div>Mã sự kiện</div>
                 <div>Tên sự kiện</div>
                 <div>Hình ảnh</div>
@@ -99,7 +99,7 @@ const Sale = () => {
             </div>
 
             {eventInfo.map((event, index) => (
-                <div className="tracking-info" key={index}>
+                <div className="tracking-infosale" key={index}>
                     <div>{event.eventCode}</div>
                     <div>{event.eventName}</div>
                     <div>

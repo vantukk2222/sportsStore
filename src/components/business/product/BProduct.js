@@ -1,4 +1,3 @@
-// BProduct.js
 import { useState } from 'react';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
@@ -10,16 +9,18 @@ const BProduct = () => {
             img: 'track1.png',
             total: '30,000 VND',
             category: 'giày',
-            status: 'Giày thể thao',
+            sale: '30%',
             size: 'S',
+            detail: 'giày đẹp',
         },
         {
             name_product: 'áo',
             img: 'track2.png',
             total: '50,000 VND',
             category: 'áo',
-            status: 'Áo thể thao',
+            sale: '30%',
             size: 'S',
+            detail: 'giày đẹp',
         },
     ]);
 
@@ -77,6 +78,7 @@ const BProduct = () => {
                 <div>SIZE</div>
                 <div>Phân loại</div>
                 <div>Giá tiền</div>
+                <div>Mã giảm giá</div>
                 <div>Thao tác</div>
             </div>
 
@@ -86,10 +88,12 @@ const BProduct = () => {
                     <div>
                         <img src={product.img} alt={`Product ${index + 1}`} />
                     </div>
-                    <div>{product.status}</div>
+                    <div>{product.detail}</div>
+
                     <div>{product.size}</div>
                     <div>{product.category}</div>
                     <div>{product.total}</div>
+                    <div>{product.sale}</div>
 
                     <div>
                         <button className="editproduct" onClick={() => handleOpenEditModal(index)}>

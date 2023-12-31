@@ -52,11 +52,6 @@ const EditEventModal = ({ event, onClose, onSave }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="img">Hình ảnh:</label>
-                    <input type="text" id="img" name="img" value={editedEvent.img} onChange={handleInputChange} />
-                </div>
-
-                <div className="form-group">
                     <label htmlFor="discount">Giảm giá:</label>
                     <input
                         type="text"
