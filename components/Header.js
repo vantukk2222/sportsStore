@@ -23,16 +23,40 @@ const HeaderComp = ({init = "Start"}) => {
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
-
-    const goBack = () => {
-        // Kiểm tra xem có thể quay lại màn hình trước đó không
+    const showAlert = () => {
+        Alert.alert(
+          'Bạn muốn rời trang này',
+          'Nếu bạn rời trang này, những thay đổi sẽ bị huỷ bỏ',
+          [
+            {
+              text: 'Ở lại trang này',
+              onPress: () => console.log('No Pressed'),
+              style: 'cancel',
+            },
+            {
+              text: 'Rời ngay',
+              onPress: () => handleLeavePage(),
+              style: 'destructive',
+            },
+          ],
+          { cancelable: false }
+        );
+      };
+    
+      const handleLeavePage = () => {
         if (navigation.canGoBack()) {
-          // Nếu có, thực hiện goBack()
           navigation.goBack();
         } else {
-          // Nếu không, navigate tới màn hình khác
           navigation.navigate('Start');
         }
+      };
+    const goBack = () => {
+        // Kiểm tra xem có thể quay lại màn hình trước đó không
+        if(init ==="Rating")
+        {
+            showAlert()
+        }
+        else{handleLeavePage()}
       };
 
 
@@ -59,11 +83,11 @@ const HeaderComp = ({init = "Start"}) => {
             <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <View style={styles.location}>
                     <Text style={{  color: 'black', fontSize: 18 }}>
-                        {init ==="Start" ? "Trang chủ" : init}
+                        {init ==="Start" ? "Trang chủ" : init ==="Rating" ? "Đánh giá sản phẩm" : init}
                     </Text>
                 </View>
             </View>
-            <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{userName? navigation.navigate("Cart", {id_user:dataUser?.id}) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")}}/>
+            {init ==="Rating" ? <Icon style={{marginRight:45}}></Icon>: <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={()=>{userName? navigation.navigate("Cart", {id_user:dataUser?.id}) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")}}/>}
         </View>
     );
 };
@@ -98,7 +122,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems:'center',
         marginLeft: 15,
-    }
+    },
+    destructive: {
+        color: 'red', 
+      },
 });
 
 export default HeaderComp;

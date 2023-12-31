@@ -27,13 +27,13 @@ const registerSlice = createSlice({
   },
 });
 
-export const signupUser = (userData) => async (dispatch) => {
+export const signupUser = (userData,role) => async (dispatch) => {
   try {
-    console.log("data: ", "nothing"); // Log received data
+    console.log("data: ", userData); // Log received data
 
     dispatch(registerSlice.actions.signupRequest()); // Dispatch registerRequest action
 // {registerPage}
-    const data = await registerPage(userData); // Call registerPage API
+    const data = await registerPage(userData,role); // Call registerPage API
     console.log("data: ", data); // Log received data
 
     dispatch(registerSlice.actions.signupSuccess({ token: data })); // Dispatch registerSuccess with received data

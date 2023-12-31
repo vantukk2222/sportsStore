@@ -1,6 +1,7 @@
 // <<<<<<< categoryDat
 import { initialCalculations } from "react-native-reanimated/lib/typescript/reanimated2/animation/springUtils"
 import { Cart, Login, MyCart, Register, UITab } from "../screens"
+// {Register}
 import Business from "../screens/Business/Business"
 import ShopInfo from "../screens/Business/ShopInfo"
 import DetailProduct from "../screens/Category/DetailProduct"
@@ -36,6 +37,7 @@ import StatisticScreen from "../screens/Business/Statistics/StatisticScreen"
 import OrderHistoryScreen from "../screens/Cart/OrderHistory"
 import DetailOrderScreen from "../screens/Cart/detailOrder"
 import OrderScreen from "../screens/Business/Order/OrderScreen"
+import RatingOrder from "../screens/Cart/ratingOrder"
 
 
 const Stack = createStackNavigator();
@@ -44,6 +46,8 @@ export const BusinessScreenNavigator = () => {
         <Stack.Navigator initialCalculations="BusinessBottomNavigator">
             <Stack.Screen name="BusinessBottomNavigator" component={BusinessBottomNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+
             <Stack.Screen name="CreateNewProduct" component={CreateNewProduct} options={{ headerShown: false }} />
             <Stack.Screen name="CreateSize" component={CreateSize} options={{ headerShown: false }} />
             <Stack.Screen name="setProductinSale" component={setProductinSale} options={{ headerShown: false }} />
@@ -75,7 +79,7 @@ export const LoginScreenNavigator = () => {
             <Stack.Screen name='ProductList' component={ProductList} options={{ headerShown: false }} />
             <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
             <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
-            
+            <Stack.Screen name="RatingOrder" component={RatingOrder} options={{headerShown:false}} />
             <Stack.Screen name='setInfor' component={SetInfor} options={{ headerShown: false }} />
             <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} options={{headerShown :false}}/>
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />

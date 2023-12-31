@@ -200,34 +200,9 @@ const MyCart = ({ route, navigation }, props) => {
       dispatch(listCartByIdUser(id_user))
       setProduct(dataCart)
     }
-    // console.log('id_user in cart: ', id_user);
   }, [dataCart, product])
 
-  // const getTotal = (cartProducts) => {
-  //   let totalPrice = 0;
-
-  //   cartProducts?.forEach((cartItem) => {
-  //     console.log("product in Mycart:", cartProducts);
-  //     totalPrice += cartItem?.product?.price * cartItem?.quantity * (1 - sale[cartItem?.product?.id_product_information]/100)
-  //   });
-
-  //   return totalPrice;
-  // };
-  //remove data from Cart
-
-
-  //checkout
-
-  //   const openBrowser = async () => {
-  //   const url = dataMOMO;
-  //   const supported = await Linking.canOpenURL(url);
-
-  //   if (supported) {
-  //     await Linking.openURL(url);
-  //   } else {
-  //     console.error('Cannot open URL');
-  //   }
-  // };
+  
   useEffect(()=>{
     const list_each_business_product = {...list_business_id_product}
     groupedProducts?.map((item)=>{
@@ -249,9 +224,10 @@ const MyCart = ({ route, navigation }, props) => {
       console.log("Momo Link previous:", getlink);
       setlink(getlink)
       await Linking.openURL(getlink).then(() => {
-        navigation.navigate("LoginBottomNavigator")
+        navigation.goBack()
         toastsuccess("Thành công", "Thanh toán thành công");
         dispatch(listCartByIdUser(id_user))
+        dispatch(getAllBillByIDUser(id_user))
         setProduct(dataCart)
       })
     } catch (error) {
@@ -367,7 +343,7 @@ const MyCart = ({ route, navigation }, props) => {
                 {/* {console.log('productItem: ', productItem.productSet[0].size.product)} */}
                 {/* {console.log('eachItem in prodductItem',productItem)} */}
                 {productItem.products ? productItem.products.map((eachproductItem, eachindex) => {
-                  return <RenderProducts data={eachproductItem} onHandleSale={handleSalePress} id_buy={id_buy} onHandleGetID={getID_Buy} />;
+                  return <RenderProducts key ={eachindex} data={eachproductItem} onHandleSale={handleSalePress} id_buy={id_buy} onHandleGetID={getID_Buy} />;
                 }) : null}
               </View>
             </View>
