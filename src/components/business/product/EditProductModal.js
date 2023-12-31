@@ -7,7 +7,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         name: '',
         imageSet: [],
         detail: '',
-        size: '',
+        priceSizePairs: [{ price: '', size: '' }],
         categorySet: [],
         price_min: '',
         sale: '',
@@ -15,16 +15,15 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
     useEffect(() => {
         if (product) {
-            // Map các thuộc tính từ product sang editedProduct
-            const { name, imageSet, detail, size, categorySet, price_min, sale } = product;
+            const { name, imageSet, detail, price_min, sale, categorySet, priceSizePairs } = product;
             setEditedProduct({
                 name,
                 imageSet: [...imageSet],
                 detail,
-                size,
-                categorySet: [...categorySet],
                 price_min,
                 sale,
+                categorySet: [...categorySet],
+                priceSizePairs: priceSizePairs ? [...priceSizePairs] : [{ price: '', size: '' }],
             });
         }
     }, [product]);
@@ -58,6 +57,23 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                 imageSet: updatedImages,
             };
         });
+    };
+
+    const handleAddPriceSizePair = () => {
+        setEditedProduct((prevProduct) => ({
+            ...prevProduct,
+            priceSizePairs: [...prevProduct.priceSizePairs, { price: '', size: '' }],
+        }));
+    };
+
+    const handlePriceSizeChange = (index, field, value) => {
+        const updatedPairs = [...editedProduct.priceSizePairs];
+        updatedPairs[index][field] = value;
+
+        setEditedProduct((prevProduct) => ({
+            ...prevProduct,
+            priceSizePairs: updatedPairs,
+        }));
     };
 
     return (
@@ -103,6 +119,32 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     )}
                 </div>
 
+                <div className="">
+                    {editedProduct.priceSizePairs.map((pair, index) => (
+                        <div className="form-group" key={index}>
+                            <input
+                                className="inputform"
+                                type="text"
+                                style={{ marginLeft: '150px' }}
+                                placeholder="Giá tiền"
+                                value={pair.price}
+                                onChange={(e) => handlePriceSizeChange(index, 'price', e.target.value)}
+                            />
+                            <input
+                                className="inputform"
+                                type="text"
+                                style={{}}
+                                placeholder="Size"
+                                value={pair.size}
+                                onChange={(e) => handlePriceSizeChange(index, 'size', e.target.value)}
+                            />
+                        </div>
+                    ))}
+                </div>
+                <button onClick={handleAddPriceSizePair} style={{ marginLeft: '150px', marginBottom: '20px' }}>
+                    +
+                </button>
+
                 <div className="form-group">
                     <label htmlFor="detail">Mô tả sản phẩm:</label>
                     <input
@@ -114,10 +156,10 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     />
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="size">SIZE:</label>
                     <input type="text" id="size" name="size" value={editedProduct.size} onChange={handleInputChange} />
-                </div>
+                </div> */}
 
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
@@ -130,7 +172,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     />
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="price_min">Giá tiền:</label>
                     <input
                         type="text"
@@ -139,7 +181,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                         value={editedProduct.price_min}
                         onChange={handleInputChange}
                     />
-                </div>
+                </div> */}
 
                 <div className="form-group">
                     <label htmlFor="sale">Mã giảm giá:</label>
