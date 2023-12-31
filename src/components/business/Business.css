@@ -106,6 +106,59 @@
     padding: 15px;
     border-bottom: 1px solid #ddd;
 
+    .editproduct {
+        background-color: blue;
+        width: 53px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .deleteproduct {
+        background-color: red;
+        width: 53px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .unproduct {
+        background-color: rgb(255, 153, 0);
+        width: 53px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .view {
+        background-color: rgb(255, 153, 0);
+        width: 70px;
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
     .edit {
         background-color: blue;
         width: 70px;
@@ -122,19 +175,6 @@
 
     .delete {
         background-color: red;
-        width: 70px;
-        display: inline-block;
-        padding: 10px;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .view {
-        background-color: rgb(255, 153, 0);
         width: 70px;
         display: inline-block;
         padding: 10px;
@@ -193,62 +233,118 @@
     color: #333;
 }
 
-/* NEWPRODUCT */
-/* NewProductPage.css */
+/* AddProductModal.css */
 
-.new-product-container {
-    max-width: 600px;
-    margin: auto;
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalnewproduct {
+    background: white;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-}
-
-.new-product-container h2 {
+    border-radius: 8px;
+    width: 300px; /* Adjust the width as needed */
     text-align: center;
-    color: #333;
-    margin-bottom: 20px;
 }
 
-.new-product-container form {
-    display: grid;
-    gap: 15px;
+.modalnewproduct h2 {
+    margin-bottom: 16px;
 }
 
-.new-product-container label {
+.modalnewproduct label {
     display: block;
-    margin-bottom: 5px;
-    color: #333;
+    margin-bottom: 8px;
 }
 
-.new-product-container input,
-textarea {
+.modalnewproduct input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
 }
 
-.new-product-container button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-buttons button {
+    padding: 8px 16px;
     cursor: pointer;
 }
 
-.new-product-container button:hover {
-    background-color: #45a049;
+/* AddProductModal.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.edit {
-    background-color: blue;
+/* AddProductModal.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.checkbox-track {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+.modalnewproduct {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px; /* Adjust the width as needed */
+    text-align: center;
+    position: relative;
+}
+
+.modalnewproduct h2 {
+    margin-bottom: 16px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-buttons button {
+    padding: 8px 16px;
+    cursor: pointer;
 }

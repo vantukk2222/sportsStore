@@ -1,5 +1,7 @@
+// BProduct.js
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import AddProductModal from './AddProductModal';
+import EditProductModal from './EditProductModal';
 
 const BProduct = () => {
     const [trackingInfo, setTrackingInfo] = useState([
@@ -7,24 +9,56 @@ const BProduct = () => {
             name_product: 'giày',
             img: 'track1.png',
             total: '30,000 VND',
-            orderNumber: '123456',
-            status: 'Đã giao hàng',
-            location: 'Đang vận chuyển',
-            estimatedDelivery: '10 Tháng 12, 2023',
+            category: 'giày',
+            status: 'Giày thể thao',
+            size: 'S',
         },
         {
             name_product: 'áo',
             img: 'track2.png',
             total: '50,000 VND',
-            orderNumber: '789012',
-            status: 'Chưa giao hàng',
-            location: 'Đang xác nhận đơn hàng',
-            estimatedDelivery: '15 Tháng 12, 2023',
+            category: 'áo',
+            status: 'Áo thể thao',
+            size: 'S',
         },
     ]);
 
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editIndex, setEditIndex] = useState(null);
+
+    const handleOpenAddModal = () => {
+        setIsAddModalOpen(true);
+    };
+
+    const handleCloseAddModal = () => {
+        setIsAddModalOpen(false);
+    };
+
+    const handleOpenEditModal = (index) => {
+        setEditIndex(index);
+        setIsEditModalOpen(true);
+    };
+
+    const handleCloseEditModal = () => {
+        setEditIndex(null);
+        setIsEditModalOpen(false);
+    };
+
+    const handleSaveProduct = (editedProduct) => {
+        const updatedTrackingInfo = [...trackingInfo];
+        if (editIndex !== null) {
+            updatedTrackingInfo[editIndex] = editedProduct;
+        } else {
+            updatedTrackingInfo.push(editedProduct);
+        }
+        setTrackingInfo(updatedTrackingInfo);
+        setEditIndex(null);
+        setIsAddModalOpen(false);
+        setIsEditModalOpen(false);
+    };
+
     const handleDeleteProduct = (index) => {
-        // Implement delete logic here
         const updatedTrackingInfo = [...trackingInfo];
         updatedTrackingInfo.splice(index, 1);
         setTrackingInfo(updatedTrackingInfo);
@@ -33,39 +67,50 @@ const BProduct = () => {
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
-            <Link to="/new-product">
-                <button type="submit">Thêm sản phẩm</button>
-            </Link>
+            <button type="button" onClick={handleOpenAddModal}>
+                Thêm sản phẩm
+            </button>
             <div className="tracking-header">
-                <div className="">Tên sản phẩm</div>
-                <div className="">Phân loại</div>
-                <div className="">Hình ảnh</div>
-                <div className="">Giá tiền</div>
-                <div className="">Mô tả sản phẩm</div>
-                <div className="">Ngày giao hàng</div>
-                <div className="">Thao tác</div>
+                <div>Tên sản phẩm</div>
+                <div>Hình ảnh</div>
+                <div>Mô tả sản phẩm</div>
+                <div>SIZE</div>
+                <div>Phân loại</div>
+                <div>Giá tiền</div>
+                <div>Thao tác</div>
             </div>
 
             {trackingInfo.map((product, index) => (
                 <div className="tracking-info" key={index}>
                     <div>{product.name_product}</div>
-                    <div>{product.orderNumber}</div>
                     <div>
                         <img src={product.img} alt={`Product ${index + 1}`} />
                     </div>
-                    <div>{product.total}</div>
                     <div>{product.status}</div>
-                    <div>{product.estimatedDelivery}</div>
+                    <div>{product.size}</div>
+                    <div>{product.category}</div>
+                    <div>{product.total}</div>
+
                     <div>
-                        <Link to={`/edit-product/${product.orderNumber}`}>
-                            <button className="edit">Sửa</button>
-                        </Link>
-                        <button className="delete" onClick={() => handleDeleteProduct(index)}>
+                        <button className="editproduct" onClick={() => handleOpenEditModal(index)}>
+                            Sửa
+                        </button>
+                        <button className="deleteproduct" onClick={() => handleDeleteProduct(index)}>
                             Xóa
                         </button>
+                        <button className="unproduct">Ẩn</button>
                     </div>
                 </div>
             ))}
+
+            {isAddModalOpen && <AddProductModal onClose={handleCloseAddModal} onSave={handleSaveProduct} />}
+            {isEditModalOpen && (
+                <EditProductModal
+                    product={editIndex !== null ? trackingInfo[editIndex] : null}
+                    onClose={handleCloseEditModal}
+                    onSave={handleSaveProduct}
+                />
+            )}
         </div>
     );
 };

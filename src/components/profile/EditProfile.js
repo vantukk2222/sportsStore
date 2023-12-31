@@ -3,7 +3,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getUnAuth from '~/API/get';
 import { putUser } from '~/API/putUser';
-import imgprofile from './shop1.png';
 
 const EditProfile = () => {
     const s = JSON.parse(localStorage.getItem('User'));
@@ -149,7 +148,7 @@ const EditProfile = () => {
                         };
                         fetchData();
                     })
-                    .then(() => window.location.reload()); 
+                    .then(() => window.location.reload());
             } else {
                 console.error('Validation errors. Please correct the fields.');
             }
@@ -249,11 +248,10 @@ const EditProfile = () => {
                 </button>
             </div>
             <div className="img-edit">
-                <img src={imgprofile} alt="" />
-                {/* 
+                {/* <img src={imgprofile} alt="" /> */}
                 <img src={editedUser.image_url || 'default_image_url'} alt="" />{' '}
                 <div className="text">Ảnh của bạn </div>
-                <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} /> */}
+                <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} />
             </div>
             <ToastContainer position="top-center" style={{ top: '50%', transform: 'translateY(-50%)' }} />
         </div>

@@ -1,5 +1,8 @@
+// Sale.js
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import AddEventModal from './AddEventModal';
+import EditEventModal from './EditEventModal';
+import ViewEventModal from './ViewEventModal';
 
 const Sale = () => {
     const [eventInfo, setEventInfo] = useState([
@@ -21,25 +24,70 @@ const Sale = () => {
         },
     ]);
 
-    const handleViewProduct = (eventCode) => {
-        console.log(`View product with event code: ${eventCode}`);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+
+    const handleOpenAddModal = () => {
+        setIsAddModalOpen(true);
     };
 
-    const handleEditProduct = (eventCode) => {
-        console.log(`Edit product with event code: ${eventCode}`);
+    const handleCloseAddModal = () => {
+        setIsAddModalOpen(false);
     };
 
-    const handleDeleteProduct = (eventCode) => {
-        console.log(`Delete product with event code: ${eventCode}`);
+    const handleOpenEditModal = (event) => {
+        setSelectedEvent(event);
+        setIsEditModalOpen(true);
+    };
+
+    const handleCloseEditModal = () => {
+        setSelectedEvent(null);
+        setIsEditModalOpen(false);
+    };
+
+    const handleOpenViewModal = (event) => {
+        setSelectedEvent(event);
+        setIsViewModalOpen(true);
+    };
+
+    const handleCloseViewModal = () => {
+        setSelectedEvent(null);
+        setIsViewModalOpen(false);
+    };
+
+    const handleAddEvent = (newEvent) => {
+        setEventInfo([...eventInfo, newEvent]);
+        handleCloseAddModal();
+    };
+
+    const handleEditEvent = (editedEvent) => {
+        const index = eventInfo.findIndex((event) => event.eventCode === editedEvent.eventCode);
+
+        if (index !== -1) {
+            const updatedEventInfo = [...eventInfo];
+            updatedEventInfo[index] = editedEvent;
+
+            setEventInfo(updatedEventInfo);
+        }
+
+        handleCloseEditModal();
+    };
+    const handleSelectProducts = (eventCode, selectedProducts) => {
+        setEventInfo((prevEvents) =>
+            prevEvents.map((event) => (event.eventCode === eventCode ? { ...event, selectedProducts } : event)),
+        );
+        handleCloseViewModal();
     };
 
     return (
         <div className="track-container">
             <h2>Quản lý sự kiện</h2>
 
-            <Link to="/addsale">
-                <button className="submit">Thêm sự kiện</button>
-            </Link>
+            <button className="submit" onClick={handleOpenAddModal}>
+                Thêm sự kiện
+            </button>
             <div className="tracking-header">
                 <div>Mã sự kiện</div>
                 <div>Tên sự kiện</div>
@@ -61,15 +109,29 @@ const Sale = () => {
                     <div>{event.fromDate}</div>
                     <div>{event.toDate}</div>
                     <div>
-                        <Link to="/viewsale">
-                            <button className="view">Xem</button>
-                        </Link>
-                        <Link to="/editsale">
-                            <button className="edit">Sửa</button>
-                        </Link>
+                        <button className="view" onClick={() => handleOpenViewModal(event)}>
+                            Xem
+                        </button>
+                        <button className="edit" onClick={() => handleOpenEditModal(event)}>
+                            Sửa
+                        </button>
                     </div>
                 </div>
             ))}
+
+            {isAddModalOpen && <AddEventModal onClose={handleCloseAddModal} onSave={handleAddEvent} />}
+            {isEditModalOpen && (
+                <EditEventModal event={selectedEvent} onClose={handleCloseEditModal} onSave={handleEditEvent} />
+            )}
+            {isViewModalOpen && (
+                <ViewEventModal
+                    event={selectedEvent}
+                    onClose={handleCloseViewModal}
+                    onSelectProducts={() =>
+                        handleSelectProducts(selectedEvent.eventCode, selectedEvent.selectedProducts)
+                    }
+                />
+            )}
         </div>
     );
 };
