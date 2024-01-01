@@ -35,7 +35,7 @@ const productDetailSlice = createSlice({
     }
 });
 export const fetchProductbyId = (id) => async (dispatch) => {
-
+    //console.log('id', id);
     try {
         dispatch(getStart());
         const data = await getProductById(id);

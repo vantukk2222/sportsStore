@@ -37,7 +37,7 @@ const SalesChart = (props) => {
 
     useEffect(() => {
         if (statis) {
-            console.log('statis', statis);
+            // console.log('statis', statis);
 
             const months = statis?.setStatistic?.map(item => item.month.toString());
             const dataValues = statis?.setStatistic?.map(item => item.bill_total / 10000);
@@ -63,7 +63,7 @@ const SalesChart = (props) => {
     // console.log('data', data.datasets);
     return (
         <View style={{
-            flex: 1, paddingTop: 10, backgroundColor: '#20369F', marginBottom: 30//colors.xam
+            flex: 1, paddingTop: 10, backgroundColor: '#6A99B8', marginBottom: 30//colors.xam
         }}>
 
             <View style={{ paddingHorizontal: 5 }}>
@@ -91,7 +91,7 @@ const SalesChart = (props) => {
                             yAxisInterval={1} // optional, defaults to 1
                             chartConfig={{
                                 backgroundColor: "#20367F",
-                                backgroundGradientFrom: "#3C5196", //"#fb8c00",
+                                backgroundGradientFrom: "#0C5F9A", //"#fb8c00",
                                 backgroundGradientTo: "#112942", //"#4E8C43",//"#ffa726",
                                 decimalPlaces: 1, // optional, defaults to 2dp
                                 color: (opacity = 1) => `rgba(20, 255, 146, ${opacity})`,
@@ -142,7 +142,7 @@ const SalesChart = (props) => {
                             chartConfig={{
                                 backgroundColor: "#20367F",
                                 backgroundGradientFrom: "#3C5196",
-                                backgroundGradientTo: "#112942",
+                                backgroundGradientTo: "#0C5F9A",
                                 decimalPlaces: 1,
                                 barPercentage: 0.5,
                                 fontSize: 5,

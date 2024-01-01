@@ -53,9 +53,13 @@ export const setHireProduct = (id, hire) => async (dispatch, getState) => {
         }
     } catch (error) {
         // store.dispatch(logout())
-        console.log(('Hire error ', error.message));
+        console.log(('Hire error ', error.response));
         dispatch(getUserFailure(error.message))
-        toastError('Ẩn sản phẩm', 'Lổi')
+        if (error.response.status === 401) {
+            toastError('Lổi', 'Vui lòng kiểm tra đăng nhập')
+        } else {
+            toastError('Ẩn sản phẩm', 'Lổi')
+        }
     }
     // return data
 }

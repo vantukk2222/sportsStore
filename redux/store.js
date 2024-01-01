@@ -50,10 +50,12 @@ import confirmBillSlice from './reducers/Bill/confirmBill';
 import getAllBillSlice from './reducers/Bill/getBillUserReducer'
 import getBusinessByIDSlice from './reducers/Business/getBusinessByID'
 import cancelBillSlice from './reducers/Bill/billCancelReducer'
+import findMostSoldProductSlice from './reducers/Statistic/findMostSoldProduct';
+import changeIsmainSlice from './reducers/Images/ChangeIsmain';
+import changeInforSlice from './reducers/Business/changeInfor';
 import createImageCommentSlice from './reducers/Images/ImageCommentReducer'
 import createCommentSlice from './reducers/Comment/commentReducer'
-// {createImageCommentSlice}
-// {createCommentSlice}
+
 const rootReducer = combineReducers({
   product: productSlice,
   productDetail: productDetailSlice,
@@ -96,11 +98,15 @@ const rootReducer = combineReducers({
   getStatistic: getStatisticSlice,
   getAllBillReducer: getAllBillSlice,
   getBusinessByIDReducer: getBusinessByIDSlice,
-  cancelBillReducer :cancelBillSlice,
+  cancelBillReducer: cancelBillSlice,
   getBillbyIdBusi: getBillbyIdBusiSlice,
-  confirmBill: confirmBillSlice,
+
   createImageComment: createImageCommentSlice,
   createComment: createCommentSlice,
+  confirmBill: confirmBillSlice,
+  findMostSoldProduct: findMostSoldProductSlice,
+  changeIsmain: changeIsmainSlice,
+  changeInfor: changeInforSlice
 })
 // {getBusinessByIDSlice}
 const persistConfig = {

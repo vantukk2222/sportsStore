@@ -49,14 +49,24 @@ const ProductBusiness = (props) => {
     }, [dataProductbyBusi])
 
     const handleEdit = (productId) => {
+        if (errorProductbyBusi) {
+            toastError("Xin lỗi", "Đã xảy ra lổi, thử lại sau")
+        } else {
+            navigation.navigate('EditProductInfor', { productId: productId })
+        }
         // Xử lý sự kiện sửa sản phẩm
-        navigation.navigate('EditProductInfor', { productId: productId })
+
         // console.log('Edit product with ID:', productId);
     };
     const handleRecover = (productId) => {
-        setHireProduct(productId, false)// bo an 
-        setProducts((prevProducts) =>
-            prevProducts.filter((product) => product.id !== productId));
+        if (errorProductbyBusi) {
+            toastError("Xin lỗi", "Đã xảy ra lổi, thử lại sau")
+        } else {
+            setHireProduct(productId, false)// bo an 
+            setProducts((prevProducts) =>
+                prevProducts.filter((product) => product.id !== productId));
+
+        }
 
     }
     useEffect(() => {
@@ -72,35 +82,40 @@ const ProductBusiness = (props) => {
 
     }, [dataState])
     const handleDelete = (productId) => {
-        // Xử lý sự kiện xóa sản phẩm
-        Alert.alert(
-            'Xác nhận',
-            'Bạn có chắc chắn muốn ẩn sản phẩm này?',
-            [
-                {
-                    text: 'Hủy',
-                    style: 'cancel',
-                },
-                {
-                    text: 'Ẩn',
-
-                    onPress: () => {
-                        console.log("product", productId, 'business', data?.id);
-                        setHireProduct(productId, true)
-                        //  console.log('Status hire', hireState?.dataStatusHire);
-                        if (hireState?.dataStatusHire.status === 202) {
-                            // Xử lý sự kiện xóa sản phẩm
-                            setProducts((prevProducts) =>
-                                prevProducts.filter((product) => product.id !== productId)
-                            );
-                            //toastsuccess("Xoa san pham", "Thanh cong")
-                        }
-
+        if (errorProductbyBusi) {
+            toastError("Xin lỗi", "Đã xảy ra lổi, thử lại sau")
+        } else {
+            Alert.alert(
+                'Xác nhận',
+                'Bạn có chắc chắn muốn ẩn sản phẩm này?',
+                [
+                    {
+                        text: 'Hủy',
+                        style: 'cancel',
                     },
-                },
-            ],
-            { cancelable: false }
-        );
+                    {
+                        text: 'Ẩn',
+
+                        onPress: () => {
+                            console.log("product", productId, 'business', data?.id);
+                            setHireProduct(productId, true)
+                            //  console.log('Status hire', hireState?.dataStatusHire);
+                            if (hireState?.dataStatusHire?.status === 202) {
+                                // Xử lý sự kiện xóa sản phẩm
+                                setProducts((prevProducts) =>
+                                    prevProducts.filter((product) => product.id !== productId)
+                                );
+                                //toastsuccess("Xoa san pham", "Thanh cong")
+                            }
+
+                        },
+                    },
+                ],
+                { cancelable: false }
+            );
+        }
+        // Xử lý sự kiện xóa sản phẩm
+
     };
 
     const handleNextPage = () => {
@@ -120,13 +135,16 @@ const ProductBusiness = (props) => {
             console.log('Go to the previous page');
         }
     };
-    if (error || errorState || errorProductbyBusi) {
+    // if (error || errorState) {
 
-        toastError("Xin lỗi", "Đã xảy ra lổi, thử lại sau")
-        //setProducts()
-        //   navigation.navigate('Home')
-        // return <View></View>
-    }
+    //     toastError("Xin lỗi", "Lổi kết nối")
+    //     //setProducts()
+    //     //   navigation.navigate('Home')
+    //     // return <View></View>
+    // }
+    // if (errorProductbyBusi) {
+    //     toastError("Xin lỗi", "Đã xảy ra lổi, thử lại sau")
+    // }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -169,7 +187,7 @@ const ProductBusiness = (props) => {
             <View style={styles.navigation}>
                 <TouchableOpacity
                     style={page === 0 ? styles.disableButton : styles.button}
-
+                    disabled={page > 0 ? false : true}
                     onPress={handlePrevPage}
                 >
                     <Text style={{ color: 'white', fontWeight: '500' }}>Trang trước</Text>
