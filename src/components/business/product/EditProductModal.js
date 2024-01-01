@@ -164,10 +164,10 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     />
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="sale">Mã giảm giá:</label>
                     <input type="text" id="sale" name="sale" value={editedProduct.sale} onChange={handleInputChange} />
-                </div>
+                </div> */}
 
                 <div className="modal-buttons">
                     <button onClick={handleSaveProduct}>Lưu</button>
