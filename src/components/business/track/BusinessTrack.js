@@ -37,9 +37,6 @@ const BusinessTrack = () => {
                             <p className="menu-item" onClick={() => setOrderstate(1)}>
                                 Giao thành công
                             </p>
-                            <p className="menu-item" onClick={() => setOrderstate(2)}>
-                                Chưa thanh toán
-                            </p>
                             <p className="menu-item" onClick={() => setOrderstate(4)}>
                                 Đã hủy đơn
                             </p>
