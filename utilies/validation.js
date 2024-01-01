@@ -4,10 +4,16 @@ import { formatNumber } from 'react-native-localize';
 export const isValidEmail = (mail) => {
   return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
 }
+
 export const onValidUsername = (val) => {
   const regex = /^[a-z][a-zA-Z0-9]{5,24}$/;
   return regex.test(val)
 }
+export const isValidComment = (val) => {
+  const regex = /^[\p{L}\s'-.,'!@#`\n]{25,200}$/u;
+  return regex.test(val)
+}
+
 export const isValidName = (val) => {
   const regex = /^[\p{L}\s'-]{5,49}$/u;
   return regex.test(val)

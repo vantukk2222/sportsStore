@@ -13,6 +13,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { cancelBillByID } from "../../redux/reducers/Bill/billCancelReducer";
 import { listCartByIdUser } from "../../redux/reducers/Cart/listCartReducer";
 import { toastError, toastsuccess } from "../../components/toastCustom";
+import { useNavigation } from "@react-navigation/native";
 
 const DetailOrderScreen = ({ route }) => {
     const { orderByState, businessInfor, list_id, total } = route.params
@@ -21,6 +22,7 @@ const DetailOrderScreen = ({ route }) => {
 
     console.log("list ID",list_id);
     const dispatch = useDispatch()
+    const navigation = useNavigation()
     // useEffect(() => {
     //     const totalAllBill = () => {
     //         setTotal(0)
@@ -48,20 +50,31 @@ const DetailOrderScreen = ({ route }) => {
             return "Đơn hàng đã bị huỷ."
         }
     }
+    const cancelBillAgain = (transcationID)=>{
+        dispatch(cancelBillByID(transcationID, "cancel")).then((status) => {
+            if (status === 200 || status === 201 || status === 202 || status === 203 || status === 204) {
+                toastsuccess("Cảm ơn", "Quý khách đã huỷ đơn thành công.")
+                setIndex(0)
+                setStateOrder(0)
+                navigation.goBack()
+            }
+            else {
+                toastError("Xin lỗi", status)
+            }
+        })
+    }
     const checkOut = async (link) => {
 
-        console.log("Link", link);
         try {
             await Linking.openURL(link).then(() => {
-                navigation.navigate("LoginBottomNavigator")
+                navigation.goBack()
                 toastsuccess("Thành công", "Thanh toán thành công");
-                dispatch(listCartByIdUser(data?.id))
+                dispatch(getAllBillByIDUser(data?.id))
             })
         } catch (error) {
             toastError("Xin lỗi", "Đã có lỗi xảy ra với máy chủ");
             return error;
         }
-        // setVisible(true);
     };
     return (
         <View style={{
@@ -192,7 +205,7 @@ const DetailOrderScreen = ({ route }) => {
 
                                                                 fontSize: 16, color: 'gray', marginLeft: 45, alignItems: 'flex-end'
                                                             }}>
-                                                                {formatMoneyVND(eachproductItem?.product?.price)}
+                                                                {formatMoneyVND(eachproductItem?.product?.price * eachproductItem?.quantity)}
                                                             </Text>
                                                             <Text style={{ fontSize: 16, color: 'red', marginRight: 15, alignItems: 'flex-end' }}>
                                                                 {formatMoneyVND(eachproductItem?.product?.price * (1 - eachproductItem?.product?.sale?.discount / 100))}
@@ -337,17 +350,9 @@ const DetailOrderScreen = ({ route }) => {
                     }}>
                     {orderByState?.state === 2 || orderByState?.state === 3 ? <TouchableOpacity
                         onPress={() => {
-                            console.log(orderByState?.bill_detailSet[0].product);
-                            // dispatch(cancelBillByID(orderByState?.transaction?.id, "cancel")).then((status) => {
-                            //     if (status === 200 || status === 201 || status === 202 || status === 203 || status === 204) {
-                            //         toastsuccess("Cảm ơn", "Quý khách đã huỷ đơn thành công.")
-                            //         setIndex(0)
-                            //         setStateOrder(0)
-                            //     }
-                            //     else {
-                            //         toastError("Xin lỗi", status)
-                            //     }
-                            // })
+                            // console.log(orderByState?.bill_detailSet[0].product);
+                            
+                            cancelBillAgain(transcationID)
                         }}
                         style={{
                             paddingHorizontal: 10,

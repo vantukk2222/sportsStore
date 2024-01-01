@@ -126,9 +126,10 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
             list_ID_Bill.push(item?.id)
             dispatch(cancelBillByID(list_ID_Bill, "receive")).then((status) => {
                 if (status === 200 || status === 201 || status === 202 || status === 203 || status === 204) {
-                    toastsuccess("Cảm ơn", "Đơn của bạn đã hoàn thành.")
+                    toastsuccess("Cảm ơn", "Hãy đánh giá đơn hàng của bạn ngay nhé.")
                     setIndex(0)
                     setStateOrder(0)
+                    navigation.navigate("RatingOrder", { item: JSON.parse(JSON.stringify(item)) })
                 }
                 else {
                     toastError("Xin lỗi", status)
@@ -136,7 +137,7 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
             })
         }
         if (text === "Đánh giá") {
-            navigation.navigate("RatingOrder", { item: item })
+            navigation.navigate("RatingOrder", { item:  JSON.parse(JSON.stringify(item)) })
         }
     }
 

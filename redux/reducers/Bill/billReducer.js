@@ -28,15 +28,15 @@ const saveBillSlice = createSlice({
   },
 });
 
-export const saveBill = (name, information ,total,id_user, state, bill_detailSet, list_Id_Cart) => async (dispatch, getState) => {
+export const saveBill = (name, information, total, id_user, state, bill_detailSet, list_Id_Cart) => async (dispatch, getState) => {
   try {
 
     dispatch(saveBillRequest()); // Dispatch addToCartRequest action
     const authToken = getState().login.authToken
     console.log("Token billReducer:", authToken);
-    await saveBillAPI(name, information ,total,id_user, state, bill_detailSet, authToken) // Call addToCartPage API
+    await saveBillAPI(name, information, total, id_user, state, bill_detailSet, authToken) // Call addToCartPage API
     console.log("data in Bill Reducer: ", "OKKKKKKK"); // Log received data
-    
+
 
     dispatch(saveBillSuccess()); // Dispatch addToCartSuccess with received data
     // console.log("state reduceraddToCart: " + JSON.stringify(getState()));
@@ -50,7 +50,7 @@ export const saveBill = (name, information ,total,id_user, state, bill_detailSet
     // store.dispatch(logout())
     dispatch(saveBillFailure({ error: errorMessage })); // Dispatch addToCartFailure with error message
     // return false
-}
+  }
 };
 
 export const { saveBillRequest, saveBillSuccess, saveBillFailure } = saveBillSlice.actions;

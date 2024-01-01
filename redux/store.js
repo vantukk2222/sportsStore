@@ -50,6 +50,10 @@ import confirmBillSlice from './reducers/Bill/confirmBill';
 import getAllBillSlice from './reducers/Bill/getBillUserReducer'
 import getBusinessByIDSlice from './reducers/Business/getBusinessByID'
 import cancelBillSlice from './reducers/Bill/billCancelReducer'
+import createImageCommentSlice from './reducers/Images/ImageCommentReducer'
+import createCommentSlice from './reducers/Comment/commentReducer'
+// {createImageCommentSlice}
+// {createCommentSlice}
 const rootReducer = combineReducers({
   product: productSlice,
   productDetail: productDetailSlice,
@@ -94,7 +98,9 @@ const rootReducer = combineReducers({
   getBusinessByIDReducer: getBusinessByIDSlice,
   cancelBillReducer :cancelBillSlice,
   getBillbyIdBusi: getBillbyIdBusiSlice,
-  confirmBill: confirmBillSlice
+  confirmBill: confirmBillSlice,
+  createImageComment: createImageCommentSlice,
+  createComment: createCommentSlice,
 })
 // {getBusinessByIDSlice}
 const persistConfig = {

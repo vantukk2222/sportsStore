@@ -25,6 +25,7 @@ import { toastError, toastsuccess } from '../../components/toastCustom';
 import { decodeToken } from '../../utilies/decodeToken';
 import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import { setRole } from '../../redux/reducers/Role/roleReducer';
+import LoadingModal from '../../components/loading';
 
 // {loginUser}
 function Login(props) {
@@ -134,7 +135,7 @@ function Login(props) {
     }, 500)
   };
   //  if(!getToken()) return <Loading/>
-  if((loginState?.isLoading)) return <Loading></Loading>
+  if((loginState?.isLoading)) return <LoadingModal></LoadingModal>
   if (errorLoad) { return <Text style={{ color: 'red' }}>Error: {error}</Text>; }
   return (
 
