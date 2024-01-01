@@ -25,9 +25,9 @@ const StatisticScreen = (props) => {
     const [statis, setStatis] = useState()
     useEffect(() => {
         if (data && endDate && startDate && !isCheck) {
-            console.log('id business', data.id);
+            // console.log('id business', data.id);
             //setisCheck(true)
-            fetchStatistic(data.id, 3, startDate, endDate)
+            fetchStatistic(data.id, 1, startDate, endDate)
 
         }
         return () => {
@@ -74,7 +74,7 @@ const StatisticScreen = (props) => {
     const year = ['2022', '2023', '2024', '2025']
     const month = ['1-6', '7-12']
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: '#20367F' }}>
+        <ScrollView style={{ flex: 1, backgroundColor: '#6A99B8' }}>
 
             <View style={{ backgroundColor: '#30468F' }}>
                 <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600', color: 'white', marginBottom: 10, marginTop: 5, marginHorizontal: 20 }}>

@@ -9,7 +9,7 @@ const getProductById = async (id) => {
     //var authToken = await asyncStorage.getAuthToken();
     // console.log(authToken);
     try {
-        const response = await axios.get(urlAPI+`/api/v1/product-information/${id}`, {
+        const response = await axios.get(urlAPI + `/api/v1/product-information/${id}`, {
             // headers: {
             //     'Authorization': `Bearer ${authToken}`,
             //     'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ const getProductById = async (id) => {
         return response.data;
     } catch (error) {
         // store.dispatch(logout())
-        console.error("error get product by id", error.response.data.message);
+        console.error("error get product by id", error.response);
         throw error;
     }
 };

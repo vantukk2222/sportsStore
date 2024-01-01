@@ -13,6 +13,7 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { createImages, resetImage } from '../../../redux/reducers/Images/ImageReducer';
 import { editProductinf, resetEditProduct } from '../../../redux/reducers/productReducer/editProduct';
 import Loading from '../../../components/loading';
+import LoadingModal from '../../../components/loading';
 const EditProductInfor = (props) => {
     const route = useRoute()
     const navigation = useNavigation();
@@ -137,6 +138,9 @@ const EditProductInfor = (props) => {
 
 
     }
+    if (productinforState?.loading) {
+        return <LoadingModal />
+    }
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Chỉnh sửa sản phẩm</Text>
@@ -147,47 +151,27 @@ const EditProductInfor = (props) => {
                 borderTopWidth: 0.8,
                 borderTopColor: 'black'
             }} horizontal>
-                {productinforState?.loading ?
-                    <TouchableOpacity
-                        style={styles.buttonEdit} >
-                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                    </TouchableOpacity> :
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('EditandDelete', { productId: productId })}
-                        style={styles.buttonEdit}>
-                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('EditandDelete', { productId: productId })}
+                    style={styles.buttonEdit}>
+                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('EditProductSize', { productinforId: productId })}
+                    style={styles.buttonEdit} >
+                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Kích thước</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('CreateSize', { id_productinformation: productId, isEdit: true })}
+                    style={styles.buttonEdit} >
+                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Thêm kích thước</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('SetMain', { productId: productId })}
+                    style={styles.buttonEdit} >
+                    <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chọn ảnh chính</Text>
+                </TouchableOpacity>
 
-
-                }
-                {productinforState?.loading ?
-                    <TouchableOpacity
-                        style={styles.buttonEdit}>
-                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                    </TouchableOpacity> :
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('EditProductSize', { productinforId: productId })}
-                        style={styles.buttonEdit} >
-                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Kích thước</Text>}
-                    </TouchableOpacity>
-                }
-                {productinforState?.loading ?
-                    <TouchableOpacity
-                        style={styles.buttonEdit}>
-                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Chỉnh ảnh</Text>}
-                    </TouchableOpacity> :
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('CreateSize', { id_productinformation: productId, isEdit: true })}
-                        style={styles.buttonEdit} >
-                        {productinforState?.loading ? <ActivityIndicator size="large" color={colors.success} /> :
-                            <Text style={{ fontSize: 20, color: 'black', fontSize: 20, fontWeight: '500' }}>Thêm kích thước</Text>}
-                    </TouchableOpacity>
-                }
             </ScrollView>
             <View style={styles.inputView}>
                 <Text style={styles.inputText}>Tên sản phẩm:</Text>

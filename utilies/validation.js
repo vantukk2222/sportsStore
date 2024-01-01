@@ -36,3 +36,14 @@ export function isValidDouble(value) {
 export function isValidInteger(value) {
   return /^\d+$/.test(value);
 }
+export const findMainImage = (Listimg) => {
+  for (let i = 0; i < Listimg.length; i++) {
+    if (Listimg[i].is_main === true) {
+      //console.log(images[i].url)
+      var img = Listimg[i].url
+      //  setImages(im)
+      return Listimg[i].url;
+    }
+  }
+  return Listimg.length > 0 ? Listimg[0].url : null;
+}

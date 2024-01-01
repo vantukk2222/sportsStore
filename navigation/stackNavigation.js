@@ -37,6 +37,9 @@ import OrderHistoryScreen from "../screens/Cart/OrderHistory"
 import DetailOrderScreen from "../screens/Cart/detailOrder"
 import OrderScreen from "../screens/Business/Order/OrderScreen"
 import Orderdetail from "../screens/Business/Order/Orderdetail"
+import { StatisticBottomNavigator } from "./bottomStatistic"
+import SetMain from "../screens/Business/Products/SetImage/SetMain"
+import setInforBusiness from "../screens/Business/Me/setInforBusiness"
 
 
 const Stack = createStackNavigator();
@@ -58,6 +61,9 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="StatisticScreen" component={StatisticScreen} options={{ headerShown: false }} />
             <Stack.Screen name="OrderScreen" component={OrderScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Orderdetail" component={Orderdetail} options={{ headerShown: false }} />
+            <Stack.Screen name="StatisticBottomNavigator" component={StatisticBottomNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="SetMain" component={SetMain} options={{ headerShown: false }} />
+            <Stack.Screen name="setInforBusiness" component={setInforBusiness} options={{ headerShown: false }} />
 
 
 

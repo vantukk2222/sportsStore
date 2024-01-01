@@ -1,14 +1,13 @@
 import axios from "axios";
 import { urlAPI } from "../apiAddress";
-import { toastError } from "../../components/toastCustom";
-const postHireProduct = async (id, hide, authToken) => {
+const putChangeIsmain = async (id, authToken) => {
 
     //var authToken = await asyncStorage.getAuthToken();
     console.log("token API", authToken);
     try {
 
         const response = await axios.put(
-            urlAPI + `/api/v1/product-information/hide-product-information/${id}?hide=${hide}`,
+            urlAPI + `/api/v1/image/change-is-main/${id}`,
             {},
             {
                 headers: {
@@ -20,15 +19,12 @@ const postHireProduct = async (id, hide, authToken) => {
         );
 
 
-        console.log('response state', response);
-        return response;
+        console.log('response state', response.status);
+        return response.status;
     } catch (error) {
-        //console.error("error put change state", error.response.status);
-        // if (error.response.status === 401) {
-        //     toastError('Lổi', 'Vui lòng kiểm tra đăng nhập')
-        // }
+        console.error("error put change state", error.response.status);
         throw error;
     }
 };
 
-export default postHireProduct;
+export default putChangeIsmain;

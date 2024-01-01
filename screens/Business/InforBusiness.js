@@ -16,6 +16,7 @@ import { toastError } from "../../components/toastCustom";
 import Toast from "react-native-toast-message";
 import { setRole } from "../../redux/reducers/Role/roleReducer";
 import { asyncStorage } from "../../utilies/asyncStorage";
+import MoneyDisplay from "./Money/MoneyDisplay";
 const Information = () => {
     const { userName, isLoading, error: errorUser } = useSelector((state) => state.login)
 
@@ -35,19 +36,19 @@ const Information = () => {
     }
     const handleLogout = async () => {
         await asyncStorage.setUsername('')
-        
+
         dispatch(resetStateListCart())
         dispatch(resetStateUser())
         dispatch(logout())
         dispatch(setRole(''))
         // const data = await AsyncStorage.getItem('persist:root')
         navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'LoginBottomNavigator' }],
-  
-            // Thay 'Home' bằng màn hình bạn muốn quay về
-          })
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'LoginBottomNavigator' }],
+
+                // Thay 'Home' bằng màn hình bạn muốn quay về
+            })
         );
         // console.log("data logout:", data);
     }
@@ -75,57 +76,10 @@ const Information = () => {
                     {inforUser?.name ? inforUser?.name : "Vui lòng đăng nhập"}
                 </Text>
             </View>
-
             <View style={styles.infoContainer}>
-                <TouchableOpacity style={styles.infoItem}
-                    onPress={() => {
-                        inforUser?.id ? navigation.navigate('Cart', { id_user: inforUser?.id }) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
-                    }}>
-                    <Text style={styles.infoText}>Đơn hàng của tôi</Text>
-                    <Icon
-                        name="chevron-circle-right"
-                        size={24}
-                        color={colors.denNhe}
-                        style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 10 }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.infoItem}>
-                    <Text style={styles.infoText}>Ví và ưu đãi</Text>
-                    <Icon
-                        onPress={() => {
-                            //   navigation.navigate('Cart')
-                        }}
-                        name="chevron-circle-right"
-                        size={24}
-                        color={colors.denNhe}
-                        style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 10 }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.infoItem}>
-                    <Text style={styles.infoText}>Địa chỉ của tôi</Text>
-                    <Icon
-                        onPress={() => {
-                            //  navigation.navigate('Cart')
-                        }}
-                        name="chevron-circle-right"
-                        size={24}
-                        color={colors.denNhe}
-                        style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 10 }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.infoItem}
-                    onPress={() => {
-                        inforUser?.id ? navigation.navigate('setInfor', { infor: inforUser }) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
-                    }}>
-                    <Text style={styles.infoText}>Chỉnh sửa thông tin cá nhân</Text>
-                    <Icon
-                        name="chevron-circle-right"
-                        size={24}
-                        color={colors.denNhe}
-                        style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 10 }}
-                    />
-                </TouchableOpacity>
+                <MoneyDisplay inforUser={inforUser} />
             </View>
+
             <View style={styles.settingContainer}>
                 {inforUser?.name ? "" : (<TouchableOpacity style={styles.setItem}
                     onPress={() => {
@@ -171,8 +125,8 @@ const styles = StyleSheet.create({
     infoContainer: {
         borderTopWidth: 1,
         borderTopColor: "#ccc",
-        paddingTop: 6,
-        paddingTop: 40,
+        marginTop: 6,
+        paddingTop: 20,
 
     },
     settingContainer: {

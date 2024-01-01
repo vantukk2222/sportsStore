@@ -51,7 +51,7 @@ const SellerHomeScreen = () => {
         <TouchableOpacity style={styles.productContainer}
             onPress={() => {
                 if (error) {
-                    toastError('Cảnh báo', 'bạn chưa đăng nhập')
+                    toastError('Cảnh báo', 'Kiểm tra đăng nhập')
                     return;
                 } else {
 
@@ -74,7 +74,7 @@ const SellerHomeScreen = () => {
             return;
         } else {
             console.log('Statistic');
-            navigation.navigate('StatisticScreen');
+            navigation.navigate('StatisticBottomNavigator');
         }
 
     }
