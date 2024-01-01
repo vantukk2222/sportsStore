@@ -40,9 +40,7 @@ const BProduct = () => {
         handleCloseEditModal();
     };
 
-    const handleDeleteProduct = (index) => {
-        // Implement product deletion logic here
-    };
+    const handleDeleteProduct = (index) => {};
 
     const handleCheckboxChange = (index) => {
         const updatedSelectedProducts = [...selectedProducts];
@@ -53,7 +51,6 @@ const BProduct = () => {
     const isAnyCheckboxChecked = selectedProducts.some((isChecked) => isChecked);
 
     const handleEventButtonClick = () => {
-        // Implement the action for the selected products
         console.log('Performing event action for selected products:', selectedProducts);
     };
 

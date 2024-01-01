@@ -6,7 +6,7 @@ const AddProductModal = ({ onClose }) => {
     const [newProduct, setNewProduct] = useState({
         name_product: '',
         set_img: [],
-        priceSizePairs: [{ price: '', size: '' }],
+        priceSizePairs: [{ size: '', price: '', quantity: '' }],
         category: '',
         sale: '',
         detail: '',
@@ -23,11 +23,7 @@ const AddProductModal = ({ onClose }) => {
 
     const handleImageChange = (e) => {
         const files = e.target.files;
-        const newImages = [];
-
-        for (let i = 0; i < files.length; i++) {
-            newImages.push(URL.createObjectURL(files[i]));
-        }
+        const newImages = Array.from(files).map((file) => URL.createObjectURL(file));
 
         setNewProduct((prevProduct) => ({
             ...prevProduct,
@@ -38,7 +34,7 @@ const AddProductModal = ({ onClose }) => {
     const handleAddPriceSizePair = () => {
         setNewProduct((prevProduct) => ({
             ...prevProduct,
-            priceSizePairs: [...prevProduct.priceSizePairs, { price: '', size: '' }],
+            priceSizePairs: [...prevProduct.priceSizePairs, { size: '', price: '', quantity: '' }],
         }));
     };
 
@@ -117,6 +113,14 @@ const AddProductModal = ({ onClose }) => {
                                 className="inputform"
                                 type="text"
                                 style={{ marginLeft: '150px' }}
+                                placeholder="Size"
+                                value={pair.size}
+                                onChange={(e) => handlePriceSizeChange(index, 'size', e.target.value)}
+                            />
+                            <input
+                                className="inputform"
+                                type="text"
+                                style={{ marginLeft: '20px' }}
                                 placeholder="Giá tiền"
                                 value={pair.price}
                                 onChange={(e) => handlePriceSizeChange(index, 'price', e.target.value)}
@@ -124,17 +128,18 @@ const AddProductModal = ({ onClose }) => {
                             <input
                                 className="inputform"
                                 type="text"
-                                style={{}}
-                                placeholder="Size"
-                                value={pair.size}
-                                onChange={(e) => handlePriceSizeChange(index, 'size', e.target.value)}
+                                style={{ marginLeft: '20px' }}
+                                placeholder="Số lượng"
+                                value={pair.quantity}
+                                onChange={(e) => handlePriceSizeChange(index, 'quantity', e.target.value)}
                             />
                         </div>
                     ))}
                 </div>
-                <button onClick={handleAddPriceSizePair} style={{ marginLeft: '150px', marginBottom: '20px' }}>
+                <button onClick={handleAddPriceSizePair} style={{ marginLeft: '20px', marginBottom: '20px' }}>
                     +
                 </button>
+
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
                     <input

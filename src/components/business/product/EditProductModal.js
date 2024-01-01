@@ -7,7 +7,11 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         name: product.name,
         imageSet: product.imageSet,
         detail: product.detail,
-        priceSizePairs: product.productSet,
+        priceSizePairs: product.productSet.map((sizeInfo) => ({
+            size: sizeInfo.size,
+            price: sizeInfo.price,
+            quantity: sizeInfo.quantity,
+        })),
         categorySet: product.categorySet,
         price_min: '',
         sale: '',
@@ -49,7 +53,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     const handleAddPriceSizePair = () => {
         setEditedProduct((prevProduct) => ({
             ...prevProduct,
-            priceSizePairs: [...prevProduct.priceSizePairs, { price: '', size: '' }],
+            priceSizePairs: [...prevProduct.priceSizePairs, { size: '', price: '', quantity: '' }],
         }));
     };
 
@@ -62,7 +66,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             priceSizePairs: updatedPairs,
         }));
     };
-    console.log(product, editedProduct);
+
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
@@ -113,6 +117,13 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                                 className="inputform"
                                 type="text"
                                 style={{ marginLeft: '150px' }}
+                                placeholder="Size"
+                                value={pair.size}
+                                onChange={(e) => handlePriceSizeChange(index, 'size', e.target.value)}
+                            />
+                            <input
+                                className="inputform"
+                                type="text"
                                 placeholder="Giá tiền"
                                 value={pair.price}
                                 onChange={(e) => handlePriceSizeChange(index, 'price', e.target.value)}
@@ -120,10 +131,9 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                             <input
                                 className="inputform"
                                 type="text"
-                                style={{}}
-                                placeholder="Size"
-                                value={pair.size}
-                                onChange={(e) => handlePriceSizeChange(index, 'size', e.target.value)}
+                                placeholder="Số lượng"
+                                value={pair.quantity}
+                                onChange={(e) => handlePriceSizeChange(index, 'quantity', e.target.value)}
                             />
                         </div>
                     ))}
@@ -143,11 +153,6 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     />
                 </div>
 
-                {/* <div className="form-group">
-                    <label htmlFor="size">SIZE:</label>
-                    <input type="text" id="size" name="size" value={editedProduct.size} onChange={handleInputChange} />
-                </div> */}
-
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
                     <input
@@ -158,17 +163,6 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                         onChange={handleInputChange}
                     />
                 </div>
-
-                {/* <div className="form-group">
-                    <label htmlFor="price_min">Giá tiền:</label>
-                    <input
-                        type="text"
-                        id="price_min"
-                        name="price_min"
-                        value={editedProduct.price_min}
-                        onChange={handleInputChange}
-                    />
-                </div> */}
 
                 <div className="form-group">
                     <label htmlFor="sale">Mã giảm giá:</label>
