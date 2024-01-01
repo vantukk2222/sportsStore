@@ -1,8 +1,7 @@
 /* Business.css */
 .menubusiness {
-    padding: 10px;
     height: 1000px;
-    width: 270px;
+    width: 260px;
     border: 1px solid #ccc;
     background-color: white;
 }
@@ -50,7 +49,7 @@
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .track-container h2 {
@@ -59,8 +58,7 @@
 }
 
 .track-container p {
-    color: #666;
-    font-size: 16px;
+    padding-left: 20px;
 }
 
 .track-container form {
@@ -96,7 +94,7 @@
     background-color: #45a049;
 }
 .tracking-info {
-    height: 120px;
+    height: 100%;
 }
 .tracking-header,
 .tracking-info {
@@ -108,7 +106,7 @@
 
     .editproduct {
         background-color: blue;
-        width: 48px;
+        width: 47px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -122,7 +120,7 @@
 
     .deleteproduct {
         background-color: red;
-        width: 47px;
+        width: 44px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -135,7 +133,7 @@
     }
     .unproduct {
         background-color: rgb(255, 153, 0);
-        width: 47px;
+        width: 38px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -304,6 +302,24 @@
 .delete:hover {
     background-color: #0056b3;
 }
+.divproductB {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.divproductC {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+
+.divproductB,
+.divproductC > div {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
 
 .tracking-header {
     font-weight: bold;
@@ -337,6 +353,16 @@
     justify-content: center;
     align-items: center;
     font-size: 12px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modalnewproduct {
@@ -346,6 +372,14 @@
     width: 800px;
     text-align: center;
     position: relative;
+    position: relative;
+    background: white;
+    padding: 20px;
+    width: 80%;
+    max-height: 80%; /* Set the maximum height for the modal */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds the height */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
@@ -417,7 +451,7 @@
 .modal-buttons {
     display: flex;
     justify-content: flex-start;
-    margin-left: 300px;
+    margin-left: 450px;
 }
 
 .modal-buttons button {

@@ -1,3 +1,4 @@
+// Sale.js
 import { useState } from 'react';
 import AddEventModal from './AddEventModal';
 import EditEventModal from './EditEventModal';
@@ -7,6 +8,7 @@ const Sale = () => {
         {
             eventCode: 'EVT123',
             eventName: 'Khuyến mãi giày',
+            img: 'event1.png',
             discount: '20%',
             fromDate: '01 Tháng 12, 2023',
             toDate: '10 Tháng 12, 2023',
@@ -14,6 +16,7 @@ const Sale = () => {
         {
             eventCode: 'EVT456',
             eventName: 'Sự kiện áo hè',
+            img: 'event2.png',
             discount: '30%',
             fromDate: '05 Tháng 12, 2023',
             toDate: '20 Tháng 12, 2023',
@@ -22,6 +25,7 @@ const Sale = () => {
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     const handleOpenAddModal = () => {
@@ -42,6 +46,16 @@ const Sale = () => {
         setIsEditModalOpen(false);
     };
 
+    const handleOpenViewModal = (event) => {
+        setSelectedEvent(event);
+        setIsViewModalOpen(true);
+    };
+
+    const handleCloseViewModal = () => {
+        setSelectedEvent(null);
+        setIsViewModalOpen(false);
+    };
+
     const handleAddEvent = (newEvent) => {
         setEventInfo([...eventInfo, newEvent]);
         handleCloseAddModal();
@@ -59,10 +73,11 @@ const Sale = () => {
 
         handleCloseEditModal();
     };
-
-    const handleDeleteEvent = (eventCode) => {
-        const updatedEventInfo = eventInfo.filter((event) => event.eventCode !== eventCode);
-        setEventInfo(updatedEventInfo);
+    const handleSelectProducts = (eventCode, selectedProducts) => {
+        setEventInfo((prevEvents) =>
+            prevEvents.map((event) => (event.eventCode === eventCode ? { ...event, selectedProducts } : event)),
+        );
+        handleCloseViewModal();
     };
 
     return (
@@ -75,6 +90,7 @@ const Sale = () => {
             <div className="tracking-headersale">
                 <div>Mã sự kiện</div>
                 <div>Tên sự kiện</div>
+                {/* <div>Hình ảnh</div> */}
                 <div>Giảm giá</div>
                 <div>Từ ngày</div>
                 <div>Đến ngày</div>
@@ -85,13 +101,17 @@ const Sale = () => {
                 <div className="tracking-infosale" key={index}>
                     <div>{event.eventCode}</div>
                     <div>{event.eventName}</div>
+                    {/* <div>
+                        <img src={event.img} alt={`Event ${index + 1}`} />
+                    </div> */}
                     <div>{event.discount}</div>
                     <div>{event.fromDate}</div>
                     <div>{event.toDate}</div>
                     <div>
-                        <button className="delete" onClick={() => handleDeleteEvent(event.eventCode)}>
-                            Xóa
-                        </button>
+                        {/* <button className="view" onClick={() => handleOpenViewModal(event)}>
+                            Xem
+                        </button> */}
+                        <button className="delete">xóa</button>
                         <button className="edit" onClick={() => handleOpenEditModal(event)}>
                             Sửa
                         </button>
@@ -103,6 +123,15 @@ const Sale = () => {
             {isEditModalOpen && (
                 <EditEventModal event={selectedEvent} onClose={handleCloseEditModal} onSave={handleEditEvent} />
             )}
+            {/* {isViewModalOpen && (
+                <ViewEventModal
+                    event={selectedEvent}
+                    onClose={handleCloseViewModal}
+                    onSelectProducts={() =>
+                        handleSelectProducts(selectedEvent.eventCode, selectedEvent.selectedProducts)
+                    }
+                />
+            )} */}
         </div>
     );
 };
