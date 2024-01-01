@@ -34,18 +34,17 @@ export const LoginBottomNavigator = (props) => {
                     }
                     return <Icon name={iconName} size={size} color={color} />;
                 },
-            })}
-            tabBarOptions={{
-                activeTintColor: 'blue',
-                inactiveTintColor: 'black',
-                showLabel: true, // Đặt giá trị này thành true nếu bạn muốn hiển thị nhãn
-
-                labelStyle: {
+                tabBarActiveTintColor: 'blue',
+                tabBarInactiveTintColor: 'black',
+                tabBarShowLabel: true,
+                tabBarLabelStyle: {
                     fontSize: 12,
                     fontWeight: 'bold',
-                }
-            }}
-            tabBarStyle={{ height: 80 }}
+                },
+                tabBarStyle: {
+                    height: 80,
+                },
+            })}
         >
             <Tab.Screen name="Home" component={Start} options={{ headerShown: false }} />
             <Tab.Screen name="Sale" component={SalesofBusiness} options={{ headerShown: false }} />

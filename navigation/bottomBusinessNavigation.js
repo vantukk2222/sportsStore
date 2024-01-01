@@ -34,18 +34,17 @@ export const BusinessBottomNavigator = (props) => {
                     }
                     return <Icon name={iconName} size={size} color={color} />;
                 },
-            })}
-            tabBarOptions={{
-                activeTintColor: 'blue',
-                inactiveTintColor: 'black',
-                showLabel: true, // Đặt giá trị này thành true nếu bạn muốn hiển thị nhãn
-
-                labelStyle: {
+                tabBarActiveTintColor: 'blue', // Chuyển từ tabBarOptions.activeTintColor
+                tabBarInactiveTintColor: 'black', // Chuyển từ tabBarOptions.inactiveTintColor
+                tabBarShowLabel: true, // Chuyển từ tabBarOptions.showLabel
+                tabBarLabelStyle: { // Chuyển từ tabBarOptions.labelStyle
                     fontSize: 12,
                     fontWeight: 'bold',
-                }
-            }}
-            tabBarStyle={{ height: 80 }}
+                },
+                tabBarStyle: { // Chuyển từ tabBarStyle
+                    height: 80,
+                },
+            })}
         >
             <Tab.Screen name="Home" component={HomeBusiness} options={{ headerShown: false }} />
             <Tab.Screen name="Sale" component={Sale} options={{ headerShown: false }} />

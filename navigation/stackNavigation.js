@@ -1,6 +1,7 @@
 // <<<<<<< categoryDat
 import { initialCalculations } from "react-native-reanimated/lib/typescript/reanimated2/animation/springUtils"
 import { Cart, Login, MyCart, Register, UITab } from "../screens"
+// {Register}
 import Business from "../screens/Business/Business"
 import ShopInfo from "../screens/Business/ShopInfo"
 import DetailProduct from "../screens/Category/DetailProduct"
@@ -37,17 +38,19 @@ import OrderHistoryScreen from "../screens/Cart/OrderHistory"
 import DetailOrderScreen from "../screens/Cart/detailOrder"
 import OrderScreen from "../screens/Business/Order/OrderScreen"
 import Orderdetail from "../screens/Business/Order/Orderdetail"
+
 import { StatisticBottomNavigator } from "./bottomStatistic"
 import SetMain from "../screens/Business/Products/SetImage/SetMain"
 import setInforBusiness from "../screens/Business/Me/setInforBusiness"
-
-
+import RatingOrder from "../screens/Cart/ratingOrder"
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
     return (
         <Stack.Navigator initialCalculations="BusinessBottomNavigator">
             <Stack.Screen name="BusinessBottomNavigator" component={BusinessBottomNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+
             <Stack.Screen name="CreateNewProduct" component={CreateNewProduct} options={{ headerShown: false }} />
             <Stack.Screen name="CreateSize" component={CreateSize} options={{ headerShown: false }} />
             <Stack.Screen name="setProductinSale" component={setProductinSale} options={{ headerShown: false }} />
@@ -87,6 +90,8 @@ export const LoginScreenNavigator = () => {
             <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} options={{ headerShown: false }} />
             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
             {/* // <<<<<<< categoryDat */}
+            <Stack.Screen name="RatingOrder" component={RatingOrder} options={{ headerShown: false }} />
+
             <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
             <Stack.Screen name="detailOrder" component={DetailOrderScreen} options={{ headerShown: false }} />
 
