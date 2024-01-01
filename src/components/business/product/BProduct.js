@@ -55,7 +55,7 @@ const BProduct = () => {
         };
         fetchData();
     }, []);
-    console.log(products[editIndex]);
+    // console.log(products[editIndex]);
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
@@ -77,7 +77,10 @@ const BProduct = () => {
                 <div className="tracking-info" key={index}>
                     <div>{product.name}</div>
                     <div>
-                        <img src={product.imageSet.find((e) => e.is_main === true).url} alt={`Product ${index + 1}`} />
+                        <img
+                            src={product.imageSet?.find((e) => e.is_main === true)?.url}
+                            alt={`Product ${index + 1}`}
+                        />
                     </div>
                     <div>{product.detail ? product.detail : 'Không có'}</div>
 

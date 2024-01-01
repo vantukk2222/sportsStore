@@ -4,29 +4,16 @@ import { useEffect, useState } from 'react';
 
 const EditProductModal = ({ product, onClose, onSave }) => {
     const [editedProduct, setEditedProduct] = useState({
-        name: '',
-        imageSet: [],
-        detail: '',
-        priceSizePairs: [{ price: '', size: '' }],
-        categorySet: [],
+        name: product.name,
+        imageSet: product.imageSet,
+        detail: product.detail,
+        priceSizePairs: product.productSet,
+        categorySet: product.categorySet,
         price_min: '',
         sale: '',
     });
 
-    useEffect(() => {
-        if (product) {
-            const { name, imageSet, detail, price_min, sale, categorySet, priceSizePairs } = product;
-            setEditedProduct({
-                name,
-                imageSet: [...imageSet],
-                detail,
-                price_min,
-                sale,
-                categorySet: [...categorySet],
-                priceSizePairs: priceSizePairs ? [...priceSizePairs] : [{ price: '', size: '' }],
-            });
-        }
-    }, [product]);
+    useEffect(() => {}, []);
 
     const handleSaveProduct = () => {
         onSave(editedProduct);
@@ -75,7 +62,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             priceSizePairs: updatedPairs,
         }));
     };
-
+    console.log(product, editedProduct);
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
@@ -97,7 +84,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                                 <div key={index} style={{ position: 'relative', marginBottom: '10px' }}>
                                     <img
                                         className="imgaddproduct"
-                                        src={image}
+                                        src={image.url}
                                         alt={`Preview ${index + 1}`}
                                         style={{ maxWidth: '100%', marginTop: '10px' }}
                                     />
