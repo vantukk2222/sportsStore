@@ -106,7 +106,7 @@
 
     .editproduct {
         background-color: blue;
-        width: 47px;
+        width: 44px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -458,4 +458,28 @@
     padding: 8px 16px;
     cursor: pointer;
     margin-right: 30px; /* Thêm margin nếu bạn muốn khoảng cách giữa các nút */
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    background-color: white;
+}
+
+.chart-title {
+    text-align: center;
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.recharts-dot.recharts-line-active {
+    fill: #41a0ff;
+    stroke: #fff;
+}
+
+.recharts-bar-rectangles {
+    fill: #55d8fe;
 }

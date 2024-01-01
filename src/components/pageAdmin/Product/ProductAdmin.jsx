@@ -1,11 +1,41 @@
-import { useEffect, useState } from 'react';
-import getUnAuth from '~/API/get';
-import AddEventModal from './AddEventModal';
-import AddProductModal from './AddProductModal';
-import EditProductModal from './EditProductModal';
+import { useState } from 'react';
+import AddEventModal from './AddEventModalAdmin';
+import AddProductModal from './AddProductModalAdmin';
+import EditProductModal from './EditProductModalAdmin';
 
-const BProduct = () => {
-    const [products, setProducts] = useState([]);
+const ProductAdmin = () => {
+    const [products, setProducts] = useState([
+        {
+            name: 'Sản phẩm 1',
+            imageSet: [
+                { url: 'image1_1.jpg', is_main: true },
+                { url: 'image1_2.jpg', is_main: false },
+            ],
+            detail: 'Mô tả sản phẩm 1',
+            productSet: [
+                { size: 'S', price: 100000, quantity: 10 },
+                { size: 'M', price: 120000, quantity: 15 },
+                { size: 'L', price: 150000, quantity: 8 },
+            ],
+            categorySet: [{ name: 'Loại 1' }, { name: 'Loại 2' }],
+            discount: 10,
+        },
+        {
+            name: 'Sản phẩm 2',
+            imageSet: [
+                { url: 'image2_1.jpg', is_main: true },
+                { url: 'image2_2.jpg', is_main: false },
+            ],
+            detail: 'Mô tả sản phẩm 2',
+            productSet: [
+                { size: 'S', price: 80000, quantity: 20 },
+                { size: 'M', price: 100000, quantity: 12 },
+                { size: 'L', price: 130000, quantity: 5 },
+            ],
+            categorySet: [{ name: 'Loại 2' }, { name: 'Loại 3' }],
+            discount: 5,
+        },
+    ]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -41,9 +71,7 @@ const BProduct = () => {
         handleCloseEditModal();
     };
 
-    const handleDeleteProduct = (index) => {
-        // Handle product deletion logic
-    };
+    const handleDeleteProduct = (index) => {};
 
     const handleCheckboxChange = (index) => {
         const updatedSelectedProducts = [...selectedProducts];
@@ -65,26 +93,6 @@ const BProduct = () => {
         console.log('Event Name:', eventName);
         setIsAddEventModalOpen(false);
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const user = JSON.parse(localStorage.getItem('User'));
-                const response = await getUnAuth(`product-information/find-by-business/${user.id}`);
-                if (!response) {
-                    throw new Error('Network response was not ok');
-                }
-                setSelectedProducts(Array(response.content.length).fill(false));
-                setProducts(response.content);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
 
     return (
         <div className="track-container">
@@ -156,7 +164,6 @@ const BProduct = () => {
                         >
                             Xóa
                         </button>
-                        <button className="unproduct">Ẩn</button>
                     </div>
                 </div>
             ))}
@@ -174,4 +181,4 @@ const BProduct = () => {
     );
 };
 
-export default BProduct;
+export default ProductAdmin;

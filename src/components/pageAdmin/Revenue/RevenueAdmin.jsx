@@ -1,6 +1,6 @@
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 
-const RevenueAndOrdersChart = () => {
+const RevenueAdmin = () => {
     const revenueData = [
         { date: '2022-01', revenue: 100 },
         { date: '2022-02', revenue: 150 },
@@ -49,4 +49,4 @@ const RevenueAndOrdersChart = () => {
     );
 };
 
-export default RevenueAndOrdersChart;
+export default RevenueAdmin;

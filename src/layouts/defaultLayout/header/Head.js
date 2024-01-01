@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './head.css';
-import { useEffect, useState } from 'react';
 const Head = () => {
     const handleLogout = (e) => {
         e.preventDefault();
@@ -19,9 +19,9 @@ const Head = () => {
             <section className="head">
                 <div className="container d_flex">
                     <div className="left row">
-                        📞
-                        <label> +03 99 23 52 54</label>
-                        ✉️
+                        <label>
+                            <Link to="/admin">Kênh ADMIN</Link>
+                        </label>
                         <label>
                             <Link to="/login">Kênh người bán</Link>
                         </label>
