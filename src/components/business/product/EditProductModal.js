@@ -29,22 +29,50 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         setEditedProduct({ ...editedProduct, [name]: value });
     };
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const files = e.target.files;
         console.log(files);
+
         if (files) {
-            const imagesArray = Array.from(files).map((file) => {});
-            console.log(imagesArray);
-            setEditedProduct((prevProduct) => ({
-                ...prevProduct,
-                imageSet: [
-                    ...prevProduct.imageSet,
-                    ...imagesArray.map((e) => {
-                        return { id: null, url: e };
+            try {
+                const imagesArray = await Promise.all(
+                    Array.from(files).map(async (file) => {
+                        const imageUrl = await uploadFileToCloudinary(file);
+                        return { id: null, url: imageUrl };
                     }),
-                ],
-            }));
+                );
+
+                setEditedProduct((prevProduct) => ({
+                    ...prevProduct,
+                    imageSet: [...prevProduct.imageSet, ...imagesArray],
+                }));
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
         }
+    };
+    const uploadFileToCloudinary = (file) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'qxvropzd');
+
+            fetch('https://api.cloudinary.com/v1_1/drkqkovpr/image/upload', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.secure_url) {
+                        resolve(data.secure_url);
+                    } else {
+                        reject(new Error('Image upload failed'));
+                    }
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     };
 
     const handleRemoveImage = (index) => {
@@ -84,7 +112,6 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     <label htmlFor="name">Tên sản phẩm:</label>
                     <input type="text" id="name" name="name" value={editedProduct.name} onChange={handleInputChange} />
                 </div>
-
                 <div className="formgroupimg">
                     <div className="form-group">
                         <label htmlFor="img">Hình ảnh:</label>

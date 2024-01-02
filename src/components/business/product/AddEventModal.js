@@ -15,12 +15,7 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct" style={{ width: '400px' }}>
-                <span className="close" onClick={onClose}>
-                    &times;
-                </span>
-
                 <h2>Thêm sự kiện</h2>
-
                 <div className="form-group">
                     <label>Tên sự kiện:</label>
                     <select
@@ -42,8 +37,10 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
                         ))}
                     </select>
                 </div>
-
-                <button onClick={handleSave}>Lưu</button>
+                <button onClick={handleSave}>Lưu</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button onClick={onClose} style={{ paddingLeft: '20px' }}>
+                    Đóng
+                </button>
             </div>
         </div>
     );

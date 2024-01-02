@@ -21,14 +21,27 @@ const AddProductModal = ({ onClose }) => {
         setNewProduct({ ...newProduct, [name]: value });
     };
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const files = e.target.files;
-        const newImages = Array.from(files).map((file) => URL.createObjectURL(file));
+        console.log(files);
 
-        setNewProduct((prevProduct) => ({
-            ...prevProduct,
-            set_img: [...prevProduct.set_img, ...newImages],
-        }));
+        if (files) {
+            try {
+                const imagesArray = await Promise.all(
+                    Array.from(files).map(async (file) => {
+                        const imageUrl = await uploadFileToCloudinary(file);
+                        return imageUrl;
+                    }),
+                );
+
+                setNewProduct((prevProduct) => ({
+                    ...prevProduct,
+                    set_img: [...prevProduct.set_img, ...imagesArray],
+                }));
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        }
     };
 
     const handleAddPriceSizePair = () => {
@@ -55,6 +68,30 @@ const AddProductModal = ({ onClose }) => {
             ...prevProduct,
             set_img: updatedImages,
         }));
+    };
+
+    const uploadFileToCloudinary = (file) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'qxvropzd');
+
+            fetch('https://api.cloudinary.com/v1_1/drkqkovpr/image/upload', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.secure_url) {
+                        resolve(data.secure_url);
+                    } else {
+                        reject(new Error('Image upload failed'));
+                    }
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     };
 
     return (

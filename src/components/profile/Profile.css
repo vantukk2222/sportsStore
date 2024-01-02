@@ -110,12 +110,10 @@ a {
 
 .img-edit {
     text-align: center;
-    margin-left: auto;
-    /* Đưa .img-edit sang phải */
 }
 
 .img-edit img {
-    max-width: 50%;
+    max-width: 30%;
     height: auto;
     border-radius: 50%;
 }

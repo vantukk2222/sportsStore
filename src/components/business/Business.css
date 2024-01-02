@@ -106,9 +106,9 @@
 
     .editproduct {
         background-color: blue;
-        width: 44px;
+        width: 43px;
         display: inline-block;
-        padding: 10px;
+        padding: 5px;
         color: white;
         text-align: center;
         text-decoration: none;
@@ -135,7 +135,7 @@
         background-color: rgb(255, 153, 0);
         width: 38px;
         display: inline-block;
-        padding: 10px;
+        padding: 5px;
         color: white;
         text-align: center;
         text-decoration: none;
