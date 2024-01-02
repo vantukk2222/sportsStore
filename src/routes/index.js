@@ -43,14 +43,6 @@ const CRoutes = [
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/order', component: Order, layout: defaultLayout },
-
-    { path: '/admin', component: Admin, layout: layout_admin },
-    { path: '/dashboard', component: AdminDashboard, layout: layout_admin },
-    { path: '/adminuser', component: AdminUser, layout: layout_admin },
-    { path: '/adminsale', component: AdminSale, layout: layout_admin },
-    { path: '/admintrack', component: AdminTrack, layout: layout_admin },
-    { path: '/adminrevenue', component: AdminRevenue, layout: layout_admin },
-    { path: '/adminproduct', component: AdminProduct, layout: layout_admin },
 ];
 const BRoutes = [
     { path: '/', component: Business, layout: layout_bussiness },
@@ -62,4 +54,16 @@ const BRoutes = [
     { path: '/businesssale', component: BusinessSale, layout: layout_bussiness },
     { path: '/businesstrack', component: BusinessTrack, layout: layout_bussiness },
 ];
-export { BRoutes, CRoutes };
+const ARoutes = [
+    { path: '/', component: Admin, layout: layout_admin },
+    { path: '/login', component: Login, layout: layout_login },
+    { path: '/profile', component: Profile, layout: layout_admin },
+    { path: '/register', component: Register, layout: layout_res },
+    { path: '/dashboard', component: AdminDashboard, layout: layout_admin },
+    { path: '/adminuser', component: AdminUser, layout: layout_admin },
+    { path: '/adminsale', component: AdminSale, layout: layout_admin },
+    { path: '/admintrack', component: AdminTrack, layout: layout_admin },
+    { path: '/adminrevenue', component: AdminRevenue, layout: layout_admin },
+    { path: '/adminproduct', component: AdminProduct, layout: layout_admin },
+];
+export { BRoutes, CRoutes, ARoutes };

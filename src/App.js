@@ -1,5 +1,5 @@
 import './App.css';
-import { CRoutes, BRoutes } from '~/routes';
+import { CRoutes, BRoutes ,ARoutes} from '~/routes';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Fragment, useEffect, useState } from 'react';
 import getUnAuth from './API/get';
@@ -13,6 +13,7 @@ function App() {
         if (dataRole) {
             if (dataRole[0] == 'ROLE_BUSINESS') setRouters(BRoutes);
             if (dataRole[0] == 'ROLE_CUSTOMER') setRouters(CRoutes);
+            if (dataRole[0] == 'ROLE_ADMIN') setRouters(ARoutes);
         } else setRouters(CRoutes);
     }, [dataRole]);
     return (
