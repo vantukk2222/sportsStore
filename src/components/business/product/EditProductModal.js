@@ -1,9 +1,8 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const EditProductModal = ({ product, onClose, onSave }) => {
-    //   console.log(product);
     const [editedProduct, setEditedProduct] = useState({
         id: product.id,
         name: product.name,
@@ -22,7 +21,15 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         imageD: [],
     });
 
-    useEffect(() => {}, []);
+    const [selectedCategories, setSelectedCategories] = useState([...editedProduct.categorySet]);
+
+    const categoriesData = [
+        { id: 1, name: 'Category 1' },
+        { id: 2, name: 'Category 2' },
+        { id: 3, name: 'Category 3' },
+        { id: 4, name: 'New Category 1' },
+        { id: 5, name: 'New Category 2' },
+    ];
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -31,7 +38,6 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
     const handleImageChange = async (e) => {
         const files = e.target.files;
-        // console.log(files);
 
         if (files) {
             try {
@@ -51,6 +57,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             }
         }
     };
+
     const uploadFileToCloudinary = (file) => {
         return new Promise((resolve, reject) => {
             const formData = new FormData();
@@ -105,7 +112,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             priceSizePairs: updatedPairs,
         }));
     };
-    //console.log(editedProduct);
+
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
@@ -115,6 +122,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                     <label htmlFor="name">Tên sản phẩm:</label>
                     <input type="text" id="name" name="name" value={editedProduct.name} onChange={handleInputChange} />
                 </div>
+
                 <div className="formgroupimg">
                     <div className="form-group">
                         <label htmlFor="img">Hình ảnh:</label>
@@ -193,19 +201,40 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
-                    <input
-                        type="text"
+                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>
+                        {selectedCategories.map((category, index) => (
+                            <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                                <span>{category?.name}</span>
+                                <FontAwesomeIcon
+                                    icon={faTimes}
+                                    onClick={() =>
+                                        setSelectedCategories(selectedCategories.filter((cat) => cat !== category))
+                                    }
+                                    style={{ marginLeft: '5px', cursor: 'pointer', color: 'red' }}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <select
+                        style={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}
                         id="category"
                         name="category"
-                        value={editedProduct.categorySet.reduce((a, e) => a + `${e.name},`, '')}
-                        onChange={handleInputChange}
-                    />
+                        value={''}
+                        onChange={(e) => {
+                            const selectedCategory = categoriesData.find((cat) => cat.name === e.target.value);
+                            setSelectedCategories([...selectedCategories, selectedCategory]);
+                        }}
+                    >
+                        <option value="" disabled>
+                            Chọn danh mục
+                        </option>
+                        {categoriesData.map((category, index) => (
+                            <option key={index} value={category.name}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
-
-                {/* <div className="form-group">
-                    <label htmlFor="sale">Mã giảm giá:</label>
-                    <input type="text" id="sale" name="sale" value={editedProduct.sale} onChange={handleInputChange} />
-                </div> */}
 
                 <div className="modal-buttons">
                     <button onClick={() => onSave(product.id, editedProduct)}>Lưu</button>

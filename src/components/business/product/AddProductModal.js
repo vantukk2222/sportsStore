@@ -1,4 +1,4 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 
@@ -11,9 +11,11 @@ const AddProductModal = ({ onClose }) => {
         detail: '',
         attribute: '',
         priceSizePairs: [{ id: null, size: '', price: '', quantity: '' }],
-        categorySet: [],
+        selectedCategory: [],
         imageD: [],
     });
+
+    const categories = ['Category 1', 'Category 2', 'Category 3'];
 
     const handleAddProduct = () => {
         onClose();
@@ -24,9 +26,39 @@ const AddProductModal = ({ onClose }) => {
         setNewProduct({ ...newProduct, [name]: value });
     };
 
+    const handleCategoryChange = (e) => {
+        const selectedCategory = e.target.value;
+
+        setNewProduct((prevProduct) => {
+            if (!prevProduct.selectedCategory.includes(selectedCategory)) {
+                return {
+                    ...prevProduct,
+                    selectedCategory: [...prevProduct.selectedCategory, selectedCategory],
+                };
+            } else {
+                const updatedCategories = prevProduct.selectedCategory.filter(
+                    (category) => category !== selectedCategory,
+                );
+                return {
+                    ...prevProduct,
+                    selectedCategory: updatedCategories,
+                };
+            }
+        });
+    };
+
+    const handleRemoveCategory = (index) => {
+        setNewProduct((prevProduct) => {
+            const updatedCategories = [...prevProduct.selectedCategory];
+            updatedCategories.splice(index, 1);
+            return {
+                ...prevProduct,
+                selectedCategory: updatedCategories,
+            };
+        });
+    };
     const handleImageChange = async (e) => {
         const files = e.target.files;
-        // console.log(files);
 
         if (files) {
             try {
@@ -187,13 +219,34 @@ const AddProductModal = ({ onClose }) => {
 
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
-                    <input
-                        type="text"
+                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>
+                        {newProduct.selectedCategory.map((category, index) => (
+                            <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                                <span>{category}</span>
+                                <FontAwesomeIcon
+                                    icon={faTimes}
+                                    onClick={() => handleRemoveCategory(index)}
+                                    style={{ marginLeft: '5px', cursor: 'pointer', color: 'red' }}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <select
+                        style={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}
                         id="category"
                         name="category"
-                        value={newProduct.category}
-                        onChange={handleInputChange}
-                    />
+                        value={''}
+                        onChange={handleCategoryChange}
+                    >
+                        <option value="" disabled>
+                            Chọn danh mục
+                        </option>
+                        {categories.map((category, index) => (
+                            <option key={index} value={category}>
+                                {category}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="form-group">
@@ -206,11 +259,6 @@ const AddProductModal = ({ onClose }) => {
                         onChange={handleInputChange}
                     />
                 </div>
-
-                {/* <div className="form-group">
-                    <label htmlFor="sale">Mã giảm giá:</label>
-                    <input type="text" id="sale" name="sale" value={newProduct.sale} onChange={handleInputChange} />
-                </div> */}
 
                 <div className="modal-buttons">
                     <button onClick={handleAddProduct}>Thêm</button>
