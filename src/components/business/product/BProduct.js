@@ -3,6 +3,8 @@ import getUnAuth from '~/API/get';
 import AddEventModal from './AddEventModal';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
+import { putProductInformation } from '~/API/putProductInformation';
+import postImage from '~/API/postImage';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -23,7 +25,7 @@ const BProduct = () => {
             }
             setSelectedProducts(Array(response.content.length).fill(false));
             response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
-            console.log(response.content);
+            //console.log(response.content);
             setProducts(response.content);
         } catch (error) {
             setError(error);
@@ -48,9 +50,16 @@ const BProduct = () => {
         setIsEditModalOpen(false);
     };
 
-    const handleSaveProduct = (editedProduct) => {
+    const handleSaveProduct = (id, editedProduct) => {
         console.log(editedProduct);
-        
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+
+        editedProduct.imageSet.forEach((e) => {
+            if (e.id == null) {
+                postImage(editedProduct.name, e.url, authToken).then((response) => (e.id = response.data));
+            }
+        });
+        putProductInformation(id, editedProduct, authToken);
         fetchData();
         setEditIndex(null);
         handleCloseEditModal();

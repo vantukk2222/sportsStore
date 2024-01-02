@@ -3,10 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
 const EditProductModal = ({ product, onClose, onSave }) => {
+    console.log(product);
     const [editedProduct, setEditedProduct] = useState({
         name: product.name,
+        id_business: product.business.id,
         imageSet: product.imageSet,
         detail: product.detail,
+        attribute: product.attribute,
         priceSizePairs: product.productSet.map((sizeInfo) => ({
             id: sizeInfo.id,
             size: sizeInfo.size,
@@ -14,15 +17,10 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             quantity: sizeInfo.quantity,
         })),
         categorySet: product.categorySet,
-        price_min: '',
-        sale: '',
+        // sale: '',
     });
 
     useEffect(() => {}, []);
-
-    const handleSaveProduct = () => {
-        onSave(editedProduct);
-    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -31,7 +29,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
     const handleImageChange = async (e) => {
         const files = e.target.files;
-        console.log(files);
+        // console.log(files);
 
         if (files) {
             try {
@@ -183,7 +181,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                         type="text"
                         id="detail"
                         name="detail"
-                        value={editedProduct.detail}
+                        value={editedProduct.detail || ''}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -205,7 +203,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                 </div> */}
 
                 <div className="modal-buttons">
-                    <button onClick={handleSaveProduct}>Lưu</button>
+                    <button onClick={() => onSave(product.id, editedProduct)}>Lưu</button>
                     <button onClick={onClose}>Đóng</button>
                 </div>
             </div>
