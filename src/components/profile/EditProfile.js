@@ -32,6 +32,7 @@ const EditProfile = () => {
                 const date = new Date(response.dob);
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
+                console.log(response);
                 setUser(response);
                 setEditedUser(response);
             } catch (error) {
@@ -87,7 +88,7 @@ const EditProfile = () => {
             setValidationError(false);
         }
     };
-    
+
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();
@@ -139,7 +140,6 @@ const EditProfile = () => {
                                         name: response.name,
                                     }),
                                 );
-                                //  console.log(response);
                             } catch (error) {
                                 setError(error);
                             } finally {

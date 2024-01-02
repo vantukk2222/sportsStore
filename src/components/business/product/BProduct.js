@@ -50,6 +50,8 @@ const BProduct = () => {
 
     const handleSaveProduct = (editedProduct) => {
         console.log(editedProduct);
+        
+        fetchData();
         setEditIndex(null);
         handleCloseEditModal();
     };

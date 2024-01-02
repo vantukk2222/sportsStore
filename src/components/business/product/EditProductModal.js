@@ -31,8 +31,9 @@ const EditProductModal = ({ product, onClose, onSave }) => {
 
     const handleImageChange = (e) => {
         const files = e.target.files;
+        console.log(files);
         if (files) {
-            const imagesArray = Array.from(files).map((file) => URL.createObjectURL(file));
+            const imagesArray = Array.from(files).map((file) => {});
             console.log(imagesArray);
             setEditedProduct((prevProduct) => ({
                 ...prevProduct,
