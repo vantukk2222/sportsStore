@@ -3,6 +3,8 @@ import AddEventModal from './AddEventModalAdmin';
 import AddProductModal from './AddProductModalAdmin';
 import EditProductModal from './EditProductModalAdmin';
 import getProductInfor from '~/API/Admin/product/getProductInfor';
+import { ToastContainer, toast } from 'react-toastify';
+import putChangeStateProduct from '~/API/Admin/product/putChangeStateProduct';
 
 const ProductAdmin = () => {
     const [products, setProducts] = useState([]);
@@ -69,7 +71,26 @@ const ProductAdmin = () => {
     };
 
     const handleConfirm = (product) => {
-        
+        const isConfirmed = window.confirm('Bạn có chắc muốn xác nhận?');
+        if (isConfirmed) {
+            const authToken = JSON.parse(localStorage.getItem('authToken'));
+            console.log(authToken);
+            putChangeStateProduct(product.id, 0, authToken)
+            .then((status) => {
+                console.log('API call successful. Status:', status);
+                if (status === 202) {
+                    toast("Xác nhận tài khoản thành công")
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.error('API call failed:', error);
+                // Handle the error as needed
+            });
+            
+        } else {
+            console.log('Hủy xác nhận');
+        }
     };
 
     const handleCheckboxChange = (index) => {
@@ -96,17 +117,18 @@ const ProductAdmin = () => {
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
-            <button type="button" onClick={handleOpenAddModal}>
+            {/* <button type="button" onClick={handleOpenAddModal}>
                 Thêm sản phẩm
-            </button>
-            {isAnyCheckboxChecked && (
+            </button> */}
+            <ToastContainer />
+            {/* {isAnyCheckboxChecked && (
                 <>
                     <button className="eventButton" onClick={handleEventButtonClick}>
                         Thêm sự kiện
                     </button>
                     <button className="eventButton">Xóa sự kiện</button>
                 </>
-            )}
+            )} */}
             <div className="tracking-header">
                 <div className="divproductB">Tên sản phẩm</div>
                 <div className="divproductB">Hình ảnh</div>

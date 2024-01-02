@@ -29,8 +29,13 @@ const UserAdmin = () => {
                 setLoading(true);
                 const response = await getUser(page,pageSize,sort,desc,state);
                 let listAcc = response.content; 
-                const filteredUsers = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS')
-                setTrackingInfo(filteredUsers);
+                if(state === 1){
+                    listAcc = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS')
+                }else {
+                    listAcc = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS' || item?.roles[0] === 'ROLE_CUSTOMER')
+                }
+                
+                setTrackingInfo(listAcc);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
@@ -86,18 +91,34 @@ const UserAdmin = () => {
         if (isConfirmed) {
             const authToken = JSON.parse(localStorage.getItem('authToken'));
             console.log(authToken);
-            putChangeState(user.id, 0, authToken)
-            .then((status) => {
-                console.log('API call successful. Status:', status);
-                if (status === 202) {
-                    toast("Xác nhận tài khoản thành công")
-                    window.location.reload();
-                }
-            })
-            .catch((error) => {
-                console.error('API call failed:', error);
-                // Handle the error as needed
-            });
+            if(state === 1){
+                putChangeState(user.id, 0, authToken)
+                .then((status) => {
+                    console.log('API call successful. Status:', status);
+                    if (status === 202) {
+                        toast("Xác nhận tài khoản thành công")
+                        window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.error('API call failed:', error);
+                    // Handle the error as needed
+                });
+            }else{
+                putChangeState(user.id, 1, authToken)
+                .then((status) => {
+                    console.log('API call successful. Status:', status);
+                    if (status === 202) {
+                        toast("Khóa tài khoản thành công")
+                        window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.error('API call failed:', error);
+                    // Handle the error as needed
+                });
+            }
+           
             
         } else {
             console.log('Hủy xác nhận');
@@ -107,9 +128,15 @@ const UserAdmin = () => {
         <div className="track-container">
             <h2>Quản lý User</h2>
             <ToastContainer />
-            {/* <button className="" onClick={handleOpenAddUserModal}>
-                Thêm người dùng
-            </button> */}
+            {state === 1 ?
+            <button className="" onClick={()=>setState(0)}>
+                Khóa tài khoản
+            </button>:
+            <button className="" onClick={()=>setState(1)}>
+           Xác nhận tài khoản
+        </button>
+            }
+           
             <div className="tracking-header">
                 <div>Username</div>
                 <div>Hình ảnh</div>
@@ -135,11 +162,11 @@ const UserAdmin = () => {
 
                     <div>{user.cic}</div>
                     <div>{user.address}</div>
-                    <div>{user.state}</div>
+                    <div>{user.state===1 ?'Chưa xác nhận' : 'Đang hoạt động'}</div>
 
                     <div>
                         <button className="" onClick={() => handleAccUser(user)}>
-                            Xác nhận
+                           {state === 1?  'Xác nhận':'Khóa'}
                         </button>
                         {/* <button className="edit" onClick={() => handleOpenEditUserModal(user)}>
                             Edit
@@ -151,14 +178,14 @@ const UserAdmin = () => {
                 </div>
             ))}
 
-            {isAddUserModalOpen && <AddUserModal onClose={handleCloseAddUserModal} onSaveUser={handleSaveUser} />}
+            {/* {isAddUserModalOpen && <AddUserModal onClose={handleCloseAddUserModal} onSaveUser={handleSaveUser} />}
             {isEditUserModalOpen && (
                 <EditUserModal
                     onClose={handleCloseEditUserModal}
                     onSaveUser={handleSaveEditedUser}
                     userToEdit={userToEdit}
                 />
-            )}
+            )} */}
         </div>
     );
 };
