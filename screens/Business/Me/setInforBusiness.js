@@ -110,8 +110,8 @@ const setInforBusiness = (props) => {
             <TouchableOpacity
                 //</ScrollView>
                 onPress={() => {
-                    if (business.tax.length <= 0) {
-                        handleInputChange('tax', businessInfor.tax)
+                    if (business?.tax.length <= 0) {
+                        handleInputChange('tax', businessInfor?.tax)
                     }
                     handleSubmit()
                 }}
