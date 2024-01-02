@@ -13,12 +13,14 @@ import fontSizes from '../../constants_Tu/fontSizes';
 import { images } from '../../constants_Tu';
 import { TextInput } from 'react-native-paper';
 import { isValidEmail, isValidName, isValidPassword, isValidPhone, onValidUsername } from '../../utilies/validation'
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { combineTransition } from 'react-native-reanimated';
 import { signupUser } from '../../redux/reducers/Register/signupReducer';
 import { connect } from 'react-redux';
 import { toastError, toastsuccess } from '../../components/toastCustom';
 import { Dropdown } from 'react-native-element-dropdown';
+import Font from '../../constants_Tu/Font';
+import HeaderComp from '../../components/Header';
 
 
 function Register(props) {
@@ -27,6 +29,7 @@ function Register(props) {
     signupState,
     signupUser
   } = props;
+  const Spacing = 10;
   const [valueUserName, setValueUserName] = useState('')
   const [valueName, setValueName] = useState('')
   const [valuePhone, setValuePhone] = useState('')
@@ -50,17 +53,23 @@ function Register(props) {
     email: valueEmail,
   };
   const [value, setValue] = useState(null);
-  
+
 
   const data = [
     { label: 'Khách hàng', value: 'customer' },
     { label: 'Người bán hàng', value: 'business' },
   ];
   const handlePressOrError = () => {
-    if (value === null || errorName !== '' || errorPhone!== '' || errorUserName!== '' || errorValueEmail!== '' || errorValuePassword!== '') {
+    if (value === null || errorName !== '' || errorPhone !== '' || errorUserName !== '' || errorValueEmail !== '' || errorValuePassword !== '') {
       seterrorValue("Vui lòng lựa chọn kiểu tài khoản")
+
       toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
-    } else {
+    }
+    else if (valueName === '' || valueUserName === '' || valuePassword === '' || retypevaluePassword === '' || valueEmail === '' || valuePhone === '') {
+      toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
+
+    }
+    else {
       handlePress();
     }
   };
@@ -68,9 +77,9 @@ function Register(props) {
     setButtonDisabled(true);
     setTimeout(() => {
       setButtonDisabled(false);
-      signupUser(userData,value).then(data => {
+      signupUser(userData, value).then(data => {
         if (data.includes("Error") || data.includes("failed")) {
-          toastError("Xin lôi",JSON.stringify(data))
+          toastError("Xin lôi", JSON.stringify(data))
         }
         else {
           setValueEmail('')
@@ -79,7 +88,7 @@ function Register(props) {
           setValuePhone('')
           setValueUserName('')
           retypevaluePassword('')
-          toastsuccess("Cảm ơn","Bạn đã đăng ký tài khoản thành công!")
+          toastsuccess("Cảm ơn", "Bạn đã đăng ký tài khoản thành công!")
         }
       })
 
@@ -94,41 +103,66 @@ function Register(props) {
   // },[])
 
   return (
-    <ScrollView
-      keyboardShouldPersistTaps='always'
+    <View
       style={{
-        backgroundColor: 'white',
-        flex: 1,
+        width: '100%',
+        height: '100%',
+        backgroundColor: "white",
+        position: 'relative',
       }}>
-      <View
+      <TouchableOpacity
         style={{
-          flexDirection: 'row',
-        }}>
-        <Text
-          numberOfLines={3}
-          style={{
-            color: 'black',
-            fontSize: fontSizes.h1,
-            flex: 1,
-            marginStart: 30,
-            marginVertical: 20,
-          }}>
-          {'Chào mừng bạn đến với'} {'SportStore'}
-        </Text>
-        <Icon
-          name="logo-facebook"
-          size={100}
-          color="blue"
-          style={{
-            marginHorizontal: 10,
-            alignSelf: 'center',
+          marginTop: 10,
+          marginLeft: 15,
 
-            flex: 1,
-          }} />
-      </View>
-      <View
+
+        }}
+        onPress={() => {
+          navigation.goBack()
+        }}>
+        <Icon name="angle-left" size={30} style={{
+          color: 'blue',
+          alignItems: 'flex-end',
+        }}></Icon>
+
+      </TouchableOpacity>
+      <ScrollView
+        keyboardShouldPersistTaps='always'
+        style={{
+          backgroundColor: 'white',
+          flex: 1,
+        }}>
+
+        <View
           style={{
-            marginHorizontal:15,
+            alignItems: "center",
+          }}
+        >
+
+          <Text
+            style={{
+              fontSize: 30,
+              color: "blue",
+              fontFamily: Font["poppins-bold"],
+              marginVertical: Spacing * 3,
+            }}
+          >
+            Đăng ký tài khoản
+          </Text>
+          <Text
+            style={{
+              fontFamily: Font["poppins-regular"],
+              fontSize: 16,
+              maxWidth: "80%",
+              textAlign: "center",
+            }}
+          >
+            Tạo một tài khoản mới và trải nghiệm cùng chúng tôi nhé. Cảm ơn quý khách!
+          </Text>
+        </View>
+        <View
+          style={{
+            marginHorizontal: 15,
             marginTop: 45
           }}>
           <Text
@@ -141,315 +175,248 @@ function Register(props) {
           </Text>
         </View>
         <Dropdown
-        style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        data={data}
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        placeholder="Lựa chọn kiểu tài khoản"
-        value={value}
-        onChange={item => {
-          setValue(item.value);
-        }}
-        
-      />
-      {value !== '' && < Text style={{ color: 'red',marginHorizontal: 15, }}>{errorValue}</Text>}
-      <View
-        style={{
-          marginHorizontal: 15,
-          marginTop: 10
-        }}>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: fontSizes.h3,
-            marginBottom: 5,
-          }}>
-          Họ tên
-        </Text>
-
-        <TextInput
-          value={valueName}
-          onChangeText={text => {
-            setErrorName(isValidName(text) ? '' : 'Tên không hợp lệ')
-            setValueName(text)
+          style={styles.dropdown}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder="Lựa chọn kiểu tài khoản"
+          value={value}
+          onChange={item => {
+            setValue(item.value);
           }}
 
-          style={{
-            marginTop: 10,
-            backgroundColor: '#f1f4ff',
-            borderRadius: 20,
-            color: "#616161",
-            fontSize: 16,
-            textAlign: 'center',
-            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
-            underlineColorAndroid: 'transparent', // Cho Android
-            borderBottomWidth: 0, // Cho iOS
-          }}
-          placeholderTextColor="gray"
-          underlineColor="transparent"
-          placeholder="example@gmail.com"></TextInput>
-        {valueName !== '' && < Text style={{ color: 'red' }}>{errorName}</Text>}
-      </View>
-      <View
-        style={{
-          marginHorizontal: 15,
-          marginTop: 10
-        }}>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: fontSizes.h3,
-            marginBottom: 5,
-          }}>
-          Tên tài khoản
-        </Text>
-        <TextInput
-          value={valueUserName}
-          onChangeText={text => {
-            setErrorUserName(onValidUsername(text) ? '' : `Tên tài khoản phải ít nhất 6 ký tự không quá 24 ký tự${"\n"}Phải bắt đầu bằng chữ cái thường${"\n"}Không chưa ký tự đặc biệt`)
-            setValueUserName(text)
-          }}
-
-          style={{
-            marginTop: 10,
-            backgroundColor: '#f1f4ff',
-            borderRadius: 20,
-            color: "#616161",
-            fontSize: 16,
-            textAlign: 'center',
-            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
-            underlineColorAndroid: 'transparent', // Cho Android
-            borderBottomWidth: 0, // Cho iOS
-          }}
-          placeholderTextColor="gray"
-          underlineColor="transparent"
-          placeholder="example@gmail.com"></TextInput>
-        {valueUserName !== '' && < Text style={{ color: 'red' }}>{errorUserName}</Text>}
-      </View>
-
-
-
-      <View
-        style={{
-          marginHorizontal: 15,
-          marginBottom: 15,
-        }}>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: fontSizes.h3,
-            marginBottom: 5,
-            marginTop: 10
-          }}>
-          Mật khẩu
-        </Text>
-        <TextInput
-          value={valuePassword}
-          onChangeText={text => {
-            setErrorValuePassword(isValidPassword(text) == true ? '' : 'Mật khẩu bao gồm 1 chữ cái in đậm, số và 1 ký tự đặc biệt\n')
-            setValuePassword(text)
-          }}
-          style={{
-            marginTop: 10,
-            backgroundColor: '#f1f4ff',
-            borderRadius: 20,
-            color: "#616161",
-            fontSize: 16,
-            textAlign: 'center',
-            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
-            underlineColorAndroid: 'transparent', // Cho Android
-            borderBottomWidth: 0, // Cho iOS
-          }}
-          placeholderTextColor="gray"
-          underlineColor="transparent"
-          secureTextEntry={true}
-          placeholder="Nhập mật khẩu của bạn"></TextInput>
-        {valuePassword !== '' && < Text style={{ color: 'red', paddingBottom: 10 }}>{errorValuePassword}</Text>}
-
-        <Text
-          style={{
-            color: 'black',
-            fontSize: fontSizes.h3,
-            marginBottom: 5,
-            marginTop: 10
-          }}>
-          Nhập lại mật khẩu
-        </Text>
-        <TextInput
-          value={retypevaluePassword}
-          onChangeText={text => setRetypevaluePassword(text)}
-          style={{
-            marginTop: 10,
-            backgroundColor: '#f1f4ff',
-            borderRadius: 20,
-            color: "#616161",
-            fontSize: 16,
-            textAlign: 'center',
-            textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
-            underlineColorAndroid: 'transparent', // Cho Android
-            borderBottomWidth: 0, // Cho iOS
-          }}
-          placeholderTextColor="gray"
-          underlineColor="transparent"
-          secureTextEntry={true}
-          placeholder="Nhập lại mật khẩu của bạn"></TextInput>
-        {valuePassword !== '' && retypevaluePassword !== '' && valuePassword !== retypevaluePassword && (
-          <Text style={{ color: 'red' }}>Mật khẩu không trùng nhau</Text>
-        )}
-
+        />
+        {value !== '' && < Text style={{ color: 'red', marginHorizontal: 15, }}>{errorValue}</Text>}
         <View
           style={{
-            marginTop: 10
-          }}>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: fontSizes.h3,
-              marginBottom: 5,
-            }}>
-            Email
-          </Text>
-          <TextInput
-            value={valueEmail}
-            onChangeText={text => {
-              setErrorValueEmail(isValidEmail(text) == true ? '' : 'Sai định dạng email')
-              setValueEmail(text)
-            }}
-
-            style={{
-              marginTop: 10,
-              backgroundColor: '#f1f4ff',
-              borderRadius: 20,
-              color: "#616161",
-              fontSize: 16,
-              textAlign: 'center',
-              textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
-              underlineColorAndroid: 'transparent', // Cho Android
-              borderBottomWidth: 0, // Cho iOS
-            }}
-            placeholderTextColor="gray"
-            underlineColor="transparent"
-            placeholder="example@gmail.com"></TextInput>
-          {valueEmail !== '' && < Text style={{ color: 'red' }}>{errorValueEmail}</Text>}
-        </View>
-        <View
-          style={{
-            marginTop: 10
-          }}>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: fontSizes.h3,
-              marginBottom: 5,
-            }}>
-            Số điện thoại
-          </Text>
-          <TextInput
-            value={valuePhone}
-            onChangeText={text => {
-              setErrorPhone(isValidPhone(text) == true ? '' : 'Sai định dạng số điện thoại')
-              setValuePhone(text)
-            }}
-
-            style={{
-              marginTop: 10,
-              backgroundColor: '#f1f4ff',
-              borderRadius: 20,
-              color: "#616161",
-              fontSize: 16,
-              textAlign: 'center',
-              textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
-              underlineColorAndroid: 'transparent', // Cho Android
-              borderBottomWidth: 0, // Cho iOS
-            }}
-            placeholderTextColor="gray"
-            underlineColor="transparent"
-            placeholder="example@gmail.com"></TextInput>
-          {valuePhone !== '' && < Text style={{ color: 'red' }}>{errorPhone}</Text>}
-        </View>
-        
-      </View>
-      <TouchableOpacity
-        onPress={handlePressOrError}
-        disabled={
-          isButtonDisabled
-        }
-
-        style={{
-          backgroundColor: 'orange',
-          width: 135,
-          height: 45,
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
-          borderRadius: 12,
-          marginTop: 10
-        }}>
-        <Text
-          style={{
-            fontSize: fontSizes.h2,
-            color: 'white',
-          }}>
-          {isButtonDisabled ? 'Loading...' : 'Đăng ký'}
-        </Text>
-      </TouchableOpacity>
-      <View
-        style={{
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            flex: 1,
             marginHorizontal: 15,
-            paddingTop: 15
+            marginTop: 10
           }}>
-
-          <View
-            style={{
-              backgroundColor: 'black',
-              height: 1,
-              flex: 1
-            }}></View>
           <Text
             style={{
-              textAlign: 'center',
               color: 'black',
-              marginHorizontal: 8
+              fontSize: fontSizes.h3,
+              marginBottom: 5,
             }}>
-            Sử dụng phương thức khác
+            Họ tên
           </Text>
 
-          <View
+          <TextInput
+            value={valueName}
+            onChangeText={text => {
+              setErrorName(isValidName(text) ? '' : 'Tên không hợp lệ')
+              setValueName(text)
+            }}
+
             style={{
-              backgroundColor: 'black',
-              height: 1,
-              flex: 1
-            }}></View>
+              marginTop: 10,
+              backgroundColor: '#f1f4ff',
+              borderRadius: 20,
+              color: "#616161",
+              fontSize: 16,
+            }}
+            placeholderTextColor="gray"
+            underlineColor="transparent"
+            placeholder="Họ và tên"></TextInput>
+          {valueName !== '' && < Text style={{ color: 'red' }}>{errorName}</Text>}
         </View>
         <View
           style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            marginVertical: 10
+            marginHorizontal: 15,
+            marginTop: 10
           }}>
-          <Icon name='logo-facebook' size={45} color='blue'
+          <Text
             style={{
-              paddingHorizontal: 8
-            }}></Icon>
-          <Icon name='logo-google' size={45} color='red'
+              color: 'black',
+              fontSize: fontSizes.h3,
+              marginBottom: 5,
+            }}>
+            Tên tài khoản
+          </Text>
+          <TextInput
+            value={valueUserName}
+            onChangeText={text => {
+              setErrorUserName(onValidUsername(text) ? '' : `Tên tài khoản phải ít nhất 6 ký tự không quá 24 ký tự${"\n"}Phải bắt đầu bằng chữ cái thường${"\n"}Không chưa ký tự đặc biệt`)
+              setValueUserName(text)
+            }}
+
             style={{
-              paddingHorizontal: 8
-            }}></Icon>
+              marginTop: 10,
+              backgroundColor: '#f1f4ff',
+              borderRadius: 20,
+              color: "#616161",
+              fontSize: 16,
+            }}
+            placeholderTextColor="gray"
+            underlineColor="transparent"
+            placeholder="Tên tài khoản"></TextInput>
+          {valueUserName !== '' && < Text style={{ color: 'red' }}>{errorUserName}</Text>}
         </View>
 
-      </View>
-    </ScrollView>
+
+
+        <View
+          style={{
+            marginHorizontal: 15,
+            marginBottom: 15,
+          }}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: fontSizes.h3,
+              marginBottom: 5,
+              marginTop: 10
+            }}>
+            Mật khẩu
+          </Text>
+          <TextInput
+            value={valuePassword}
+            onChangeText={text => {
+              setErrorValuePassword(isValidPassword(text) == true ? '' : 'Mật khẩu bao gồm 1 chữ cái in đậm, số và 1 ký tự đặc biệt\n')
+              setValuePassword(text)
+            }}
+            style={{
+              marginTop: 10,
+              backgroundColor: '#f1f4ff',
+              borderRadius: 20,
+              color: "#616161",
+              fontSize: 16,
+            }}
+            placeholderTextColor="gray"
+            underlineColor="transparent"
+            secureTextEntry={true}
+            placeholder="Nhập mật khẩu của bạn"></TextInput>
+          {valuePassword !== '' && < Text style={{ color: 'red', paddingBottom: 10 }}>{errorValuePassword}</Text>}
+
+          <Text
+            style={{
+              color: 'black',
+              fontSize: fontSizes.h3,
+              marginBottom: 5,
+              marginTop: 10
+            }}>
+            Nhập lại mật khẩu
+          </Text>
+          <TextInput
+            value={retypevaluePassword}
+            onChangeText={text => setRetypevaluePassword(text)}
+            style={{
+              marginTop: 10,
+              backgroundColor: '#f1f4ff',
+              borderRadius: 20,
+              color: "#616161",
+              fontSize: 16,
+            }}
+            placeholderTextColor="gray"
+            underlineColor="transparent"
+            secureTextEntry={true}
+            placeholder="Nhập lại mật khẩu của bạn"></TextInput>
+          {valuePassword !== '' && retypevaluePassword !== '' && valuePassword !== retypevaluePassword && (
+            <Text style={{ color: 'red' }}>Mật khẩu không trùng nhau</Text>
+          )}
+
+          <View
+            style={{
+              marginTop: 10
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: fontSizes.h3,
+                marginBottom: 5,
+              }}>
+              Email
+            </Text>
+            <TextInput
+              value={valueEmail}
+              onChangeText={text => {
+                setErrorValueEmail(isValidEmail(text) == true ? '' : 'Sai định dạng email')
+                setValueEmail(text)
+              }}
+
+              style={{
+                marginTop: 10,
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: "#616161",
+                fontSize: 16,
+              }}
+              placeholderTextColor="gray"
+              underlineColor="transparent"
+              placeholder="example@gmail.com"></TextInput>
+            {valueEmail !== '' && < Text style={{ color: 'red' }}>{errorValueEmail}</Text>}
+          </View>
+          <View
+            style={{
+              marginTop: 10
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: fontSizes.h3,
+                marginBottom: 5,
+              }}>
+              Số điện thoại
+            </Text>
+            <TextInput
+              value={valuePhone}
+              onChangeText={text => {
+                setErrorPhone(isValidPhone(text) == true ? '' : 'Sai định dạng số điện thoại')
+                setValuePhone(text)
+              }}
+
+              style={{
+                marginTop: 10,
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: "#616161",
+                fontSize: 16,
+              }}
+              placeholderTextColor="gray"
+              underlineColor="transparent"
+              placeholder="Số điện thoại"></TextInput>
+            {valuePhone !== '' && < Text style={{ color: 'red' }}>{errorPhone}</Text>}
+          </View>
+
+        </View>
+        <View
+        style={{padding:20}}>
+          <TouchableOpacity
+            onPress={handlePressOrError}
+            disabled={
+              isButtonDisabled
+            }
+            style={{
+              paddingVertical: Spacing * 2,
+              backgroundColor: 'blue',
+              borderRadius: Spacing,
+              shadowColor: 'blue',
+              shadowOffset: {
+                width: 0,
+                height: Spacing,
+              },
+              shadowOpacity: 0.3,
+              shadowRadius: Spacing,
+            }}>
+            <Text
+              style={{
+                fontFamily: Font['poppins-bold'],
+                textAlign: 'center',
+                fontSize: 20,
+                color: 'white',
+              }}>
+              {isButtonDisabled ? 'Loading...' : 'Đăng ký'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        
+      </ScrollView>
+    </View>
   );
 }
 
@@ -473,7 +440,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   selectedTextStyle: {
-    fontWeight:600,
+    fontWeight: 600,
     fontSize: 16,
   },
   iconStyle: {
