@@ -60,10 +60,11 @@ const ARoutes = [
     { path: '/profile', component: Profile, layout: layout_admin },
     { path: '/register', component: Register, layout: layout_res },
     { path: '/dashboard', component: AdminDashboard, layout: layout_admin },
+
     { path: '/adminuser', component: AdminUser, layout: layout_admin },
     { path: '/adminsale', component: AdminSale, layout: layout_admin },
     { path: '/admintrack', component: AdminTrack, layout: layout_admin },
     { path: '/adminrevenue', component: AdminRevenue, layout: layout_admin },
     { path: '/adminproduct', component: AdminProduct, layout: layout_admin },
 ];
-export { BRoutes, CRoutes, ARoutes };
+export { ARoutes, BRoutes, CRoutes };
