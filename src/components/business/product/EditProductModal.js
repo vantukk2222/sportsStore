@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
 const EditProductModal = ({ product, onClose, onSave }) => {
-    console.log(product);
+    //   console.log(product);
     const [editedProduct, setEditedProduct] = useState({
+        id: product.id,
         name: product.name,
         id_business: product.business.id,
         imageSet: product.imageSet,
@@ -15,6 +16,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             size: sizeInfo.size,
             price: sizeInfo.price,
             quantity: sizeInfo.quantity,
+            check: false,
         })),
         categorySet: product.categorySet,
         imageD: [],
@@ -90,20 +92,20 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     const handleAddPriceSizePair = () => {
         setEditedProduct((prevProduct) => ({
             ...prevProduct,
-            priceSizePairs: [...prevProduct.priceSizePairs, { size: '', price: '', quantity: '' }],
+            priceSizePairs: [...prevProduct.priceSizePairs, { id: null, size: '', price: '', quantity: '' }],
         }));
     };
 
     const handlePriceSizeChange = (index, field, value) => {
         const updatedPairs = [...editedProduct.priceSizePairs];
         updatedPairs[index][field] = value;
-
+        updatedPairs[index].check = true;
         setEditedProduct((prevProduct) => ({
             ...prevProduct,
             priceSizePairs: updatedPairs,
         }));
     };
-    console.log(editedProduct);
+    //console.log(editedProduct);
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">

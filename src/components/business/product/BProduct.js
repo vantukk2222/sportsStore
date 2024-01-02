@@ -6,6 +6,8 @@ import EditProductModal from './EditProductModal';
 import { putProductInformation } from '~/API/putProductInformation';
 import postImage from '~/API/postImage';
 import deleteImage from '~/API/deleteImage';
+import postProduct from '~/API/postProduct';
+import putProduct from '~/API/putProduct';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -61,15 +63,33 @@ const BProduct = () => {
 
             editedProduct.imageSet.forEach((e) => {
                 if (e.id == null) {
-                    promises.push(
-                        postImage(editedProduct.name, e.url, authToken)
-                            .then((response) => (e.id = response.data))
-                            .catch((error) => console.error('Error uploading image:', error)),
-                    );
+                    console.log(e.id);
+                    const promise = postImage(editedProduct.name, e.url, authToken)
+                        .then((response) => (e.id = response.data))
+                        .catch((error) => console.error('Error uploading image:', error));
+
+                    promises.push(promise);
                 }
             });
+
+            editedProduct.priceSizePairs.forEach((e) => {
+                if (e.id == null) {
+                    const promise = postProduct(editedProduct.id, e, authToken).catch((error) =>
+                        console.error('Error posting product:', error),
+                    );
+                    promises.push(promise);
+                }
+                if (e.check) {
+                    const promise = putProduct(editedProduct.id, e, authToken).catch((error) =>
+                        console.error('Error posting product:', error),
+                    );
+                    promises.push(promise);
+                }
+            });
+
             return Promise.all(promises);
         };
+
         t()
             .then(() => {
                 if (Array.isArray(editedProduct.imageD)) {

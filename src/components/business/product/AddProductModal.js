@@ -4,12 +4,15 @@ import { useState } from 'react';
 
 const AddProductModal = ({ onClose }) => {
     const [newProduct, setNewProduct] = useState({
-        name_product: '',
-        set_img: [],
-        priceSizePairs: [{ size: '', price: '', quantity: '' }],
-        category: '',
-        sale: '',
+        id: null,
+        name: '',
+        id_business: null,
+        imageSet: [],
         detail: '',
+        attribute: '',
+        priceSizePairs: [{ id: null, size: '', price: '', quantity: '' }],
+        categorySet: [],
+        imageD: [],
     });
 
     const handleAddProduct = () => {
@@ -23,7 +26,7 @@ const AddProductModal = ({ onClose }) => {
 
     const handleImageChange = async (e) => {
         const files = e.target.files;
-        console.log(files);
+        // console.log(files);
 
         if (files) {
             try {
@@ -36,7 +39,7 @@ const AddProductModal = ({ onClose }) => {
 
                 setNewProduct((prevProduct) => ({
                     ...prevProduct,
-                    set_img: [...prevProduct.set_img, ...imagesArray],
+                    imageSet: [...prevProduct.imageSet, ...imagesArray],
                 }));
             } catch (error) {
                 console.error('Error uploading image:', error);
@@ -47,14 +50,14 @@ const AddProductModal = ({ onClose }) => {
     const handleAddPriceSizePair = () => {
         setNewProduct((prevProduct) => ({
             ...prevProduct,
-            priceSizePairs: [...prevProduct.priceSizePairs, { size: '', price: '', quantity: '' }],
+            priceSizePairs: [...prevProduct.priceSizePairs, { id: null, size: '', price: '', quantity: '' }],
         }));
     };
 
     const handlePriceSizeChange = (index, field, value) => {
         const updatedPairs = [...newProduct.priceSizePairs];
         updatedPairs[index][field] = value;
-
+        updatedPairs[index].check = true;
         setNewProduct((prevProduct) => ({
             ...prevProduct,
             priceSizePairs: updatedPairs,
@@ -62,12 +65,17 @@ const AddProductModal = ({ onClose }) => {
     };
 
     const handleRemoveImage = (index) => {
-        const updatedImages = [...newProduct.set_img];
-        updatedImages.splice(index, 1);
-        setNewProduct((prevProduct) => ({
-            ...prevProduct,
-            set_img: updatedImages,
-        }));
+        setNewProduct((prevProduct) => {
+            const updatedImages = [...prevProduct.imageSet];
+            let DImages = [...prevProduct.imageD];
+            if (prevProduct.imageSet[index].id) DImages = [...DImages, prevProduct.imageSet[index].id];
+            updatedImages.splice(index, 1);
+            return {
+                ...prevProduct,
+                imageD: DImages,
+                imageSet: updatedImages,
+            };
+        });
     };
 
     const uploadFileToCloudinary = (file) => {
@@ -105,7 +113,7 @@ const AddProductModal = ({ onClose }) => {
                         type="text"
                         id="name_product"
                         name="name_product"
-                        value={newProduct.name_product}
+                        value={newProduct.name_product || ''}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -115,9 +123,9 @@ const AddProductModal = ({ onClose }) => {
                         <label htmlFor="img">Hình ảnh:</label>
                         <input type="file" id="img" name="img" accept="image/*" onChange={handleImageChange} multiple />
                     </div>
-                    {newProduct.set_img.length > 0 && (
+                    {newProduct.imageSet.length > 0 && (
                         <div className="formimggroup">
-                            {newProduct.set_img.map((image, index) => (
+                            {newProduct.imageSet.map((image, index) => (
                                 <div key={index} style={{ position: 'relative', marginBottom: '10px' }}>
                                     <img
                                         className="imgaddproduct"
