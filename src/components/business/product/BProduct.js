@@ -73,12 +73,10 @@ const BProduct = () => {
         t()
             .then(() => {
                 if (Array.isArray(editedProduct.imageD)) {
-                    // If editedProduct.imageSet is an array, iterate over it
                     editedProduct.imageD.forEach((e) => {
                         deleteImage(e, authToken);
                     });
                 } else {
-                    // If it's not an array, handle it accordingly
                     console.error('editedProduct.imageSet is not an array.');
                 }
             })
