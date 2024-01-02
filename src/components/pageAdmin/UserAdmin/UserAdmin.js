@@ -1,45 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddUserModal from './AddUserModal';
 import EditUserModal from './EditUserModal'; // Import the EditUserModal component
+import getUnAuth from '~/API/get';
 
 const UserAdmin = () => {
-    const [trackingInfo, setTrackingInfo] = useState([
-        {
-            id: 1,
-            username: 'giày1',
-            img: 'track1.png',
-            email: 'dut@gmail.com',
-            name: 'Nguyễn Văn A',
-            password: '12345',
-            cccd: '123',
-            address: 'A',
-        },
-        {
-            id: 2,
-            username: 'giày2',
-            img: 'track1.png',
-            email: 'dut@gmail.com',
-            name: 'Nguyễn Văn A',
-            password: '12345',
-            cccd: '123',
-            address: 'A',
-        },
-        {
-            id: 3,
-            username: 'giày3',
-            img: 'track1.png',
-            email: 'dut@gmail.com',
-            name: 'Nguyễn Văn A',
-            password: '12345',
-            cccd: '123',
-            address: 'A',
-        },
-    ]);
+    const [trackingInfo, setTrackingInfo] = useState([]);
 
     const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
     const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
     const [userToEdit, setUserToEdit] = useState(null);
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const response = await getUnAuth(`user`);
+                setTrackingInfo(response.content);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
     const handleOpenAddUserModal = () => {
         setIsAddUserModalOpen(true);
     };
@@ -97,7 +85,7 @@ const UserAdmin = () => {
                     </div>
                     <div>{user.email}</div>
                     <div>{user.name}</div>
-                    <div>{user.cccd}</div>
+                    <div>{user.cic}</div>
                     <div>{user.address}</div>
 
                     <div>
