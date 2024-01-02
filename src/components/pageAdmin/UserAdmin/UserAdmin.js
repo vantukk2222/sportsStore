@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import getUnAuth from '~/API/get';
 import AddUserModal from './AddUserModal';
 import EditUserModal from './EditUserModal';
+import getUser from '~/API/Admin/getUser';
+import { paste } from '@testing-library/user-event/dist/paste';
+import postImage from '~/API/postImage';
+import putChangeState from '~/API/Admin/putChangeState';
+import { ToastContainer, toast } from 'react-toastify';
 
 const UserAdmin = () => {
     const [trackingInfo, setTrackingInfo] = useState([]);
@@ -11,13 +16,21 @@ const UserAdmin = () => {
     const [userToEdit, setUserToEdit] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [sort, setSort] = useState('id');
+    const [desc, setDesc] = useState(false);
+    const [state,setState] = useState(1)
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await getUnAuth(`user`);
-                setTrackingInfo(response.content);
-                console.log(response.content);
+                const response = await getUser(page,pageSize,sort,desc,state);
+                let listAcc = response.content; 
+                const filteredUsers = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS')
+                setTrackingInfo(filteredUsers);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
@@ -28,7 +41,10 @@ const UserAdmin = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [page,pageSize,sort,desc,state]);
+    // useEffect(()=>{
+
+    // },[trackingInfo])
     const handleOpenAddUserModal = () => {
         setIsAddUserModalOpen(true);
     };
@@ -63,10 +79,34 @@ const UserAdmin = () => {
         setTrackingInfo((prevTrackingInfo) => prevTrackingInfo.filter((user) => user.id !== userId));
     };
 
-    const handleAccUser = () => {};
+    const handleAccUser = (user) => {
+        const isConfirmed = window.confirm('Bạn có chắc muốn xác nhận?');
+
+        // If the user clicks "OK" in the confirmation dialog
+        if (isConfirmed) {
+            const authToken = JSON.parse(localStorage.getItem('authToken'));
+            console.log(authToken);
+            putChangeState(user.id, 0, authToken)
+            .then((status) => {
+                console.log('API call successful. Status:', status);
+                if (status === 202) {
+                    toast("Xác nhận tài khoản thành công")
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.error('API call failed:', error);
+                // Handle the error as needed
+            });
+            
+        } else {
+            console.log('Hủy xác nhận');
+        }
+    };
     return (
         <div className="track-container">
             <h2>Quản lý User</h2>
+            <ToastContainer />
             {/* <button className="" onClick={handleOpenAddUserModal}>
                 Thêm người dùng
             </button> */}
@@ -83,10 +123,11 @@ const UserAdmin = () => {
             </div>
 
             {trackingInfo.map((user, index) => (
+                
                 <div className="tracking-info" key={index}>
                     <div>{user.username}</div>
                     <div>
-                        <img src={user.img} alt={`User ${index + 1}`} />
+                        <img src={user.image_url} alt={`User ${index + 1}`} />
                     </div>
                     <div className="adminheader">{user.email}</div>
                     <div>{user.name}</div>
@@ -97,7 +138,7 @@ const UserAdmin = () => {
                     <div>{user.state}</div>
 
                     <div>
-                        <button className="" onClick={() => handleAccUser()}>
+                        <button className="" onClick={() => handleAccUser(user)}>
                             Xác nhận
                         </button>
                         {/* <button className="edit" onClick={() => handleOpenEditUserModal(user)}>
