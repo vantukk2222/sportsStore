@@ -8,6 +8,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         imageSet: product.imageSet,
         detail: product.detail,
         priceSizePairs: product.productSet.map((sizeInfo) => ({
+            id: sizeInfo.id,
             size: sizeInfo.size,
             price: sizeInfo.price,
             quantity: sizeInfo.quantity,
@@ -32,9 +33,15 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         const files = e.target.files;
         if (files) {
             const imagesArray = Array.from(files).map((file) => URL.createObjectURL(file));
+            console.log(imagesArray);
             setEditedProduct((prevProduct) => ({
                 ...prevProduct,
-                imageSet: [...imagesArray],
+                imageSet: [
+                    ...prevProduct.imageSet,
+                    ...imagesArray.map((e) => {
+                        return { id: null, url: e };
+                    }),
+                ],
             }));
         }
     };
@@ -66,7 +73,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             priceSizePairs: updatedPairs,
         }));
     };
-
+    console.log(editedProduct);
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">

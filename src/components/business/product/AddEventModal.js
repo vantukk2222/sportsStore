@@ -24,7 +24,7 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
                 <div className="form-group">
                     <label>Tên sự kiện:</label>
                     <select
-                        value={selectedEvent}
+                        value={selectedEvent || 'Chọn sự kiện'}
                         onChange={(e) => setSelectedEvent(e.target.value)}
                         style={{
                             padding: '10px',
@@ -34,7 +34,7 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
                             fontSize: '16px',
                         }}
                     >
-                        <option value="">Chọn sự kiện</option>
+                        {/* <option value="">Chọn sự kiện</option> */}
                         {eventData.map((event) => (
                             <option key={event.id} value={event.name}>
                                 {event.name}

@@ -87,7 +87,7 @@ const EditProfile = () => {
             setValidationError(false);
         }
     };
-
+    
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();

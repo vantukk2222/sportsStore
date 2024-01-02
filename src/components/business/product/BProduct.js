@@ -13,7 +13,24 @@ const BProduct = () => {
     const [editIndex, setEditIndex] = useState(null);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
-
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const user = JSON.parse(localStorage.getItem('User'));
+            const response = await getUnAuth(`product-information/find-by-business/${user.id}`);
+            if (!response) {
+                throw new Error('Network response was not ok');
+            }
+            setSelectedProducts(Array(response.content.length).fill(false));
+            response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
+            console.log(response.content);
+            setProducts(response.content);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    };
     const handleOpenAddModal = () => {
         setIsAddModalOpen(true);
     };
@@ -32,11 +49,7 @@ const BProduct = () => {
     };
 
     const handleSaveProduct = (editedProduct) => {
-        const updatedProducts = [...products];
-        updatedProducts[editIndex] = editedProduct;
-
-        setProducts(updatedProducts);
-
+        console.log(editedProduct);
         setEditIndex(null);
         handleCloseEditModal();
     };
@@ -67,22 +80,6 @@ const BProduct = () => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const user = JSON.parse(localStorage.getItem('User'));
-                const response = await getUnAuth(`product-information/find-by-business/${user.id}`);
-                if (!response) {
-                    throw new Error('Network response was not ok');
-                }
-                setSelectedProducts(Array(response.content.length).fill(false));
-                setProducts(response.content);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchData();
     }, []);
 

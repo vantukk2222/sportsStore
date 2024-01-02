@@ -21,7 +21,9 @@ const ShopCart = ({ categoryItems }) => {
             try {
                 setLoading(true);
                 if (!categoryItems || count >= categoryItems.length || productItems.length >= 8) return;
-                const response = await getUnAuth(`product-information/find-by-category/${categoryItems[count].id}?state=0`);
+                const response = await getUnAuth(
+                    `product-information/find-by-category/${categoryItems[count].id}?state=0`,
+                );
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
@@ -62,7 +64,7 @@ const ShopCart = ({ categoryItems }) => {
                         <div className="box" key={index} onClick={() => handleClick(value.id)}>
                             <div className="product mtop">
                                 <div className="img">
-                                    <img src={value.imageSet.find((e) => e.is_main === true).url} alt="" />
+                                    <img src={value.imageSet?.find((e) => e.is_main === true)?.url} alt="" />
                                 </div>
                                 <div className="product-details">
                                     <h3>{value.name}</h3>
