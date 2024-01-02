@@ -63,7 +63,7 @@ const Sale = (props) => {
     const handleEditproduct = (id) => {
         navigation.navigate('EditSale', { saleId: id })
     }
-    if (error) {
+    if (!data) {
         toastError("Xin lỗi", "Bạn cần đăng nhập")
         return <Loading />;
     }

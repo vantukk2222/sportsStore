@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { store } from "../../store";
 import { startMapper } from "react-native-reanimated";
 import { setInfor } from "../../../API/User/setInfor";
+import { fetchUserByUserName } from "./userInfor";
 
 
 const initialState = {
@@ -42,6 +43,8 @@ export const setUserInformation = (User) => async (dispatch, getState) => {
         console.log(('reducer set user ', User));
         const data = await setInfor(User.id, User, authToken);
         dispatch(getUsersuccess(data));
+        await dispatch(fetchUserByUserName(infor?.username))
+         
     } catch (error) {
         // store.dispatch(logout())
         console.log(('reducer set user error ', error.message));

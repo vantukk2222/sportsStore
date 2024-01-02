@@ -100,42 +100,26 @@ function Login(props) {
   }, [data])
   const handlePress = async () => {
     setButtonDisabled(true);
-    // navigation.replace("Main");
-    // await asyncStorage.setUsername(valueEmail)
-    // const tempUName = await asyncStorage.getUserNameStorage()
-    // Alert.alert("user name:",tempUName);
-    setTimeout(() => {
-      (
-        setButtonDisabled(false),
-        loginUser(valueEmail, valuePassword)
-          .then(async (dataToken) => {
-            if (dataToken) {
-              // await asyncStorage.setAuthToken(data)
-              // console.log("state: " + loginState)
-              console.log("user ", data);
-              //  decodeToken(data)
-              await asyncStorage.setUsername(valueEmail)
-              toastsuccess("Đăng nhập thành công", "Chào mừng bạn đến với SportStore")
-              // console.log("login: "+ await asyncStorage.getAuthToken())
-              console.log("token in login:",dataToken);
-              setToken(dataToken)
+    loginUser(valueEmail, valuePassword)
+      .then(async (dataToken) => {
+        if (dataToken) {
+          console.log("user ", data);
+          await asyncStorage.setUsername(valueEmail)
+          toastsuccess("Đăng nhập thành công", "Chào mừng bạn đến với SportStore")
+          console.log("token in login:", dataToken);
+          setToken(dataToken)
 
-              // setValueEmail('')
-              // setValuePassword('')
+          setButtonDisabled(false)
 
+          } else {
 
+          toastError("Lỗi đăng nhập", "Không thể đăng nhập")
+        }
+      })
 
-              // navigation.navigate('LoginBottomNavigator')
-            } else {
-
-              toastError("Lỗi đăng nhập", "Không thể đăng nhập")
-            }
-          })
-      )
-    }, 500)
   };
   //  if(!getToken()) return <Loading/>
-  if((loginState?.isLoading)) return <LoadingModal></LoadingModal>
+  if ((loginState?.isLoading)) return <LoadingModal></LoadingModal>
   if (errorLoad) { return <Text style={{ color: 'red' }}>Error: {error}</Text>; }
   return (
 

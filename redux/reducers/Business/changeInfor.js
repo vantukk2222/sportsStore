@@ -3,6 +3,7 @@ import { logout } from "../Login/signinReducer";
 import { store } from "../../store";
 import putChangeInfor from "../../../API/Business/putChangeInfor";
 import { toastError } from "../../../components/toastCustom";
+import { getInforBusinessByID } from "./getBusinessByID";
 
 
 const changeInforState = {
@@ -40,6 +41,8 @@ export const ChangeInforBusiness = (idBusi, Business) => async (dispatch, getSta
         const data = await putChangeInfor(idBusi, Business, authToken);
         // console.log('get product by category', data);
         dispatch(getSuccess(data));
+        await dispatch(getInforBusinessByID(idBusi))
+
     } catch (error) {
         let errorMessage = 'Error fetching data of categories';
 

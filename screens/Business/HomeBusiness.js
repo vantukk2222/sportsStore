@@ -50,7 +50,7 @@ const SellerHomeScreen = () => {
     const renderProductItem = ({ item }) => (
         <TouchableOpacity style={styles.productContainer}
             onPress={() => {
-                if (error) {
+                if (!data) {
                     toastError('Cảnh báo', 'Kiểm tra đăng nhập')
                     return;
                 } else {
@@ -69,7 +69,7 @@ const SellerHomeScreen = () => {
         </TouchableOpacity>
     );
     const handleGoStatistic = () => {
-        if (error) {
+        if (!data) {
             toastError('Cảnh báo', 'bạn chưa đăng nhập')
             return;
         } else {

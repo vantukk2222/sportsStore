@@ -45,6 +45,7 @@ const SetInfor = ({ route }) => {
         // console.log(newUser)
         dispatch(setUserInformation(newUser))
 
+
         // Đưa ra thông báo hoặc chuyển hướng sau khi lưu thành công
     };
     useEffect(() => {

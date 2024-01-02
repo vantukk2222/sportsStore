@@ -13,6 +13,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { fetchStatistic, resetStatistic } from '../../../redux/reducers/Statistic/getStatistic';
 import { useRoute } from '@react-navigation/native';
 import Loading from '../../../components/loading';
+import { formatMoneyVND } from '../../../utilies/validation';
 
 const SalesChart = (props) => {
     const route = useRoute();
@@ -77,10 +78,9 @@ const SalesChart = (props) => {
                             Tổng doanh thu:
                             <> </>
                             <Text style={{ color: 'white', fontSize: 17 }}>
-                                {statis?.bill_total_all}
+                                {formatMoneyVND(statis?.bill_total_all)}
                             </Text>
                             <> </>
-                            <Text style={{ color: '#77787A', fontSize: 17 }}>VND</Text>
                         </Text>
                         <LineChart
                             data={data}
@@ -129,7 +129,7 @@ const SalesChart = (props) => {
                                 {statis?.bill_count_all}
                             </Text>
                             <> </>
-                            <Text style={{ color: '#77787A', fontSize: 17 }}>đơn</Text>
+                            <Text style={{ color: 'white', fontSize: 17 }}>Đơn</Text>
                         </Text>
                         <BarChart
                             data={dataBar}
