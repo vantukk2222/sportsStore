@@ -1,12 +1,8 @@
+import { Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
-import getUnAuth from '~/API/get';
-import AddUserModal from './AddUserModal';
-import EditUserModal from './EditUserModal';
-import getUser from '~/API/Admin/getUser';
-import { paste } from '@testing-library/user-event/dist/paste';
-import postImage from '~/API/postImage';
-import putChangeState from '~/API/Admin/putChangeState';
 import { ToastContainer, toast } from 'react-toastify';
+import getUser from '~/API/Admin/getUser';
+import putChangeState from '~/API/Admin/putChangeState';
 
 const UserAdmin = () => {
     const [trackingInfo, setTrackingInfo] = useState([]);
@@ -19,6 +15,7 @@ const UserAdmin = () => {
 
 
     const [page, setPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(null)
     const [pageSize, setPageSize] = useState(10);
     const [sort, setSort] = useState('id');
     const [desc, setDesc] = useState(false);
@@ -28,6 +25,9 @@ const UserAdmin = () => {
             try {
                 setLoading(true);
                 const response = await getUser(page,pageSize,sort,desc,state);
+                if(!totalPage) {
+                setTotalPage(response?.totalPages)
+                }
                 let listAcc = response.content; 
                 if(state === 1){
                     listAcc = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS')
@@ -125,6 +125,7 @@ const UserAdmin = () => {
         }
     };
     return (
+    <>
         <div className="track-container">
             <h2>Quản lý User</h2>
             <ToastContainer />
@@ -187,6 +188,12 @@ const UserAdmin = () => {
                 />
             )} */}
         </div>
+         {totalPage && <Pagination className='pagination'
+                onChange={(e, value) => { setPage(value - 1) }}
+                count={totalPage}
+                defaultPage={page + 1}
+                variant="outlined" color="secondary" />}
+        </>
     );
 };
 
