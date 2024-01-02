@@ -6,11 +6,13 @@ import { toastError, toastsuccess } from "../../components/toastCustom";
 import moment from "moment";
 import LoadingModal from "../../components/loading";
 import { createImages } from "../../redux/reducers/Images/ImageReducer";
-import { createImageComment } from "../../redux/reducers/Images/ImageCommentReducer";
+import { createImageComment, resetImageComment } from "../../redux/reducers/Images/ImageCommentReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { createComment } from "../../redux/reducers/Comment/commentReducer";
+import { createComment } from "../../redux/reducers/Comment/post_CommentReducer";
 import { useNavigation } from "@react-navigation/native";
 import { isValidComment } from "../../utilies/validation";
+import { getAllBillByIDUser } from "../../redux/reducers/Bill/getBillUserReducer";
+import { store } from "../../redux/store";
 
 
 const RatingOrder = ({ route }) => {
@@ -94,7 +96,7 @@ const RatingOrder = ({ route }) => {
             },
         };
 
-        launchImageLibrary(options, (response) => {
+        launchImageLibrary(options, async (response) => {
             if (!response.didCancel && !response.error && response.assets.length > 0) {
                 const selectedImages = response.assets.map((image) => image.uri);
                 const newListImagesByIndex = [...listImages];
@@ -107,13 +109,12 @@ const RatingOrder = ({ route }) => {
                 const newImagesToAdd = selectedImages.slice(0, remainingSlots);
 
                 newListImagesByIndex[index] = [...newListImagesByIndex[index], ...newImagesToAdd];
-
+                await ChooseImage(newListImagesByIndex[index], index)
+                setListUrl(tempListUrl)
                 setListImages(newListImagesByIndex);
             }
         });
     };
-
-
     const addStringToListUrlAtIndex = (index, newString) => {
         console.log("length ", tempListUrl.length);
         console.log("tempListUrl: ", index, tempListUrl[index]);
@@ -136,35 +137,35 @@ const RatingOrder = ({ route }) => {
         try {
             console.log("listimageUri: ", listimageUri);
             const promises = listimageUri?.map(async (imageUri) => {
-                addStringToListUrlAtIndex(index, "123")
-                // const formData = new FormData();
-                // console.log(imageUri.substring(imageUri.lastIndexOf('/') + 1));
-                // formData.append('file', {
-                //     uri: imageUri,
-                //     type: 'image/jpeg', // Thay thế 'image/jpeg' bằng response.assets[0].type nếu có thông tin về loại file
-                //     name: imageUri.substring(imageUri.lastIndexOf('/') + 1)
-                // });
-                // formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-                // setLoading(true);
-                // await fetch(CLOUDINARY_URL, {
-                //     method: 'POST',
-                //     body: formData,
-                // })
-                //     .then((response) => response.json())
-                //     .then((data) => {
-                //         setLoading(false);
-                //         if (data.secure_url !== '') {
-                //             const uploadedFileUrl = data.secure_url;
-                //             addStringToListUrlAtIndex(index, uploadedFileUrl)
-                //         }
-                //         toastsuccess("Xong", "Thêm đánh giá thành công")
-                //     })
-                //     .catch((error) => {
-                //         setLoading(false);
-                //         console.error(error);
-                //         toastError('Thêm ảnh', 'Thất bại');
-                //         return false
-                //     });
+                // addStringToListUrlAtIndex(index, "123")
+                const formData = new FormData();
+                console.log(imageUri.substring(imageUri.lastIndexOf('/') + 1));
+                formData.append('file', {
+                    uri: imageUri,
+                    type: 'image/jpeg', // Thay thế 'image/jpeg' bằng response.assets[0].type nếu có thông tin về loại file
+                    name: imageUri.substring(imageUri.lastIndexOf('/') + 1)
+                });
+                formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+                setLoading(true);
+                await fetch(CLOUDINARY_URL, {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setLoading(false);
+                        if (data.secure_url !== '') {
+                            const uploadedFileUrl = data.secure_url;
+                            addStringToListUrlAtIndex(index, uploadedFileUrl)
+                        }
+                        toastsuccess("Xong", "Thêm ảnh thành công")
+                    })
+                    .catch((error) => {
+                        setLoading(false);
+                        console.error(error);
+                        toastError('Thêm ảnh', 'Thất bại');
+                        return false
+                    });
 
             })
             const results = await Promise.all(promises);
@@ -197,11 +198,13 @@ const RatingOrder = ({ route }) => {
     };
     const handleImageComments = async (urlList, id_product_information) => {
         try {
-
+            setLoading(true)
             await Promise.all(
-                (urlList? urlList :[])?.map(async (eachURL, index) => {
+                
+                (urlList ? urlList : []).map(async (eachURL, index) => {
                     const isMain = index === 0;
-                    await dispatch(createImageComment(createImageObject(`Image Product ${index}`, eachURL, isMain), id_product_information));
+                    const result = await dispatch(createImageComment(createImageObject(`Image Product ${index}`, eachURL, isMain), id_product_information));
+                    console.log("Data received from dispatch:", result);
                 })
             );
 
@@ -220,16 +223,17 @@ const RatingOrder = ({ route }) => {
         is_like = is_like || false;
         id_imageSet = id_imageSet === undefined ? [] : id_imageSet;
 
-        console.log("data comment ", data);
-        const data = {
+        // console.log("data comment ", item?.id);
+        const dataComment = {
             id_product_information: id_product_information,
             content: content,
             reply: reply,
             id_user: id_user,
             is_like: is_like,
+            id_bill: item?.id,
             id_imageSet: id_imageSet
         };
-        return data
+        return dataComment
     };
 
     const handleTextChange = (text, index) => {
@@ -272,6 +276,11 @@ const RatingOrder = ({ route }) => {
         isLike_arr[index] = true
         setErrorLike(isLike_arr)
     };
+
+    if(loading)
+    {
+        return <LoadingModal></LoadingModal>
+    }
 
     return (<View style={{
         // backgroundColor: 'red',
@@ -436,8 +445,9 @@ const RatingOrder = ({ route }) => {
                     // }}
 
                     onPress={async () => {
+                        await dispatch(resetImageComment())
                         let stateComment = false;
-                        let stateImage =false;
+                        let stateImage = false;
                         if (!data?.bill_detailSet) {
                             toastError("Lỗi", "Không có chi tiết hóa đơn.");
                             return;
@@ -446,25 +456,21 @@ const RatingOrder = ({ route }) => {
                         try {
                             const results = await Promise.all(data.bill_detailSet.map(async (eachProduct, idx) => {
                                 const imageUri = listImages[idx] === undefined ? null : listImages[idx];
+                                // console.log("listUrl ", idx, listUrl[idx]);
+
+
                                 if (errorComment[idx] === null && errorLike[idx] === true) {
 
 
                                     const id_product_information = eachProduct?.product?.id_product_information;
                                     console.log("Item: ", id_product_information);
-                                    console.log("listUrl ", idx, listUrl[idx] === null);
-
-                                    const result = imageUri ? await ChooseImage(imageUri, idx) : false;
-
-                                    // listUrl[idx]?.forEach((eachURL, index) => {
-                                    //     const isMain = index === 0;
-
-                                    //     dispatch(createImageComment(createImageObject(`Image Product ${index}`, eachURL, isMain), id_product_information));
-                                    // });
-
-                                    // handleImageComments(listUrl[idx], id_product_information)
+                                    console.log("listUrl ", idx, listUrl[idx]);
+                                    const result = imageUri ? (await handleImageComments(listUrl[idx], id_product_information)) : false;
 
                                     console.log("Tới đây rồi. Trước dispatch comment");
                                     console.log("data before dispatch", id_product_information);
+                                    
+
                                     stateComment = await dispatch(
                                         createComment(
                                             commentObject(
@@ -473,7 +479,7 @@ const RatingOrder = ({ route }) => {
                                                 null,
                                                 dataUser.id,
                                                 likeSelected[idx],
-                                                dataImageComment ? dataImageComment[id_product_information] : []
+                                                store.getState().createImageComment.dataImageComment[id_product_information] || []
                                             )
                                         )
                                     );
@@ -489,6 +495,7 @@ const RatingOrder = ({ route }) => {
                                 toastError("Xin lỗi", "Đã xảy ra sự cố.");
                             } else {
                                 toastsuccess("Cảm ơn", "Xin cảm ơn vì đánh giá của bạn.");
+                                dispatch(getAllBillByIDUser(dataUser?.id))
                                 navigation.goBack();
                             }
                             console.log(results);

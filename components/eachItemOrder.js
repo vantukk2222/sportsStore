@@ -73,12 +73,13 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
             if (differenceInDays > 30) {
                 return "Mua lại"
             }
-            return "Đang giao"
+            return "Đã nhận hàng"
         }
         if (state === 1) {
-            if (differenceInDays > 30) {
+            if (differenceInDays > 30 || item?.is_rating) {
                 return "Mua lại"
             }
+            
             return "Đánh giá"
         }
         if (state === 2) {
@@ -166,7 +167,7 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
             return "Đơn hàng đang trên đường giao tới cho bạn."
         }
         if (state === 1) {
-            if (differenceInDays > 30) {
+            if (differenceInDays > 30 ||item?.is_rating) {
                 return ""
             }
             return "Bạn hãy đánh giá sản phẩm trước " + futureDate + " nhé."

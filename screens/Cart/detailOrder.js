@@ -67,9 +67,9 @@ const DetailOrderScreen = ({ route }) => {
 
         try {
             await Linking.openURL(link).then(() => {
+                dispatch(getAllBillByIDUser(data?.id))
                 navigation.goBack()
                 toastsuccess("Thành công", "Thanh toán thành công");
-                dispatch(getAllBillByIDUser(data?.id))
             })
         } catch (error) {
             toastError("Xin lỗi", "Đã có lỗi xảy ra với máy chủ");

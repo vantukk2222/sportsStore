@@ -1,7 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import getUserByID from "../../../API/User/getUser";
-import { store } from "../../store";
-import { startMapper } from "react-native-reanimated";
 import { postComment } from "../../../API/Comments/postComment";
 import { toastError } from "../../../components/toastCustom";
 

@@ -10,7 +10,7 @@ export const onValidUsername = (val) => {
   return regex.test(val)
 }
 export const isValidComment = (val) => {
-  const regex = /^[\p{L}\s'-.,'!@#`\n]{25,200}$/u;
+  const regex = /^[\p{L}\s\d'-.,'!@#`\n]{25,200}$/u;
   return regex.test(val)
 }
 

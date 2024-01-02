@@ -53,7 +53,7 @@ const ProductList = (props) => {
 
     const handleSetAll = () => {
         setIsAll(true);
-        setProducts(data.content);
+        setProducts(data?.content);
     }
 
     //Call API when starting
@@ -63,9 +63,9 @@ const ProductList = (props) => {
     //set products = data
     useEffect(() => {
         //console.log(data);
-        setProducts(data.content);
+        setProducts(data?.content);
         //console.log(data.totalPages);
-        setTotalPages(data.totalPages);
+        setTotalPages(data?.totalPages);
     }, [data, totalPages])
 
     //Call API, when search Product by name 

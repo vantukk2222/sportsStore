@@ -54,8 +54,9 @@ import findMostSoldProductSlice from './reducers/Statistic/findMostSoldProduct';
 import changeIsmainSlice from './reducers/Images/ChangeIsmain';
 import changeInforSlice from './reducers/Business/changeInfor';
 import createImageCommentSlice from './reducers/Images/ImageCommentReducer'
-import createCommentSlice from './reducers/Comment/commentReducer'
-
+import createCommentSlice from './reducers/Comment/post_CommentReducer'
+import listUserSlice from './reducers/Comment/user_CommentReducer'
+import getCommentSlice from './reducers/Comment/get_CommentByID_Product_InforReducer'
 const rootReducer = combineReducers({
   product: productSlice,
   productDetail: productDetailSlice,
@@ -106,7 +107,9 @@ const rootReducer = combineReducers({
   confirmBill: confirmBillSlice,
   findMostSoldProduct: findMostSoldProductSlice,
   changeIsmain: changeIsmainSlice,
-  changeInfor: changeInforSlice
+  changeInfor: changeInforSlice,
+  listUserReducer: listUserSlice,
+  getCommentReducer: getCommentSlice
 })
 // {getBusinessByIDSlice}
 const persistConfig = {

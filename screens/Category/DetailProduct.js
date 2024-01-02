@@ -13,6 +13,13 @@ import HeaderComp from '../../components/Header';
 import { toastError } from '../../components/toastCustom';
 import { logout } from '../../redux/reducers/Login/signinReducer';
 import moment from 'moment';
+import { CommentItem } from '../../components/commenComp';
+import getUserByIDUser from '../../API/User/getUserByID';
+import { fetchUserCommentByID } from '../../redux/reducers/Comment/user_CommentReducer';
+import { store } from '../../redux/store';
+import { getCommentByIDProducInfor, resetCommentProduct } from '../../redux/reducers/Comment/get_CommentByID_Product_InforReducer';
+import getCommentByID from '../../API/Comments/getComment';
+import { resetComment } from '../../redux/reducers/Comment/post_CommentReducer';
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
@@ -23,10 +30,11 @@ const DetailProduct = ({ navigation, route }) => {
     const { data, loading, error } = useSelector((state) => state.productDetail);
     const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
     const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
-
+    const { data: dataCommentss, isLoading: loadingComment, error: errorComment } = useSelector((state) => state.getCommentReducer)
+    const [dataComment, setDataComment] = useState(dataCommentss)
     const { item } = route.params;
     const [product, setProduct] = useState()
-    
+
     const [images, setImages] = useState(null)
     const [sale, setSale] = useState(null)
     // console.log("id_User Detail:", id_user);
@@ -62,42 +70,82 @@ const DetailProduct = ({ navigation, route }) => {
         }
 
     }, [userName]);
-    //console.log(item)
+    // console.log("id: ",item?.id)
     useEffect(() => {
-        dispatch(fetchProductbyId(item?.id))//item.id
-        // console.log('item.id\n', item.id)
+        const fetchData = async () => {
+            try {
+                await dispatch(fetchProductbyId(item?.id));
+            } catch (error) {
+                console.error('Lỗi khi gọi API:', error);
+            }
+        };
+
+        fetchData();
+
         return () => {
-            // item = null;
             dispatch(resetProductDetail());
-        }
+        };
     }, [item])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                dispatch(getCommentByIDProducInfor(item?.id, 0))
+            } catch (error) {
+                console.error('Lỗi khi gọi API:', error);
+
+            }
+        }
+        fetchData()
+
+        return () => {
+            dispatch(resetCommentProduct())
+        }
+
+    }, [item?.id])
+    useEffect(() => {
+        setDataComment(dataCommentss)
+        dataComment?.content?.map( async(eachItem)=>{
+            await dispatch(fetchUserCommentByID(eachItem?.id_user))
+        })
+
+    }, [dataCommentss])
 
     useEffect(() => {
         setProduct(data[item?.id])
-        if(!isExpired(data[item?.id]?.sale?.ended_at))
-        {
+        if (!isExpired(data[item?.id]?.sale?.ended_at)) {
             setSale(data[item?.id]?.sale)
         }
-        else{}
+        else { }
         // console.log('productDetail\n', data.sale)
         return () => {
             setProduct('')
         }
     }, [data[item?.id]])
     // console.log("product", item);
-    handleAddtocart = () =>
-    {
-        dataUser?.id ? navigation.navigate('ModalBuyProduct', {product:product ,id_user: dataUser?.id}) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
-            console.log("id_information: ",product?.id)
+    handleAddtocart = () => {
+        dataUser?.id ? navigation.navigate('ModalBuyProduct', { product: product, id_user: dataUser?.id }) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
+        console.log("id_information: ", product?.id)
     }
     // Xử
     if (loading) {
         return <Loading />;
     }
+    // Assume commentData is an array containing comment objects
+    // const commentData = [
+    //     {
+    //         avatar: dataUser?.image_url || 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+    //         name: dataUser?.name,
+    //         rating: dataComment?.content?.is_like,
+    //         category: 'Size',
+    //         content: dataComment?.content?.content ,
+    //         listImg: dataComment?.content?.imageSet 
+    //     },
+    //     // More comment objects...
+    // ];
 
     return (
         <SafeAreaView style={{ flex: 100 }}>
-            <HeaderComp init="Chi tiết"/>
+            <HeaderComp init="Chi tiết" />
             <ScrollView style={styles.container} nestedScrollEnabled={true}>
                 {product?.imageSet?.length > 0 ?
                     images !== null ?
@@ -131,17 +179,24 @@ const DetailProduct = ({ navigation, route }) => {
                         <Text style={{ color: 'black', fontSize: 18, fontWeight: 500 }}></Text>
                         {product?.categorySet?.length > 0 ?
                             product?.categorySet.map(eachSize => {
-                                return <View key={eachSize.name}>
-                                    <Text style={styles.textCategory}>{eachSize.name}</Text>
-                                </View>
-                            }) : <Text style={{
+                                return (
+                                    <View
+                                        key={eachSize.name}
+                                    >
+                                        <Text style={styles.textCategory}>
+                                            {eachSize.name}
+                                        </Text>
+                                    </View>
+                                )
+                            })
+                            : <Text style={{
                                 color: 'black'
                             }}>Not found</Text>
                         }
                     </View>
-                    { sale &&!isExpired(sale?.ended_at)?
-                        <TouchableOpacity onPress={()=>{
-                            console.log("sale in detailProduct,",sale?.ended_at);
+                    {sale && !isExpired(sale?.ended_at) ?
+                        <TouchableOpacity onPress={() => {
+                            console.log("sale in detailProduct,", sale?.ended_at);
                         }}>
                             <Text style={styles.priceSale}>{formatMoneyVND(product?.price_min)}</Text>
                             <View style={{ flexDirection: 'row' }}>
@@ -172,6 +227,7 @@ const DetailProduct = ({ navigation, route }) => {
                     <ShopInfo business={product?.business} />
                 </View>
                 <View style={styles.detailsContainer}>
+
                     <Text style={{ color: 'black', fontSize: 18, fontWeight: 500, marginHorizontal: 10 }}>
                         Mô tả:
                     </Text>
@@ -181,12 +237,11 @@ const DetailProduct = ({ navigation, route }) => {
                         marginHorizontal: 10,
                         marginVertical: 2,
                         alignItems: 'flex-start'
-                    }}>{product?.attribute}</Text>
+                    }}>{product?.detail ||"Thông tin chi tiết của sản phẩm\n Sản phẩm của  "+product?.business?.name}</Text>
                 </View>
 
                 <View style={styles.detailsContainer}>
                     <Text style={{
-                        height: 180,
                         color: 'black',
                         fontSize: 18,
                         marginHorizontal: 10,
@@ -194,6 +249,37 @@ const DetailProduct = ({ navigation, route }) => {
                         alignItems: 'flex-start',
                         fontWeight: 500
                     }}>Bình luận:</Text>
+                    <View style={styles.containerComment}>
+                        {dataComment?.content?.map((eachItem,index)=>(
+                            <CommentItem
+                            key = {index}
+                            avatar={"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" || null}
+                                    name={"Nguyễn Văn Tú" || null}
+                                    rating={eachItem?.is_like}
+                                    category="Size"
+                                    content={eachItem?.content}
+                                    listImg={eachItem?.imageSet}
+                                    id = {eachItem?.id_user}
+                            ></CommentItem>
+                        )
+
+                        )}
+                        {/* {console.log("comment", dataComment?.content)}
+                        <FlatList
+                            data={dataComment?.content}
+                            renderItem={({ item }) => (
+                                <CommentItem
+                                    avatar={"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" || null}
+                                    name={"Nguyễn Văn Tú" || null}
+                                    rating={item?.is_like}
+                                    category="Size"
+                                    content={item?.content}
+                                    listImg={item?.imageSet}
+                                />
+                            )}
+                            keyExtractor={(item, index) => index.toString()}
+                        /> */}
+                    </View>
                 </View>
                 <View style={{
                     backgroundColor: 'white',
@@ -241,8 +327,8 @@ const DetailProduct = ({ navigation, route }) => {
                         //top: 220,
                         bottom: 0,
                         height: 70,
-                        marginBottom:15,
-                        marginHorizontal:50,
+                        marginBottom: 15,
+                        marginHorizontal: 50,
                         //  marginHorizontal: 15,
                         borderRadius: 8,
                         borderWidth: 1,
@@ -254,7 +340,7 @@ const DetailProduct = ({ navigation, route }) => {
                     }
                 }>
                 <TouchableOpacity
-                    onPress={() => {handleAddtocart()}}
+                    onPress={() => { handleAddtocart() }}
                     style={{
                         borderRadius: 2,
                         borderWidth: 1,
@@ -266,8 +352,8 @@ const DetailProduct = ({ navigation, route }) => {
                         justifyContent: 'center', // Center vertically
                         alignItems: 'center',
                     }}>
-                    <Icon name="cart-plus" size={25} color='white'/>
-                    <Text style={{color:'white'}}>Add to cart </Text>
+                    <Icon name="cart-plus" size={25} color='white' />
+                    <Text style={{ color: 'white' }}>Add to cart </Text>
                 </TouchableOpacity>
                 {/* <TouchableOpacity
                     onPress={() => navigation.navigate('Cart', {id_user: id_user})}
@@ -290,6 +376,10 @@ const DetailProduct = ({ navigation, route }) => {
 }
 export default DetailProduct;
 const styles = StyleSheet.create({
+    containerComment: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
     originalPrice: {
         color: 'black',
         fontSize: 24,
@@ -329,7 +419,7 @@ const styles = StyleSheet.create({
     container: {
         paddingBottom: 20,
         marginTop: 5,
-        paddingTop:5,
+        paddingTop: 5,
         //height: 200,
         backgroundColor: 'white',
         //overflow: 'scroll',
@@ -344,6 +434,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         marginVertical: 3,
+        padding: 5,
         alignItems: 'flex-start'
     },
     imageListContainer: {
@@ -364,7 +455,6 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: 8,
         marginBottom: 16,
-        elevation: 15,
     },
     productContainer: {
         backgroundColor: 'white',
@@ -377,7 +467,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 16,
         elevation: 3,
-        marginTop: 20
+        marginTop: 20,
     },
     name: {
         fontSize: 20,

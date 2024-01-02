@@ -33,12 +33,12 @@ export const getInforBusinessByID = (id_business) => async (dispatch, getState) 
 
     try {
         dispatch(getBusinessRequest())
-        const businessArr = getState().getBusinessByIDReducer.businessInfor
-        if (businessArr[id_business] === null) {
+        // const businessArr = getState().getBusinessByIDReducer.businessInfor
+        // if (businessArr[id_business] === null) {
             const response = await getBusinessInformation(id_business)
             // console.log("data business in reducer: ", response);
             dispatch(getBusinessSuccess(response))
-        }
+        // }
 
     } catch (error) {
         let errorMessage = 'Error fetching data of categories';
