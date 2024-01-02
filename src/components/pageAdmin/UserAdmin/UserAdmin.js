@@ -29,11 +29,7 @@ const UserAdmin = () => {
                 setLoading(true);
                 const response = await getUser(page,pageSize,sort,desc,state);
                 let listAcc = response.content; 
-                if(state === 1){
-                    listAcc = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS')
-                }else {
-                    listAcc = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS' || item?.roles[0] === 'ROLE_CUSTOMER')
-                }
+                listAcc = listAcc.filter(item => item?.roles[0] === 'ROLE_BUSINESS' || item?.roles[0] === 'ROLE_CUSTOMER')
                 
                 setTrackingInfo(listAcc);
                 if (!response) {
