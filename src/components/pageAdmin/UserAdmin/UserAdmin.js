@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import getUnAuth from '~/API/get';
 import AddUserModal from './AddUserModal';
-import EditUserModal from './EditUserModal';
+import EditUserModal from './EditUserModal'; // Import the EditUserModal component
+import getUnAuth from '~/API/get';
 
 const UserAdmin = () => {
     const [trackingInfo, setTrackingInfo] = useState([]);
@@ -17,7 +17,6 @@ const UserAdmin = () => {
                 setLoading(true);
                 const response = await getUnAuth(`user`);
                 setTrackingInfo(response.content);
-                console.log(response.content);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
@@ -62,23 +61,19 @@ const UserAdmin = () => {
     const handleDeleteUser = (userId) => {
         setTrackingInfo((prevTrackingInfo) => prevTrackingInfo.filter((user) => user.id !== userId));
     };
-
-    const handleAccUser = () => {};
     return (
         <div className="track-container">
             <h2>Quản lý User</h2>
-            {/* <button className="" onClick={handleOpenAddUserModal}>
+            <button className="" onClick={handleOpenAddUserModal}>
                 Thêm người dùng
-            </button> */}
+            </button>
             <div className="tracking-header">
                 <div>Username</div>
                 <div>Hình ảnh</div>
-                <div className="adminheader">Email</div>
+                <div>Email</div>
                 <div>Họ và tên</div>
-                <div>Phân quyền</div>
                 <div>CCCD</div>
                 <div>Địa chỉ</div>
-                <div>Trạng thái</div>
                 <div>Action</div>
             </div>
 
@@ -88,24 +83,18 @@ const UserAdmin = () => {
                     <div>
                         <img src={user.img} alt={`User ${index + 1}`} />
                     </div>
-                    <div className="adminheader">{user.email}</div>
+                    <div>{user.email}</div>
                     <div>{user.name}</div>
-                    <div>{user.roles}</div>
-
                     <div>{user.cic}</div>
                     <div>{user.address}</div>
-                    <div>{user.state}</div>
 
                     <div>
-                        <button className="" onClick={() => handleAccUser()}>
-                            Xác nhận
-                        </button>
-                        {/* <button className="edit" onClick={() => handleOpenEditUserModal(user)}>
+                        <button className="edit" onClick={() => handleOpenEditUserModal(user)}>
                             Edit
                         </button>
                         <button className="delete" onClick={() => handleDeleteUser(user.id)}>
                             Delete
-                        </button> */}
+                        </button>
                     </div>
                 </div>
             ))}

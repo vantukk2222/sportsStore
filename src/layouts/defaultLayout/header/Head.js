@@ -20,7 +20,7 @@ const Head = () => {
                 <div className="container d_flex">
                     <div className="left row">
                         <label>
-                            <Link to="/login">Kênh ADMIN</Link>
+                            <Link to="/admin">Kênh ADMIN</Link>
                         </label>
                         <label>
                             <Link to="/login">Kênh người bán</Link>
