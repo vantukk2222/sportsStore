@@ -117,7 +117,7 @@ const ProductDetail = () => {
                     else setSale(false);
                 } else setSale(false);
 
-                setStart(response.imageSet.find((e) => e.is_main === true).id);
+                setStart(response.imageSet.find((e) => e.is_main === true).id || response.imageSet[0].id);
             } catch (error) {
                 setError(error);
             } finally {
@@ -137,7 +137,10 @@ const ProductDetail = () => {
                             <div className="main-image">
                                 {productItem.imageSet && productItem.imageSet.length > 0 && (
                                     <img
-                                        src={productItem.imageSet.find((e) => e.id === start).url}
+                                        src={
+                                            productItem.imageSet.find((e) => e.id === start)?.url ||
+                                            productItem.imageSet[0].url
+                                        }
                                         alt=""
                                         className="product-image"
                                     />

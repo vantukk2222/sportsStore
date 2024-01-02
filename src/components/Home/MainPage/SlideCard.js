@@ -62,7 +62,10 @@ const SlideCard = () => {
                                     <div className="right">
                                         <img
                                             className="img-slider"
-                                            src={value.imageSet.find((e) => e.is_main === true).url}
+                                            src={
+                                                value.imageSet.find((e) => e.is_main === true).url ||
+                                                value.imageSet[0].url
+                                            }
                                             alt=""
                                         />
                                     </div>
