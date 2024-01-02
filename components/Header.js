@@ -17,7 +17,7 @@ const HeaderComp = ({init = "Start"}) => {
     // const dispatch = useDispatch();
     // const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
     const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
-    const [userName, setUserName] = useState('')
+    const [userName, setUserName] = useState(dataUser?.username)
 
 
 

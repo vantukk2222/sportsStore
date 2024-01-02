@@ -11,6 +11,7 @@ const imageState = {
     loadingImage: false,
     errorImage: null
 }
+
 const createImageSlice = createSlice({
     name: 'createImage',
     initialState: imageState,

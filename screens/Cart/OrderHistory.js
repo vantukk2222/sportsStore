@@ -140,7 +140,7 @@ const OrderHistoryScreen = ({ route }) => {
                         // console.log("1", eachBill);
                         totalEachItem += eachBill?.price
                     })
-                    return <EachItemOrderComp item={eachproductItem} total={totalEachItem} key={eachindex} />;
+                    return <EachItemOrderComp item={JSON.parse(JSON.stringify(eachproductItem))} total={totalEachItem} key={eachindex} />;
                 }) : <Text style={{ alignContent: 'center' }}> Chưa có đơn nào</Text>}
             </View>
 

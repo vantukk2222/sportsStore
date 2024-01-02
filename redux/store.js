@@ -53,6 +53,9 @@ import cancelBillSlice from './reducers/Bill/billCancelReducer'
 import findMostSoldProductSlice from './reducers/Statistic/findMostSoldProduct';
 import changeIsmainSlice from './reducers/Images/ChangeIsmain';
 import changeInforSlice from './reducers/Business/changeInfor';
+import createImageCommentSlice from './reducers/Images/ImageCommentReducer'
+import createCommentSlice from './reducers/Comment/commentReducer'
+
 const rootReducer = combineReducers({
   product: productSlice,
   productDetail: productDetailSlice,
@@ -97,6 +100,9 @@ const rootReducer = combineReducers({
   getBusinessByIDReducer: getBusinessByIDSlice,
   cancelBillReducer: cancelBillSlice,
   getBillbyIdBusi: getBillbyIdBusiSlice,
+
+  createImageComment: createImageCommentSlice,
+  createComment: createCommentSlice,
   confirmBill: confirmBillSlice,
   findMostSoldProduct: findMostSoldProductSlice,
   changeIsmain: changeIsmainSlice,
