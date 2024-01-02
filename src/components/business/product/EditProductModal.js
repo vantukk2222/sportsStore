@@ -17,7 +17,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             quantity: sizeInfo.quantity,
         })),
         categorySet: product.categorySet,
-        // sale: '',
+        imageD: [],
     });
 
     useEffect(() => {}, []);
@@ -76,9 +76,12 @@ const EditProductModal = ({ product, onClose, onSave }) => {
     const handleRemoveImage = (index) => {
         setEditedProduct((prevProduct) => {
             const updatedImages = [...prevProduct.imageSet];
+            let DImages = [...prevProduct.imageD];
+            if (prevProduct.imageSet[index].id) DImages = [...DImages, prevProduct.imageSet[index].id];
             updatedImages.splice(index, 1);
             return {
                 ...prevProduct,
+                imageD: DImages,
                 imageSet: updatedImages,
             };
         });

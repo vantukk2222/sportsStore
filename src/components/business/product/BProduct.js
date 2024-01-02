@@ -5,6 +5,7 @@ import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
 import { putProductInformation } from '~/API/putProductInformation';
 import postImage from '~/API/postImage';
+import deleteImage from '~/API/deleteImage';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -54,15 +55,42 @@ const BProduct = () => {
         console.log(editedProduct);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
 
-        editedProduct.imageSet.forEach((e) => {
-            if (e.id == null) {
-                postImage(editedProduct.name, e.url, authToken).then((response) => (e.id = response.data));
-            }
-        });
-        putProductInformation(id, editedProduct, authToken);
-        fetchData();
-        setEditIndex(null);
-        handleCloseEditModal();
+        const t = () => {
+            // Create an array to hold all the promises
+            const promises = [];
+
+            editedProduct.imageSet.forEach((e) => {
+                if (e.id == null) {
+                    promises.push(
+                        postImage(editedProduct.name, e.url, authToken)
+                            .then((response) => (e.id = response.data))
+                            .catch((error) => console.error('Error uploading image:', error)),
+                    );
+                }
+            });
+            return Promise.all(promises);
+        };
+        t()
+            .then(() => {
+                if (Array.isArray(editedProduct.imageD)) {
+                    // If editedProduct.imageSet is an array, iterate over it
+                    editedProduct.imageD.forEach((e) => {
+                        deleteImage(e, authToken);
+                    });
+                } else {
+                    // If it's not an array, handle it accordingly
+                    console.error('editedProduct.imageSet is not an array.');
+                }
+            })
+            .then(() => putProductInformation(id, editedProduct, authToken))
+            .then(() => {
+                fetchData();
+                setEditIndex(null);
+                handleCloseEditModal();
+            })
+            .catch((error) => {
+                console.error('Error uploading images:', error);
+            });
     };
 
     const handleDeleteProduct = (index) => {
