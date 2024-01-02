@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
-const postImage = async (name, url, authToken) => {
+const postImage = async (name, url, is_man, authToken) => {
     console.log(url);
     try {
         const response = await axios.post(
@@ -8,7 +8,7 @@ const postImage = async (name, url, authToken) => {
             {
                 name: `image-product ${name}`,
                 url,
-                is_main: 'false',
+                is_main: is_man,
             },
 
             {

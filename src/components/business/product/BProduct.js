@@ -18,6 +18,7 @@ const BProduct = () => {
     const [editIndex, setEditIndex] = useState(null);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
+
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -64,7 +65,7 @@ const BProduct = () => {
             editedProduct.imageSet.forEach((e) => {
                 if (e.id == null) {
                     console.log(e.id);
-                    const promise = postImage(editedProduct.name, e.url, authToken)
+                    const promise = postImage(editedProduct.name, e.url, 'false', authToken)
                         .then((response) => (e.id = response.data))
                         .catch((error) => console.error('Error uploading image:', error));
 

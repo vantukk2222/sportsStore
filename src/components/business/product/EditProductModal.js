@@ -1,6 +1,7 @@
 import { faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import getUnAuth from '~/API/get';
 
 const EditProductModal = ({ product, onClose, onSave }) => {
     const [editedProduct, setEditedProduct] = useState({
@@ -20,17 +21,9 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         categorySet: product.categorySet,
         imageD: [],
     });
-
-    const [selectedCategories, setSelectedCategories] = useState([...editedProduct.categorySet]);
-
-    const categoriesData = [
-        { id: 1, name: 'Category 1' },
-        { id: 2, name: 'Category 2' },
-        { id: 3, name: 'Category 3' },
-        { id: 4, name: 'New Category 1' },
-        { id: 5, name: 'New Category 2' },
-    ];
-
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedProduct({ ...editedProduct, [name]: value });
@@ -112,7 +105,29 @@ const EditProductModal = ({ product, onClose, onSave }) => {
             priceSizePairs: updatedPairs,
         }));
     };
+    useEffect(() => {
+        const categoryData = async () => {
+            try {
+                setLoading(true);
+                let response = await getUnAuth(`category`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
 
+                response.content = response.content.map((e) => {
+                    if (!editedProduct.categorySet.find((el) => e.name == el.name)) return e;
+                });
+                console.log(response.content);
+                setSelectedCategories(response.content);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        categoryData();
+    }, []);
+    console.log(editedProduct);
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
@@ -202,14 +217,21 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
                     <div style={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>
-                        {selectedCategories.map((category, index) => (
+                        {editedProduct.categorySet.map((category, index) => (
                             <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
                                 <span>{category?.name}</span>
                                 <FontAwesomeIcon
                                     icon={faTimes}
-                                    onClick={() =>
-                                        setSelectedCategories(selectedCategories.filter((cat) => cat !== category))
-                                    }
+                                    onClick={() => {
+                                        const updatedCategory = [...editedProduct.categorySet];
+                                        console.log(index);
+                                        setSelectedCategories([...selectedCategories, updatedCategory[index]]);
+                                        updatedCategory.splice(index, 1);
+                                        setEditedProduct((prevProduct) => ({
+                                            ...prevProduct,
+                                            categorySet: updatedCategory,
+                                        }));
+                                    }}
                                     style={{ marginLeft: '5px', cursor: 'pointer', color: 'red' }}
                                 />
                             </div>
@@ -221,18 +243,32 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                         name="category"
                         value={''}
                         onChange={(e) => {
-                            const selectedCategory = categoriesData.find((cat) => cat.name === e.target.value);
-                            setSelectedCategories([...selectedCategories, selectedCategory]);
+                            const selectedCategory = selectedCategories.find((cat) => {
+                                if (cat) return cat.name === e.target.value;
+                            });
+                            setSelectedCategories(
+                                selectedCategories.filter((cat) => {
+                                    if (cat) return cat.name !== e.target.value;
+                                }),
+                            );
+                            const updatedCategory = [...editedProduct.categorySet, selectedCategory];
+                            setEditedProduct((prevProduct) => ({
+                                ...prevProduct,
+                                categorySet: updatedCategory,
+                            }));
                         }}
                     >
                         <option value="" disabled>
                             Chọn danh mục
                         </option>
-                        {categoriesData.map((category, index) => (
-                            <option key={index} value={category.name}>
-                                {category.name}
-                            </option>
-                        ))}
+                        {selectedCategories.map((category, index) => {
+                            if (category)
+                                return (
+                                    <option key={index} value={category.name}>
+                                        {category.name}
+                                    </option>
+                                );
+                        })}
                     </select>
                 </div>
 

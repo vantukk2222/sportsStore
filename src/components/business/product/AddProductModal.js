@@ -1,24 +1,62 @@
 import { faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import getUnAuth from '~/API/get';
+import postImage from '~/API/postImage';
+import postProduct from '~/API/postProduct';
+import { postProductInformation } from '~/API/postProductInformation';
 
 const AddProductModal = ({ onClose }) => {
     const [newProduct, setNewProduct] = useState({
-        id: null,
+        // id: null,
         name: '',
-        id_business: null,
+        id_business: JSON.parse(localStorage.getItem('User')).id,
         imageSet: [],
         detail: '',
-        attribute: '',
+        // attribute: '',
         priceSizePairs: [{ id: null, size: '', price: '', quantity: '' }],
-        selectedCategory: [],
+        categorySet: [],
         imageD: [],
     });
 
-    const categories = ['Category 1', 'Category 2', 'Category 3'];
-
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const handleAddProduct = () => {
-        onClose();
+        console.log(newProduct);
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        const t = () => {
+            // Create an array to hold all the promises
+            const promises = [];
+
+            newProduct.imageSet.forEach((e, index) => {
+                if (e.id == null) {
+                    if (index == 0) {
+                        const promise = postImage(newProduct.name, e.url, 'true', authToken)
+                            .then((response) => (e.id = response.data))
+                            .catch((error) => console.error('Error uploading image:', error));
+                        promises.push(promise);
+                    } else {
+                        const promise = postImage(newProduct.name, e.url, 'false', authToken)
+                            .then((response) => (e.id = response.data))
+                            .catch((error) => console.error('Error uploading image:', error));
+                        promises.push(promise);
+                    }
+                }
+            });
+
+            return Promise.all(promises);
+        };
+        t()
+            .then(() => postProductInformation(newProduct, authToken))
+            .then((response) => {
+                // console.log(response.data);
+                const id = response.data;
+                newProduct.priceSizePairs.forEach((e) => {
+                    if (e.id == null) postProduct(id, e, authToken);
+                });
+            });
+        console.log(newProduct);
     };
 
     const handleInputChange = (e) => {
@@ -30,18 +68,16 @@ const AddProductModal = ({ onClose }) => {
         const selectedCategory = e.target.value;
 
         setNewProduct((prevProduct) => {
-            if (!prevProduct.selectedCategory.includes(selectedCategory)) {
+            if (!prevProduct.categorySet.includes(selectedCategory)) {
                 return {
                     ...prevProduct,
-                    selectedCategory: [...prevProduct.selectedCategory, selectedCategory],
+                    categorySet: [...prevProduct.categorySet, selectedCategory],
                 };
             } else {
-                const updatedCategories = prevProduct.selectedCategory.filter(
-                    (category) => category !== selectedCategory,
-                );
+                const updatedCategories = prevProduct.categorySet.filter((category) => category !== selectedCategory);
                 return {
                     ...prevProduct,
-                    selectedCategory: updatedCategories,
+                    categorySet: updatedCategories,
                 };
             }
         });
@@ -49,11 +85,11 @@ const AddProductModal = ({ onClose }) => {
 
     const handleRemoveCategory = (index) => {
         setNewProduct((prevProduct) => {
-            const updatedCategories = [...prevProduct.selectedCategory];
+            const updatedCategories = [...prevProduct.categorySet];
             updatedCategories.splice(index, 1);
             return {
                 ...prevProduct,
-                selectedCategory: updatedCategories,
+                categorySet: updatedCategories,
             };
         });
     };
@@ -65,7 +101,7 @@ const AddProductModal = ({ onClose }) => {
                 const imagesArray = await Promise.all(
                     Array.from(files).map(async (file) => {
                         const imageUrl = await uploadFileToCloudinary(file);
-                        return imageUrl;
+                        return { id: null, url: imageUrl };
                     }),
                 );
 
@@ -133,21 +169,32 @@ const AddProductModal = ({ onClose }) => {
                 });
         });
     };
-
+    useEffect(() => {
+        const categoryData = async () => {
+            try {
+                setLoading(true);
+                const response = await getUnAuth(`category`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+                setSelectedCategories(response.content);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        categoryData();
+    }, []);
+    // console.log(newProduct);
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
                 <h2>Thêm sản phẩm</h2>
 
                 <div className="form-group">
-                    <label htmlFor="name_product">Tên sản phẩm:</label>
-                    <input
-                        type="text"
-                        id="name_product"
-                        name="name_product"
-                        value={newProduct.name_product || ''}
-                        onChange={handleInputChange}
-                    />
+                    <label htmlFor="name">Tên sản phẩm:</label>
+                    <input type="text" id="name" name="name" value={newProduct.name} onChange={handleInputChange} />
                 </div>
 
                 <div className="formgroupimg">
@@ -161,7 +208,7 @@ const AddProductModal = ({ onClose }) => {
                                 <div key={index} style={{ position: 'relative', marginBottom: '10px' }}>
                                     <img
                                         className="imgaddproduct"
-                                        src={image}
+                                        src={image.url}
                                         alt={`Preview ${index + 1}`}
                                         style={{ maxWidth: '100%' }}
                                     />
@@ -220,9 +267,9 @@ const AddProductModal = ({ onClose }) => {
                 <div className="form-group">
                     <label htmlFor="category">Danh mục:</label>
                     <div style={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>
-                        {newProduct.selectedCategory.map((category, index) => (
+                        {newProduct.categorySet.map((category, index) => (
                             <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                                <span>{category}</span>
+                                <span>{category?.name}</span>
                                 <FontAwesomeIcon
                                     icon={faTimes}
                                     onClick={() => handleRemoveCategory(index)}
@@ -236,16 +283,33 @@ const AddProductModal = ({ onClose }) => {
                         id="category"
                         name="category"
                         value={''}
-                        onChange={handleCategoryChange}
+                        onChange={(e) => {
+                            const selectedCategory = selectedCategories.find((cat) => {
+                                if (cat) return cat.name === e.target.value;
+                            });
+                            setSelectedCategories(
+                                selectedCategories.filter((cat) => {
+                                    if (cat) return cat.name !== e.target.value;
+                                }),
+                            );
+                            const updatedCategory = [...newProduct.categorySet, selectedCategory];
+                            setNewProduct((prevProduct) => ({
+                                ...prevProduct,
+                                categorySet: updatedCategory,
+                            }));
+                        }}
                     >
                         <option value="" disabled>
                             Chọn danh mục
                         </option>
-                        {categories.map((category, index) => (
-                            <option key={index} value={category}>
-                                {category}
-                            </option>
-                        ))}
+                        {selectedCategories.map((category, index) => {
+                            if (category)
+                                return (
+                                    <option key={index} value={category.name}>
+                                        {category.name}
+                                    </option>
+                                );
+                        })}
                     </select>
                 </div>
 
