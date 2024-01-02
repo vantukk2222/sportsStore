@@ -5,28 +5,28 @@ const MenuBusiness = () => {
         <div className="menubusiness">
             <div className="menu-business">
                 <label>
-                    <Link to="/businesstrack">
+                    <Link to="/business/track">
                         <i className="fas fa-shopping-cart"></i> Quản lý đơn hàng
                     </Link>
                 </label>
             </div>
             <div className="menu-business">
                 <label>
-                    <Link to="/businessproduct">
+                    <Link to="/business/product">
                         <i className="fas fa-box"></i> Quản lý sản phẩm
                     </Link>
                 </label>
             </div>
             <div className="menu-business">
                 <label>
-                    <Link to="/businesssale">
+                    <Link to="/business/sale">
                         <i className="fas fa-calendar-alt"></i> Quản lý sự kiện
                     </Link>
                 </label>
             </div>
             <div className="menu-business">
                 <label>
-                    <Link to="/businessrevenue">
+                    <Link to="/business/revenue">
                         <i className="fas fa-chart-line"></i> Doanh thu
                     </Link>
                 </label>

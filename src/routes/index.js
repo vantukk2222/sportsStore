@@ -49,10 +49,10 @@ const BRoutes = [
     { path: '/login', component: Login, layout: layout_login },
     { path: '/register', component: Register, layout: layout_res },
     { path: '/profile', component: Profile, layout: layout_bussiness },
-    { path: '/businessproduct', component: BusinessProduct, layout: layout_bussiness },
-    { path: '/businessrevenue', component: BusinessRevenue, layout: layout_bussiness },
-    { path: '/businesssale', component: BusinessSale, layout: layout_bussiness },
-    { path: '/businesstrack', component: BusinessTrack, layout: layout_bussiness },
+    { path: '/business/product', component: BusinessProduct, layout: layout_bussiness },
+    { path: '/business/revenue', component: BusinessRevenue, layout: layout_bussiness },
+    { path: '/business/sale', component: BusinessSale, layout: layout_bussiness },
+    { path: '/business/track', component: BusinessTrack, layout: layout_bussiness },
 ];
 const ARoutes = [
     { path: '/', component: Admin, layout: layout_admin },
@@ -60,10 +60,10 @@ const ARoutes = [
     { path: '/profile', component: Profile, layout: layout_admin },
     { path: '/register', component: Register, layout: layout_res },
     { path: '/dashboard', component: AdminDashboard, layout: layout_admin },
-    { path: '/adminuser', component: AdminUser, layout: layout_admin },
-    { path: '/adminsale', component: AdminSale, layout: layout_admin },
-    { path: '/admintrack', component: AdminTrack, layout: layout_admin },
-    { path: '/adminrevenue', component: AdminRevenue, layout: layout_admin },
-    { path: '/adminproduct', component: AdminProduct, layout: layout_admin },
+    { path: '/admin/user', component: AdminUser, layout: layout_admin },
+    { path: '/admin/sale', component: AdminSale, layout: layout_admin },
+    { path: '/admin/track', component: AdminTrack, layout: layout_admin },
+    { path: '/admin/revenue', component: AdminRevenue, layout: layout_admin },
+    { path: '/admin/product', component: AdminProduct, layout: layout_admin },
 ];
-export { BRoutes, CRoutes, ARoutes };
+export { ARoutes, BRoutes, CRoutes };

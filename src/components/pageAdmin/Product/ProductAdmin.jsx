@@ -1,41 +1,15 @@
-import { useState } from 'react';
+import { Pagination } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import SearchProductAdmin from '~/API/Admin/product/SearchProductAdmin';
+import getProductInfor from '~/API/Admin/product/getProductInfor';
+import putChangeStateProduct from '~/API/Admin/product/putChangeStateProduct';
 import AddEventModal from './AddEventModalAdmin';
 import AddProductModal from './AddProductModalAdmin';
 import EditProductModal from './EditProductModalAdmin';
 
 const ProductAdmin = () => {
-    const [products, setProducts] = useState([
-        {
-            name: 'Sản phẩm 1',
-            imageSet: [
-                { url: 'image1_1.jpg', is_main: true },
-                { url: 'image1_2.jpg', is_main: false },
-            ],
-            detail: 'Mô tả sản phẩm 1',
-            productSet: [
-                { size: 'S', price: 100000, quantity: 10 },
-                { size: 'M', price: 120000, quantity: 15 },
-                { size: 'L', price: 150000, quantity: 8 },
-            ],
-            categorySet: [{ name: 'Loại 1' }, { name: 'Loại 2' }],
-            discount: 10,
-        },
-        {
-            name: 'Sản phẩm 2',
-            imageSet: [
-                { url: 'image2_1.jpg', is_main: true },
-                { url: 'image2_2.jpg', is_main: false },
-            ],
-            detail: 'Mô tả sản phẩm 2',
-            productSet: [
-                { size: 'S', price: 80000, quantity: 20 },
-                { size: 'M', price: 100000, quantity: 12 },
-                { size: 'L', price: 130000, quantity: 5 },
-            ],
-            categorySet: [{ name: 'Loại 2' }, { name: 'Loại 3' }],
-            discount: 5,
-        },
-    ]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -43,6 +17,48 @@ const ProductAdmin = () => {
     const [editIndex, setEditIndex] = useState(null);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
+
+    const [totalPage, setTotalPage] = useState(null);
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [sort, setSort] = useState('id');
+    const [desc, setDesc] = useState(false);
+    const [state, setState] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                let response;
+
+                if (searchTerm) {
+                    response = await SearchProductAdmin(searchTerm, page, pageSize, sort, desc, state);
+                    if (!totalPage) {
+                        setTotalPage(response?.totalPages);
+                    }
+                } else {
+                    response = await getProductInfor(page, pageSize, sort, desc, state);
+                    if (!totalPage) {
+                        setTotalPage(response?.totalPages);
+                    }
+                }
+
+                let listProduct = response.content;
+                setProducts(listProduct);
+
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [page, pageSize, sort, desc, state, searchTerm, totalPage]);
 
     const handleOpenAddModal = () => {
         setIsAddModalOpen(true);
@@ -71,7 +87,27 @@ const ProductAdmin = () => {
         handleCloseEditModal();
     };
 
-    const handleDeleteProduct = (index) => {};
+    const handleConfirm = (product) => {
+        const isConfirmed = window.confirm('Bạn có chắc muốn xác nhận?');
+        if (isConfirmed) {
+            const authToken = JSON.parse(localStorage.getItem('authToken'));
+            console.log(authToken);
+            putChangeStateProduct(product.id, 0, authToken)
+                .then((status) => {
+                    console.log('API call successful. Status:', status);
+                    if (status === 202) {
+                        toast('Xác nhận tài khoản thành công');
+                        const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 0 } : p));
+                        setProducts(updatedProducts);
+                    }
+                })
+                .catch((error) => {
+                    console.error('API call failed:', error);
+                });
+        } else {
+            console.log('Hủy xác nhận');
+        }
+    };
 
     const handleCheckboxChange = (index) => {
         const updatedSelectedProducts = [...selectedProducts];
@@ -95,89 +131,84 @@ const ProductAdmin = () => {
     };
 
     return (
-        <div className="track-container">
-            <h2>Quản lý sản phẩm</h2>
-            <button type="button" onClick={handleOpenAddModal}>
-                Thêm sản phẩm
-            </button>
-            {isAnyCheckboxChecked && (
-                <>
-                    <button className="eventButton" onClick={handleEventButtonClick}>
-                        Thêm sự kiện
-                    </button>
-                    <button className="eventButton">Xóa sự kiện</button>
-                </>
-            )}
-            <div className="tracking-header">
-                <div className="divproductB"></div>
-                <div className="divproductB">Tên sản phẩm</div>
-                <div className="divproductB">Hình ảnh</div>
-                <div className="divproductB">Mô tả sản phẩm</div>
-                <div className="divproductC">Sizes-Giá tiền-Số lượng</div>
-                <div className="divproductB">
-                    <p>Phân loại</p>
+        <>
+            <div className="track-container">
+                <h2>Quản lý sản phẩm</h2>
+                <input
+                    style={{ width: '400px' }}
+                    type="text"
+                    placeholder="Tìm kiếm sản phẩm"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <ToastContainer />
+                <div className="trackingheader">
+                    <div className="divproductB">Tên sản phẩm</div>
+                    <div className="divproductB">Hình ảnh</div>
+                    <div className="divproductB">Mô tả sản phẩm</div>
+                    <div className="divproductC">Sizes-Giá tiền-Số lượng</div>
+                    <div className="divproductB">
+                        <p>Phân loại</p>
+                    </div>
+                    <div className="divproductB">Thao tác</div>
                 </div>
-                <div className="divproductB">Giảm giá</div>
-                <div className="divproductB">Thao tác</div>
+
+                {products.map((product, index) => (
+                    <div className="trackinginfo" key={index}>
+                        <div className="divproductB">{product?.name}</div>
+                        <div className="divproductB">
+                            <img
+                                src={product.imageSet?.find((e) => e.is_main === true)?.url}
+                                alt={`Product ${index + 1}`}
+                            />
+                        </div>
+                        <div className="divproductB">{product.detail || 'Không có'}</div>
+
+                        <div className="divproductC">
+                            {product?.productSet.map((sizeInfo, i) => (
+                                <div key={i}>
+                                    <span>{sizeInfo?.size}-</span>
+                                    <span>{sizeInfo?.price}đ-</span>
+                                    <span>{sizeInfo?.quantity}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="divproductB">{product.categorySet.reduce((a, e) => a + `${e.name},`, '')}</div>
+
+                        <div className="divproductB">
+                            <button className="editproduct" onClick={() => handleConfirm(product)}>
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                ))}
+
+                {isAddModalOpen && <AddProductModal onClose={handleCloseAddModal} onSave={handleSaveProduct} />}
+                {isEditModalOpen && (
+                    <EditProductModal
+                        product={products[editIndex]}
+                        onClose={handleCloseEditModal}
+                        onSave={handleSaveProduct}
+                    />
+                )}
+                {isAddEventModalOpen && (
+                    <AddEventModal onClose={handleCloseAddEventModal} onSaveEvent={handleSaveEvent} />
+                )}
             </div>
-
-            {products.map((product, index) => (
-                <div className="tracking-info" key={index}>
-                    <div className="divproductB">
-                        <input
-                            type="checkbox"
-                            checked={selectedProducts[index]}
-                            onChange={() => handleCheckboxChange(index)}
-                        />
-                    </div>
-
-                    <div className="divproductB">{product.name}</div>
-                    <div className="divproductB">
-                        <img
-                            src={product.imageSet?.find((e) => e.is_main === true)?.url}
-                            alt={`Product ${index + 1}`}
-                        />
-                    </div>
-                    <div className="divproductB">{product.detail || 'Không có'}</div>
-
-                    <div className="divproductC">
-                        {product.productSet.map((sizeInfo, i) => (
-                            <div key={i}>
-                                <span>{sizeInfo.size}-</span>
-                                <span>{sizeInfo.price}đ-</span>
-                                <span>{sizeInfo.quantity}</span>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="divproductB">{product.categorySet.reduce((a, e) => a + `${e.name},`, '')}</div>
-                    <div className="divproductB">{product.discount}%</div>
-
-                    <div className="divproductB">
-                        <button className="editproduct" onClick={() => handleOpenEditModal(index)}>
-                            Sửa
-                        </button>
-                        <button
-                            className="deleteproduct"
-                            onClick={() => handleDeleteProduct(index)}
-                            disabled={!selectedProducts[index]}
-                        >
-                            Xóa
-                        </button>
-                    </div>
-                </div>
-            ))}
-
-            {isAddModalOpen && <AddProductModal onClose={handleCloseAddModal} onSave={handleSaveProduct} />}
-            {isEditModalOpen && (
-                <EditProductModal
-                    product={products[editIndex]}
-                    onClose={handleCloseEditModal}
-                    onSave={handleSaveProduct}
+            {totalPage && (
+                <Pagination
+                    className="pagination"
+                    onChange={(e, value) => {
+                        setPage(value - 1);
+                    }}
+                    count={totalPage}
+                    defaultPage={page + 1}
+                    variant="outlined"
+                    color="secondary"
                 />
             )}
-            {isAddEventModalOpen && <AddEventModal onClose={handleCloseAddEventModal} onSaveEvent={handleSaveEvent} />}
-        </div>
+        </>
     );
 };
 

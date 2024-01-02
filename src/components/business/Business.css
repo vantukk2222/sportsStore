@@ -59,6 +59,7 @@
 
 .track-container p {
     padding-left: 20px;
+    color: black;
 }
 
 .track-container form {
@@ -96,8 +97,12 @@
 .tracking-info {
     height: 100%;
 }
-.tracking-header,
-.tracking-info {
+.tracking-headerp {
+    background-color: #606eca;
+    font-weight: bold;
+}
+.tracking-headerp,
+.tracking-infop {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     align-items: center;
@@ -106,7 +111,7 @@
 
     .editproduct {
         background-color: blue;
-        width: 43px;
+        width: 40px;
         display: inline-block;
         padding: 5px;
         color: white;
@@ -120,7 +125,7 @@
 
     .deleteproduct {
         background-color: red;
-        width: 44px;
+        width: 43px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -308,10 +313,10 @@
     flex-wrap: wrap;
 }
 .divproductC {
-    width: 100%;
+    width: 165px;
     display: flex;
     flex-wrap: wrap;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .divproductB,
@@ -332,7 +337,7 @@
     margin-top: 20px;
 }
 
-.tracking-info img {
+.tracking-infop img {
     max-width: 70px;
     border-radius: 4px;
 }

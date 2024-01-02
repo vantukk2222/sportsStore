@@ -155,8 +155,8 @@ const BProduct = () => {
                     <button className="eventButton">Xóa sự kiện</button>
                 </>
             )}
-            <div className="tracking-header">
-                <div className="divproductB"></div>
+            <div className="tracking-headerp">
+                <div className="divproductA"></div>
                 <div className="divproductB">Tên sản phẩm</div>
                 <div className="divproductB">Hình ảnh</div>
                 <div className="divproductB">Mô tả sản phẩm</div>
@@ -169,8 +169,8 @@ const BProduct = () => {
             </div>
 
             {products.map((product, index) => (
-                <div className="tracking-info" key={index}>
-                    <div className="divproductB">
+                <div className="tracking-infop" key={index}>
+                    <div className="divproductA">
                         <input
                             type="checkbox"
                             checked={selectedProducts[index]}
