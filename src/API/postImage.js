@@ -8,6 +8,7 @@ const postImage = async (name, url, authToken) => {
             {
                 name: `image-product ${name}`,
                 url,
+                is_main: 'true',
             },
 
             {
