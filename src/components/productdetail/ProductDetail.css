@@ -282,7 +282,71 @@ body {
 .h1-shopname {
     margin-left: 50px;
 }
-.clicked{
-    background-color: #007BFF;
+.clicked {
+    background-color: #007bff;
     color: #000;
+}
+
+.comment {
+    margin-top: 20px;
+}
+
+.product-comments-container {
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+
+.header-comment {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.comment-item {
+    list-style: none;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-content {
+    margin-bottom: 10px;
+}
+
+.comment-user {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.comment-date {
+    color: #777;
+}
+
+.comment-images {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.comment-images img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    object-fit: cover;
 }

@@ -1,11 +1,10 @@
-// MyOrder.js
-
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import getUnAuth from '~/API/get';
 import putConfirmReceive from '~/API/putConfirmReceive';
-import { useDispatch, useSelector } from 'react-redux';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
-import { useNavigate } from 'react-router';
+import RatingModal from './RatingModal';
 const MyOrder = ({ orders }) => {
     //   console.log(orders);
     const [loading, setLoading] = useState(true);
@@ -19,6 +18,25 @@ const MyOrder = ({ orders }) => {
         putConfirmReceive(id, authToken)
             .then(dispatch(listBillById(user.id, dataRole)))
             .then(() => window.location.reload());
+    };
+
+    const [isRatingModalOpen, setRatingModalOpen] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [rating, setRating] = useState(0);
+
+    const openRatingModal = (orderId) => {
+        setSelectedOrderId(orderId);
+        setRatingModalOpen(true);
+    };
+
+    const closeRatingModal = () => {
+        setSelectedOrderId(null);
+        setRating(0);
+        setRatingModalOpen(false);
+    };
+
+    const submitRating = (orderId, rating) => {
+        closeRatingModal();
     };
     const hanldeRePay = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
@@ -117,7 +135,20 @@ const MyOrder = ({ orders }) => {
                                         Thanh toán lại
                                     </button>
                                 )}
-                                {/* {order.state === 4 && <button className="total-text">Mua lại</button>} */}
+                                {orders[0].state === 1 && (
+                                    <button
+                                        style={{ backgroundColor: 'red', color: 'white' }}
+                                        className="total-text"
+                                        onClick={() => openRatingModal(orders[0].id)}
+                                    >
+                                        Đánh giá
+                                    </button>
+                                )}
+                                {orders[0].state === 4 && (
+                                    <button style={{ backgroundColor: 'blue', color: 'white' }} className="total-text">
+                                        Mua lại
+                                    </button>
+                                )}
                             </div>
                         </div>
                     );
@@ -127,6 +158,11 @@ const MyOrder = ({ orders }) => {
                     <h2>Không có đơn hàng</h2>
                 </div>
             )}
+            <RatingModal
+                isOpen={isRatingModalOpen}
+                onClose={closeRatingModal}
+                onSubmit={(rating) => submitRating(selectedOrderId, rating)}
+            />
         </div>
     );
 };

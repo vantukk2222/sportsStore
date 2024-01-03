@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { FaStar } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import getUnAuth from '~/API/get';
+
+const DEFAULT_AVATAR_URL = 'https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg';
 
 const Comment = () => {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const location = useLocation();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -17,35 +19,52 @@ const Comment = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                response.content.map((e) => {
-                    const UserData = async (id) => {
-                        try {
-                            setLoading(true);
-                            const response = await getUnAuth(`user/${id}`);
-                            if (!response) {
-                                throw new Error('Network response was not ok');
-                            }
-                            e.name_user = response.name;
-                            e.image_user = response.image_url;
-                            return e;
-                        } catch (error) {
-                            setError(error);
-                        } finally {
-                            setLoading(false);
-                        }
-                    };
-                    UserData(e.id_user);
-                });
-                setComments(response.content);
-                console.log(response.content);
+
+                const processedComments = await Promise.all(
+                    response.content.map(async (comment) => {
+                        const userData = await getUserData(comment.id_user);
+                        return { ...comment, name_user: userData.name, image_user: userData.image_url };
+                    }),
+                );
+
+                setComments(processedComments);
             } catch (error) {
                 setError(error);
             } finally {
                 setLoading(false);
             }
         };
+
+        const getUserData = async (id) => {
+            try {
+                setLoading(true);
+                const response = await getUnAuth(`user/${id}`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+                return response;
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchData();
-    }, []);
+    }, [location.pathname]);
+
+    const getProductDetails = async (productId) => {
+        try {
+            const response = await getUnAuth(`product/${productId}`);
+            if (!response) {
+                throw new Error('Network response was not ok');
+            }
+            return response;
+        } catch (error) {
+            setError(error);
+        }
+    };
+
     return (
         <>
             <div className="comment">
@@ -54,9 +73,32 @@ const Comment = () => {
                         <h3 className="product-title">ĐÁNH GIÁ</h3>
                     </div>
                     <ul>
-                        {comments.map((comment, index) => {
-                            return <li key={index} className="comment-item"></li>;
-                        })}
+                        {comments.map((comment, index) => (
+                            <li key={index} className="comment-item">
+                                <div className="comment-user">
+                                    <div className="user-avatar">
+                                        <img src={comment.image_user || DEFAULT_AVATAR_URL} alt="User Avatar" />
+                                    </div>
+                                    <div className="user-info">
+                                        <p className="user-name">{comment.name_user}</p>
+                                        <p className="comment-date">{comment.created_at}</p>
+                                        {comment.id_product_info && (
+                                            <div className="product-details">
+                                                <p>{`Product ID: ${comment.id_product_info}`}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="comment-images">
+                                    {comment.imageSet.map((image, imageIndex) => (
+                                        <img key={imageIndex} src={image.url} alt={`Comment Image ${imageIndex + 1}`} />
+                                    ))}
+                                </div>
+
+                                {comment.is_like && <div className="like-message">Bình luận được thích!</div>}
+                                <div className="comment-content">{comment.content}</div>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>
