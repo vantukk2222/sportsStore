@@ -9,7 +9,7 @@ import { listCartByIdUser } from "./listCartReducer";
 
 
 const initialState = {
-//   cart: [],
+  //   cart: [],
   isLoading: false,
   error: null,
 };
@@ -39,11 +39,13 @@ export const addToCartUser = (id_user, id_size, quantity) => async (dispatch, ge
     dispatch(addToCartSlice.actions.addToCartRequest()); // Dispatch addToCartRequest action
     const authToken = getState().login.authToken
     console.log("Token cart Reducer:", authToken);
-    const data = await addToCart(id_user, id_size, quantity,authToken); // Call addToCartPage API
+    const data = await addToCart(id_user, id_size, quantity, authToken); // Call addToCartPage API
     console.log("data in cartReducer: ", data.response); // Log received data
     // dispatch
-    dispatch(addToCartSlice.actions.addToCartSuccess()); // Dispatch addToCartSuccess with received data
-    dispatch(listCartByIdUser(id_user))
+    dispatch(addToCartSlice.actions.addToCartSuccess()).then(() => {
+      dispatch(listCartByIdUser(id_user))
+
+    })
     // console.log("state reduceraddToCart: " + JSON.stringify(getState()));
     return true
   } catch (error) {
@@ -55,7 +57,7 @@ export const addToCartUser = (id_user, id_size, quantity) => async (dispatch, ge
     // store.dispatch(logout())
     dispatch(addToCartSlice.actions.addToCartFailure({ error: errorMessage })); // Dispatch addToCartFailure with error message
     // return false
-}
+  }
 };
 
 export const { addToCartRequest, addToCartSuccess, addToCartFailure } = addToCartSlice.actions;

@@ -27,10 +27,7 @@ const Stack = createStackNavigator();
 
 
 const App = ({ loggedIn, loginUser, auth }) => {
-    // useEffect(()=>{
-    //     loggedIn??''
-    //     // if(!loggedIn) 
-    // },[loggedIn])
+
     const role = useSelector((state) => state.role.role);
     const handNavigator = () => {
         if (role === "ROLE_BUSINESS") {
@@ -49,7 +46,6 @@ const App = ({ loggedIn, loginUser, auth }) => {
 
         <>
             <NavigationContainer>
-                {/* {loggedIn ? (<Navigation.MainScreenNavigator/>) : (<Navigation.LoginScreenNavigator />)} */}
                 {handNavigator()}
 
             </NavigationContainer>

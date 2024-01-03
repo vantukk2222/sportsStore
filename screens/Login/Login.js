@@ -28,6 +28,7 @@ import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import { setRole } from '../../redux/reducers/Role/roleReducer';
 import LoadingModal from '../../components/loading';
 import Font from '../../constants_Tu/Font';
+import { store } from '../../redux/store';
 
 // {loginUser}
 function Login(props) {
@@ -51,46 +52,46 @@ function Login(props) {
     }
     return false;
   };
-  useEffect(() => {
-    dispatch(fetchUserByUserName(valueEmail));
-    // return () => {
+  // useEffect(() => {
 
-    //   setValueEmail('')
-    //   setValuePassword('')
-    // }
-  }, [token]);
+  //   // return () => {
 
-  useEffect(() => {
-    console.log('efff', data);
-    if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
-      console.log('hereeeeee');
-      dispatch(setRole('ROLE_CUSTOMER'));
+  //   //   setValueEmail('')
+  //   //   setValuePassword('')
+  //   // }
+  // }, [token]);
 
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'LoginBottomNavigator' }],
-        }),
-      );
-    } else if (data) {
-      dispatch(setRole('ROLE_BUSINESS'));
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'BusinessBottomNavigator' }],
+  // useEffect(() => {
+  //   console.log('efff', data);
 
-          // Thay 'Home' bằng màn hình bạn muốn quay về
-        }),
-      );
-    }
-  }, [data]);
+  // }, [data]);
   const handlePress = async () => {
     setIsLoading(true);
     setButtonDisabled(true);
     if (valueEmail !== '' && valuePassword !== '') {
       loginUser(valueEmail, valuePassword).then(async dataToken => {
         if (dataToken) {
-          console.log('user ', data);
+          await dispatch(fetchUserByUserName(valueEmail)).then((data) => {
+            if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
+              console.log('hereeeeee');
+              dispatch(setRole('ROLE_CUSTOMER'));
+
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'LoginBottomNavigator' }],
+                }),
+              );
+            } else if (data) {
+              dispatch(setRole('ROLE_BUSINESS'));
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'BusinessBottomNavigator' }],
+                }),
+              );
+            }
+          })
           await asyncStorage.setUsername(valueEmail);
           toastsuccess(
             'Đăng nhập thành công',
@@ -117,28 +118,28 @@ function Login(props) {
   return (
     <SafeAreaView>
       {isLoading && <LoadingModal isLoading={true}></LoadingModal>}
-      
-        <TouchableOpacity
+
+      <TouchableOpacity
         style={{
-          marginTop:10,
-          marginLeft:15,
+          marginTop: 10,
+          marginLeft: 15,
 
 
         }}
-        onPress={()=>{
+        onPress={() => {
           navigation.goBack()
         }}>
         <Icon name="angle-left" size={30} style={{
           color: 'blue',
           alignItems: 'flex-end',
         }}></Icon>
-        
-        </TouchableOpacity>
+
+      </TouchableOpacity>
       <View
         style={{
           padding: Spacing * 2,
         }}>
-       
+
         <View
           style={{
             alignItems: 'center',
@@ -218,7 +219,7 @@ function Login(props) {
           onPress={handlePress}
           disabled={isButtonDisabled}
           style={{
-            padding: Spacing *2,
+            padding: Spacing * 2,
             backgroundColor: 'blue',
             marginVertical: Spacing * 3,
             borderRadius: Spacing,

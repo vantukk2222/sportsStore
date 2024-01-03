@@ -94,11 +94,6 @@ export const LoginScreenNavigator = () => {
 
             <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
             <Stack.Screen name="detailOrder" component={DetailOrderScreen} options={{ headerShown: false }} />
-
-
-            {/* // ======= */}
-            {/* //             <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} /> */}
-            {/* // >>>>>>> NewD */}
             <Stack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
                 <Stack.Screen name="ModalBuyProduct" component={ModalBuyProduct} />
             </Stack.Group>

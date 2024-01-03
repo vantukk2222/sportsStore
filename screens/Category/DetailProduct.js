@@ -20,6 +20,7 @@ import { store } from '../../redux/store';
 import { getCommentByIDProducInfor, resetCommentProduct } from '../../redux/reducers/Comment/get_CommentByID_Product_InforReducer';
 import getCommentByID from '../../API/Comments/getComment';
 import { resetComment } from '../../redux/reducers/Comment/post_CommentReducer';
+import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
@@ -60,17 +61,17 @@ const DetailProduct = ({ navigation, route }) => {
         return Listimg?.length > 0 ? Listimg[0]?.url : null;
     }
 
-    useEffect(() => {
-        if (userName) {
-            try {
-                dispatch(fetchUserByUserName(userName))
-            } catch (error) {
-                // dispatch(logout())
-            }
-        }
+    // useEffect(() => {
+    //     if (userName) {
+    //         try {
+    //             dispatch(fetchUserByUserName(userName))
+    //         } catch (error) {
+    //             // dispatch(logout())
+    //         }
+    //     }
 
-    }, [userName]);
-    // console.log("id: ",item?.id)
+    // }, [userName]);
+    console.log("id: ",item?.id)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -82,9 +83,9 @@ const DetailProduct = ({ navigation, route }) => {
 
         fetchData();
 
-        return () => {
-            dispatch(resetProductDetail());
-        };
+        // return () => {
+        //     dispatch(resetProductDetail());
+        // };
     }, [item])
     useEffect(() => {
         const fetchData = async () => {
@@ -353,7 +354,7 @@ const DetailProduct = ({ navigation, route }) => {
                         alignItems: 'center',
                     }}>
                     <Icon name="cart-plus" size={25} color='white' />
-                    <Text style={{ color: 'white' }}>Add to cart </Text>
+                    <Text style={{ color: 'white' }}>Thêm vào giỏ hàng </Text>
                 </TouchableOpacity>
                 {/* <TouchableOpacity
                     onPress={() => navigation.navigate('Cart', {id_user: id_user})}
