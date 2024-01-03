@@ -414,7 +414,6 @@ function Register(props) {
             </Text>
           </TouchableOpacity>
         </View>
-        
       </ScrollView>
     </View>
   );
