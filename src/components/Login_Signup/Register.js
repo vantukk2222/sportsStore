@@ -11,6 +11,8 @@ const Register = () => {
         name: '',
         phone: '',
         email: '',
+        cangCucCongDan: '', // New field
+        diaChi: '', // New field
     });
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -20,10 +22,7 @@ const Register = () => {
 
     const handleRes = async () => {
         console.log(userData);
-        let role = '';
         try {
-            if (selectedRole == 10) role = 'signup-customer';
-            else role = 'signup-business';
             const response = await postRegister(userData);
             if (!response) {
                 throw new Error('Network response was not ok');
@@ -37,7 +36,7 @@ const Register = () => {
                 navigate('/');
             }
         } catch (error) {
-            // alert('Bạn đã đăng kí thất bại kiểm tra lại thông');
+            alert('Bạn đã đăng nhập thất bại kiểm tra lại mật khẩu và tài khoản của bạn');
         } finally {
             setLoading(false);
         }
@@ -109,10 +108,38 @@ const Register = () => {
                     <MenuItem value={10}>Đăng ký khách hàng</MenuItem>
                     <MenuItem value={20}>Đăng ký doanh nghiệp</MenuItem>
                 </Select>
+
+                {selectedRole === 20 && (
+                    <>
+                        <div className="text">Nhập căn cước công dân</div>
+                        <input
+                            className="input"
+                            type="text"
+                            placeholder="Nhập căn cước công dân..."
+                            value={userData.cangCucCongDan}
+                            onChange={(event) => handleChange('cangCucCongDan', event.target.value)}
+                        />
+
+                        <div className="text">Nhập địa chỉ</div>
+                        <input
+                            className="input"
+                            type="text"
+                            placeholder="Nhập địa chỉ..."
+                            value={userData.diaChi}
+                            onChange={(event) => handleChange('diaChi', event.target.value)}
+                        />
+                    </>
+                )}
+
                 <button
                     className={userData.email && userData.password ? 'button-1' : ''}
                     disabled={
-                        userData.email && userData.password && userData.name && userData.phone && userData.email
+                        userData.email &&
+                        userData.password &&
+                        userData.name &&
+                        userData.phone &&
+                        userData.email &&
+                        (selectedRole === 10 || (selectedRole === 20 && userData.cangCucCongDan && userData.diaChi))
                             ? false
                             : true
                     }
