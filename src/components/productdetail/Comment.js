@@ -1,10 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
+import { useLocation } from 'react-router';
+import getUnAuth from '~/API/get';
 
 const Comment = () => {
     const [comments, setComments] = useState([]);
-
-    useEffect(() => {}, []);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const location = useLocation();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const id = location.pathname.slice(location.pathname.lastIndexOf('/') + 1);
+                let response = await getUnAuth(`comment/find-by-product/${id}`);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+                setComments(response.content);
+                response = await getUnAuth(`user/${id}`);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
     return (
         <>
             <div className="comment">
@@ -13,29 +35,9 @@ const Comment = () => {
                         <h3 className="product-title">ĐÁNH GIÁ</h3>
                     </div>
                     <ul>
-                        {comments.map((comment, index) => (
-                            <li key={index} className="comment-item">
-                                <div className="comment-header">
-                                    {comment.img && (
-                                        <img className="comment-image" src={comment.img} alt="User Avatar" />
-                                    )}
-                                    <div className="comment-details">
-                                        <p>
-                                            <strong>{comment.user}</strong>
-                                        </p>
-                                        <p>
-                                            Đánh giá:{' '}
-                                            {Array.from({ length: comment.rating }).map((_, index) => (
-                                                <FaStar key={index} className="star-iicon" />
-                                            ))}
-                                        </p>
-                                        <p>Sản phẩm: {comment.product}</p>
-                                    </div>
-                                </div>
-                                <p className="comment-content">{comment.comment}</p>
-                                <p className="comment-content">{comment.time}</p>
-                            </li>
-                        ))}
+                        {comments.map((comment, index) => {
+                            return <li key={index} className="comment-item"></li>;
+                        })}
                     </ul>
                 </div>
             </div>
