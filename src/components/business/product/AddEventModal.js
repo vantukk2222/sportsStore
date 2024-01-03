@@ -4,10 +4,6 @@ import getUnAuth from '~/API/get';
 const AddEventModal = ({ onClose, onSaveEvent }) => {
     const [selectedEvent, setSelectedEvent] = useState('');
     const [id, setId] = useState(0);
-    const handleSave = () => {
-        onSaveEvent(id);
-        onClose();
-    };
     const [eventData, setEventData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -71,7 +67,7 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
                         })}
                     </select>
                 </div>
-                <button onClick={handleSave}>Lưu</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button onClick={()=>onSaveEvent(id)}>Lưu</button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button onClick={onClose} style={{ paddingLeft: '20px' }}>
                     Đóng
                 </button>
