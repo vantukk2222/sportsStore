@@ -73,32 +73,45 @@ const Comment = () => {
                         <h3 className="product-title">ĐÁNH GIÁ</h3>
                     </div>
                     <ul>
-                        {comments.map((comment, index) => (
-                            <li key={index} className="comment-item">
-                                <div className="comment-user">
-                                    <div className="user-avatar">
-                                        <img src={comment.image_user || DEFAULT_AVATAR_URL} alt="User Avatar" />
-                                    </div>
-                                    <div className="user-info">
-                                        <p className="user-name">{comment.name_user}</p>
-                                        <p className="comment-date">{comment.created_at}</p>
-                                        {comment.id_product_info && (
-                                            <div className="product-details">
-                                                <p>{`Product ID: ${comment.id_product_info}`}</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="comment-images">
-                                    {comment.imageSet.map((image, imageIndex) => (
-                                        <img key={imageIndex} src={image.url} alt={`Comment Image ${imageIndex + 1}`} />
-                                    ))}
-                                </div>
+                        {comments.map((comment, index) => {
+                            function convertTimeToVietnamFormat(originalTime) {
+                                const vietnamTime = new Date(originalTime);
+                                const formattedResult = `${vietnamTime.getFullYear()}-${padZero(
+                                    vietnamTime.getMonth() + 1,
+                                )}-${padZero(vietnamTime.getDate())} ${padZero(vietnamTime.getHours())}:${padZero(
+                                    vietnamTime.getMinutes(),
+                                )}`;
+                                return formattedResult;
+                            }
+                            function padZero(number) {
+                                return number < 10 ? `0${number}` : `${number}`;
+                            }
+                            const convertedTime = convertTimeToVietnamFormat(comment.created_at);
 
-                                {comment.is_like && <div className="like-message">Bình luận được thích!</div>}
-                                <div className="comment-content">{comment.content}</div>
-                            </li>
-                        ))}
+                            return (
+                                <li key={index} className="comment-item">
+                                    <div className="comment-user">
+                                        <div className="user-avatar">
+                                            <img src={comment.image_user || DEFAULT_AVATAR_URL} alt="User Avatar" />
+                                        </div>
+                                        <div className="user-info">
+                                            <p className="user-name">{comment.name_user}</p>
+                                            <p className="comment-date">{convertedTime}</p>
+                                        </div>
+                                    </div>
+                                    <div className="comment-content">{comment.content}</div>
+                                    <div className="comment-images">
+                                        {comment.imageSet?.map((image, imageIndex) => (
+                                            <img
+                                                key={imageIndex}
+                                                src={image.url}
+                                                alt={`Comment Image ${imageIndex + 1}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
             </div>

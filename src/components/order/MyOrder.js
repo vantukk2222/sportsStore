@@ -26,6 +26,7 @@ const MyOrder = ({ orders }) => {
 
     const openRatingModal = (orderId) => {
         setSelectedOrderId(orderId);
+        
         setRatingModalOpen(true);
     };
 
@@ -144,7 +145,7 @@ const MyOrder = ({ orders }) => {
                                         Đánh giá
                                     </button>
                                 )}
-                                {orders[0].state === 4 && (
+                                {(orders[0].state === 4 || orders[0].state === 1) && (
                                     <button style={{ backgroundColor: 'blue', color: 'white' }} className="total-text">
                                         Mua lại
                                     </button>
