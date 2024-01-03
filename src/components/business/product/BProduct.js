@@ -10,6 +10,7 @@ import { putRemoveSale } from '~/API/putRemoveSale';
 import AddEventModal from './AddEventModal';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
+import { putUHproduct } from '~/API/putUHproduct';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -21,11 +22,12 @@ const BProduct = () => {
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
     const [addEProduct, setAddEProduct] = useState([]);
+    const [state, setState] = useState(0);
     const fetchData = async () => {
         try {
             setLoading(true);
             const user = JSON.parse(localStorage.getItem('User'));
-            const response = await getUnAuth(`product-information/find-by-business/${user.id}`);
+            const response = await getUnAuth(`product-information/find-by-business/${user.id}?state=${state}`);
             if (!response) {
                 throw new Error('Network response was not ok');
             }
@@ -114,10 +116,6 @@ const BProduct = () => {
             });
     };
 
-    const handleDeleteProduct = (index) => {
-        // Handle product deletion logic
-    };
-
     const handleCheckboxChange = (index) => {
         const updatedSelectedProducts = [...selectedProducts];
         updatedSelectedProducts[index] = !updatedSelectedProducts[index];
@@ -129,7 +127,13 @@ const BProduct = () => {
         //   console.log(arr);
         setSelectedProducts(updatedSelectedProducts);
     };
+    const handleHide = (id, state) => {
+        if (state == 2) state = false;
+        else state = true;
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
 
+        putUHproduct(id, state, authToken).then(() => fetchData());
+    };
     const isAnyCheckboxChecked = selectedProducts.some((isChecked) => isChecked);
 
     const handleEventButtonClick = () => {
@@ -154,17 +158,21 @@ const BProduct = () => {
     };
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [state]);
 
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
             <div className="menu">
-                <p className="menu-item">Tất cả</p>
-                <p className="menu-item">Chờ xác nhận</p>
-                <p className="menu-item">Đang giao hàng</p>
-                <p className="menu-item">Giao thành công</p>
-                <p className="menu-item">Đã hủy đơn</p>
+                <p className="menu-item" onClick={() => setState(0)}>
+                    Sản phẩm bình thường
+                </p>
+                <p className="menu-item" onClick={() => setState(1)}>
+                    Sản phẩm bị khóa hoặc chờ xác duyệt
+                </p>
+                <p className="menu-item" onClick={() => setState(2)}>
+                    Sản phẩm bị ẩn
+                </p>
             </div>
             <button type="button" onClick={handleOpenAddModal}>
                 Thêm sản phẩm
@@ -192,54 +200,59 @@ const BProduct = () => {
                 <div className="divproductB">Thao tác</div>
             </div>
 
-            {products.map((product, index) => (
-                <div className="tracking-infop" key={index}>
-                    <div className="divproductA">
-                        <input
-                            type="checkbox"
-                            checked={selectedProducts[index]}
-                            onChange={() => handleCheckboxChange(index)}
-                        />
-                    </div>
+            {products.length > 0 ? (
+                products.map((product, index) => (
+                    <div className="tracking-infop" key={index}>
+                        <div className="divproductA">
+                            <input
+                                type="checkbox"
+                                checked={selectedProducts[index]}
+                                onChange={() => handleCheckboxChange(index)}
+                            />
+                        </div>
 
-                    <div className="divproductB">{product.name}</div>
-                    <div className="divproductB">
-                        <img
-                            src={product.imageSet?.find((e) => e.is_main === true)?.url}
-                            alt={`Product ${index + 1}`}
-                        />
-                    </div>
-                    <div className="divproductB">{product.detail || 'Không có'}</div>
+                        <div className="divproductB">{product.name}</div>
+                        <div className="divproductB">
+                            <img
+                                src={product.imageSet?.find((e) => e.is_main === true)?.url}
+                                alt={`Product ${index + 1}`}
+                            />
+                        </div>
+                        <div className="divproductB">{product.detail || 'Không có'}</div>
 
-                    <div className="divproductC">
-                        {product.productSet.map((sizeInfo, i) => (
-                            <div key={i}>
-                                <span>{sizeInfo.size}-</span>
-                                <span>{sizeInfo.price}đ-</span>
-                                <span>{sizeInfo.quantity}</span>
-                            </div>
-                        ))}
-                    </div>
+                        <div className="divproductC">
+                            {product.productSet.map((sizeInfo, i) => (
+                                <div key={i}>
+                                    <span>{sizeInfo.size}-</span>
+                                    <span>{sizeInfo.price}đ-</span>
+                                    <span>{sizeInfo.quantity}</span>
+                                </div>
+                            ))}
+                        </div>
 
-                    <div className="divproductB">{product.categorySet.reduce((a, e) => a + `${e.name},`, '')}</div>
-                    <div className="divproductB">{product.sale?.discount}%</div>
+                        <div className="divproductB">{product.categorySet.reduce((a, e) => a + `${e.name},`, '')}</div>
+                        <div className="divproductB">{product.sale?.discount}%</div>
 
-                    <div className="divproductB">
-                        <button className="editproduct" onClick={() => handleOpenEditModal(index)}>
-                            Sửa
-                        </button>
-                        <button
-                            className="deleteproduct"
-                            onClick={() => handleDeleteProduct(index)}
-                            disabled={!selectedProducts[index]}
-                        >
-                            Xóa
-                        </button>
-                        <button className="unproduct">Ẩn</button>
-                        <button className="buttonproduct">Hiện</button>
+                        <div className="divproductB">
+                            <button className="editproduct" onClick={() => handleOpenEditModal(index)}>
+                                Sửa
+                            </button>
+                            {product.state != 2 && (
+                                <button className="unproduct" onClick={() => handleHide(product.id, product.state)}>
+                                    Ẩn
+                                </button>
+                            )}
+                            {product.state == 2 && (
+                                <button className="buttonproduct" onClick={() => handleHide(product.id, product.state)}>
+                                    Hiện
+                                </button>
+                            )}
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))
+            ) : (
+                <h3>Không có sản phẩm</h3>
+            )}
 
             {isAddModalOpen && <AddProductModal onClose={handleCloseAddModal} onSave={handleSaveProduct} />}
             {isEditModalOpen && (
