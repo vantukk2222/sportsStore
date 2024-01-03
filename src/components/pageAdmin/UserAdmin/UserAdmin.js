@@ -137,7 +137,7 @@ const UserAdmin = () => {
                 />
                 <ToastContainer />
                 {state === 1 ? (
-                    <button className="" onClick={() => setState(0)}>
+                    <button className="" style={{ backgroundColor: 'red' }} onClick={() => setState(0)}>
                         Khóa tài khoản
                     </button>
                 ) : (
@@ -173,7 +173,17 @@ const UserAdmin = () => {
                         <div>{user.state === 1 ? 'Chưa xác nhận' : 'Đang hoạt động'}</div>
 
                         <div>
-                            <button className="" onClick={() => handleAccUser(user)}>
+                            <button
+                                className=""
+                                style={{
+                                    backgroundColor: state === 1 ? 'green' : 'red',
+                                    color: 'white',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() => handleAccUser(user)}
+                            >
                                 {state === 1 ? 'Xác nhận' : 'Khóa'}
                             </button>
                         </div>
