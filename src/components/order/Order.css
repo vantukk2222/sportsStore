@@ -58,19 +58,15 @@
 .total-state-container {
     display: flex;
     justify-content: space-between;
-    /* Dịch sang phải */
     align-items: flex-end;
-    /* Đẩy về cuối cùng theo chiều dọc */
 }
 
-/* TotalText styles */
 .total-text {
     font-weight: bold;
     color: #ee4d2d;
     font-size: 16px;
 }
 
-/* StateText styles */
 .state-text {
     color: #009688;
     font-size: 16px;

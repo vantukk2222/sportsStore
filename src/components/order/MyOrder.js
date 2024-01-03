@@ -26,7 +26,7 @@ const MyOrder = ({ orders }) => {
 
     const openRatingModal = (orderId) => {
         setSelectedOrderId(orderId);
-        
+
         setRatingModalOpen(true);
     };
 
@@ -123,6 +123,7 @@ const MyOrder = ({ orders }) => {
                             <div className="total-state-container">
                                 <p className="total-text">Tổng tiền: ${orders.reduce((t, e) => t + e.total, 0)}</p>
                                 <p className="state-text">Trạng thái: {state[orders[0].state]}</p>
+
                                 {orders[0].state === 0 && (
                                     <button className="total-text" onClick={() => handleSm(orders[0].id)}>
                                         Xác nhận đã giao hàng
@@ -136,20 +137,25 @@ const MyOrder = ({ orders }) => {
                                         Thanh toán lại
                                     </button>
                                 )}
-                                {orders[0].state === 1 && (
-                                    <button
-                                        style={{ backgroundColor: 'red', color: 'white' }}
-                                        className="total-text"
-                                        onClick={() => openRatingModal(orders[0].id)}
-                                    >
-                                        Đánh giá
-                                    </button>
-                                )}
-                                {(orders[0].state === 4 || orders[0].state === 1) && (
-                                    <button style={{ backgroundColor: 'blue', color: 'white' }} className="total-text">
-                                        Mua lại
-                                    </button>
-                                )}
+                                <div>
+                                    {orders[0].state === 1 && (
+                                        <button
+                                            style={{ backgroundColor: 'red', color: 'white' }}
+                                            className="total-text"
+                                            onClick={() => openRatingModal(orders[0].id)}
+                                        >
+                                            Đánh giá
+                                        </button>
+                                    )}
+                                    {(orders[0].state === 4 || orders[0].state === 1) && (
+                                        <button
+                                            style={{ backgroundColor: 'blue', color: 'white' }}
+                                            className="total-text"
+                                        >
+                                            Mua lại
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     );
