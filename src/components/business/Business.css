@@ -111,7 +111,7 @@
 
     .editproduct {
         background-color: blue;
-        width: 40px;
+        width: 60px;
         display: inline-block;
         padding: 5px;
         color: white;
@@ -125,7 +125,7 @@
 
     .deleteproduct {
         background-color: red;
-        width: 43px;
+        width: 60px;
         display: inline-block;
         padding: 10px;
         color: white;
@@ -138,9 +138,22 @@
     }
     .unproduct {
         background-color: rgb(255, 153, 0);
-        width: 38px;
+        width: 60px;
         display: inline-block;
-        padding: 5px;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .buttonproduct {
+        background-color: rgb(29, 149, 73);
+        width: 60px;
+        display: inline-block;
+        padding: 10px;
         color: white;
         text-align: center;
         text-decoration: none;
@@ -193,7 +206,7 @@
 .tracking-headersale,
 .tracking-infosale {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     align-items: center;
     padding: 15px;
     border-bottom: 1px solid #ddd;

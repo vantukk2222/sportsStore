@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
+import deleteSale from '~/API/deleteSale';
+import getUnAuth from '~/API/get';
+import { postSale } from '~/API/postSale';
+import { putSale } from '~/API/putSale';
 import AddEventModal from './AddEventModal';
 import EditEventModal from './EditEventModal';
-import getUnAuth from '~/API/get';
-import { putSale } from '~/API/putSale';
-import { postSale } from '~/API/postSale';
-import deleteSale from '~/API/deleteSale';
 
 const Sale = () => {
     const [eventInfo, setEventInfo] = useState([]);
@@ -110,11 +110,11 @@ const Sale = () => {
                         <div>{event.started_at}</div>
                         <div>{event.ended_at}</div>
                         <div>
-                            <button className="delete" onClick={() => handleDeleteEvent(event.id)}>
-                                Xóa
-                            </button>
                             <button className="edit" onClick={() => handleOpenEditModal(event)}>
                                 Sửa
+                            </button>
+                            <button className="delete" onClick={() => handleDeleteEvent(event.id)}>
+                                Xóa
                             </button>
                         </div>
                     </div>

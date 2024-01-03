@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
+import deleteImage from '~/API/deleteImage';
 import getUnAuth from '~/API/get';
+import postImage from '~/API/postImage';
+import postProduct from '~/API/postProduct';
+import { postSProductInformation } from '~/API/postSProductInformation';
+import putProduct from '~/API/putProduct';
+import { putProductInformation } from '~/API/putProductInformation';
+import { putRemoveSale } from '~/API/putRemoveSale';
 import AddEventModal from './AddEventModal';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
-import { putProductInformation } from '~/API/putProductInformation';
-import postImage from '~/API/postImage';
-import deleteImage from '~/API/deleteImage';
-import postProduct from '~/API/postProduct';
-import putProduct from '~/API/putProduct';
-import { postSProductInformation } from '~/API/postSProductInformation';
-import { putRemoveSale } from '~/API/putRemoveSale';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -159,6 +159,13 @@ const BProduct = () => {
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
+            <div className="menu">
+                <p className="menu-item">Tất cả</p>
+                <p className="menu-item">Chờ xác nhận</p>
+                <p className="menu-item">Đang giao hàng</p>
+                <p className="menu-item">Giao thành công</p>
+                <p className="menu-item">Đã hủy đơn</p>
+            </div>
             <button type="button" onClick={handleOpenAddModal}>
                 Thêm sản phẩm
             </button>
@@ -229,6 +236,7 @@ const BProduct = () => {
                             Xóa
                         </button>
                         <button className="unproduct">Ẩn</button>
+                        <button className="buttonproduct">Hiện</button>
                     </div>
                 </div>
             ))}
