@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import getUnAuth from '~/API/get';
+import postCart from '~/API/postCart';
+import { postComment } from '~/API/postComment';
+import postImage from '~/API/postImage';
+import putCart from '~/API/putCart';
 import putConfirmReceive from '~/API/putConfirmReceive';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
-import RatingModal from './RatingModal';
-import postImage from '~/API/postImage';
-import { postComment } from '~/API/postComment';
-import putCart from '~/API/putCart';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
-import postCart from '~/API/postCart';
+import RatingModal from './RatingModal';
 const MyOrder = ({ orders }) => {
     //   console.log(orders);
     const [loading, setLoading] = useState(true);
@@ -195,12 +195,20 @@ const MyOrder = ({ orders }) => {
                                     </button>
                                 )}
                                 {orders[0].state === 2 && (
-                                    <button
-                                        className="total-text"
-                                        onClick={() => hanldeRePay(orders[0].transaction.id)}
-                                    >
-                                        Thanh toán lại
-                                    </button>
+                                    <div>
+                                        <button
+                                            className="total-text"
+                                            onClick={() => hanldeRePay(orders[0].transaction.id)}
+                                        >
+                                            Thanh toán lại
+                                        </button>
+                                        <button
+                                            className="total-text"
+                                            style={{ backgroundColor: 'red', color: 'white' }}
+                                        >
+                                            Hủy đơn
+                                        </button>
+                                    </div>
                                 )}
                                 <div>
                                     {orders[0].state === 1 && orders[0].is_rating === false && (
@@ -222,6 +230,11 @@ const MyOrder = ({ orders }) => {
                                         </button>
                                     )}
                                 </div>
+                                {orders[0].state === 3 && (
+                                    <button style={{ backgroundColor: 'red', color: 'white' }} className="total-text">
+                                        Hủy đơn
+                                    </button>
+                                )}
                             </div>
                         </div>
                     );
