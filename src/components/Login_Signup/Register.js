@@ -15,7 +15,9 @@ const Register = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [isShowPassword, setIsShowPassword] = useState(false);
-    const [role, setRole] = useState('signup-customer');
+    const [loadingApi, setLoadingApi] = useState(false);
+    const [selectedRole, setSelectedRole] = useState(10);
+
     const handleRes = async () => {
         console.log(userData);
         try {
@@ -28,7 +30,6 @@ const Register = () => {
             localStorage.setItem('authToken', JSON.stringify(token));
             sessionStorage.clear();
             if (token) {
-                //     console.log(response);
                 localStorage.setItem('User', JSON.stringify(userData.username));
                 navigate('/');
             }
@@ -46,9 +47,13 @@ const Register = () => {
         }));
     };
 
+    const handleChangeRole = (event) => {
+        setSelectedRole(event.target.value);
+    };
+
     return (
         <div className="loginn">
-            <div className="login-container ">
+            <div className="login-container">
                 <div className="title">ĐĂNG KÝ</div>
                 <div className="text">Nhập tên đăng nhập</div>
                 <input
@@ -92,14 +97,11 @@ const Register = () => {
                 />
 
                 <Select
-                    className="text"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={10}
+                    value={selectedRole}
                     label="Age"
-                    onChange={(e) => {
-                        console.log(e);
-                    }}
+                    onChange={handleChangeRole}
                 >
                     <MenuItem value={10}>Đăng ký khách hàng</MenuItem>
                     <MenuItem value={20}>Đăng ký doanh nghiệp</MenuItem>
