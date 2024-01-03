@@ -5,12 +5,18 @@ import getUnAuth from '~/API/get';
 import putConfirmReceive from '~/API/putConfirmReceive';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 import RatingModal from './RatingModal';
+import postImage from '~/API/postImage';
+import { postComment } from '~/API/postComment';
+import putCart from '~/API/putCart';
+import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
+import postCart from '~/API/postCart';
 const MyOrder = ({ orders }) => {
     //   console.log(orders);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('User'));
+    const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     const navigate = useNavigate();
     const handleSm = (id) => {
@@ -21,23 +27,82 @@ const MyOrder = ({ orders }) => {
     };
 
     const [isRatingModalOpen, setRatingModalOpen] = useState(false);
-    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [selectedOrder, setSelectedOrder] = useState(null);
     const [rating, setRating] = useState(0);
 
-    const openRatingModal = (orderId) => {
-        setSelectedOrderId(orderId);
-
+    const openRatingModal = (order) => {
+        setSelectedOrder(order);
         setRatingModalOpen(true);
     };
 
     const closeRatingModal = () => {
-        setSelectedOrderId(null);
+        setSelectedOrder(null);
         setRating(0);
         setRatingModalOpen(false);
     };
-
-    const submitRating = (orderId, rating) => {
-        closeRatingModal();
+    const handleReBuy = (order) => {
+        console.log(order);
+        order.bill_detailSet.forEach((bill) => {
+            const id2 = bill.product.id;
+            const id_product_information = bill.product.id_product_information;
+            const check = dataCart?.find(
+                (c) => c?.product.id == id2 && c?.product.id_product_information == id_product_information,
+            );
+            if (check) {
+                const user = JSON.parse(localStorage.getItem('User'));
+                const id = check.id;
+                const quantity = check.quantity;
+                const authToken = JSON.parse(localStorage.getItem('authToken'));
+                const fetchData = async () => {
+                    try {
+                        setLoading(true);
+                        const response = await getUnAuth(`product/${id2}`);
+                        if (!response) {
+                            throw new Error('Network response was not ok');
+                        }
+                        if (response.quantity > quantity)
+                            putCart(id, quantity + 1, authToken).then(() => dispatch(listCartByIdUser(user.id)));
+                        else {
+                            putCart(id, response.quantity, authToken).then(() => dispatch(listCartByIdUser(user.id)));
+                            alert('Loại bạn muốn mua đã tối đa');
+                        }
+                    } catch (error) {
+                        setError(error);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+                fetchData();
+            } else {
+                const user = JSON.parse(localStorage.getItem('User'));
+                const authToken = JSON.parse(localStorage.getItem('authToken'));
+                postCart(user.id, id2, 1, authToken).then(() => dispatch(listCartByIdUser(user.id)));
+            }
+        });
+    };
+    const submitRating = (newProduct) => {
+        // console.log(newProduct);
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        const t = () => {
+            // Create an array to hold all the promises
+            const promises = [];
+            newProduct.id_imageSet.forEach((e) => {
+                if (e.id == null) {
+                    console.log(e.id);
+                    const promise = postImage(newProduct.name, e.url, 'false', authToken)
+                        .then((response) => (e.id = response.data))
+                        .catch((error) => console.error('Error uploading image:', error));
+                    promises.push(promise);
+                }
+            });
+            newProduct.id_product_information = selectedOrder.bill_detailSet[0].product.id_product_information;
+            newProduct.id_user = selectedOrder.id_user;
+            newProduct.id_bill = selectedOrder.id;
+            return Promise.all(promises);
+        };
+        t()
+            .then(() => postComment(newProduct, authToken))
+            .then(() => window.location.reload());
     };
     const hanldeRePay = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
@@ -138,11 +203,11 @@ const MyOrder = ({ orders }) => {
                                     </button>
                                 )}
                                 <div>
-                                    {orders[0].state === 1 && (
+                                    {orders[0].state === 1 && orders[0].is_rating === false && (
                                         <button
                                             style={{ backgroundColor: 'red', color: 'white' }}
                                             className="total-text"
-                                            onClick={() => openRatingModal(orders[0].id)}
+                                            onClick={() => openRatingModal(orders[0])}
                                         >
                                             Đánh giá
                                         </button>
@@ -151,6 +216,7 @@ const MyOrder = ({ orders }) => {
                                         <button
                                             style={{ backgroundColor: 'blue', color: 'white' }}
                                             className="total-text"
+                                            onClick={() => handleReBuy(orders[0])}
                                         >
                                             Mua lại
                                         </button>
@@ -165,11 +231,7 @@ const MyOrder = ({ orders }) => {
                     <h2>Không có đơn hàng</h2>
                 </div>
             )}
-            <RatingModal
-                isOpen={isRatingModalOpen}
-                onClose={closeRatingModal}
-                onSubmit={(rating) => submitRating(selectedOrderId, rating)}
-            />
+            <RatingModal isOpen={isRatingModalOpen} onClose={closeRatingModal} onSubmit={submitRating} />
         </div>
     );
 };

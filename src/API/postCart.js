@@ -2,7 +2,7 @@ import axios from 'axios';
 import { api } from './url';
 const postCart = async (id_user, id_product, quantity, authToken = '') => {
     try {
-        //   console.log(id_user, id_product, quantity);
+        //console.log(id_user, id_product, quantity);
         // console.log(authToken);
         await axios.post(
             `${api}cart/save`,

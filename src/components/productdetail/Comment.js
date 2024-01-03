@@ -52,19 +52,7 @@ const Comment = () => {
 
         fetchData();
     }, [location.pathname]);
-
-    const getProductDetails = async (productId) => {
-        try {
-            const response = await getUnAuth(`product/${productId}`);
-            if (!response) {
-                throw new Error('Network response was not ok');
-            }
-            return response;
-        } catch (error) {
-            setError(error);
-        }
-    };
-
+    console.log(comments);
     return (
         <>
             <div className="comment">

@@ -17,9 +17,9 @@ const Order = () => {
     useEffect(() => {
         dispatch(listBillById(user.id, dataRole));
     }, []);
-    console.log(orderstate, dataBill);
+    // console.log(orderstate, dataBill);
     const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
-    console.log(filteredOrders);
+    //  console.log(filteredOrders);
     localStorage.setItem('State', JSON.stringify(orderstate));
     return (
         <>

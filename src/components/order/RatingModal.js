@@ -5,7 +5,7 @@ import { useState } from 'react';
 const RatingModal = ({ isOpen, onClose, onSubmit }) => {
     const [newProduct, setNewProduct] = useState({
         content: '',
-        imageSet: [],
+        id_imageSet: [],
         is_like: null, 
     });
 
@@ -33,7 +33,7 @@ const RatingModal = ({ isOpen, onClose, onSubmit }) => {
 
                 setNewProduct((prevProduct) => ({
                     ...prevProduct,
-                    imageSet: [...prevProduct.imageSet, ...imagesArray],
+                    id_imageSet: [...prevProduct.id_imageSet, ...imagesArray],
                 }));
             } catch (error) {
                 console.error('Error uploading image:', error);
@@ -43,14 +43,14 @@ const RatingModal = ({ isOpen, onClose, onSubmit }) => {
 
     const handleRemoveImage = (index) => {
         setNewProduct((prevProduct) => {
-            const updatedImages = [...prevProduct.imageSet];
+            const updatedImages = [...prevProduct.id_imageSet];
             let DImages = [...prevProduct.imageD];
-            if (prevProduct.imageSet[index].id) DImages = [...DImages, prevProduct.imageSet[index].id];
+            if (prevProduct.id_imageSet[index].id) DImages = [...DImages, prevProduct.id_imageSet[index].id];
             updatedImages.splice(index, 1);
             return {
                 ...prevProduct,
                 imageD: DImages,
-                imageSet: updatedImages,
+                id_imageSet: updatedImages,
             };
         });
     };
@@ -141,9 +141,9 @@ const RatingModal = ({ isOpen, onClose, onSubmit }) => {
                                 multiple
                             />
                         </div>
-                        {newProduct.imageSet.length > 0 && (
+                        {newProduct.id_imageSet.length > 0 && (
                             <div className="formimggroup">
-                                {newProduct.imageSet.map((image, index) => (
+                                {newProduct.id_imageSet.map((image, index) => (
                                     <div key={index} style={{ position: 'relative', marginBottom: '10px' }}>
                                         <img
                                             className="imgaddproduct"
