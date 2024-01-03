@@ -12,14 +12,9 @@ const Shop = ({ shop }) => {
     };
     return (
         <div className="allshop">
-            <img src={shop.logo} alt={shop.name} />
             <div className="allshop-info">
                 <h2>{shop.name}</h2>
                 <p>{shop.description}</p>
-                <div className="allshopfollowers">
-                    <FontAwesomeIcon icon={faStar} /> Followers: {shop.followers} &nbsp;&nbsp;&nbsp;
-                    <FontAwesomeIcon icon={faStar} /> Followers: {shop.followers}
-                </div>
             </div>
 
             <div className="allshopdiv">

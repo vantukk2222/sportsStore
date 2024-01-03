@@ -45,7 +45,7 @@ const Shop = () => {
     }, [page]);
     return (
         <>
-            {shopItem?.id ? (
+            {shopItem?.id && !loading ? (
                 <section className="shop background">
                     <MainShop shopItem={shopItem} />
                     <Tips shopItem={shopItem} />
@@ -64,7 +64,9 @@ const Shop = () => {
                             <div className="product-content grid2">
                                 <ProductCart productItems={productItems} />
                             </div>
-                            <Pagination currentPage={page} />
+                            {totalPages > 1 && (
+                                <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+                            )}
                         </div>
                     </div>
                 </section>

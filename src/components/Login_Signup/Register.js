@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import postRegister from '~/API/postsignup';
 import './style.css';
+import getUnAuth from '~/API/get';
+import { useDispatch, useSelector } from 'react-redux';
+import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
+import { roleByUserName } from '~/redux/reducers/Role/role';
 
 const Register = () => {
     const [userData, setUserData] = useState({
@@ -11,19 +15,25 @@ const Register = () => {
         name: '',
         phone: '',
         email: '',
-        cangCucCongDan: '', // New field
-        diaChi: '', // New field
+        // cic: '', // New field
+        // address: '', // New field
     });
+    const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [loadingApi, setLoadingApi] = useState(false);
     const [selectedRole, setSelectedRole] = useState(10);
-
+    const dispatch = useDispatch();
     const handleRes = async () => {
         console.log(userData);
+        let role = '';
+        let response = '';
         try {
-            const response = await postRegister(userData);
+            if (selectedRole == 10) role = 'signup-customer';
+            else role = 'signup-business';
+            response = await postRegister(userData, role);
             if (!response) {
                 throw new Error('Network response was not ok');
             }
@@ -31,12 +41,43 @@ const Register = () => {
             console.log(token);
             localStorage.setItem('authToken', JSON.stringify(token));
             sessionStorage.clear();
-            if (token) {
+            if (token && selectedRole == 10) {
                 localStorage.setItem('User', JSON.stringify(userData.username));
-                navigate('/');
+                const fetchData = async () => {
+                    try {
+                        setLoading(true);
+                        let response = await getUnAuth(`user/get-by-username/${userData.username}`);
+                        if (!response) {
+                            throw new Error('Network response was not ok');
+                        }
+                        localStorage.setItem(
+                            'User',
+                            JSON.stringify({
+                                id: response.id,
+                                un: response.username,
+                                name: response.name,
+                            }),
+                        );
+                        //  console.log(response);
+                    } catch (error) {
+                        setError(error);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+                fetchData()
+                    .then(dispatch(roleByUserName(userData.username)))
+                    .then(() => {
+                        const user = JSON.parse(localStorage.getItem('User'));
+                        dispatch(listBillById(user.id, dataRole));
+                        localStorage.setItem('State', JSON.stringify(5));
+                    })
+                    .then(navigate('/'));
             }
         } catch (error) {
-            alert('Bạn đã đăng nhập thất bại kiểm tra lại mật khẩu và tài khoản của bạn');
+            alert(
+                `Bạn đã đăng kí thất bại vì bị trùng tên đăng nhập, số điện thoại hoặc email. Kiểm tra lại thông tin của bạn`,
+            );
         } finally {
             setLoading(false);
         }
@@ -97,7 +138,27 @@ const Register = () => {
                     value={userData.password}
                     onChange={(event) => handleChange('password', event.target.value)}
                 />
+                {selectedRole === 20 && (
+                    <>
+                        <div className="text">Nhập căn cước công dân</div>
+                        <input
+                            className="input"
+                            type="text"
+                            placeholder="Nhập căn cước công dân..."
+                            value={userData.cic}
+                            onChange={(event) => handleChange('cic', event.target.value)}
+                        />
 
+                        <div className="text">Nhập địa chỉ</div>
+                        <input
+                            className="input"
+                            type="text"
+                            placeholder="Nhập địa chỉ..."
+                            value={userData.address}
+                            onChange={(event) => handleChange('address', event.target.value)}
+                        />
+                    </>
+                )}
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -109,28 +170,6 @@ const Register = () => {
                     <MenuItem value={20}>Đăng ký doanh nghiệp</MenuItem>
                 </Select>
 
-                {selectedRole === 20 && (
-                    <>
-                        <div className="text">Nhập căn cước công dân</div>
-                        <input
-                            className="input"
-                            type="text"
-                            placeholder="Nhập căn cước công dân..."
-                            value={userData.cangCucCongDan}
-                            onChange={(event) => handleChange('cangCucCongDan', event.target.value)}
-                        />
-
-                        <div className="text">Nhập địa chỉ</div>
-                        <input
-                            className="input"
-                            type="text"
-                            placeholder="Nhập địa chỉ..."
-                            value={userData.diaChi}
-                            onChange={(event) => handleChange('diaChi', event.target.value)}
-                        />
-                    </>
-                )}
-
                 <button
                     className={userData.email && userData.password ? 'button-1' : ''}
                     disabled={
@@ -139,7 +178,7 @@ const Register = () => {
                         userData.name &&
                         userData.phone &&
                         userData.email &&
-                        (selectedRole === 10 || (selectedRole === 20 && userData.cangCucCongDan && userData.diaChi))
+                        (selectedRole === 10 || (selectedRole === 20 && userData.cic && userData.address))
                             ? false
                             : true
                     }

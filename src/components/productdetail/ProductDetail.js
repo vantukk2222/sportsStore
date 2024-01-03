@@ -205,7 +205,7 @@ const ProductDetail = () => {
                                                     key={index}
                                                     onClick={() => handleSize(e)}
                                                 >
-                                                    {e.size}
+                                                    {e.size||'Size'}
                                                 </button>
                                             );
                                     })}

@@ -20,10 +20,12 @@ const ShopCart = ({ categoryItems }) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
+                console.log(categoryItems[count].id);
                 if (!categoryItems || count >= categoryItems.length || productItems.length >= 8) return;
                 const response = await getUnAuth(
-                    `product-information/find-by-category/${categoryItems[count].id}?state=0`,
+                    `product-information/find-by-category/${categoryItems[count].id}?state=0&state_business=0`,
                 );
+                console.log(response);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }

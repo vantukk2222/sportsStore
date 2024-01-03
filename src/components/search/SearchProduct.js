@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './Search.css';
-import MenuSearch from './MenuSearch';
-import SearchShop from './SearchShop';
-import Sortproduct from '../Shop/Sortproduct';
 import ProductCart from '../Shop/ProductCart';
 import Pagination from '../Shop/Pagination';
 import getUnAuth from '~/API/get';
@@ -14,15 +11,21 @@ const SearchProduct = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [productItems, setProductItems] = useState([]);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPage] = useState(0);
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await getUnAuth(`product-information/search?name=${name}?state=0`);
+                const response = await getUnAuth(
+                    `product-information/search?name=${name}&page=${page}&page_size=20&state=0&state_business=0`,
+                );
+                console.log(response);
                 setProductItems(response.content);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
+                setTotalPage(response.totalPages);
             } catch (error) {
                 setError(error);
             } finally {
@@ -30,7 +33,7 @@ const SearchProduct = () => {
             }
         };
         fetchData();
-    }, [location]);
+    }, [location, page]);
     //console.log(productItems);
     return (
         <>
@@ -46,7 +49,9 @@ const SearchProduct = () => {
                                 <ProductCart productItems={productItems} />
                             </div>
                             <div>
-                                <Pagination />
+                                {totalPages > 1 && (
+                                    <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+                                )}
                             </div>
                         </div>
                     ) : (

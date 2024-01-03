@@ -30,7 +30,7 @@ const MyOrder = ({ orders }) => {
 
     const [isRatingModalOpen, setRatingModalOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const [rating, setRating] = useState(0);
+   
 
     const openRatingModal = (order) => {
         setSelectedOrder(order);
@@ -39,7 +39,7 @@ const MyOrder = ({ orders }) => {
 
     const closeRatingModal = () => {
         setSelectedOrder(null);
-        setRating(0);
+    
         setRatingModalOpen(false);
     };
     const handleReBuy = (order) => {
@@ -159,6 +159,9 @@ const MyOrder = ({ orders }) => {
             putConfirm_buy(order.id, authToken).then(() => window.location.reload());
         }
     };
+    const handleBusiness = (id) => {
+        navigate(`/shop/${id}`);
+    };
     //  console.log(orders);
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
@@ -172,7 +175,9 @@ const MyOrder = ({ orders }) => {
                         <div key={orders[0].id} className="order-container">
                             {orders.map((order) => (
                                 <div key={order.id}>
-                                    <h3 className="order-header">{order.name}</h3>
+                                    <h3 className="order-header" onClick={() => handleBusiness(order.id_business)}>
+                                        {order.name}
+                                    </h3>
                                     <p className="date-text">Ngày mua: {date}</p>
                                     <ul className="item-list">
                                         {order.bill_detailSet?.map((item) => (

@@ -3,12 +3,6 @@ import ShopData from './ShopData';
 
 import logo from './shop.png';
 const SearchShopCart = () => {
-    //   const history = useHistory();
-
-    //   const redirectToShopPage = () => {
-    //     // Chuyển hướng đến trang shop, bạn cần điều chỉnh đường dẫn tương ứng
-    //     history.push("/product");
-    //   };
     return (
         <>
             <div className="SearchShopCart">

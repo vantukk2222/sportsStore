@@ -2,11 +2,7 @@ import React from 'react';
 import SearchShopCart from './SearchShopCart';
 
 const SearchShop = () => {
-    // const history = useHistory();
 
-    // const gotoallShop = () => {
-    //     history.push("/allshop");
-    // }
     return (
         <>
             <section className="NewArrivals background">

@@ -12,22 +12,21 @@ const MainShop = ({ shopItem }) => {
                         <h1>{shopItem.name}</h1>&nbsp;&nbsp;&nbsp;
                         <img src={logoImage} alt="DT5 SPORT" />
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button className="b">Theo dõi</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {/* <button className="b">Theo dõi</button> */}
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         {/* <button className="b">Nhắn tin</button> */}
                     </div>
                     <div className="shop-review">
                         <p>
-                            <span className="icon">&#128722;</span> Followers: 1000
+                            <span className="icon">&#128101;</span> Like: {shopItem.count_comment_like}
                         </p>
                         <p>
-                            <span className="icon">&#128101;</span> Following: 500
+                            <span className="icon">&#128101;</span> Dislike: {shopItem.count_comment_dislike}
                         </p>
                         <p>
-                            <span className="icon">&#9733;</span> Ratings: 4.5
+                            <span className="icon">&#9733;</span> Đánh giá: {shopItem.count_comment}
                         </p>
-                        <p>
-                            <span className="icon">&#128100;</span> Feedback: 95%
-                        </p>
+
                         <p>
                             <span className="icon">&#128100;</span> Products: {shopItem.count_product}
                         </p>
