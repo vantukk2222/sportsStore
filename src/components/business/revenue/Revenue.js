@@ -36,8 +36,8 @@ const RevenueAndOrdersChart = () => {
         ],
     });
     useEffect(() => {
-        const start = '2023-01-01';
-        const end = '2024-12-01';
+        const start = '2023-06-01';
+        const end = '2024-06-01';
         const user = JSON.parse(localStorage.getItem('User'));
 
         const fetchData = async () => {
