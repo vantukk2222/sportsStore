@@ -8,6 +8,8 @@ import postImage from '~/API/postImage';
 import deleteImage from '~/API/deleteImage';
 import postProduct from '~/API/postProduct';
 import putProduct from '~/API/putProduct';
+import { postSProductInformation } from '~/API/postSProductInformation';
+import { putRemoveSale } from '~/API/putRemoveSale';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -18,7 +20,7 @@ const BProduct = () => {
     const [editIndex, setEditIndex] = useState(null);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
-
+    const [addEProduct, setAddEProduct] = useState([]);
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -29,7 +31,7 @@ const BProduct = () => {
             }
             setSelectedProducts(Array(response.content.length).fill(false));
             response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
-            //console.log(response.content);
+            console.log(response.content);
             setProducts(response.content);
         } catch (error) {
             setError(error);
@@ -119,6 +121,12 @@ const BProduct = () => {
     const handleCheckboxChange = (index) => {
         const updatedSelectedProducts = [...selectedProducts];
         updatedSelectedProducts[index] = !updatedSelectedProducts[index];
+        let arr = [];
+        updatedSelectedProducts.forEach((e, index) => {
+            if (e) arr.push(products[index].id);
+        });
+        setAddEProduct(arr);
+        //   console.log(arr);
         setSelectedProducts(updatedSelectedProducts);
     };
 
@@ -132,11 +140,16 @@ const BProduct = () => {
         setIsAddEventModalOpen(false);
     };
 
-    const handleSaveEvent = (eventName) => {
-        console.log('Event Name:', eventName);
-        setIsAddEventModalOpen(false);
+    const handleSaveEvent = (id) => {
+        console.log('Event Name:', id);
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        postSProductInformation(id, addEProduct, authToken).then(fetchData());
     };
-
+    const handleDeleteEvent = () => {
+        console.log(addEProduct);
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        putRemoveSale(addEProduct, authToken).then(fetchData());
+    };
     useEffect(() => {
         fetchData();
     }, []);
@@ -152,7 +165,9 @@ const BProduct = () => {
                     <button className="eventButton" onClick={handleEventButtonClick}>
                         Thêm sự kiện
                     </button>
-                    <button className="eventButton">Xóa sự kiện</button>
+                    <button className="eventButton" onClick={handleDeleteEvent}>
+                        Xóa sự kiện
+                    </button>
                 </>
             )}
             <div className="tracking-headerp">
@@ -198,7 +213,7 @@ const BProduct = () => {
                     </div>
 
                     <div className="divproductB">{product.categorySet.reduce((a, e) => a + `${e.name},`, '')}</div>
-                    <div className="divproductB">{product.discount}%</div>
+                    <div className="divproductB">{product.sale?.discount}%</div>
 
                     <div className="divproductB">
                         <button className="editproduct" onClick={() => handleOpenEditModal(index)}>

@@ -15,7 +15,7 @@ const RevenueAndOrdersChart = () => {
 
     return (
         <div className="chart-container">
-            <h2 className="chart-title">Biểu đồ Giá tiền thu được</h2>
+            <h2 className="chart-title">Biểu đồ Doanh thu theo tháng</h2>
             <LineChart
                 width={1000}
                 height={350}

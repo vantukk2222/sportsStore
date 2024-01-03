@@ -2,12 +2,11 @@ import { useState } from 'react';
 
 const AddEventModal = ({ onClose, onSave }) => {
     const [newEvent, setNewEvent] = useState({
-        eventCode: '',
-        eventName: '',
-        img: '',
+        id_business: JSON.parse(localStorage.getItem('User')).id,
+        name: '',
         discount: '',
-        fromDate: '',
-        toDate: '',
+        started_at: '',
+        ended_at: '',
     });
 
     const handleAddEvent = () => {
@@ -16,23 +15,16 @@ const AddEventModal = ({ onClose, onSave }) => {
     };
 
     const handleInputChange = (e) => {
-        const { name, value, type } = e.target;
+        const { name, value } = e.target;
 
-        if (type === 'file') {
-            const file = e.target.files[0];
-            if (file) {
-                setNewEvent({ ...newEvent, [name]: URL.createObjectURL(file) });
-            }
-        } else {
-            setNewEvent({ ...newEvent, [name]: value });
-        }
+        setNewEvent({ ...newEvent, [name]: value });
     };
 
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
                 <h2>Thêm sự kiện</h2>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="eventCode">Mã sự kiện:</label>
                     <input
                         type="text"
@@ -41,16 +33,10 @@ const AddEventModal = ({ onClose, onSave }) => {
                         value={newEvent.eventCode}
                         onChange={handleInputChange}
                     />
-                </div>
+                </div> */}
                 <div className="form-group">
-                    <label htmlFor="eventName">Tên sự kiện:</label>
-                    <input
-                        type="text"
-                        id="eventName"
-                        name="eventName"
-                        value={newEvent.eventName}
-                        onChange={handleInputChange}
-                    />
+                    <label htmlFor="name">Tên sự kiện:</label>
+                    <input type="text" id="name" name="name" value={newEvent.name} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
@@ -65,19 +51,25 @@ const AddEventModal = ({ onClose, onSave }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="fromDate">Từ ngày:</label>
+                    <label htmlFor="started_at">Từ ngày:</label>
                     <input
                         type="text"
-                        id="fromDate"
-                        name="fromDate"
-                        value={newEvent.fromDate}
+                        id="started_at"
+                        name="started_at"
+                        value={newEvent.started_at}
                         onChange={handleInputChange}
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="toDate">Đến ngày:</label>
-                    <input type="text" id="toDate" name="toDate" value={newEvent.toDate} onChange={handleInputChange} />
+                    <label htmlFor="ended_at">Đến ngày:</label>
+                    <input
+                        type="text"
+                        id="ended_at"
+                        name="ended_at"
+                        value={newEvent.ended_at}
+                        onChange={handleInputChange}
+                    />
                 </div>
                 <div className="modal-buttons">
                     <button onClick={handleAddEvent}>Thêm</button>

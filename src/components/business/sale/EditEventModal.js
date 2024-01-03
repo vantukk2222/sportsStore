@@ -3,52 +3,34 @@ import { useEffect, useState } from 'react';
 
 const EditEventModal = ({ event, onClose, onSave }) => {
     const [editedEvent, setEditedEvent] = useState({
-        eventCode: '',
-        eventName: '',
-        img: '',
-        discount: '',
-        fromDate: '',
-        toDate: '',
+        id_business: event.businessResponse.id,
+        name: event.name,
+        discount: `${event.discount}%`,
+        started_at: event.started_at,
+        ended_at: event.ended_at,
     });
 
-    useEffect(() => {
-        setEditedEvent({
-            eventCode: event.eventCode,
-            eventName: event.eventName,
-            img: event.img,
-            discount: event.discount,
-            fromDate: event.fromDate,
-            toDate: event.toDate,
-        });
-    }, [event]);
-
     const handleEditEvent = () => {
-        onSave(editedEvent);
-        onClose();
+        onSave(event.id, editedEvent);
+          onClose();
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedEvent({ ...editedEvent, [name]: value });
     };
-
+    // console.log(editedEvent);
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
                 <h2>Sửa sự kiện</h2>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="eventCode">Mã sự kiện:</label>
                     <input type="text" id="eventCode" name="eventCode" value={editedEvent.eventCode} readOnly />
-                </div>
+                </div> */}
                 <div className="form-group">
-                    <label htmlFor="eventName">Tên sự kiện:</label>
-                    <input
-                        type="text"
-                        id="eventName"
-                        name="eventName"
-                        value={editedEvent.eventName}
-                        onChange={handleInputChange}
-                    />
+                    <label htmlFor="name">Tên sự kiện:</label>
+                    <input type="text" id="name" name="name" value={editedEvent.name} onChange={handleInputChange} />
                 </div>
 
                 <div className="form-group">
@@ -63,23 +45,23 @@ const EditEventModal = ({ event, onClose, onSave }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="fromDate">Từ ngày:</label>
+                    <label htmlFor="started_at">Từ ngày:</label>
                     <input
                         type="text"
-                        id="fromDate"
-                        name="fromDate"
-                        value={editedEvent.fromDate}
+                        id="started_at"
+                        name="started_at"
+                        value={editedEvent.started_at}
                         onChange={handleInputChange}
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="toDate">Đến ngày:</label>
+                    <label htmlFor="ended_at">Đến ngày:</label>
                     <input
                         type="text"
-                        id="toDate"
-                        name="toDate"
-                        value={editedEvent.toDate}
+                        id="ended_at"
+                        name="ended_at"
+                        value={editedEvent.ended_at}
                         onChange={handleInputChange}
                     />
                 </div>
