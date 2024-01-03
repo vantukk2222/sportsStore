@@ -15,8 +15,7 @@ const Register = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [isShowPassword, setIsShowPassword] = useState(false);
-    const [loadingApi, setLoadingApi] = useState(false);
-
+    const [role, setRole] = useState('signup-customer');
     const handleRes = async () => {
         console.log(userData);
         try {
@@ -98,7 +97,9 @@ const Register = () => {
                     id="demo-simple-select"
                     value={10}
                     label="Age"
-                    onChange={() => {}}
+                    onChange={(e) => {
+                        console.log(e);
+                    }}
                 >
                     <MenuItem value={10}>Đăng ký khách hàng</MenuItem>
                     <MenuItem value={20}>Đăng ký doanh nghiệp</MenuItem>

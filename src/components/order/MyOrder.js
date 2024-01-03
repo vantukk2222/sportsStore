@@ -148,6 +148,9 @@ const MyOrder = ({ orders }) => {
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
+    const handleReDelete = (order) => {
+        console.log(order);
+    };
     //  console.log(orders);
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
@@ -195,20 +198,12 @@ const MyOrder = ({ orders }) => {
                                     </button>
                                 )}
                                 {orders[0].state === 2 && (
-                                    <div>
-                                        <button
-                                            className="total-text"
-                                            onClick={() => hanldeRePay(orders[0].transaction.id)}
-                                        >
-                                            Thanh toán lại
-                                        </button>
-                                        <button
-                                            className="total-text"
-                                            style={{ backgroundColor: 'red', color: 'white' }}
-                                        >
-                                            Hủy đơn
-                                        </button>
-                                    </div>
+                                    <button
+                                        className="total-text"
+                                        onClick={() => hanldeRePay(orders[0].transaction.id)}
+                                    >
+                                        Thanh toán lại
+                                    </button>
                                 )}
                                 <div>
                                     {orders[0].state === 1 && orders[0].is_rating === false && (
@@ -230,8 +225,12 @@ const MyOrder = ({ orders }) => {
                                         </button>
                                     )}
                                 </div>
-                                {orders[0].state === 3 && (
-                                    <button style={{ backgroundColor: 'red', color: 'white' }} className="total-text">
+                                {(orders[0].state === 2 || orders[0].state === 3) && (
+                                    <button
+                                        style={{ backgroundColor: 'red', color: 'white' }}
+                                        className="total-text"
+                                        onClick={() => handleReDelete(orders[0])}
+                                    >
                                         Hủy đơn
                                     </button>
                                 )}

@@ -19,12 +19,16 @@ const Head = () => {
             <section className="head">
                 <div className="container d_flex">
                     <div className="left row">
-                        <label>
-                            <Link to="/login">Kênh ADMIN</Link>
-                        </label>
-                        <label>
-                            <Link to="/login">Kênh người bán</Link>
-                        </label>
+                        {!user && (
+                            <>
+                                <label>
+                                    <Link to="/login">Kênh ADMIN</Link>
+                                </label>
+                                <label>
+                                    <Link to="/login">Kênh người bán</Link>
+                                </label>
+                            </>
+                        )}
                     </div>
                     <div className="right row RText">
                         <label>
