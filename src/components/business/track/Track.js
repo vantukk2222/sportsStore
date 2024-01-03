@@ -65,14 +65,6 @@ const Track = ({ orders }) => {
                                                 Xác nhận
                                             </button>
                                             <button className="delete" onClick={() => handleNotSell(order.id)}>
-                                                Xóa
-                                            </button>
-                                        </div>
-                                    )}
-
-                                    {order.state === 2 && (
-                                        <div className="actiontrack">
-                                            <button className="delete" onClick={() => handleCancel(order.id)}>
                                                 Hủy đơn
                                             </button>
                                         </div>

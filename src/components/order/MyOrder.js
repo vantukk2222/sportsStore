@@ -10,6 +10,8 @@ import putConfirmReceive from '~/API/putConfirmReceive';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 import RatingModal from './RatingModal';
+import putConfirm_cancel from '~/API/putConfirm_cancel';
+import putConfirm_buy from '~/API/putConfirm_buy';
 const MyOrder = ({ orders }) => {
     //   console.log(orders);
     const [loading, setLoading] = useState(true);
@@ -150,6 +152,12 @@ const MyOrder = ({ orders }) => {
     };
     const handleReDelete = (order) => {
         console.log(order);
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        if (order.state == 2) {
+            putConfirm_cancel(order.transaction.id, authToken);
+        } else {
+            putConfirm_buy(order.id, authToken);
+        }
     };
     //  console.log(orders);
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
