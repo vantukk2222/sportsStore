@@ -10,12 +10,14 @@ const BusinessTrack = () => {
     });
     const user = JSON.parse(localStorage.getItem('User'));
     const dispatch = useDispatch();
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPage] = useState(0);
     const { dataBill, loadingBill, errorBill } = useSelector((state) => state.listBillReducer);
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     useEffect(() => {
-        dispatch(listBillById(user.id, dataRole));
+        dispatch(listBillById(user.id, dataRole, orderstate, page));
         console.log(dataBill);
-    }, []);
+    }, [page, orderstate]);
     const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
     localStorage.setItem('State', JSON.stringify(orderstate));
     return (
