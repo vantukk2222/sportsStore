@@ -20,7 +20,10 @@ const Register = () => {
 
     const handleRes = async () => {
         console.log(userData);
+        let role = '';
         try {
+            if (selectedRole == 10) role = 'signup-customer';
+            else role = 'signup-business';
             const response = await postRegister(userData);
             if (!response) {
                 throw new Error('Network response was not ok');
@@ -34,7 +37,7 @@ const Register = () => {
                 navigate('/');
             }
         } catch (error) {
-            alert('Bạn đã đăng nhập thất bại kiểm tra lại mật khẩu và tài khoản của bạn');
+            // alert('Bạn đã đăng kí thất bại kiểm tra lại thông');
         } finally {
             setLoading(false);
         }

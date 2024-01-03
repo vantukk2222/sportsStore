@@ -15,6 +15,7 @@ const Shop = () => {
     const [productItems, setProductItems] = useState([]);
     const [error, setError] = useState(null);
     const [page, setPage] = useState(0);
+    const [totalPages, setTotalPage] = useState(0);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -28,6 +29,8 @@ const Shop = () => {
                 response = await getUnAuth(
                     `product-information/find-by-business/${id}?page=${page}&page_size=20&state=0`,
                 );
+                console.log(response);
+                setTotalPage(response.totalPages);
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
@@ -40,7 +43,6 @@ const Shop = () => {
         };
         fetchData();
     }, [page]);
-    //console.log(productItems);
     return (
         <>
             {shopItem?.id ? (
@@ -62,7 +64,7 @@ const Shop = () => {
                             <div className="product-content grid2">
                                 <ProductCart productItems={productItems} />
                             </div>
-                            <Pagination />
+                            <Pagination currentPage={page} />
                         </div>
                     </div>
                 </section>

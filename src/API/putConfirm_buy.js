@@ -7,6 +7,7 @@ const putConfirm_buy = async (id, authToken) => {
             method: 'put',
             url: `${api}bill/confirm-buy/false`,
             headers: {
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
             },
             data: id,

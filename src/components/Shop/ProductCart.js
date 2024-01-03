@@ -26,7 +26,12 @@ const ProductCart = ({ productItems }) => {
                     <div key={index} className="box" onClick={() => handleClick(product.id)}>
                         <div className="product mtop">
                             <div key={product.id} className="img">
-                                <img src={product.imageSet.find((e) => e.is_main === true).url} alt="" />
+                                <img
+                                    src={
+                                        product.imageSet.find((e) => e.is_main === true)?.url || product.imageSet[0].url
+                                    }
+                                    alt=""
+                                />
                             </div>
                             <div className="product-details">
                                 <h3>{product.name}</h3>

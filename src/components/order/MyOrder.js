@@ -150,13 +150,13 @@ const MyOrder = ({ orders }) => {
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
     };
-    const handleReDelete = (order) => {
+    const handleDelete = (order) => {
         console.log(order);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         if (order.state == 2) {
-            putConfirm_cancel(order.transaction.id, authToken);
+            putConfirm_cancel(order.transaction.id, authToken).then(() => window.location.reload());
         } else {
-            putConfirm_buy(order.id, authToken);
+            putConfirm_buy(order.id, authToken).then(() => window.location.reload());
         }
     };
     //  console.log(orders);
@@ -237,7 +237,7 @@ const MyOrder = ({ orders }) => {
                                     <button
                                         style={{ backgroundColor: 'red', color: 'white' }}
                                         className="total-text"
-                                        onClick={() => handleReDelete(orders[0])}
+                                        onClick={() => handleDelete(orders[0])}
                                     >
                                         Hủy đơn
                                     </button>

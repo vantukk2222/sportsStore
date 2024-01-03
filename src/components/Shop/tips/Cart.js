@@ -18,7 +18,10 @@ const Cart = ({ productItems }) => {
                     return (
                         <div className="box" key={index} onClick={() => handleClick(val.id)}>
                             <div className="img">
-                                <img src={val.imageSet.find((e) => e.is_main === true).url} alt="" />
+                                <img
+                                    src={val.imageSet.find((e) => e.is_main === true)?.url || val.imageSet[0].url}
+                                    alt=""
+                                />
                             </div>
                             <h4>{val.name}</h4>
                             {givenTimeStr && <span className="crossedNumber">{val.price_min}đ </span>}

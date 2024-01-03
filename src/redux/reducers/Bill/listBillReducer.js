@@ -33,7 +33,7 @@ const listBillSlice = createSlice({
     },
 });
 
-export const listBillById = (id, role, page, pageSize) => async (dispatch, getState) => {
+export const listBillById = (id, role, state, page, pageSize) => async (dispatch, getState) => {
     try {
         // console.log('Listcart request start');
         dispatch(listBillRequest()); // Dispatch addToCartRequest action

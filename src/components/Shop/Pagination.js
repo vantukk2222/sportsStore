@@ -4,7 +4,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
     const renderPaginationItems = () => {
-        // Số lượng trang hiển thị trước và sau trang hiện tại
         const visiblePageCount = 2;
 
         let visiblePages = pages.filter(
