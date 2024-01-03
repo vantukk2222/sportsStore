@@ -1,50 +1,99 @@
-import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LineElement,
+    LinearScale,
+    PointElement,
+    Title,
+    Tooltip,
+} from 'chart.js';
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import revenueAdmin from '~/API/Admin/revenueAdmin';
 
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 const RevenueAndOrdersChart = () => {
-    const revenueData = [
-        { date: '2022-01', revenue: 100 },
-        { date: '2022-02', revenue: 150 },
-        { date: '2022-03', revenue: 120 },
-    ];
+    const [revenueData, setRevenueData] = useState([]);
+    const [data, setData] = useState({
+        labels: ['0'],
+        datasets: [
+            {
+                label: 'First dataset',
+                fill: true,
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                borderColor: 'rgba(75,192,192,1)',
+                data: [0],
+            },
+        ],
+    });
+    const [dataBar, serDataBar] = useState({
+        labels: ['0'],
+        datasets: [
+            {
+                data: [0],
+            },
+        ],
+    });
+    useEffect(() => {
+        const start = '2023-01-01';
+        const end = '2024-12-01';
+        const user = JSON.parse(localStorage.getItem('User'));
 
-    const ordersData = [
-        { date: '2022-01', orders: 5 },
-        { date: '2022-02', orders: 8 },
-        { date: '2022-03', orders: 6 },
-    ];
+        const fetchData = async () => {
+            try {
+                const responseRevenue = await revenueAdmin(1, user?.id, start, end);
+                setRevenueData(responseRevenue);
+                console.log(responseRevenue);
+            } catch (error) {
+                console.error('Error fetching data: ', error);
+            }
+        };
 
+        fetchData();
+    }, []);
+    useEffect(() => {
+        const months = revenueData?.setStatistic?.map((item) => item.month.toString());
+        const dataValues = revenueData?.setStatistic?.map((item) => item.bill_total);
+        const dataBil = revenueData?.setStatistic?.map((item) => item.bill_count);
+        console.log(months, data, dataBar);
+        setData({
+            labels: months,
+            datasets: [
+                {
+                    fill: true,
+                    backgroundColor: 'rgba(75,192,192,0.2)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    data: dataValues,
+                    label: 'Tổng tiền',
+                },
+            ],
+        });
+        serDataBar({
+            labels: months,
+            datasets: [
+                {
+                    data: dataBil,
+                    fill: true,
+                    backgroundColor: 'rgba(75,192,192,0.2)',
+                    borderColor: '#742774',
+                    label: 'Tổng đơn',
+                },
+            ],
+        });
+    }, [revenueData]);
+
+    console.log(data, dataBar);
     return (
         <div className="chart-container">
-            <h2 className="chart-title">Biểu đồ Doanh thu theo tháng</h2>
-            <LineChart
-                width={1000}
-                height={350}
-                data={revenueData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                    dataKey="date"
-                    tickFormatter={(value) => new Date(value).toLocaleString('default', { month: 'short' })}
-                />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="revenue" stroke="#41A0FF" activeDot={{ r: 8 }} />
-            </LineChart>
+            <h2 className="chart-title">Biểu đồ Giá tiền thu được</h2>
 
-            <h2 className="chart-title">Biểu đồ Đơn hàng</h2>
-            <BarChart width={1000} height={350} data={ordersData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                    dataKey="date"
-                    tickFormatter={(value) => new Date(value).toLocaleString('default', { month: 'short' })}
-                />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="orders" fill="#55D8FE" />
-            </BarChart>
+            <div className="chart-table">
+                <Line data={data} />
+                <h2 className="chart-title">Biểu đồ tổng số đơn bán được</h2>
+
+                <Line data={dataBar} />
+            </div>
         </div>
     );
 };

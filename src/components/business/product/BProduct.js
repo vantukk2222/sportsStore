@@ -7,10 +7,10 @@ import { postSProductInformation } from '~/API/postSProductInformation';
 import putProduct from '~/API/putProduct';
 import { putProductInformation } from '~/API/putProductInformation';
 import { putRemoveSale } from '~/API/putRemoveSale';
+import { putUHproduct } from '~/API/putUHproduct';
 import AddEventModal from './AddEventModal';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
-import { putUHproduct } from '~/API/putUHproduct';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -179,10 +179,14 @@ const BProduct = () => {
             </button>
             {isAnyCheckboxChecked && (
                 <>
-                    <button className="eventButton" onClick={handleEventButtonClick}>
+                    <button
+                        className="eventButton"
+                        style={{ backgroundColor: '#FF0000' }}
+                        onClick={handleEventButtonClick}
+                    >
                         Thêm sự kiện
                     </button>
-                    <button className="eventButton" onClick={handleDeleteEvent}>
+                    <button className="eventButton" style={{ backgroundColor: '#4169E1' }} onClick={handleDeleteEvent}>
                         Xóa sự kiện
                     </button>
                 </>

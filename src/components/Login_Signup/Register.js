@@ -1,3 +1,4 @@
+import { MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import postRegister from '~/API/postsignup';
@@ -91,6 +92,17 @@ const Register = () => {
                     onChange={(event) => handleChange('password', event.target.value)}
                 />
 
+                <Select
+                    className="text"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={10}
+                    label="Age"
+                    onChange={() => {}}
+                >
+                    <MenuItem value={10}>Đăng ký khách hàng</MenuItem>
+                    <MenuItem value={20}>Đăng ký doanh nghiệp</MenuItem>
+                </Select>
                 <button
                     className={userData.email && userData.password ? 'button-1' : ''}
                     disabled={
