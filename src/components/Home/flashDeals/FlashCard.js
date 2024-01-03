@@ -85,7 +85,10 @@ const FlashCard = () => {
                                         <div className="img">
                                             <img
                                                 className="imgflashcard"
-                                                src={productItems.imageSet.find((e) => e.is_main === true).url}
+                                                src={
+                                                    productItems.imageSet.find((e) => e.is_main === true)?.url ||
+                                                    productItems.imageSet[0].url
+                                                }
                                                 alt=""
                                             />
                                         </div>

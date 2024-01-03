@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 
 const Shopdetail = ({ business }) => {
     const navigate = useNavigate();
+    console.log(business);
     const date = new Date(business.time_start);
     const d = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     const handleClick = (id) => {
@@ -25,17 +26,15 @@ const Shopdetail = ({ business }) => {
                     </div>
                     <div className="shop-review">
                         <p>
-                            <span className="icon">&#128722;</span> Followers: 1000
+                            <span className="icon">&#128101;</span> Like: {business.count_comment_like}
                         </p>
                         <p>
-                            <span className="icon">&#128101;</span> Following: 500
+                            <span className="icon">&#128101;</span> Dislike: {business.count_comment_dislike}
                         </p>
                         <p>
-                            <span className="icon">&#9733;</span> Ratings: 4.5
+                            <span className="icon">&#9733;</span> Đánh giá: {business.count_comment}
                         </p>
-                        <p>
-                            <span className="icon">&#128100;</span> Feedback: 95%
-                        </p>
+
                         <p>
                             <span className="icon">&#128100;</span> Products: {business.count_product}
                         </p>

@@ -47,6 +47,7 @@ const ShopCart = ({ categoryItems }) => {
         };
         fetchData();
     }, [categoryItems, count]);
+    //console.log(productItems);
     return (
         <>
             {productItems.length < 8 ? (
