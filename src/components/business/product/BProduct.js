@@ -143,12 +143,14 @@ const BProduct = () => {
     const handleSaveEvent = (id) => {
         //   console.log('Event Name:', id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
-        postSProductInformation(id, addEProduct, authToken).then(fetchData()).then(handleCloseAddEventModal());
+        postSProductInformation(id, addEProduct, authToken)
+            .then(() => fetchData())
+            .then(handleCloseAddEventModal());
     };
     const handleDeleteEvent = () => {
         // console.log(addEProduct);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
-        putRemoveSale(addEProduct, authToken).then(fetchData());
+        putRemoveSale(addEProduct, authToken).then(() => fetchData());
     };
     useEffect(() => {
         fetchData();
