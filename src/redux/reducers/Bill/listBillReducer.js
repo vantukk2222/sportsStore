@@ -33,7 +33,7 @@ const listBillSlice = createSlice({
     },
 });
 
-export const listBillById = (id, role, state, page) => async (dispatch, getState) => {
+export const listBillById = (id, role, page) => async (dispatch, getState) => {
     try {
         // console.log('Listcart request start');
         dispatch(listBillRequest()); // Dispatch addToCartRequest action
@@ -46,8 +46,14 @@ export const listBillById = (id, role, state, page) => async (dispatch, getState
             }
             if (role == 'ROLE_BUSINESS') {
                 let data = '';
-                if (state == 5) data = await getUnAuth(`bill/get-by-business/${id}?page=0&page_size=10&state=0`);
-                else data = await getUnAuth(`bill/get-by-business/${id}?page=0&page_size=10&state=0`);
+                const state = JSON.parse(localStorage.getItem('State'));
+                if (state == 5) {
+                    data = await getUnAuth(`bill/get-by-business/${id}?page=${page}&page_size=10`);
+                    localStorage.setItem('TotalPages', data.totalPages);
+                } else {
+                    data = await getUnAuth(`bill/get-by-business/${id}?page=${page}&page_size=10&state=${state}`);
+                    localStorage.setItem('TotalPages', data.totalPages);
+                }
                 dispatch(listBillSuccess({ data: data.content }));
             }
         }

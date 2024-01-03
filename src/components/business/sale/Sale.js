@@ -5,20 +5,24 @@ import { postSale } from '~/API/postSale';
 import { putSale } from '~/API/putSale';
 import AddEventModal from './AddEventModal';
 import EditEventModal from './EditEventModal';
+import Pagination from '~/components/Shop/Pagination';
 
 const Sale = () => {
     const [eventInfo, setEventInfo] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPage] = useState(0);
     const fetchData = async () => {
         try {
             setLoading(true);
             const user = JSON.parse(localStorage.getItem('User'));
-            const response = await getUnAuth(`sale/get-by-business${user.id}`);
+            const response = await getUnAuth(`sale/get-by-business${user.id}?page=${page}&page_size=10`);
             if (!response) {
                 throw new Error('Network response was not ok');
             }
             console.log(response.content);
+            setTotalPage(response.totalPages);
             response.content.map((e) => {
                 const start = new Date(e.started_at);
                 const end = new Date(e.ended_at);
@@ -86,7 +90,7 @@ const Sale = () => {
     };
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [page]);
     return (
         <div className="track-container">
             <h2>Quản lý sự kiện</h2>
@@ -125,6 +129,7 @@ const Sale = () => {
             {isEditModalOpen && (
                 <EditEventModal event={selectedEvent} onClose={handleCloseEditModal} onSave={handleEditEvent} />
             )}
+            {totalPages > 1 && <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />}
         </div>
     );
 };

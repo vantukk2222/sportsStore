@@ -11,6 +11,7 @@ import { putUHproduct } from '~/API/putUHproduct';
 import AddEventModal from './AddEventModal';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
+import Pagination from '~/components/Shop/Pagination';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -23,16 +24,21 @@ const BProduct = () => {
     const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
     const [addEProduct, setAddEProduct] = useState([]);
     const [state, setState] = useState(0);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPage] = useState(0);
     const fetchData = async () => {
         try {
             setLoading(true);
             const user = JSON.parse(localStorage.getItem('User'));
-            const response = await getUnAuth(`product-information/find-by-business/${user.id}?state=${state}`);
+            const response = await getUnAuth(
+                `product-information/find-by-business/${user.id}?page=${page}&page_size=10&state=${state}`,
+            );
             if (!response) {
                 throw new Error('Network response was not ok');
             }
             setSelectedProducts(Array(response.content.length).fill(false));
             response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
+            setTotalPage(response.totalPages);
             console.log(response.content);
             setProducts(response.content);
         } catch (error) {
@@ -158,7 +164,7 @@ const BProduct = () => {
     };
     useEffect(() => {
         fetchData();
-    }, [state]);
+    }, [state, page]);
 
     return (
         <div className="track-container">
@@ -267,6 +273,7 @@ const BProduct = () => {
                 />
             )}
             {isAddEventModalOpen && <AddEventModal onClose={handleCloseAddEventModal} onSaveEvent={handleSaveEvent} />}
+            {totalPages > 1 && <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />}
         </div>
     );
 };
