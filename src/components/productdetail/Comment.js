@@ -17,8 +17,27 @@ const Comment = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
+                response.content.map((e) => {
+                    const UserData = async (id) => {
+                        try {
+                            setLoading(true);
+                            const response = await getUnAuth(`user/${id}`);
+                            if (!response) {
+                                throw new Error('Network response was not ok');
+                            }
+                            e.name_user = response.name;
+                            e.image_user = response.image_url;
+                            return e;
+                        } catch (error) {
+                            setError(error);
+                        } finally {
+                            setLoading(false);
+                        }
+                    };
+                    UserData(e.id_user);
+                });
                 setComments(response.content);
-                response = await getUnAuth(`user/${id}`);
+                console.log(response.content);
             } catch (error) {
                 setError(error);
             } finally {
