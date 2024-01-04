@@ -13,7 +13,7 @@
 .category-item {
     margin-bottom: 10px;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #3498db;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -43,6 +43,8 @@
     border-radius: 4px; /* Add rounded corners to each option */
     cursor: pointer;
     transition: background-color 0.3s ease; /* Smooth background color transition */
+    border: 1px solid #3498db;
+    border-radius: 8px;
 }
 
 .option:hover {
@@ -51,4 +53,21 @@
 
 .category-options > div {
     margin-bottom: 5px;
+}
+
+/* Additional color variations */
+.category-item:nth-child(odd) {
+    background-color: #f8f8f8; /* Light gray background for odd-numbered items */
+}
+
+.category-name:hover {
+    background-color: #d4e9f7; /* Light blue background on hover */
+}
+
+.option:nth-child(odd) {
+    background-color: #fcfcfc; /* Lighter background for odd-numbered options */
+}
+
+.option:nth-child(even) {
+    background-color: #f9f9f9; /* Slightly darker background for even-numbered options */
 }
