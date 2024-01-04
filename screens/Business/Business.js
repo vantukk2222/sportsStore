@@ -71,7 +71,7 @@ const Business = ({ navigation, route }) => {
     }
 
     return (
-        <ScrollView style={{ flex: 100, backgroundColor: 'white' }}>
+        <View style={{ flex: 100, backgroundColor: 'white'} }>
             <View style={styles.header}>
                 <View style={styles.headerTop}>
                     <TouchableOpacity style={styles.back} onPress={() => { navigation.goBack() }}>
@@ -82,6 +82,8 @@ const Business = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <ScrollView >
+            
             <View style={styles.container}>
                 <View style={styles.body}>
                     <View style={{ paddingBottom: 10, flexDirection: 'row', backgroundColor: '#FFFFFF' }}>
@@ -196,6 +198,7 @@ const Business = ({ navigation, route }) => {
             </View >
 
         </ScrollView >
+        </View>
 
     );
 };
@@ -210,7 +213,6 @@ const styles = StyleSheet.create({
     },
     headerTop: {
         flexDirection: 'row',
-        top: 15,
         alignItems: 'center'
     },
     detailsContainer: {

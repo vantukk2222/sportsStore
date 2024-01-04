@@ -39,7 +39,9 @@ const Sale = (props) => {
         // console.log('total page ', initialState?.dataSalebyBusi?.totalPages);
         setSales(initialState?.dataSalebyBusi?.content)
         setTotalPage(initialState?.dataSalebyBusi?.totalPages)
-    }, [initialState?.dataSalebyBusi])
+    }, [initialState?.dataSalebyBusi]);
+    useEffect(()=>{console.log("Sale bussiness");},[])
+
     const handleNextPage = () => {
         if (page > 0 && page + 1 <= totalPage) {
 
@@ -63,10 +65,10 @@ const Sale = (props) => {
     const handleEditproduct = (id) => {
         navigation.navigate('EditSale', { saleId: id })
     }
-    if (!data) {
-        toastError("Xin lỗi", "Bạn cần đăng nhập")
-        return <Loading />;
-    }
+    // if (!data) {
+    //     toastError("Xin lỗi", "Bạn cần đăng nhập")
+    //     return <Loading />;
+    // }
     if (loading) {
         console.log("load");
         <Loading />

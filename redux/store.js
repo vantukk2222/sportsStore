@@ -57,6 +57,7 @@ import createImageCommentSlice from './reducers/Images/ImageCommentReducer'
 import createCommentSlice from './reducers/Comment/post_CommentReducer'
 import listUserSlice from './reducers/Comment/user_CommentReducer'
 import getCommentSlice from './reducers/Comment/get_CommentByID_Product_InforReducer'
+import putCartSlice from './reducers/Cart/putCartReducer'
 const rootReducer = combineReducers({
   product: productSlice,
   productDetail: productDetailSlice,
@@ -109,7 +110,8 @@ const rootReducer = combineReducers({
   changeIsmain: changeIsmainSlice,
   changeInfor: changeInforSlice,
   listUserReducer: listUserSlice,
-  getCommentReducer: getCommentSlice
+  getCommentReducer: getCommentSlice,
+  putCartReducer: putCartSlice
 })
 // {getBusinessByIDSlice}
 const persistConfig = {

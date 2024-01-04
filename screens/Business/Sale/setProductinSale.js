@@ -178,6 +178,30 @@ const setProductinSale = (props) => {
 
     return (
         <View style={styles.container}>
+            <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}>
+                    <Icon name="angle-left" size={30} style={{
+                        color: 'white',
+                        alignItems: 'flex-end',
+                        marginLeft: 15,
+                    }}></Icon>
+                </TouchableOpacity>
+
+                <Text style={{
+                    padding: 2,
+                    paddingRight: 30,
+                    color: 'white',
+                    fontWeight: '600',
+                    fontSize: 24,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center'
+                }}>Chỉnh sửa Sale </Text>
+                <View></View>
+
+            </View>
             <View style={styles.headerContainer}>
                 {isAdd === true ?
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
@@ -271,9 +295,9 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        alignItems: 'flex-start',
+        // alignItems: 'flex-start',
         justifyContent: 'center',
-        padding: 16,
+        // padding: 16,
         backgroundColor: colors.trangXam
     },
     headerContainer: {

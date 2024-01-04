@@ -42,8 +42,8 @@ export const cancelBillByID = (list_Id_Cart, state) => async (dispatch, getState
         console.log("Token billReducer:", authToken);
         const response = await cancelBill(list_Id_Cart, authToken, state) 
         console.log("data in Bill Reducer: ", "OKKKKKKK"); 
-        dispatch(cancelBillSuccess(response));
-        dispatch(getAllBillByIDUser(data?.id))
+        await dispatch(cancelBillSuccess(response));
+        await dispatch(getAllBillByIDUser(data?.id))
         return response
 
     } catch (error) {

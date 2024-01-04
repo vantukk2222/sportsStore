@@ -1,5 +1,5 @@
 // SellerHomeScreen.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -78,7 +78,7 @@ const SellerHomeScreen = () => {
         }
 
     }
-
+    useEffect(()=>{console.log("Home bussiness");},[])
 
     return (
         <View style={styles.container}>

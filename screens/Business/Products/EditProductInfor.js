@@ -14,6 +14,8 @@ import { createImages, resetImage } from '../../../redux/reducers/Images/ImageRe
 import { editProductinf, resetEditProduct } from '../../../redux/reducers/productReducer/editProduct';
 import Loading from '../../../components/loading';
 import LoadingModal from '../../../components/loading';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 const EditProductInfor = (props) => {
     const route = useRoute()
     const navigation = useNavigation();
@@ -142,8 +144,32 @@ const EditProductInfor = (props) => {
         return <LoadingModal />
     }
     return (
+        <View style={{flex:100}}>
+            <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}>
+                    <Icon name="angle-left" size={30} style={{
+                        color: 'white',
+                        alignItems: 'flex-end',
+                        marginLeft: 15,
+                    }}></Icon>
+                </TouchableOpacity>
+
+                <Text style={{
+                    padding: 2,
+                    paddingRight: 30,
+                    color: 'white',
+                    fontWeight: '600',
+                    fontSize: 24,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center'
+                }}>Chỉnh sửa sản phẩm </Text>
+                <View></View>
+
+            </View>
         <ScrollView style={styles.container}>
-            <Text style={styles.header}>Chỉnh sửa sản phẩm</Text>
             <ScrollView style={{
                 flexDirection: 'row',
                 borderBottomColor: 'gray',
@@ -291,6 +317,7 @@ const EditProductInfor = (props) => {
             }
 
         </ScrollView >
+        </View>
     );
 
 

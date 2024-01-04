@@ -31,6 +31,8 @@ const Information = () => {
     useEffect(() => {
         setInforUser(data)
     }, [data])
+    useEffect(()=>{console.log("Infor bussiness");},[])
+
     const handleLogin = () => {
         navigation.navigate("Login")
     }

@@ -145,6 +145,8 @@ const ProductBusiness = (props) => {
     // if (errorProductbyBusi) {
     //     toastError("Xin lỗi", "Đã xảy ra lổi, thử lại sau")
     // }
+    useEffect(()=>{console.log("Product bussiness");},[])
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>

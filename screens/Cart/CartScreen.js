@@ -28,7 +28,8 @@ import Loading from '../../components/loading';
 import { useNavigation } from '@react-navigation/native';
 import CheckBox from '@react-native-community/checkbox';
 import { toastError, toastsuccess } from '../../components/toastCustom';
-const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
+import { putCartByID } from '../../redux/reducers/Cart/putCartReducer';
+const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID, bus_ID }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   // console.log("data :", data);
@@ -36,7 +37,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
   const { isLoading, error } = useSelector((state) => state.removeItemCartReducer)
   const [quantity_buy, setQuantity_Buy] = useState(data?.quantity_cart)
   const [total_eachProduct, setToTal_eachProduct] = useState(quantity_buy * data?.price)
-  const [toggleCheckBox, setToggleCheckBox] = useState(id_buy.includes(data?.id_product_information))
+  // const [toggleCheckBox, setToggleCheckBox] = useState(id_buy.includes(data?.id_product_information))
 
   const [total_eachProductAfterSale, setToTal_eachProductAfterSale] = useState(() => {
     if (dataDetail[data?.id_product_information]?.sale !== null) {
@@ -46,13 +47,13 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
       return quantity_buy * data?.price
     }
   })
-  useEffect(() => {
-    // if(id_buy?.includes(data?.id_product_information)){onHandleGetID("add", data?.id_product_information)}
-    // else{
-    //   onHandleGetID("remove", data?.id_product_information)
-    // }
-    setToggleCheckBox(id_buy?.includes(data?.id));
-  }, [id_buy]);
+  // useEffect(() => {
+  //   // if(id_buy?.includes(data?.id_product_information)){onHandleGetID("add", data?.id_product_information)}
+  //   // else{
+  //   //   onHandleGetID("remove", data?.id_product_information)
+  //   // }
+  //   setToggleCheckBox(id_buy?.includes(data?.id));
+  // }, [id_buy]);
 
   // const [informationProduct, setInformationProduct] = useState(dataDetail)
   const [isFocus, setIsFocus] = useState(false);
@@ -62,12 +63,11 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
   const removeItemFromCart = (id_cart) => {
     // console.log("ID_Cart in CartScreen: ", id_cart);
     // dispatchAPI....
-    dispatch(removerItemCartByID(id_cart)).then((ok)=>{
-      if(ok)
-      {
+    dispatch(removerItemCartByID(id_cart)).then((ok) => {
+      if (ok) {
         toastsuccess("Thành công", "Xoá sản phẩm\n" + data?.name_product_information + "")
       }
-      else{
+      else {
         toastError("Lỗi", "Đã xảy ra lỗi, hãy thử lại!")
       }
     })
@@ -76,7 +76,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
   useEffect(() => {
     // console.log("data in renderProducts",dataDetail[data?.id_product_information]);
     dispatch(fetchProductbyId(data?.id_product_information))
-    
+
     // setInformationProduct({...informationProduct, dataDetail})
   }, [data])
 
@@ -112,18 +112,18 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
   }, [quantity_buy])
   // if(isLoading) return (<Loading></Loading>)
   // console.log("ID_BUY in renderProducts", id_buy);
-  
+
   return (
     <TouchableOpacity
-    onPress={() => {
-      console.log("data detail product", dataDetail[data?.id_product_information]);
-      navigation.navigate('DetailProduct',  {item: dataDetail[data?.id_product_information]} ),
+      onPress={() => {
+        console.log("data detail product", dataDetail[data?.id_product_information]);
+        navigation.navigate('DetailProduct', { item: dataDetail[data?.id_product_information] }),
           // id_user: dataUser?.id,
-      
 
-      console.log("detail product in renderProducts in cart:", dataDetail[data.id_product_information]?.sale?.discount);
 
-    }}
+          console.log("detail product in renderProducts in cart:", dataDetail[data.id_product_information]?.sale?.discount);
+
+      }}
       key={data?.id_cart}
       // onPress={() => navigation.navigate('ProductInfo', {productID: data.id})}
       style={{
@@ -135,20 +135,22 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
         alignItems: 'center',
         backgroundColor: '#D1E3F9'
       }}>
-      <CheckBox
+      {/* <CheckBox
         disabled={false}
         value={toggleCheckBox}
         onValueChange={(newValue) => {
           if (newValue) {
+            console.log("ID ne", data?.id);
             onHandleGetID("add", data?.id)
           }
           else {
+            console.log("ID ne", data?.id);
             onHandleGetID("remove", data?.id)
 
           }
           setToggleCheckBox(newValue)
         }}
-      />
+      /> */}
       <View
         style={{
           width: '30%',
@@ -181,7 +183,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
         }}>
         <View style={{}}>
           <Text
-            numberOfLines={1}
+            numberOfLines={2}
             style={{
               fontSize: 14,
               maxWidth: '100%',
@@ -248,7 +250,7 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
 
             </View>}
         </View>
-        <Text style={{ fontSize: 12 }}>{data.size}</Text>
+        <Text style={{ fontSize: 12 }}>{data?.size}</Text>
 
         <View
           style={{
@@ -287,13 +289,14 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
                 marginRight: 20,
                 padding: 4,
                 borderWidth: 1,
-                borderColor: COLOURS.backgroundMedium,
-                opacity: 0.5,
+                borderColor: "black",
+                // opacity: 0.5,
               }}>
               <MaterialCommunityIcons
-                onPress={() => {
-                  dataDetail[data?.id_product_information]
+                onPress={async () => {
+                  // dataDetail[data?.id_product_information]
                   quantity_buy <= 1 ? setQuantity_Buy(1) : setQuantity_Buy(quantity_buy - 1)
+                  await dispatch(putCartByID(data?.id_Cart, bus_ID, data?.size, quantity_buy - 1))
                 }}
                 name="minus"
                 style={{
@@ -311,13 +314,17 @@ const RenderProducts = ({ id_buy, data, onHandleSale, onHandleGetID }) => {
                 marginLeft: 20,
                 padding: 4,
                 borderWidth: 1,
-                borderColor: COLOURS.backgroundMedium,
-                opacity: 0.5,
+                borderColor: "black",
+                // opacity: 0.5,
               }}>
               <MaterialCommunityIcons
-                onPress={() => {
-                  dataDetail[data?.id_product_information]
+                onPress={async () => {
+                  // dataDetail[data?.id_product_information]
                   setQuantity_Buy(quantity_buy + 1)
+                  const id_size = dataDetail[data?.id_product_information]?.productSet.find(item => item.size === data?.size).id
+                  console.log("Size",id_size , "\n\n")
+                  await dispatch(putCartByID(data?.id_Cart,bus_ID,id_size,quantity_buy + 1))
+
 
                 }}
                 name="plus"

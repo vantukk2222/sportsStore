@@ -54,7 +54,7 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
     console.log("data token in reducer signin:", data); // Log received data
 
     dispatch(loginSuccess({ authToken: data, userName: username })); // Dispatch loginSuccess with received data
-    dispatch(fetchUserByUserName(username))
+    await dispatch(fetchUserByUserName(username))
     // console.log("state reducerLogin: " + JSON.stringify(getState()));
     return data
   } catch (error) {

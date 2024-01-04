@@ -64,19 +64,11 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
         // Kiểm tra nếu sự khác biệt lớn hơn 30 ngày
 
         if (state === 0) {
-            if (differenceInDays > 1 && differenceInDays < 7) {
-                return "Đã nhận hàng"
-            }
-            if (differenceInDays > 7 && differenceInDays < 30) {
-                return "Đánh giá"
-            }
-            if (differenceInDays > 30) {
-                return "Mua lại"
-            }
+            
             return "Đã nhận hàng"
         }
         if (state === 1) {
-            if (differenceInDays > 30 || item?.is_rating) {
+            if ( item?.is_rating) {
                 return "Mua lại"
             }
             
@@ -91,9 +83,9 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
         if (state === 4) { return "Mua lại" }
 
     }
-    const handleButton = (text) => {
+    const handleButton = async(text) => {
         if (text === "Huỷ đơn") {
-            dispatch(cancelBillByID(item?.transaction?.id, "cancel")).then((status) => {
+            await dispatch(cancelBillByID(item?.transaction?.id, "cancel")).then((status) => {
                 if (status === 200 || status === 201 || status === 202 || status === 203 || status === 204) {
                     toastsuccess("Cảm ơn", "Quý khách đã huỷ đơn thành công.")
                     setIndex(0)
@@ -125,7 +117,7 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
         if (text === "Đã nhận hàng") {
             let list_ID_Bill = [];
             list_ID_Bill.push(item?.id)
-            dispatch(cancelBillByID(list_ID_Bill, "receive")).then((status) => {
+            await dispatch(cancelBillByID(list_ID_Bill, "receive")).then((status) => {
                 if (status === 200 || status === 201 || status === 202 || status === 203 || status === 204) {
                     toastsuccess("Cảm ơn", "Hãy đánh giá đơn hàng của bạn ngay nhé.")
                     setIndex(0)
@@ -358,8 +350,8 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
                         opacity: 1,
 
                     }}
-                    onPress={() => {
-                        handleButton(setOrderButton(item?.state))
+                    onPress={async () => {
+                        await handleButton(setOrderButton(item?.state))
                         // console.log("data", item)
                         // 
                     }}>

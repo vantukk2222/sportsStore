@@ -1,18 +1,21 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { colors } from "../../constants";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import { reset, setUserInformation } from "../../redux/reducers/User/setInforUser";
 import { fetchUserByUserName } from "../../redux/reducers/User/userInfor";
 import { useNavigation } from "@react-navigation/native";
+import { toastsuccess } from "../../components/toastCustom";
 const SetInfor = ({ route }) => {
 
     const TxtName = useRef();
     const TxtEmail = useRef();
     const TxtPhone = useRef();
     const TxtCic = useRef();
+    const TxtAdress = useRef();
 
+    const [address, setAdress] = useState("")
     const { infor } = route.params
     const [user, setUser] = useState()
 
@@ -29,21 +32,21 @@ const SetInfor = ({ route }) => {
         setUser(infor)
     }, [infor])
 
-    const handleSaveChanges = () => {
-        // Thực hiện logic để lưu các thay đổi thông tin cá nhân
-        // Ví dụ: Gửi yêu cầu API để cập nhật thông tin lên máy chủ
-        console.log("Saved changes:", TxtName.current);
+    const handleSaveChanges = async() => {
         const newUser = ({
             ...user
             , name: TxtName.current || user.name,
             email: TxtEmail.current || user.email,
             phone: TxtPhone.current || user.phone,
             cic: TxtCic.current || user.cic,
+            address: TxtAdress.current || user.address
             // password: "$2a$10$FyUiMIaGMB4FRKSSiGUG6ump1uHtO4vJTFOijfBha3bE0u0KIeGxq",
         });
         setUser(newUser)
+        console.log("Saved changes:", newUser);
+
         // console.log(newUser)
-        dispatch(setUserInformation(newUser))
+        await dispatch(setUserInformation(newUser))
 
 
         // Đưa ra thông báo hoặc chuyển hướng sau khi lưu thành công
@@ -52,7 +55,10 @@ const SetInfor = ({ route }) => {
         console.log("status", dataInfor)
         if (dataInfor === 202) {
             console.log("hi")
-            dispatch(fetchUserByUserName(infor?.username))
+            dispatch(fetchUserByUserName(infor?.username)).then(()=>{
+                toastsuccess("Thành công", "Chỉnh sửa thông tin xong.")
+                navigation.goBack()
+            })
         }
         return (() => {
             dispatch(reset())
@@ -61,7 +67,8 @@ const SetInfor = ({ route }) => {
     }, [dataInfor, dispatch]);
 
     return (
-        <View style={styles.container}>
+        <View style={{flex:100}}>
+        <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
             <TouchableOpacity onPress={()=>{goBack()}}>
                 <Icon name="angle-left" size={30} style={styles.iconBuffer}></Icon>
@@ -111,17 +118,32 @@ const SetInfor = ({ route }) => {
                     keyboardType="phone-pad"
                 />
             </View>
+            <View style={styles.fieldContainer}>
+                <Text style={styles.label}>Địa chỉ hiện tại:</Text>
+                <TextInput
+                    style={styles.input}
+                    // placeholder={user?.address}
+                    placeholderTextColor="gray"
+                    value={address || user?.address}
+                    onChangeText={(text) => { 
+                        setAdress(text)
+                        TxtAdress.current = text }}
 
-            <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
+                />
+            </View>
+
+        </ScrollView>
+            <TouchableOpacity style={styles.saveButton} onPress={async()=>{
+                handleSaveChanges()
+            }}>
                 <Text style={styles.saveButtonText}>Lưu thay đổi</Text>
             </TouchableOpacity>
-        </View>
+            </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 16,
         paddingTop: 20
     },
@@ -160,7 +182,7 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     input: {
-        height: 40,
+        // height: 40,
         borderColor: "gray",
         borderWidth: 1,
         borderRadius: 8,
@@ -168,7 +190,9 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     saveButton: {
-        position: 'absolute',
+        // position: 'absolute',
+        marginTop:15,
+
         bottom: 0,
         left: 1,
         right: 1,

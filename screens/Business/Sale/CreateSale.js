@@ -11,6 +11,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../../constants';
 import Loading from '../../../components/loading';
 import { isValidInteger } from '../../../utilies/validation';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 const ProductForm = (props) => {
     const {
         saleState,
@@ -87,6 +89,31 @@ const ProductForm = (props) => {
     }
     // console.log(data?.id);
     return (
+        <View style={{flex:100}}>
+             <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}>
+                    <Icon name="angle-left" size={30} style={{
+                        color: 'white',
+                        alignItems: 'flex-end',
+                        marginLeft: 15,
+                    }}></Icon>
+                </TouchableOpacity>
+
+                <Text style={{
+                    padding: 2,
+                    paddingRight: 30,
+                    color: 'white',
+                    fontWeight: '600',
+                    fontSize: 24,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center'
+                }}>Thêm sự kiện </Text>
+                <View></View>
+
+            </View>
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Thêm sự kiện</Text>
             <View style={{ height: 1, backgroundColor: 'gray' }}></View>
@@ -201,6 +228,7 @@ const ProductForm = (props) => {
                     <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Tạo sự kiện</Text>}
             </TouchableOpacity>
         </ScrollView >
+        </View>
     );
 };
 

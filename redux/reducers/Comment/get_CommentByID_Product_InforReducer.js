@@ -40,7 +40,7 @@ export const getCommentByIDProducInfor = (id_product_infor, page) => async (disp
         console.log("Call API GetComment Success");
 
         if (response.status >= 200 && response.status < 300) {
-            console.log("Response success");
+            console.log("Response success", response.data);
 
             dispatch(getSuccess(response.data));
 

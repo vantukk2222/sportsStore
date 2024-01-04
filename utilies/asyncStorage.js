@@ -15,16 +15,16 @@ const removeAuthToken = async ()=> {
 }
 const setUsername = async(username)=>{
     await AsyncStorage.setItem("userName", String(username));
-
 }
 const getUserNameStorage = async()=>{
     return await AsyncStorage.getItem("userName");
 
 }
+
 export const  asyncStorage = {
     setAuthToken,
     getAuthToken,
     removeAuthToken,
     setUsername,
-    getUserNameStorage
+    getUserNameStorage,
 }

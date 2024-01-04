@@ -61,37 +61,35 @@ function Login(props) {
   //   // }
   // }, [token]);
 
-  // useEffect(() => {
-  //   console.log('efff', data);
+  useEffect(() => {
+    console.log('efff', data);
+    if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
+      console.log('hereeeeee');
+      dispatch(setRole('ROLE_CUSTOMER'));
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'LoginBottomNavigator' }],
+        }),
+      );
+    } else if (data && handleCheckArray(data?.roles, 'ROLE_BUSINESS')) {
+      dispatch(setRole('ROLE_BUSINESS'));
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'BusinessBottomNavigator' }],
+        }),
+      );
+    }
 
-  // }, [data]);
+  }, [data]);
   const handlePress = async () => {
     setIsLoading(true);
     setButtonDisabled(true);
     if (valueEmail !== '' && valuePassword !== '') {
       loginUser(valueEmail, valuePassword).then(async dataToken => {
         if (dataToken) {
-          await dispatch(fetchUserByUserName(valueEmail)).then((data) => {
-            if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
-              console.log('hereeeeee');
-              dispatch(setRole('ROLE_CUSTOMER'));
-
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: 'LoginBottomNavigator' }],
-                }),
-              );
-            } else if (data) {
-              dispatch(setRole('ROLE_BUSINESS'));
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: 'BusinessBottomNavigator' }],
-                }),
-              );
-            }
-          })
+          await dispatch(fetchUserByUserName(valueEmail))
           await asyncStorage.setUsername(valueEmail);
           toastsuccess(
             'Đăng nhập thành công',

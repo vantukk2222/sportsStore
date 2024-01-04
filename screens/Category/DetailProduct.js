@@ -106,6 +106,7 @@ const DetailProduct = ({ navigation, route }) => {
     useEffect(() => {
         setDataComment(dataCommentss)
         dataComment?.content?.map( async(eachItem)=>{
+            console.log("id: ", eachItem?.id_user);
             await dispatch(fetchUserCommentByID(eachItem?.id_user))
         })
 

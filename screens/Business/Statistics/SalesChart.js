@@ -41,7 +41,7 @@ const SalesChart = (props) => {
             // console.log('statis', statis);
 
             const months = statis?.setStatistic?.map(item => item.month.toString());
-            const dataValues = statis?.setStatistic?.map(item => item.bill_total / 10000);
+            const dataValues = statis?.setStatistic?.map(item => item.bill_total / 1000);
             const dataBil = statis?.setStatistic?.map(item => item.bill_count)
             setData({
                 labels: months,

@@ -11,6 +11,8 @@ import { fetchSaleById } from '../../../redux/reducers/Sale/getSalebyId';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../../constants';
 import { editSale } from '../../../redux/reducers/Sale/putSale';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 const EditSale = (props) => {
     const route = useRoute()
     const saleId = route.params.saleId
@@ -105,112 +107,137 @@ const EditSale = (props) => {
         console.log('Form data submitted:', formData);
     };
     return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.field}>ID Business {formData?.id}</Text>
-            <Text style={styles.field}>Mức giảm giá (từ 1% đến 100%)</Text>
-            <TextInput
-                style={styles.input}
-                value={formData?.discount?.toString()}
-                onChangeText={(value) => handleInputChange('discount', value)}
-                keyboardType="numeric"
+        <View style={{flex:100}}>
+            <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}>
+                    <Icon name="angle-left" size={30} style={{
+                        color: 'white',
+                        alignItems: 'flex-end',
+                        marginLeft: 15,
+                    }}></Icon>
+                </TouchableOpacity>
 
-            />
+                <Text style={{
+                    padding: 2,
+                    paddingRight: 30,
+                    color: 'white',
+                    fontWeight: '600',
+                    fontSize: 24,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center'
+                }}>Chỉnh sửa Sale </Text>
+                <View></View>
 
-            <Text style={styles.field}>Start Date</Text>
-            {/* <Button
+            </View>
+            <ScrollView style={styles.container}>
+                <Text style={styles.field}>Mức giảm giá (từ 1% đến 100%)</Text>
+                <TextInput
+                    style={styles.input}
+                    value={formData?.discount?.toString()}
+                    onChangeText={(value) => handleInputChange('discount', value)}
+                    keyboardType="numeric"
+
+                />
+
+                <Text style={styles.field}>Start Date</Text>
+                {/* <Button
                 title={formData?.started_at ? new Date(formData.started_at).toISOString().split('T')[0] : 'Select Start Date'}
                 onPress={() => setShowStartDatePicker(true)}
             /> */}
-            <Button
-                title={moment(selectedStartDate).format('YYYY-MM-DD')}
-                onPress={() => {
-                    setShowStartDatePicker(true);
-                }}
-            />
-
-            {showStartDatePicker && (
-                <DateTimePicker
-                    value={selectedStartDate}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
-                    onChange={(event, date) => {
-                        setShowStartDatePicker(false);
-                        if (event.type === 'set') {
-                            setSelectedStartDate(date || selectedStartDate);
-                            handleDateChange({ type: 'set', target: 'started_at' }, date || selectedStartDate);
-                        }
+                <Button
+                    title={moment(selectedStartDate).format('YYYY-MM-DD')}
+                    onPress={() => {
+                        setShowStartDatePicker(true);
                     }}
                 />
-            )}
-            <Text style={styles.field}>End Date</Text>
-            {/* <Button
+
+                {showStartDatePicker && (
+                    <DateTimePicker
+                        value={selectedStartDate}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={(event, date) => {
+                            setShowStartDatePicker(false);
+                            if (event.type === 'set') {
+                                setSelectedStartDate(date || selectedStartDate);
+                                handleDateChange({ type: 'set', target: 'started_at' }, date || selectedStartDate);
+                            }
+                        }}
+                    />
+                )}
+                <Text style={styles.field}>End Date</Text>
+                {/* <Button
                 title={formData?.ended_at ? new Date(formData.ended_at).toISOString().split('T')[0] : 'Select End Date'}
                 onPress={() => setShowEndDatePicker(true)}
             /> */}
-            <Button
-                title={moment(selectedEndDate).format('YYYY-MM-DD')}
-                onPress={() => {
-                    setShowEndDatePicker(true);
-                }}
-            />
-
-            {showEndDatePicker && (
-                <DateTimePicker
-                    value={selectedEndDate}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
-                    onChange={(event, date) => {
-                        setShowEndDatePicker(false);
-                        if (event.type === 'set') {
-                            setSelectedEndDate(date || selectedEndDate);
-                            handleDateChange({ type: 'set', target: 'ended_at' }, date || selectedEndDate);
-                        }
+                <Button
+                    title={moment(selectedEndDate).format('YYYY-MM-DD')}
+                    onPress={() => {
+                        setShowEndDatePicker(true);
                     }}
                 />
-            )}
 
-            <Text style={styles.field}>Name</Text>
-            <TextInput
-                style={styles.input}
-                value={formData.name}
-                onChangeText={(value) => handleInputChange('name', value)}
-            />
+                {showEndDatePicker && (
+                    <DateTimePicker
+                        value={selectedEndDate}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={(event, date) => {
+                            setShowEndDatePicker(false);
+                            if (event.type === 'set') {
+                                setSelectedEndDate(date || selectedEndDate);
+                                handleDateChange({ type: 'set', target: 'ended_at' }, date || selectedEndDate);
+                            }
+                        }}
+                    />
+                )}
 
-            <Text style={styles.field}>Content</Text>
-            <TextInput
-                style={styles.input}
-                value={formData.content}
-                onChangeText={(value) => handleInputChange('content', value)}
-                multiline
-            />
+                <Text style={styles.field}>Name</Text>
+                <TextInput
+                    style={styles.input}
+                    value={formData.name}
+                    onChangeText={(value) => handleInputChange('name', value)}
+                />
 
-            <Text style={styles.field}>URL</Text>
-            {/* <TextInput
+                <Text style={styles.field}>Content</Text>
+                <TextInput
+                    style={styles.input}
+                    value={formData.content}
+                    onChangeText={(value) => handleInputChange('content', value)}
+                    multiline
+                />
+
+                <Text style={styles.field}>URL</Text>
+                {/* <TextInput
                 style={styles.input}
                 value={formData.url}
                 onChangeText={(value) => handleInputChange('url', value)}
             /> */}
-            <ImagePickerComponent onUrlChange={handleInputChange} isSale={true} oldUrl={formData?.url} />
+                <ImagePickerComponent onUrlChange={handleInputChange} isSale={true} oldUrl={formData?.url} />
 
-            <TouchableOpacity onPress={handleSubmit}
-                style={{
-                    marginTop: 5,
-                    height: 50,
-                    width: 200,
-                    backgroundColor: colors.facebook,
-                    borderRadius: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    marginBottom: 20,
-                }}
-            >
-                {editSaleState?.loadingEditSale ? <ActivityIndicator size="large" color={colors.success} /> :
-                    <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Sửa</Text>}
-            </TouchableOpacity>
-        </ScrollView>
+                <TouchableOpacity onPress={handleSubmit}
+                    style={{
+                        marginTop: 5,
+                        height: 50,
+                        width: 200,
+                        backgroundColor: colors.facebook,
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 20,
+                    }}
+                >
+                    {editSaleState?.loadingEditSale ? <ActivityIndicator size="large" color={colors.success} /> :
+                        <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Sửa</Text>}
+                </TouchableOpacity>
+            </ScrollView>
+        </View>
     );
 
 
@@ -218,7 +245,8 @@ const EditSale = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
+        // height:"100%",
+        padding: 16
     },
     input: {
         height: 40,

@@ -54,7 +54,7 @@ const Start = () => {
     // const {dataUsre, loading}
     const [products, setProducts] = useState([]);
 
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sort, setSort] = useState('id');
     const [desc, setDesc] = useState(false);
@@ -95,7 +95,7 @@ const Start = () => {
     };
 
     const handleGoList = () => {
-        navigation.navigate('ProductList');
+        navigation.navigate('Product');
     };
 
 

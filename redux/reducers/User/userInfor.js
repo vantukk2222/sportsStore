@@ -43,9 +43,9 @@ export const fetchUserByUserName = (userName) => async (dispatch) => {
     try {
         dispatch(getUserStart());
         const data = await getUserByUserName(userName);
+        console.log("data User ",data);
 
         dispatch(getUsersuccess(data));
-        return data
     } catch (error) {
         // dispatch(logout())
 

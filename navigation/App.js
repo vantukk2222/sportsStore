@@ -31,6 +31,7 @@ const App = ({ loggedIn, loginUser, auth }) => {
     const role = useSelector((state) => state.role.role);
     const handNavigator = () => {
         if (role === "ROLE_BUSINESS") {
+            console.log("ROLE in APP:",role);
             return (
                 <Navigation.BusinessScreenNavigator />
             )
@@ -52,8 +53,6 @@ const App = ({ loggedIn, loginUser, auth }) => {
         </>
     )
 }
-
-
 const mapStateToProps = state => ({
     auth: state.login,
     loggedIn: state.login.authToken !== null, // Assuming authToken indicates user logged in

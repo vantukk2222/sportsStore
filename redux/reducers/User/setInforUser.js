@@ -40,10 +40,12 @@ export const setUserInformation = (User) => async (dispatch, getState) => {
     try {
         dispatch(getUserStart());
         const authToken = getState().login.authToken
+        const Uname = getState().userData.data
         console.log(('reducer set user ', User));
+        
         const data = await setInfor(User.id, User, authToken);
         dispatch(getUsersuccess(data));
-        await dispatch(fetchUserByUserName(infor?.username))
+        await dispatch(fetchUserByUserName(Uname))
          
     } catch (error) {
         // store.dispatch(logout())

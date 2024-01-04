@@ -9,6 +9,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import ListOrder from './ListOrder';
 import { colors } from '../../../constants';
 import { IsConfirmBill } from '../../../redux/reducers/Bill/confirmBill';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const OrderScreen = (props) => {
     const {
@@ -107,12 +108,34 @@ const OrderScreen = (props) => {
     }
 
     return (
+<View style={{flex:100}}>
+<View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}>
+                    <Icon name="angle-left" size={30} style={{
+                        color: 'white',
+                        alignItems: 'flex-end',
+                        marginLeft: 15,
+                    }}></Icon>
+                </TouchableOpacity>
 
+                <Text style={{
+                    padding: 2,
+                    paddingRight: 30,
+                    color: 'white',
+                    fontWeight: '600',
+                    fontSize: 24,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center'
+                }}>Đơn hàng</Text>
+                <View></View>
+
+            </View>
         <SafeAreaView style={styles.container}>
             <View style={{ flex: 1, height: '60%' }}>
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>Đơn hàng</Text>
-                </View>
+            
                 <View style={{ height: 1, backgroundColor: 'black' }} />
                 <View style={{ flex: 0 }}>
                     <ScrollView style={styles.scrollViewContainer} horizontal>
@@ -170,6 +193,7 @@ const OrderScreen = (props) => {
             </View>
 
         </SafeAreaView >
+        </View>
     )
 };
 const styles = StyleSheet.create({

@@ -14,24 +14,25 @@ import { cancelBillByID } from "../../redux/reducers/Bill/billCancelReducer";
 import { listCartByIdUser } from "../../redux/reducers/Cart/listCartReducer";
 import { toastError, toastsuccess } from "../../components/toastCustom";
 import { useNavigation } from "@react-navigation/native";
+import { fetchProductbyId } from "../../redux/reducers/productReducer/getDetailProduct";
 
 const DetailOrderScreen = ({ route }) => {
     const { orderByState, businessInfor, list_id, total } = route.params
     const { data, loading, error } = useSelector((state) => state.userData)
     // const [total, setTotal] = useState(0)
-
+  const { data: dataDetail, loading: loadingDetail, error: errorDetail } = useSelector((state) => state.productDetail)
+    
     console.log("list ID",list_id);
     const dispatch = useDispatch()
     const navigation = useNavigation()
-    // useEffect(() => {
-    //     const totalAllBill = () => {
-    //         setTotal(0)
-    //         orderByState?.bill_detailSet?.map((eachBill) => {
-    //             setTotal(prevTotal => prevTotal + eachBill?.price)
-    //         })
-    //     }
-    //     totalAllBill()
-    // }, [])
+    useEffect(() => {
+        const totalAllBill = () => {
+            orderByState?.bill_detailSet?.map((eachBill) => {
+                dispatch(fetchProductbyId(eachBill?.product?.id_product_information))
+            })
+        }
+        totalAllBill()
+    }, [])
     // console.log("Re-render detail");
     const getTextTitle = () => {
         if (orderByState?.state === 0) {
@@ -120,12 +121,13 @@ const DetailOrderScreen = ({ route }) => {
                         <View key={index_eachID}>
                             <ShopInfo inCart={true} business={businessInfor[eachID]}></ShopInfo>
                             {orderByState ? orderByState?.bill_detailSet?.map((eachproductItem, eachindex) => {
-                                if (eachproductItem?.product?.id_business === eachID) {
+                               console.log("eachProductItem detailOrder:", eachproductItem);
+                               if (eachproductItem?.product?.id_business === eachID) {
                                     return (
                                         <View key={eachindex}>
                                             <TouchableOpacity
                                                 onPress={() => {
-                                                    // navagation.navgate("DetailProduct")
+                                                    navigation.navigate("DetailProduct", {item: dataDetail[eachproductItem?.product?.id_product_information]})
                                                 }}
                                                 style={{ flexDirection: 'row', backgroundColor: 'white' }}>
                                                 <View

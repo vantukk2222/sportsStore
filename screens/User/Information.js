@@ -94,7 +94,7 @@ const Information = () => {
                         style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 10 }}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.infoItem}
+                {/* <TouchableOpacity style={styles.infoItem}
                 onPress={() => {
                     //  navigation.navigate('Cart')
                     console.log("ID user in information: ",data?.id);
@@ -107,7 +107,7 @@ const Information = () => {
                         color={colors.denNhe}
                         style={{ position: 'absolute', right: 0, bottom: 0, marginBottom: 10 }}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity style={styles.infoItem}
                     onPress={() => {
                         inforUser?.id ? navigation.navigate('setInfor', { infor: inforUser }) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")

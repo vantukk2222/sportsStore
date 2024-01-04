@@ -42,7 +42,7 @@ export const removerItemCartByID = (id_Cart) => async (dispatch, getState) => {
     await removeItemCart(id_Cart, authToken)
     toastsuccess("Thành công", "Bạn đã xoá sản phẩm ", id_Cart, " ra khỏi giỏ hàng")
     dispatch(removeCartItemSuccess())
-    dispatch(listCartByIdUser(id_user))
+    await  dispatch(listCartByIdUser(id_user))
 
     return true
   } catch (error) {

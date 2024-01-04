@@ -43,11 +43,18 @@ import { StatisticBottomNavigator } from "./bottomStatistic"
 import SetMain from "../screens/Business/Products/SetImage/SetMain"
 import setInforBusiness from "../screens/Business/Me/setInforBusiness"
 import RatingOrder from "../screens/Cart/ratingOrder"
+import HomeBusiness from "../screens/Business/HomeBusiness";
+import InforBusiness from "../screens/Business/InforBusiness";
+import ProductBusiness from "../screens/Business/Products/ProductBusiness";
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
+    console.log("vodayyyyy business: ");
     return (
         <Stack.Navigator initialCalculations="BusinessBottomNavigator">
             <Stack.Screen name="BusinessBottomNavigator" component={BusinessBottomNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="Home" component={HomeBusiness} options={{ headerShown: false }} />
+            <Stack.Screen name="Product" component={ProductBusiness} options={{ headerShown: false }} />
+            <Stack.Screen name="Me" component={InforBusiness} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
 
@@ -107,29 +114,30 @@ export const LoginScreenNavigator = () => {
         </Stack.Navigator>
     )
 }
-export const MainScreenNavigator = () => {
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='Start' component={Start} options={{ headerShown: false }} />
-            <Stack.Screen name="Cart" component={MyCart} options={{ headerShown: false }} />
-            <Stack.Screen name='ProductList' component={ProductList} options={{ headerShown: false }} />
-            <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
-            <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
-            <Stack.Screen name='Login' component={LoginScreenNavigator} />
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-            <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
-            {/* // <<<<<<< categoryDat */}
-            <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
-            <Stack.Screen name="ShopInfo" component={ShopInfo} options={{ headerShown: false }} />
-            <Stack.Screen name="Business" component={Business} options={{ headerShown: false }} />
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen name="ModalBuyProduct" component={ModalBuyProduct} />
-            </Stack.Group>
-            {/* // ======= */}
-            {/* //             <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} /> */}
-            {/* // >>>>>>> NewD */}
 
-        </Stack.Navigator>
-    )
-};
-// export default mainScreenNavigator;
+// export const MainScreenNavigator = () => {
+//     return (
+//         <Stack.Navigator screenOptions={{ headerShown: false }}>
+//             <Stack.Screen name='Start' component={Start} options={{ headerShown: false }} />
+//             <Stack.Screen name="Cart" component={MyCart} options={{ headerShown: false }} />
+//             <Stack.Screen name='ProductList' component={ProductList} options={{ headerShown: false }} />
+//             <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
+//             <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
+//             <Stack.Screen name='Login' component={LoginScreenNavigator} />
+//             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+//             <Stack.Screen name='ListProductByCategory' component={ListProductByCategory} options={{ headerShown: false }} />
+//             {/* // <<<<<<< categoryDat */}
+//             <Stack.Screen name="DetailProduct" component={DetailProduct} options={{ headerShown: false }} />
+//             <Stack.Screen name="ShopInfo" component={ShopInfo} options={{ headerShown: false }} />
+//             <Stack.Screen name="Business" component={Business} options={{ headerShown: false }} />
+//             <Stack.Group screenOptions={{ presentation: 'modal' }}>
+//                 <Stack.Screen name="ModalBuyProduct" component={ModalBuyProduct} />
+//             </Stack.Group>
+//             {/* // ======= */}
+//             {/* //             <Stack.Screen name='UITab' component={UITab} options={{ headerShown: false }} /> */}
+//             {/* // >>>>>>> NewD */}
+
+//         </Stack.Navigator>
+//     )
+// };
+// // export default mainScreenNavigator;

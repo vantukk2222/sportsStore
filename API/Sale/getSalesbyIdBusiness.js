@@ -20,7 +20,7 @@ const getSalebyIdBusiness = async (idBusi, page, pageSize, sort, desc) => {
 
         return response.data;
     } catch (error) {
-        console.error("Error get sale by business: ", error.response.data.message);
+        console.error("Error get sale by business: ", error.response);
         throw error;
     }
 };

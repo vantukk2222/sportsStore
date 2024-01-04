@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderRadius: 8,
         marginBottom: 16,
-        elevation: 15,
     },
     column: {
         flex: 1,

@@ -16,7 +16,7 @@ export const setInfor = async (userId, userData, authToken) => {
             }
         );
 
-        console.log('Update User Response:', response);
+        console.log('Update User Response:', response.data  );
         return response.status;
     } catch (error) {
         console.error('Error updating user:', error.response);

@@ -42,8 +42,8 @@ export const addToCartUser = (id_user, id_size, quantity) => async (dispatch, ge
     const data = await addToCart(id_user, id_size, quantity, authToken); // Call addToCartPage API
     console.log("data in cartReducer: ", data.response); // Log received data
     // dispatch
-    dispatch(addToCartSlice.actions.addToCartSuccess()).then(() => {
-      dispatch(listCartByIdUser(id_user))
+    dispatch(addToCartSlice.actions.addToCartSuccess()).then(async () => {
+      await dispatch(listCartByIdUser(id_user))
 
     })
     // console.log("state reduceraddToCart: " + JSON.stringify(getState()));

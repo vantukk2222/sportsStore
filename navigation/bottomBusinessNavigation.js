@@ -14,11 +14,13 @@ import Sale from "../screens/Business/Sale/Sale";
 const Tab = createBottomTabNavigator();
 
 export const BusinessBottomNavigator = (props) => {
+    console.log("vodayy busines bottom navigate");
     return (
         <Tab.Navigator
             initialRouteName="Home"
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, size, color }) => {
+                    console.log("rô te",route);
                     let iconName;
                     if (route.name === "Home") {
                         iconName = focused ? "home" : "home";

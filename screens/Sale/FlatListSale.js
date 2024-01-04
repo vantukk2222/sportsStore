@@ -57,9 +57,9 @@ const FlatListSale = () => {
                 <Text style={styles.textTitle}>Sale</Text>
                 <TouchableOpacity
                 
-                    onPress={() => { navigation.navigate('SalesofBusiness') }}
+                    onPress={() => { navigation.navigate('Sale') }}
                 >
-                    <Text style={styles.viewAll}>View all</Text>
+                    <Text style={styles.viewAll}>Xem</Text>
                 </TouchableOpacity>
             </View>
             {/* <FlatList
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     },
     viewAll: {
         alignItems: 'flex-start',
-        color: 'black',
+        color: 'red',
         fontSize: 16,
         marginTop: 15
     },

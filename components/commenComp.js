@@ -10,7 +10,7 @@ export const CommentItem = ({ avatar, name, rating, category, content, listImg, 
     const [selectedImage, setSelectedImage] = useState(null);
     const {data:dataUser, loading:loadingUser, error:errorUser} = useSelector((state)=>state.listUserReducer)
     const dataUserJson = JSON.parse(JSON.stringify(dataUser))
-    console.log("data user: ",id, dataUserJson[id]);
+    console.log("data user: ",id, dataUser);
     const handleImagePress = (url) => {
         setSelectedImage(url);
     };

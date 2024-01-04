@@ -76,10 +76,29 @@ const StatisticScreen = (props) => {
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#6A99B8' }}>
 
-            <View style={{ backgroundColor: '#30468F' }}>
-                <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600', color: 'white', marginBottom: 10, marginTop: 5, marginHorizontal: 20 }}>
-                    Thống kê
-                </Text>
+<View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}>
+                    <Icon name="angle-left" size={30} style={{
+                        color: 'white',
+                        alignItems: 'flex-end',
+                        marginLeft: 15,
+                    }}></Icon>
+                </TouchableOpacity>
+
+                <Text style={{
+                    padding: 2,
+                    paddingRight: 30,
+                    color: 'white',
+                    fontWeight: '600',
+                    fontSize: 24,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center'
+                }}>Thống kê </Text>
+                <View></View>
+
             </View>
 
             <View style={styles.container}>

@@ -11,7 +11,7 @@ import { toastError } from '../../../components/toastCustom';
 import { createProductInfor, resetProductInformation } from '../../../redux/reducers/productReducer/createProductInformation';
 import { useNavigation } from '@react-navigation/native';
 import Loading from '../../../components/loading';
-
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const CreateNewProduct = () => {
     const { data, loading, error } = useSelector((state) => state.userData)
@@ -171,6 +171,31 @@ const CreateNewProduct = () => {
     }
 
     return (
+        <View style={{flex:100}}>
+         <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}>
+                    <Icon name="angle-left" size={30} style={{
+                        color: 'white',
+                        alignItems: 'flex-end',
+                        marginLeft: 15,
+                    }}></Icon>
+                </TouchableOpacity>
+
+                <Text style={{
+                    padding: 2,
+                    paddingRight: 30,
+                    color: 'white',
+                    fontWeight: '600',
+                    fontSize: 24,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center'
+                }}>Thêm sản phẩm </Text>
+                <View></View>
+
+            </View>
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Thêm sản phẩm</Text>
             <View style={{ height: 1, backgroundColor: 'gray' }}></View>
@@ -301,6 +326,7 @@ const CreateNewProduct = () => {
                     <Text style={{ fontSize: 20, color: 'white', fontSize: 20, fontWeight: '500' }}>Tạo sản phẩm</Text>}
             </TouchableOpacity>
         </ScrollView >
+        </View>
     );
 };
 const styles = StyleSheet.create({
