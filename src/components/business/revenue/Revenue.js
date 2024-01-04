@@ -109,7 +109,7 @@ const RevenueAndOrdersChart = () => {
                     <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
                 </div>
             </div>
-            <h2 className="chart-title">Biểu đồ Giá tiền thu được</h2>
+            <h2 className="chart-title">Biểu đồ Doanh thu của cửa hàng theo tháng</h2>
             <div className="chart-table">
                 <Line
                     data={data}
@@ -148,7 +148,7 @@ const RevenueAndOrdersChart = () => {
                         },
                     }}
                 />
-                <h2 className="chart-title">Biểu đồ tổng số đơn bán được</h2>
+                <h2 className="chart-title">Biểu đồ tổng số đơn bán được theo tháng</h2>
                 <Line
                     data={dataBar}
                     options={{
