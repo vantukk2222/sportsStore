@@ -2,7 +2,6 @@ import axios from 'axios';
 import { api } from './url';
 
 export const postComment = async (CommentData, authToken) => {
-    console.log('Sale :', CommentData);
     CommentData.id_imageSet = CommentData.id_imageSet.map((e) => e.id);
     try {
         await axios({

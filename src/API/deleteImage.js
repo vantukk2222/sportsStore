@@ -11,8 +11,6 @@ const deleteImage = async (prop, authToken) => {
         });
     } catch (error) {
         console.error('Error fetching data - Get group category: ', error);
-        //   console.log('Error response from server:', error.response);
-        throw error;
     }
 };
 

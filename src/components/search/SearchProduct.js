@@ -20,7 +20,7 @@ const SearchProduct = () => {
                 const response = await getUnAuth(
                     `product-information/search?name=${name}&page=${page}&page_size=20&state=0&state_business=0`,
                 );
-                console.log(response);
+             
                 setProductItems(response.content);
                 if (!response) {
                     throw new Error('Network response was not ok');
@@ -34,7 +34,7 @@ const SearchProduct = () => {
         };
         fetchData();
     }, [location, page]);
-    //console.log(productItems);
+   
     return (
         <>
             <section className="shop background">

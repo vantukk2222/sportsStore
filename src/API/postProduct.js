@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
 const postProduct = async (id, product, authToken) => {
-    console.log('x', id, product);
     try {
         const response = await axios.post(
             `${api}product/save`,
@@ -20,7 +19,7 @@ const postProduct = async (id, product, authToken) => {
         );
         return response;
     } catch (error) {
-        console.log('error sign in' + error.message);
+        console.error('error sign in' + error.message);
     }
 };
 

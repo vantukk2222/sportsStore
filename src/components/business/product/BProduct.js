@@ -41,7 +41,7 @@ const BProduct = () => {
             setSelectedProducts(Array(response.content.length).fill(false));
             response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
             setTotalPage(response.totalPages);
-            console.log(response.content);
+           
             setProducts(response.content);
         } catch (error) {
             setError(error);
@@ -62,7 +62,7 @@ const BProduct = () => {
             setSelectedProducts(Array(response.content.length).fill(false));
             response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
             setTotalPage(response.totalPages);
-            console.log(response.content);
+          
             setProducts(response.content);
         } catch (error) {
             setError(error);
@@ -88,7 +88,7 @@ const BProduct = () => {
     };
 
     const handleSaveProduct = (id, editedProduct) => {
-        console.log(editedProduct);
+       
         const authToken = JSON.parse(localStorage.getItem('authToken'));
 
         const t = () => {
@@ -97,7 +97,7 @@ const BProduct = () => {
 
             editedProduct.imageSet.forEach((e) => {
                 if (e.id == null) {
-                    console.log(e.id);
+                   
                     const promise = postImage(editedProduct.name, e.url, 'false', authToken)
                         .then((response) => (e.id = response.data))
                         .catch((error) => console.error('Error uploading image:', error));
@@ -154,7 +154,7 @@ const BProduct = () => {
             if (e) arr.push(products[index].id);
         });
         setAddEProduct(arr);
-        //   console.log(arr);
+       
         setSelectedProducts(updatedSelectedProducts);
     };
     const handleHide = (id, state) => {
@@ -178,7 +178,7 @@ const BProduct = () => {
     };
 
     const handleSaveEvent = (id) => {
-        //   console.log('Event Name:', id);
+     
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         postSProductInformation(id, addEProduct, authToken)
             .then(() => {
@@ -188,7 +188,7 @@ const BProduct = () => {
             .then(handleCloseAddEventModal());
     };
     const handleDeleteEvent = () => {
-        // console.log(addEProduct);
+       
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         putRemoveSale(addEProduct, authToken).then(() => {
             if (sname) SearchData();
@@ -224,7 +224,7 @@ const BProduct = () => {
                 </p>
                 <p className="menu-item" onClick={() => setState(1)}>
                     Sản phẩm bị khóa{' '}
-                    <span
+                    {/* <span
                         style={{
                             marginBottom: '10px',
                             marginLeft: '7px',
@@ -234,11 +234,11 @@ const BProduct = () => {
                         }}
                     >
                         10
-                    </span>
+                    </span> */}
                 </p>
                 <p className="menu-item" onClick={() => setState(2)}>
                     Sản phẩm bị ẩn
-                    <span
+                    {/* <span
                         style={{
                             marginBottom: '10px',
                             marginLeft: '5px',
@@ -248,7 +248,7 @@ const BProduct = () => {
                         }}
                     >
                         10
-                    </span>
+                    </span> */}
                 </p>
             </div>
             <button type="button" onClick={handleOpenAddModal}>

@@ -23,7 +23,7 @@ const AddProductModal = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const handleAddProduct = () => {
-        console.log(newProduct);
+    
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const t = () => {
             // Create an array to hold all the promises
@@ -50,13 +50,13 @@ const AddProductModal = ({ onClose }) => {
         t()
             .then(() => postProductInformation(newProduct, authToken))
             .then((response) => {
-                // console.log(response.data);
+             
                 const id = response.data;
                 newProduct.priceSizePairs.forEach((e) => {
                     if (e.id == null) postProduct(id, e, authToken);
                 });
             });
-        console.log(newProduct);
+     
     };
 
     const handleInputChange = (e) => {
@@ -186,7 +186,7 @@ const AddProductModal = ({ onClose }) => {
         };
         categoryData();
     }, []);
-    // console.log(newProduct);
+  
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">

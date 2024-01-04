@@ -21,7 +21,7 @@ const Sale = () => {
             if (!response) {
                 throw new Error('Network response was not ok');
             }
-            console.log(response.content);
+           
             setTotalPage(response.totalPages);
             response.content.map((e) => {
                 const start = new Date(e.started_at);
@@ -68,7 +68,7 @@ const Sale = () => {
     };
 
     const handleAddEvent = (newEvent) => {
-        console.log(newEvent);
+      
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         newEvent.started_at = change(newEvent.started_at);
         newEvent.ended_at = change(newEvent.ended_at);

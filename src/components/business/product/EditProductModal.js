@@ -117,7 +117,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                 response.content = response.content.map((e) => {
                     if (!editedProduct.categorySet.find((el) => e.name == el.name)) return e;
                 });
-                console.log(response.content);
+              
                 setSelectedCategories(response.content);
             } catch (error) {
                 setError(error);
@@ -127,7 +127,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
         };
         categoryData();
     }, []);
-    console.log(editedProduct);
+ 
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">
@@ -224,7 +224,7 @@ const EditProductModal = ({ product, onClose, onSave }) => {
                                     icon={faTimes}
                                     onClick={() => {
                                         const updatedCategory = [...editedProduct.categorySet];
-                                        console.log(index);
+                               
                                         setSelectedCategories([...selectedCategories, updatedCategory[index]]);
                                         updatedCategory.splice(index, 1);
                                         setEditedProduct((prevProduct) => ({

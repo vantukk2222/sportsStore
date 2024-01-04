@@ -41,7 +41,7 @@ const FlashCard = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                //       console.log(response.content);
+             
                 setProductItems(response.content);
                 sessionStorage.setItem('flash_product', JSON.stringify(response.content));
             } catch (error) {

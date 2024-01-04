@@ -45,7 +45,7 @@ const Login = () => {
                                 name: response.name,
                             }),
                         );
-                        //  console.log(response);
+                    
                     } catch (error) {
                         setError(error);
                     } finally {

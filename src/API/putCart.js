@@ -10,7 +10,7 @@ const putCart = async (id, quantity, authToken) => {
             },
         });
     } catch (error) {
-        console.log('error sign in' + error.message);
+        console.error('error sign in' + error.message);
     }
 };
 

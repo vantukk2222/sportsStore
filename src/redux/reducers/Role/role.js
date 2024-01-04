@@ -34,12 +34,12 @@ const roleSlice = createSlice({
 
 export const roleByUserName = (un) => async (dispatch, getState) => {
     try {
-        // console.log('Listcart request start');
-        dispatch(roleRequest()); // Dispatch addToCartRequest action
-        // console.log('Listcart request success');
+      
+        dispatch(roleRequest()); 
+       
         if (un) {
-            // console.log(id_user);
-            const data = await getUnAuth(`user/get-role/${un}`); // Call addToCartPage API
+          
+            const data = await getUnAuth(`user/get-role/${un}`); 
             dispatch(roleSuccess({ data: data }));
         } else dispatch(roleListCart());
     } catch (error) {
@@ -48,9 +48,7 @@ export const roleByUserName = (un) => async (dispatch, getState) => {
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
         }
-        // store.dispatch(logout())
-        // dispatch(addToCartFailure({ error: errorMessage })); // Dispatch addToCartFailure with error message
-        // return false
+      
     }
 };
 

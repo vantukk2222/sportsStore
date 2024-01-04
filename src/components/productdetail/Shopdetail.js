@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 
 const Shopdetail = ({ business }) => {
     const navigate = useNavigate();
-    console.log(business);
+   
     const date = new Date(business.time_start);
     const d = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     const handleClick = (id) => {

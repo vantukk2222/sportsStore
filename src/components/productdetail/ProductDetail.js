@@ -47,7 +47,7 @@ const ProductDetail = () => {
         setQuantity(e.quantity);
         setPrice(e.price);
         setSize(e.size);
-        //  console.log(e.size);
+      
     };
     const addToCart = (product) => {
         const id2 = product.productSet?.find((e) => e.size == size).id;
@@ -115,7 +115,7 @@ const ProductDetail = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                console.log(response);
+              
                 response.productSet.sort((a, b) => a.id - b.id);
 
                 setProductItem(response);
@@ -138,8 +138,7 @@ const ProductDetail = () => {
         };
         fetchData();
     }, []);
-    // console.log(startIndex);
-    // console.log(productItem);
+
 
     const calculateStarCount = () => {
         if (productItem.number_like !== undefined && productItem.number_dislike !== undefined) {

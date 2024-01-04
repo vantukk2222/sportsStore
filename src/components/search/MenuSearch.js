@@ -7,7 +7,7 @@ const MenuSearch = ({ shopItems, apiCate }) => {
     const handleFilterClick = () => {
         // Xử lý logic lọc dữ liệu ở đây, có thể sử dụng minPrice và maxPrice
         // Ví dụ: Gửi yêu cầu lọc đến server hoặc lọc dữ liệu trên client
-      //  console.log(`Filtering from ${minPrice} to ${maxPrice}`);
+     
       };
     
     return (

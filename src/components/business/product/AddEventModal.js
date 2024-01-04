@@ -16,12 +16,12 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                //  console.log(response.content);
+
                 response.content = response.content.map((e) => {
                     let givenTimeStr = e.ended_at;
                     const givenTime = new Date(givenTimeStr);
                     const currentTime = new Date();
-                    // console.log(givenTime, currentTime);
+
                     if (givenTime > currentTime) return e;
                 });
 
@@ -35,7 +35,7 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
         };
         fetchData();
     }, []);
-    // console.log(id);
+   
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct" style={{ width: '400px' }}>
@@ -67,7 +67,7 @@ const AddEventModal = ({ onClose, onSaveEvent }) => {
                         })}
                     </select>
                 </div>
-                <button onClick={()=>onSaveEvent(id)}>Lưu</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button onClick={() => onSaveEvent(id)}>Lưu</button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button onClick={onClose} style={{ paddingLeft: '20px' }}>
                     Đóng
                 </button>

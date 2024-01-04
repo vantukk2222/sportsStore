@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
 const putConfirm_cancel = async (id, authToken) => {
-    console.log(id, authToken);
     try {
         await axios({
             method: 'put',
@@ -13,7 +12,7 @@ const putConfirm_cancel = async (id, authToken) => {
             data: `${id}`,
         });
     } catch (error) {
-        console.log('error sign in' + error.message);
+        console.error('error sign in' + error.message);
     }
 };
 

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { api } from './url';
 
 export const putUHproduct = async (id, check, authToken) => {
-    console.log('Sale :', id, check);
     try {
         await axios({
             method: 'put',

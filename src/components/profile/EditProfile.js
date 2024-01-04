@@ -28,11 +28,11 @@ const EditProfile = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                //    console.log(response);
+             
                 const date = new Date(response.dob);
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
-                console.log(response);
+               
                 setUser(response);
                 setEditedUser(response);
             } catch (error) {
@@ -107,7 +107,7 @@ const EditProfile = () => {
             if (response.ok) {
                 const data = await response.json();
                 setEditedUser({ ...editedUser, image_url: data.secure_url });
-                //   console.log('check data ', data);
+              
             } else {
                 console.error('Error uploading image to Cloudinary');
             }

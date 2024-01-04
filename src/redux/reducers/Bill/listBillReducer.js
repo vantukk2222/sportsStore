@@ -35,10 +35,9 @@ const listBillSlice = createSlice({
 
 export const listBillById = (id, role, page) => async (dispatch, getState) => {
     try {
-        // console.log('Listcart request start');
+        
         dispatch(listBillRequest()); // Dispatch addToCartRequest action
-        // console.log('Listcart request success');
-        //  console.log(id, role);
+      
         if (id) {
             if (role == 'ROLE_CUSTOMER') {
                 const data = await getUnAuth(`bill/get-by-id-user/${id}`);

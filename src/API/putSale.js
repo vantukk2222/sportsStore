@@ -2,7 +2,6 @@ import axios from 'axios';
 import { api } from './url';
 
 export const putSale = async (saleId, saleData, authToken) => {
-    //   console.log('Sale :', saleId, saleData);
     try {
         await axios({
             method: 'put',

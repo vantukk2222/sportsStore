@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
 const putProduct = async (id, product, authToken) => {
-    console.log(product, id);
     try {
         await axios({
             method: 'put',
@@ -17,7 +16,7 @@ const putProduct = async (id, product, authToken) => {
             },
         });
     } catch (error) {
-        console.log('error sign in' + error.message);
+        console.error('error sign in' + error.message);
     }
 };
 

@@ -15,11 +15,10 @@ import Checkout from '~/components/checkout/Checkout';
 import Contact from '~/components/contact/Contact';
 import Order from '~/components/order/Order';
 import Admin from '~/components/pageAdmin/Admin';
-import AdminDashboard from '~/components/pageAdmin/Dashboard/AdminDashboard';
+
 import AdminProduct from '~/components/pageAdmin/Product/AdminProduct';
 import AdminRevenue from '~/components/pageAdmin/Revenue/AdminRevenue';
-import AdminSale from '~/components/pageAdmin/Sale/AdminSale';
-import AdminTrack from '~/components/pageAdmin/Track/AdminTrack';
+
 import AdminUser from '~/components/pageAdmin/UserAdmin/AdminUser';
 import ProductDetail from '~/components/productdetail/ProductDetail';
 import Profile from '~/components/profile/Profile';
@@ -61,10 +60,8 @@ const ARoutes = [
     { path: '/login', component: Login, layout: layout_login },
     { path: '/profile', component: Profile, layout: layout_admin },
     { path: '/register', component: Register, layout: layout_res },
-    { path: '/dashboard', component: AdminDashboard, layout: layout_admin },
     { path: '/admin/user', component: AdminUser, layout: layout_admin },
-    { path: '/admin/sale', component: AdminSale, layout: layout_admin },
-    { path: '/admin/track', component: AdminTrack, layout: layout_admin },
+
     { path: '/admin/revenue', component: AdminRevenue, layout: layout_admin },
     { path: '/admin/product', component: AdminProduct, layout: layout_admin },
 ];

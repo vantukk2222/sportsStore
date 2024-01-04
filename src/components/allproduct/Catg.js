@@ -42,7 +42,6 @@ const Catg = () => {
             setSelectedCategories([...selectedCategories, index]);
         }
     };
-    console.log(gcategoryItems);
     return (
         <div className="category">
             <div className="chead d_flex">

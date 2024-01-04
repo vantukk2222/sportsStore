@@ -4,7 +4,7 @@ import { api } from './url';
 export const putProductInformation = async (productId, productData, authToken) => {
     const images = productData.imageSet.map((e) => e.id);
     const category = productData.categorySet.map((e) => e.id);
-    console.log('Product :', productData.name, productData.id_business, images);
+
     try {
         await axios({
             method: 'put',

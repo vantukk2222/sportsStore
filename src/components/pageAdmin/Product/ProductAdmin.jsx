@@ -49,7 +49,7 @@ const ProductAdmin = () => {
                     listProduct = listProduct.filter((item)=>item.number_dislike>3);
 
                 }
-                console.log(listProduct);
+               
                 setProducts(listProduct);
 
                 if (!response) {
@@ -98,11 +98,11 @@ const ProductAdmin = () => {
         isConfirmed = window.confirm('Bạn có chắc muốn khóa sản phẩm?');
         if (isConfirmed) {
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-            console.log(authToken);
+          
             if(state === 1){
                 putChangeStateProduct(product.id, 0, authToken)
                 .then((status) => {
-                    console.log('API call successful. Status:', status);
+                 
                     if (status === 202) {
                         toast('Mở sản phẩm thành công');
                         const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 0 } : p));
@@ -117,7 +117,7 @@ const ProductAdmin = () => {
                
                 putChangeStateProduct(product.id, 1, authToken)
                 .then((status) => {
-                    console.log('API call successful. Status:', status);
+                 
                     if (status === 202) {
                         toast('Khóa sản phẩm thành công');
                         const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 1 } : p));
@@ -131,7 +131,6 @@ const ProductAdmin = () => {
             }
            
         } else {
-            console.log('Hủy xác nhận');
         }
     };
 
@@ -152,7 +151,7 @@ const ProductAdmin = () => {
     };
 
     const handleSaveEvent = (eventName) => {
-        console.log('Event Name:', eventName);
+       
         setIsAddEventModalOpen(false);
     };
 

@@ -93,11 +93,11 @@ const UserAdmin = () => {
 
         if (isConfirmed) {
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-            console.log(authToken);
+          
             if (state === 1) {
                 putChangeState(user.id, 0, authToken)
                     .then((status) => {
-                        console.log('API call successful. Status:', status);
+                      
                         if (status === 202) {
                             toast('Xác nhận tài khoản thành công');
                             window.location.reload();
@@ -109,7 +109,7 @@ const UserAdmin = () => {
             } else {
                 putChangeState(user.id, 1, authToken)
                     .then((status) => {
-                        console.log('API call successful. Status:', status);
+                       
                         if (status === 202) {
                             toast('Khóa tài khoản thành công');
                             window.location.reload();
@@ -120,7 +120,7 @@ const UserAdmin = () => {
                     });
             }
         } else {
-            console.log('Hủy xác nhận');
+         
         }
     };
 

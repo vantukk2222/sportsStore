@@ -11,17 +11,13 @@ const revenueAdmin = async (state, idBusiness, startDate, endDate) => {
                 endDate: endDate,
             },
             headers: {
-                // 'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json',
             },
         });
 
-        // console.log('call API get product ', response);
         return response.data;
     } catch (error) {
-        //  console.error('Error fetching data: ', error);
-        // console.log(error.response);
-        throw error;
+        console.error('Error fetching data: ', error);
     }
 };
 

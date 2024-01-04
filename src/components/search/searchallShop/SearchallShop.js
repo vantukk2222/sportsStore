@@ -20,7 +20,7 @@ const SearchallShop = () => {
                 setLoading(true);
                 const name = location.pathname.slice(location.pathname.lastIndexOf('/') + 1);
                 const response = await getUnAuth(`business/search?name=${name}&page=${page}&page_size=10&state=0`);
-                console.log(response);
+              
                 setShops(response.content);
                 setTotalPage(response.totalPages);
                 if (!response) {

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
 const postRegister = async (data, role) => {
-    console.log(data, role);
     let response = '';
     try {
         response = await axios.post(`${api}auth/${role}`, data, {
@@ -11,7 +10,7 @@ const postRegister = async (data, role) => {
         });
         return response.data;
     } catch (error) {
-        console.log('error sign in' + error.message);
+        console.error('error sign in' + error.message);
     }
 };
 

@@ -13,6 +13,7 @@ import { Line } from 'react-chartjs-2';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import revenueAdmin from '~/API/Admin/revenueAdmin';
+import getUnAuth from '~/API/get';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -40,30 +41,35 @@ const RevenueAdmin = () => {
     });
     const [startDate, setStartDate] = useState(new Date('2023-01-01'));
     const [endDate, setEndDate] = useState(new Date('2024-01-01'));
-    const [selectedBusiness, setSelectedBusiness] = useState(null);
-
-    const businesses = [
-        { id: 1, name: 'Business A' },
-        { id: 2, name: 'Business B' },
-    ];
+    const [businessId, setBusinessId] = useState(0);
+    const [business, setBusiness] = useState([]);
 
     const fetchData = async (start, end, businessId) => {
-        const user = JSON.parse(localStorage.getItem('User'));
-
         try {
-            const responseRevenue = await revenueAdmin(businessId, user?.id, start, end);
+            const responseRevenue = await revenueAdmin(1, businessId, start, end);
             setRevenueData(responseRevenue);
-            console.log(responseRevenue);
         } catch (error) {
             console.error('Error fetching data: ', error);
         }
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getUnAuth(`business?page=0&page_size=100`);
+                setBusiness(response.content);
+            } catch (error) {
+                console.error('Error fetching data: ', error);
+            }
+        };
+        fetchData();
+    }, []);
+    useEffect(() => {
         const startFormatted = startDate.toISOString().split('T')[0];
         const endFormatted = endDate.toISOString().split('T')[0];
-        fetchData(startFormatted, endFormatted, selectedBusiness);
-    }, [startDate, endDate, selectedBusiness]);
+
+        fetchData(startFormatted, endFormatted, businessId);
+    }, [startDate, endDate, businessId]);
 
     useEffect(() => {
         const months = revenueData?.setStatistic?.map((item) => {
@@ -105,11 +111,11 @@ const RevenueAdmin = () => {
         <div className="chart-container">
             <div className="date-pickers">
                 <label>Chọn doanh nghiệp: </label>
-                <select onChange={(e) => setSelectedBusiness(e.target.value)}>
+                <select onChange={(e) => setBusinessId(e.target.value)}>
                     <option value={null}>Tất cả</option>
-                    {businesses.map((business) => (
-                        <option key={business.id} value={business.id}>
-                            {business.name}
+                    {business.map((busi) => (
+                        <option key={busi.id} value={busi.id}>
+                            {busi.name}
                         </option>
                     ))}
                 </select>

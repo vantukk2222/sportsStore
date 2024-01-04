@@ -6,13 +6,6 @@ const MenuAdmin = () => {
     return (
         <>
             <div className="menu-admin">
-                {/* <div className="menuadmin">
-                    <label>
-                        <FontAwesomeIcon icon={faTachometerAlt} />
-                        &nbsp;&nbsp;
-                        <Link to="/dashboard">Dashboard</Link>
-                    </label>
-                </div> */}
                 <div className="menuadmin">
                     <label>
                         <FontAwesomeIcon icon={faUsers} />
@@ -20,20 +13,7 @@ const MenuAdmin = () => {
                         <Link to="/admin/user">Quản lý người dùng</Link>
                     </label>
                 </div>
-                {/* <div className="menuadmin">
-                    <label>
-                        <FontAwesomeIcon icon={faCalendarAlt} />
-                        &nbsp;&nbsp;
-                        <Link to="/adminsale">Quản lý sự kiện</Link>
-                    </label>
-                </div> */}
-                {/* <div className="menuadmin">
-                    <label>
-                        <FontAwesomeIcon icon={faShoppingCart} />
-                        &nbsp;&nbsp;
-                        <Link to="/admintrack">Quản lý đơn hàng</Link>
-                    </label>
-                </div> */}
+
                 <div className="menuadmin">
                     <label>
                         <FontAwesomeIcon icon={faBox} />

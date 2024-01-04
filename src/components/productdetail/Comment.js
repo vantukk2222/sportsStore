@@ -52,7 +52,6 @@ const Comment = () => {
 
         fetchData();
     }, [location.pathname]);
-    console.log(comments);
     return (
         <>
             <div className="comment">

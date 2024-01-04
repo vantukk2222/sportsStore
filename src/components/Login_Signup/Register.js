@@ -27,7 +27,7 @@ const Register = () => {
     const [selectedRole, setSelectedRole] = useState(10);
     const dispatch = useDispatch();
     const handleRes = async () => {
-        console.log(userData);
+       
         let role = '';
         let response = '';
         try {
@@ -38,7 +38,7 @@ const Register = () => {
                 throw new Error('Network response was not ok');
             }
             const { token } = response;
-            console.log(token);
+           
             localStorage.setItem('authToken', JSON.stringify(token));
             sessionStorage.clear();
             if (token && selectedRole == 10) {
@@ -58,7 +58,7 @@ const Register = () => {
                                 name: response.name,
                             }),
                         );
-                        //  console.log(response);
+                     
                     } catch (error) {
                         setError(error);
                     } finally {

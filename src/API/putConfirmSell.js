@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
 const putConfirmSell = async (id, sell, authToken) => {
-    console.log(`${api}bill/confirm-sell/${sell}`, id, authToken);
     try {
         await axios({
             method: 'put',
@@ -12,7 +11,7 @@ const putConfirmSell = async (id, sell, authToken) => {
             data: [id],
         });
     } catch (error) {
-        console.log('error sign in' + error.message);
+        console.error('error sign in' + error.message);
     }
 };
 

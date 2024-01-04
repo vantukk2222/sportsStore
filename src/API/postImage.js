@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { api } from './url';
 const postImage = async (name, url, is_man, authToken) => {
-    console.log(url);
     try {
         const response = await axios.post(
             `${api}image/save`,
@@ -20,7 +19,7 @@ const postImage = async (name, url, is_man, authToken) => {
         );
         return response;
     } catch (error) {
-        console.log('error sign in' + error.message);
+        console.error('error sign in' + error.message);
     }
 };
 

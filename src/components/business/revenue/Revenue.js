@@ -47,7 +47,7 @@ const RevenueAndOrdersChart = () => {
         try {
             const responseRevenue = await revenueAdmin(1, user?.id, start, end);
             setRevenueData(responseRevenue);
-            console.log(responseRevenue);
+           
         } catch (error) {
             console.error('Error fetching data: ', error);
         }
@@ -95,7 +95,7 @@ const RevenueAndOrdersChart = () => {
         });
     }, [revenueData]);
 
-    console.log(data, dataBar);
+   
 
     return (
         <div className="chart-container">

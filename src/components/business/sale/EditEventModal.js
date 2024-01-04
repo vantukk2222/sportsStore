@@ -19,7 +19,7 @@ const EditEventModal = ({ event, onClose, onSave }) => {
         const { name, value } = e.target;
         setEditedEvent({ ...editedEvent, [name]: value });
     };
-    // console.log(editedEvent);
+   
     return (
         <div className="modal-overlay">
             <div className="modalnewproduct">

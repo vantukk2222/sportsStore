@@ -9,7 +9,7 @@ function App() {
     const authToken = JSON.parse(localStorage.getItem('authToken'));
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     useEffect(() => {
-        //  console.log(dataRole);
+
         if (dataRole) {
             if (dataRole[0] == 'ROLE_BUSINESS') setRouters(BRoutes);
             if (dataRole[0] == 'ROLE_CUSTOMER') setRouters(CRoutes);

@@ -35,29 +35,23 @@ const listCartSlice = createSlice({
 
 export const listCartByIdUser = (id_user) => async (dispatch, getState) => {
     try {
-        // console.log('Listcart request start');
-        dispatch(listCartRequest()); // Dispatch addToCartRequest action
-        // console.log('Listcart request success');
+    
+        dispatch(listCartRequest()); 
+      
         if (id_user) {
-           // console.log(id_user);
-            const data = await getUnAuth(`cart/get-by-id-user/${id_user}`); // Call addToCartPage API
-            // console.log('Listcart get api success');
-
-            // console.log("data in listCartReducer: ", data); // Log received data
+          
+            const data = await getUnAuth(`cart/get-by-id-user/${id_user}`); 
+           
 
             dispatch(listCartSuccess({ data: data }));
-        } // Dispatch addToCartSuccess with received data
-        // console.log("state reduceraddToCart: " + JSON.stringify(getState()));
-        // return true
+        } 
     } catch (error) {
         let errorMessage = 'Error fetching data';
 
         if (error.response && error.response.data) {
             errorMessage = error.response.data.message || errorMessage;
         }
-        // store.dispatch(logout())
-        // dispatch(addToCartFailure({ error: errorMessage })); // Dispatch addToCartFailure with error message
-        // return false
+       
     }
 };
 

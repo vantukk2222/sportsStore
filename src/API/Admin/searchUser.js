@@ -13,16 +13,12 @@ const searchUser = async (name, page, pageSize, sort, desc, state) => {
                 state: state,
             },
             headers: {
-                // 'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json',
             },
         });
 
-        // console.log('call API get product ', response);
         return response.data;
     } catch (error) {
-        //  console.error('Error fetching data: ', error);
-        // console.log(error.response);
         throw error;
     }
 };

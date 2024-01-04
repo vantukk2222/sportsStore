@@ -45,16 +45,15 @@ const Payment = ({ selectedItems }) => {
                 const list_id = [];
                 selectedItems.forEach((e) => list_id.push(e.id));
                 const authToken = JSON.parse(localStorage.getItem('authToken'));
-                // console.log(list_id);
+             
                 const response = await postMomo(list_id, shippingProvider, authToken).then((res) => {
-                    // console.log(res);
+                   
                     const user = JSON.parse(localStorage.getItem('User'));
-                    // console.log(user.id);
+                   
                     dispatch(listCartByIdUser(user.id));
                     return res;
                 });
                 localStorage.removeItem('selectedItems');
-                //   console.log('check response', response);
                 window.location.href = response;
 
                 if (!response) {

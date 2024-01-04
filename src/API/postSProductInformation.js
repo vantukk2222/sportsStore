@@ -2,7 +2,6 @@ import axios from 'axios';
 import { api } from './url';
 
 export const postSProductInformation = async (id, ids, authToken) => {
-    console.log(id, ids, authToken);
     try {
         await axios({
             method: 'post',

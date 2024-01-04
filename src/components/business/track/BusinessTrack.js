@@ -19,7 +19,6 @@ const BusinessTrack = () => {
         dispatch(listBillById(user.id, dataRole, page)).then(() =>
             setTotalPage(JSON.parse(localStorage.getItem('TotalPages'))),
         );
-        console.log(dataBill);
     }, [page, orderstate]);
     // const filteredOrders = orderstate === 5 ? dataBill : dataBill.filter((order) => order.state === orderstate);
     localStorage.setItem('State', JSON.stringify(orderstate));

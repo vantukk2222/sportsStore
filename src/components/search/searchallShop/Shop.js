@@ -5,7 +5,7 @@ import { faShoppingBasket, faStar, faComment, faReply, faClock } from '@fortawes
 import { useNavigate } from 'react-router';
 
 const Shop = ({ shop }) => {
-    //console.log(shop);
+   
     const navigate = useNavigate();
     const handleClick = (id) => {
         navigate(`/shop/${id}`);

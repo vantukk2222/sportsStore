@@ -2,7 +2,6 @@ import axios from 'axios';
 import { api } from './url';
 
 export const putUser = async (userId, userData, authToken) => {
-   // console.log('User :', userData);
     try {
         await axios({
             method: 'put',

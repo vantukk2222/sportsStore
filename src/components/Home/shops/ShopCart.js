@@ -11,7 +11,7 @@ const ShopCart = ({ categoryItems }) => {
         if (id) navigate(`/product/${id}`);
     };
     const [count, setCount] = useState(0);
-    //   console.log(categoryItems);
+   
     useEffect(() => {
         setCount(0);
         setProductItems([]);
@@ -20,18 +20,18 @@ const ShopCart = ({ categoryItems }) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                console.log(categoryItems[count].id);
+             
                 if (!categoryItems || count >= categoryItems.length || productItems.length >= 8) return;
                 const response = await getUnAuth(
                     `product-information/find-by-category/${categoryItems[count].id}?state=0&state_business=0`,
                 );
-                console.log(response);
+            
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
                 setCount((prevCount) => prevCount + 1);
                 const dataProduct = response.content;
-                //      console.log(dataProduct);
+              
                 if (dataProduct && productItems.length < 8) {
                     setProductItems((prevProduct) => {
                         for (var i = 0; i < dataProduct.length; i += 1) {
@@ -49,7 +49,7 @@ const ShopCart = ({ categoryItems }) => {
         };
         fetchData();
     }, [categoryItems, count]);
-    //console.log(productItems);
+
     return (
         <>
             {productItems.length < 8 ? (

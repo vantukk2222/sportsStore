@@ -20,10 +20,6 @@ const CheckoutAd = ({ selectedItems }) => {
         }
     }, [selectedItems]);
 
-    const handleChangeAddress = () => {
-       // console.log('Changing address...');
-    };
-
     return (
         <div className="CheckoutAd">
             <div className="head-CheckoutAd">
@@ -33,9 +29,7 @@ const CheckoutAd = ({ selectedItems }) => {
                 <p>Tên: {userInfo.name}</p>
                 <p>Số điện thoại: {userInfo.phoneNumber}</p>
                 <p>Địa chỉ: {userInfo.address}</p>
-                <Link to="#" onClick={handleChangeAddress}>
-                    Thay đổi
-                </Link>
+                <Link to="/profile">Thay đổi</Link>
             </div>
         </div>
     );
