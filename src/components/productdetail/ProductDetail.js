@@ -29,12 +29,6 @@ const ProductDetail = () => {
     const [id, setId] = useState(0);
     const [size, setSize] = useState('');
     const [sale, setSale] = useState(false);
-
-    // đánh giá sao
-
-    const [rating, setRating] = useState(0); // Điểm đánh giá
-    const [starCount, setStarCount] = useState(0); // Số sao
-
     const showNextImages = () => {
         const totalImages = productItem.imageSet.length;
         const imagesToShow = 3;
@@ -228,7 +222,10 @@ const ProductDetail = () => {
                                     {sale ? (price * (100 - productItem.sale?.discount)) / 100 : price}đ
                                 </p>
                             </div>
-                            <p className="product-description">{productItem.detail}</p>
+                            <p className="product-description">
+                                {' '}
+                                <strong>Mô tả:</strong> {productItem.detail}
+                            </p>
                             <p className="product-attribute">
                                 <strong>Thuộc tính:</strong> {productItem.attribute}
                             </p>
@@ -263,7 +260,7 @@ const ProductDetail = () => {
                                                 className={`sort ${e.id == id ? 'clicked' : ''}`}
                                                 key={index}
                                                 onClick={() => {
-                                                    navigate('/allproduct');
+                                                    navigate(`/allproduct/${e.id}`);
                                                 }}
                                             >
                                                 {e.name || 'Size'}

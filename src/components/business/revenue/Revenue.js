@@ -60,7 +60,11 @@ const RevenueAndOrdersChart = () => {
     }, [startDate, endDate]);
 
     useEffect(() => {
-        const months = revenueData?.setStatistic?.map((item) => item.month.toString());
+        const months = revenueData?.setStatistic?.map((item) => {
+            const data = `${item.month}/${item.year}`;
+            return data;
+        });
+
         const dataValues = revenueData?.setStatistic?.map((item) => item.bill_total);
         const dataBil = revenueData?.setStatistic?.map((item) => item.bill_count);
 

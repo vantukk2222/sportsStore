@@ -26,12 +26,35 @@ const BProduct = () => {
     const [state, setState] = useState(0);
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPage] = useState(0);
+    const [sname, setSname] = useState('');
+    // const [scheck, setScheck] = useState(false);
     const fetchData = async () => {
         try {
             setLoading(true);
             const user = JSON.parse(localStorage.getItem('User'));
             const response = await getUnAuth(
                 `product-information/find-by-business/${user.id}?page=${page}&page_size=10&state=${state}`,
+            );
+            if (!response) {
+                throw new Error('Network response was not ok');
+            }
+            setSelectedProducts(Array(response.content.length).fill(false));
+            response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
+            setTotalPage(response.totalPages);
+            console.log(response.content);
+            setProducts(response.content);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const SearchData = async () => {
+        try {
+            setLoading(true);
+            const user = JSON.parse(localStorage.getItem('User'));
+            const response = await getUnAuth(
+                `product-information/search-with-business/${user.id}?name=${sname}&page=${page}&page_size=10&state=${state}`,
             );
             if (!response) {
                 throw new Error('Network response was not ok');
@@ -113,7 +136,8 @@ const BProduct = () => {
             })
             .then(() => putProductInformation(id, editedProduct, authToken))
             .then(() => {
-                fetchData();
+                if (sname) SearchData();
+                else fetchData();
                 setEditIndex(null);
                 handleCloseEditModal();
             })
@@ -138,7 +162,10 @@ const BProduct = () => {
         else state = true;
         const authToken = JSON.parse(localStorage.getItem('authToken'));
 
-        putUHproduct(id, state, authToken).then(() => fetchData());
+        putUHproduct(id, state, authToken).then(() => {
+            if (sname) SearchData();
+            else fetchData();
+        });
     };
     const isAnyCheckboxChecked = selectedProducts.some((isChecked) => isChecked);
 
@@ -154,23 +181,43 @@ const BProduct = () => {
         //   console.log('Event Name:', id);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         postSProductInformation(id, addEProduct, authToken)
-            .then(() => fetchData())
+            .then(() => {
+                if (sname) SearchData();
+                else fetchData();
+            })
             .then(handleCloseAddEventModal());
     };
     const handleDeleteEvent = () => {
         // console.log(addEProduct);
         const authToken = JSON.parse(localStorage.getItem('authToken'));
-        putRemoveSale(addEProduct, authToken).then(() => fetchData());
+        putRemoveSale(addEProduct, authToken).then(() => {
+            if (sname) SearchData();
+            else fetchData();
+        });
     };
     useEffect(() => {
-        fetchData();
+        if (sname) SearchData();
+        else fetchData();
     }, [state, page]);
 
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
-            <input style={{ width: '400px' }} type="text" placeholder="Tìm kiếm " />
-            <button>Tìm kiếm</button>
+            <input
+                style={{ width: '400px' }}
+                value={sname}
+                type="text"
+                placeholder="Tìm kiếm "
+                onChange={(e) => setSname(e.target.value)}
+            />
+            <button
+                onClick={() => {
+                    if (sname) SearchData();
+                    else fetchData();
+                }}
+            >
+                Tìm kiếm
+            </button>
             <div className="menu">
                 <p className="menu-item" onClick={() => setState(0)}>
                     Sản phẩm bình thường
