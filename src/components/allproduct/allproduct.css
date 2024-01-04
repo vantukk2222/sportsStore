@@ -1,0 +1,54 @@
+.category-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.category-head {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.category-item {
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.category-name {
+    display: block;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category-name.selected {
+    font-weight: bold;
+    color: #3498db;
+    background-color: #ecf0f1;
+}
+
+.category-options {
+    margin-left: 20px;
+    padding: 10px;
+}
+
+.option {
+    background-color: #f9f9f9; /* Background color for each option */
+    padding: 8px; /* Add padding to each option */
+    border-radius: 4px; /* Add rounded corners to each option */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.option:hover {
+    background-color: #e0e0e0; /* Background color on hover */
+}
+
+.category-options > div {
+    margin-bottom: 5px;
+}

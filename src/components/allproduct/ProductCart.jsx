@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-const ProductCart = ({ productItems }) => {
+const ProductCart = ({ shopItems }) => {
     const navigate = useNavigate();
     const handleClick = (id) => {
         if (id) navigate(`/product/${id}`);
@@ -14,7 +14,7 @@ const ProductCart = ({ productItems }) => {
     };
     return (
         <>
-            {productItems?.map((product, index) => {
+            {shopItems?.map((product, index) => {
                 let givenTimeStr = product.sale?.ended_at || null;
                 if (givenTimeStr) {
                     const givenTime = new Date(givenTimeStr);

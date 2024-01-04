@@ -5,6 +5,7 @@ import Login from '~/components/Login_Signup/Login';
 import Register from '~/components/Login_Signup/Register';
 import notFound from '~/components/NotFound/notFound';
 import Shop from '~/components/Shop/Shop';
+import AllProduct from '~/components/allproduct/AllProduct';
 import Business from '~/components/business/Business';
 import BusinessProduct from '~/components/business/product/BusinessProduct';
 import BusinessRevenue from '~/components/business/revenue/BusinessRevenue';
@@ -43,6 +44,7 @@ const CRoutes = [
     { path: '/searchShop/:name', component: SearchallShop, layout: defaultLayout },
     { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/order', component: Order, layout: defaultLayout },
+    { path: '/allproduct', component: AllProduct, layout: defaultLayout },
 ];
 const BRoutes = [
     { path: '/', component: Business, layout: layout_bussiness },

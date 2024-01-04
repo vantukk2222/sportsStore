@@ -94,6 +94,9 @@ const FlashCard = () => {
                                         </div>
                                         <div className="product-details">
                                             <span className="spanname">{productItems.name}</span>
+                                            <p style={{ textAlign: 'left', color: 'gray', fontSize: 'small' }}>
+                                                Đã bán:{productItems.number_buy}
+                                            </p>
                                             <div className="price ">
                                                 {givenTimeStr && (
                                                     <h4 className="crossedNumber">{productItems.price_min}đ </h4>

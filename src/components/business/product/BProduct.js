@@ -8,10 +8,10 @@ import putProduct from '~/API/putProduct';
 import { putProductInformation } from '~/API/putProductInformation';
 import { putRemoveSale } from '~/API/putRemoveSale';
 import { putUHproduct } from '~/API/putUHproduct';
+import Pagination from '~/components/Shop/Pagination';
 import AddEventModal from './AddEventModal';
 import AddProductModal from './AddProductModal';
 import EditProductModal from './EditProductModal';
-import Pagination from '~/components/Shop/Pagination';
 
 const BProduct = () => {
     const [products, setProducts] = useState([]);
@@ -169,6 +169,8 @@ const BProduct = () => {
     return (
         <div className="track-container">
             <h2>Quản lý sản phẩm</h2>
+            <input style={{ width: '400px' }} type="text" placeholder="Tìm kiếm " />
+            <button>Tìm kiếm</button>
             <div className="menu">
                 <p className="menu-item" onClick={() => setState(0)}>
                     Sản phẩm bình thường

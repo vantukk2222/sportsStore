@@ -24,6 +24,9 @@ const Cart = ({ productItems }) => {
                                 />
                             </div>
                             <h4>{val.name}</h4>
+                            <p style={{ textAlign: 'left', color: 'gray', fontSize: 'small' }}>
+                                Đã bán:{val.number_buy}
+                            </p>
                             {givenTimeStr && <span className="crossedNumber">{val.price_min}đ </span>}
                             <span className="">
                                 {val.sale ? (val.price_min * (100 - val.sale?.discount)) / 100 : val.price_min}đ

@@ -1,3 +1,5 @@
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { FaArrowLeft } from 'react-icons/fa6';
@@ -9,9 +11,9 @@ import putCart from '~/API/putCart';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 import Loading from '../loading/Loading';
 import Comment from './Comment';
-import Detail from './Detail';
 import './ProductDetail.css';
 import Shopdetail from './Shopdetail';
+const totalStars = 5;
 const ProductDetail = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -27,6 +29,12 @@ const ProductDetail = () => {
     const [id, setId] = useState(0);
     const [size, setSize] = useState('');
     const [sale, setSale] = useState(false);
+
+    // đánh giá sao
+
+    const [rating, setRating] = useState(0); // Điểm đánh giá
+    const [starCount, setStarCount] = useState(0); // Số sao
+
     const showNextImages = () => {
         const totalImages = productItem.imageSet.length;
         const imagesToShow = 3;
@@ -138,6 +146,15 @@ const ProductDetail = () => {
     }, []);
     // console.log(startIndex);
     // console.log(productItem);
+
+    const calculateStarCount = () => {
+        if (productItem.number_like !== undefined && productItem.number_dislike !== undefined) {
+            const likeRatio = productItem.number_like / (productItem.number_like + productItem.number_dislike);
+            return Math.round(likeRatio * 5);
+        }
+        return 0; // Trả về 0 nếu không có đủ dữ liệu
+    };
+
     return (
         <>
             {productItem.id ? (
@@ -188,6 +205,23 @@ const ProductDetail = () => {
                         </div>
                         <div className="product-info-container">
                             <h2 className="product-name">{productItem.name}</h2>
+                            {calculateStarCount() > 0 && (
+                                <div className="tdtable">
+                                    <p>
+                                        {' '}
+                                        {[...Array(totalStars)].map((_, index) => (
+                                            <FontAwesomeIcon
+                                                key={index}
+                                                icon={faStar}
+                                                color={index < calculateStarCount() ? '#FFD700' : '#000000'}
+                                            />
+                                        ))}
+                                    </p>
+                                    <p style={{ textAlign: 'left', color: 'gray', fontSize: 'small' }}>
+                                        Đã bán: {productItem.number_buy}
+                                    </p>
+                                </div>
+                            )}
                             <div className="tdtable">
                                 {sale && <p className="product-price crossedNumber">{price}đ</p>}
                                 <p className="product-price ">
@@ -196,13 +230,13 @@ const ProductDetail = () => {
                             </div>
                             <p className="product-description">{productItem.detail}</p>
                             <p className="product-attribute">
-                                <strong>Attribute:</strong> {productItem.attribute}
+                                <strong>Thuộc tính:</strong> {productItem.attribute}
                             </p>
                             <p className="product-brand">
-                                <strong>Brand:</strong> {productItem.brand}
+                                <strong>Thương hiệu:</strong> {productItem.brand}
                             </p>
                             <p className="product-quantity">
-                                <strong>Quantity:</strong> {quantity}
+                                <strong>Số lượng:</strong> {quantity}
                             </p>
                             <p className="product-size">
                                 <strong>Size:</strong>
@@ -218,6 +252,23 @@ const ProductDetail = () => {
                                                     {e.size || 'Size'}
                                                 </button>
                                             );
+                                    })}
+                            </p>
+                            <p className="product-size">
+                                <strong>Phân loại:</strong>
+                                {productItem.categorySet &&
+                                    productItem.categorySet.map((e, index) => {
+                                        return (
+                                            <button
+                                                className={`sort ${e.id == id ? 'clicked' : ''}`}
+                                                key={index}
+                                                onClick={() => {
+                                                    navigate('/allproduct');
+                                                }}
+                                            >
+                                                {e.name || 'Size'}
+                                            </button>
+                                        );
                                     })}
                             </p>
                             <button onClick={() => handleAdd(productItem)} className="add-to-cart-button">

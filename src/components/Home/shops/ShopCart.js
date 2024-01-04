@@ -77,6 +77,9 @@ const ShopCart = ({ categoryItems }) => {
                                 </div>
                                 <div className="product-details">
                                     <h3>{value.name}</h3>
+                                    <p style={{ textAlign: 'left', color: 'gray', fontSize: 'small' }}>
+                                        Đã bán:{value.number_buy}
+                                    </p>
                                     <div className="price">
                                         {givenTimeStr && <h4 className="crossedNumber">{value.price_min}đ </h4>}
                                         <h4 className="">
