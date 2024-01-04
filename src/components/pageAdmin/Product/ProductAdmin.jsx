@@ -45,6 +45,11 @@ const ProductAdmin = () => {
                 }
 
                 let listProduct = response.content;
+                if(state === 0){
+                    listProduct = listProduct.filter((item)=>item.number_dislike>3);
+
+                }
+                console.log(listProduct);
                 setProducts(listProduct);
 
                 if (!response) {
@@ -88,22 +93,43 @@ const ProductAdmin = () => {
     };
 
     const handleConfirm = (product) => {
-        const isConfirmed = window.confirm('Bạn có chắc muốn xác nhận?');
+        let isConfirmed;
+        state === 1 ? isConfirmed = window.confirm('Bạn có chắc muốn mở sản phẩm?') : 
+        isConfirmed = window.confirm('Bạn có chắc muốn khóa sản phẩm?');
         if (isConfirmed) {
             const authToken = JSON.parse(localStorage.getItem('authToken'));
             console.log(authToken);
-            putChangeStateProduct(product.id, 0, authToken)
+            if(state === 1){
+                putChangeStateProduct(product.id, 0, authToken)
                 .then((status) => {
                     console.log('API call successful. Status:', status);
                     if (status === 202) {
-                        toast('Xác nhận tài khoản thành công');
+                        toast('Mở sản phẩm thành công');
                         const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 0 } : p));
                         setProducts(updatedProducts);
+                        window.location.reload();
                     }
                 })
                 .catch((error) => {
                     console.error('API call failed:', error);
                 });
+            }else{
+               
+                putChangeStateProduct(product.id, 1, authToken)
+                .then((status) => {
+                    console.log('API call successful. Status:', status);
+                    if (status === 202) {
+                        toast('Khóa sản phẩm thành công');
+                        const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 1 } : p));
+                        setProducts(updatedProducts);
+                        window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.error('API call failed:', error);
+                });
+            }
+           
         } else {
             console.log('Hủy xác nhận');
         }
@@ -141,6 +167,15 @@ const ProductAdmin = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                 {state === 1 ? (
+                    <button className="" style={{ backgroundColor: 'red' }} onClick={() => setState(0)}>
+                        Khóa sản phẩm
+                    </button>
+                ) : (
+                    <button className="" onClick={() => setState(1)}>
+                        Mở khóa sản phẩm
+                    </button>
+                )}
                 <ToastContainer />
                 <div className="trackingheader">
                     <div className="divproductB">Tên sản phẩm</div>
@@ -178,7 +213,7 @@ const ProductAdmin = () => {
 
                         <div className="divproductB">
                             <button className="editproduct" onClick={() => handleConfirm(product)}>
-                                Xác nhận
+                            {state === 1 ? 'Mở' : 'Khóa'}
                             </button>
                         </div>
                     </div>
