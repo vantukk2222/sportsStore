@@ -95,7 +95,7 @@ const Cart = () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('User'));
-        dispatch(listCartByIdUser(user.id)).then(() => {
+        dispatch(listCartByIdUser(user?.id)).then(() => {
             setCheck(true);
         });
     }, []);

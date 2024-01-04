@@ -174,7 +174,7 @@ const BProduct = () => {
                     Sản phẩm bình thường
                 </p>
                 <p className="menu-item" onClick={() => setState(1)}>
-                    Sản phẩm bị khóa hoặc chờ xác duyệt
+                    Sản phẩm bị khóa
                 </p>
                 <p className="menu-item" onClick={() => setState(2)}>
                     Sản phẩm bị ẩn
@@ -233,7 +233,7 @@ const BProduct = () => {
                         <div className="divproductC">
                             {product.productSet.map((sizeInfo, i) => (
                                 <div key={i}>
-                                    <span>{sizeInfo.size}-</span>
+                                    <span>{sizeInfo.size || 'FreeSize'}-</span>
                                     <span>{sizeInfo.price}đ-</span>
                                     <span>{sizeInfo.quantity}</span>
                                 </div>
@@ -247,7 +247,7 @@ const BProduct = () => {
                             <button className="editproduct" onClick={() => handleOpenEditModal(index)}>
                                 Sửa
                             </button>
-                            {product.state != 2 && (
+                            {product.state == 0 && (
                                 <button className="unproduct" onClick={() => handleHide(product.id, product.state)}>
                                     Ẩn
                                 </button>

@@ -85,14 +85,24 @@ const ProductDetail = () => {
         }
     };
     const handleAdd = (product) => {
-        if (size != '') addToCart(product);
-        else alert('Hãy chọn loại sản phẩm mua trước khi thêm vào giỏ hàng');
+        const user = JSON.parse(localStorage.getItem('User'));
+        if (user) {
+            if (size != '') addToCart(product);
+            else alert('Hãy chọn loại sản phẩm mua trước khi thêm vào giỏ hàng');
+        } else {
+            alert('Hãy Đăng nhập trước khi mua sản phẩm');
+        }
     };
     const handleBuy = (product) => {
-        if (size != '') {
-            addToCart(product);
-            setTimeout(() => navigate('/cart'), 500);
-        } else alert('Hãy chọn loại sản phẩm mua trước khi mua ngay');
+        const user = JSON.parse(localStorage.getItem('User'));
+        if (user) {
+            if (size != '') {
+                addToCart(product);
+                setTimeout(() => navigate('/cart'), 500);
+            } else alert('Hãy chọn loại sản phẩm mua trước khi mua ngay');
+        } else {
+            alert('Hãy Đăng nhập trước khi mua sản phẩm');
+        }
     };
     useEffect(() => {
         const fetchData = async () => {
@@ -103,7 +113,7 @@ const ProductDetail = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-                //console.log(response);
+                console.log(response);
                 response.productSet.sort((a, b) => a.id - b.id);
 
                 setProductItem(response);
@@ -205,7 +215,7 @@ const ProductDetail = () => {
                                                     key={index}
                                                     onClick={() => handleSize(e)}
                                                 >
-                                                    {e.size||'Size'}
+                                                    {e.size || 'Size'}
                                                 </button>
                                             );
                                     })}

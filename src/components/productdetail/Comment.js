@@ -87,6 +87,9 @@ const Comment = () => {
                                             <p className="comment-date">{convertedTime}</p>
                                         </div>
                                     </div>
+                                    <div className="comment-content">
+                                        {comment.is_like ? 'Đánh giá: Thích' : 'Đánh giá: Không thích'}
+                                    </div>
                                     <div className="comment-content">{comment.content}</div>
                                     <div className="comment-images">
                                         {comment.imageSet?.map((image, imageIndex) => (
