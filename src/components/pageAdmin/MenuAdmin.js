@@ -10,7 +10,7 @@ const MenuAdmin = () => {
                     <label>
                         <FontAwesomeIcon icon={faUsers} />
                         &nbsp;&nbsp;
-                        <Link to="/admin/user">Quản lý người dùng</Link>
+                        <Link to="/">Quản lý người dùng</Link>
                     </label>
                 </div>
 

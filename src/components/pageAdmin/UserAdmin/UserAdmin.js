@@ -1,9 +1,9 @@
-import { Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import getUser from '~/API/Admin/getUser';
 import putChangeState from '~/API/Admin/putChangeState';
 import searchUser from '~/API/Admin/searchUser';
+import Pagination from '~/components/Shop/Pagination';
 
 const UserAdmin = () => {
     const [trackingInfo, setTrackingInfo] = useState([]);
@@ -30,11 +30,10 @@ const UserAdmin = () => {
                     response = await searchUser(searchTerm, page, pageSize, sort, desc, state);
                 } else {
                     response = await getUser(page, pageSize, sort, desc, state);
-                    if (!totalPage) {
-                        setTotalPage(response?.totalPages);
-                    }
                 }
-
+                if (!response.totalPage) {
+                    setTotalPage(response?.totalPages);
+                }
                 let listAcc = response.content;
                 listAcc = listAcc.filter(
                     (item) => item?.roles[0] === 'ROLE_BUSINESS' || item?.roles[0] === 'ROLE_CUSTOMER',
@@ -93,11 +92,10 @@ const UserAdmin = () => {
 
         if (isConfirmed) {
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-          
+
             if (state === 1) {
                 putChangeState(user.id, 0, authToken)
                     .then((status) => {
-                      
                         if (status === 202) {
                             toast('Xác nhận tài khoản thành công');
                             window.location.reload();
@@ -109,7 +107,6 @@ const UserAdmin = () => {
             } else {
                 putChangeState(user.id, 1, authToken)
                     .then((status) => {
-                       
                         if (status === 202) {
                             toast('Khóa tài khoản thành công');
                             window.location.reload();
@@ -120,7 +117,6 @@ const UserAdmin = () => {
                     });
             }
         } else {
-         
         }
     };
 
@@ -133,15 +129,34 @@ const UserAdmin = () => {
                     type="text"
                     placeholder="Tìm kiếm "
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                        setTotalPage(0);
+                        setPage(0);
+                        setSearchTerm(e.target.value);
+                    }}
                 />
                 <ToastContainer />
                 {state === 1 ? (
-                    <button className="" style={{ backgroundColor: 'red' }} onClick={() => setState(0)}>
+                    <button
+                        className=""
+                        style={{ backgroundColor: 'red' }}
+                        onClick={() => {
+                            setTotalPage(0);
+                            setPage(0);
+                            setState(0);
+                        }}
+                    >
                         Khóa tài khoản
                     </button>
                 ) : (
-                    <button className="" onClick={() => setState(1)}>
+                    <button
+                        className=""
+                        onClick={() => {
+                            setTotalPage(0);
+                            setPage(0);
+                            setState(1);
+                        }}
+                    >
                         Xác nhận tài khoản
                     </button>
                 )}
@@ -189,19 +204,8 @@ const UserAdmin = () => {
                         </div>
                     </div>
                 ))}
+                {totalPage > 1 && <Pagination currentPage={page} totalPages={totalPage} onPageChange={setPage} />}
             </div>
-            {totalPage && (
-                <Pagination
-                    className="pagination"
-                    onChange={(e, value) => {
-                        setPage(value - 1);
-                    }}
-                    count={totalPage}
-                    defaultPage={page + 1}
-                    variant="outlined"
-                    color="secondary"
-                />
-            )}
         </>
     );
 };

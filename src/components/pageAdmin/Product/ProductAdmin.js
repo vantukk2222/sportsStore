@@ -1,4 +1,3 @@
-import { Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import SearchProductAdmin from '~/API/Admin/product/SearchProductAdmin';
@@ -7,6 +6,7 @@ import putChangeStateProduct from '~/API/Admin/product/putChangeStateProduct';
 import AddEventModal from './AddEventModalAdmin';
 import AddProductModal from './AddProductModalAdmin';
 import EditProductModal from './EditProductModalAdmin';
+import Pagination from '~/components/Shop/Pagination';
 
 const ProductAdmin = () => {
     const [products, setProducts] = useState([]);
@@ -34,22 +34,18 @@ const ProductAdmin = () => {
 
                 if (searchTerm) {
                     response = await SearchProductAdmin(searchTerm, page, pageSize, sort, desc, state);
-                    if (!totalPage) {
-                        setTotalPage(response?.totalPages);
-                    }
                 } else {
                     response = await getProductInfor(page, pageSize, sort, desc, state);
-                    if (!totalPage) {
-                        setTotalPage(response?.totalPages);
-                    }
                 }
 
+                if (!response.totalPage) {
+                    setTotalPage(response?.totalPages);
+                }
                 let listProduct = response.content;
-                if(state === 0){
-                    listProduct = listProduct.filter((item)=>item.number_dislike>3);
-
+                if (response.state === 0) {
+                    listProduct = listProduct.filter((item) => item.number_dislike > 3);
                 }
-               
+
                 setProducts(listProduct);
 
                 if (!response) {
@@ -94,42 +90,39 @@ const ProductAdmin = () => {
 
     const handleConfirm = (product) => {
         let isConfirmed;
-        state === 1 ? isConfirmed = window.confirm('Bạn có chắc muốn mở sản phẩm?') : 
-        isConfirmed = window.confirm('Bạn có chắc muốn khóa sản phẩm?');
+        state === 1
+            ? (isConfirmed = window.confirm('Bạn có chắc muốn mở sản phẩm?'))
+            : (isConfirmed = window.confirm('Bạn có chắc muốn khóa sản phẩm?'));
         if (isConfirmed) {
             const authToken = JSON.parse(localStorage.getItem('authToken'));
-          
-            if(state === 1){
+
+            if (state === 1) {
                 putChangeStateProduct(product.id, 0, authToken)
-                .then((status) => {
-                 
-                    if (status === 202) {
-                        toast('Mở sản phẩm thành công');
-                        const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 0 } : p));
-                        setProducts(updatedProducts);
-                        window.location.reload();
-                    }
-                })
-                .catch((error) => {
-                    console.error('API call failed:', error);
-                });
-            }else{
-               
+                    .then((status) => {
+                        if (status === 202) {
+                            toast('Mở sản phẩm thành công');
+                            const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 0 } : p));
+                            setProducts(updatedProducts);
+                            window.location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('API call failed:', error);
+                    });
+            } else {
                 putChangeStateProduct(product.id, 1, authToken)
-                .then((status) => {
-                 
-                    if (status === 202) {
-                        toast('Khóa sản phẩm thành công');
-                        const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 1 } : p));
-                        setProducts(updatedProducts);
-                        window.location.reload();
-                    }
-                })
-                .catch((error) => {
-                    console.error('API call failed:', error);
-                });
+                    .then((status) => {
+                        if (status === 202) {
+                            toast('Khóa sản phẩm thành công');
+                            const updatedProducts = products.map((p) => (p.id === product.id ? { ...p, state: 1 } : p));
+                            setProducts(updatedProducts);
+                            window.location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('API call failed:', error);
+                    });
             }
-           
         } else {
         }
     };
@@ -151,7 +144,6 @@ const ProductAdmin = () => {
     };
 
     const handleSaveEvent = (eventName) => {
-       
         setIsAddEventModalOpen(false);
     };
 
@@ -164,14 +156,33 @@ const ProductAdmin = () => {
                     type="text"
                     placeholder="Tìm kiếm sản phẩm"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                        setPage(0);
+                        setTotalPage(0);
+                        setSearchTerm(e.target.value);
+                    }}
                 />
-                 {state === 1 ? (
-                    <button className="" style={{ backgroundColor: 'red' }} onClick={() => setState(0)}>
+                {state === 1 ? (
+                    <button
+                        className=""
+                        style={{ backgroundColor: 'red' }}
+                        onClick={() => {
+                            setPage(0);
+                            setState(0);
+                            setTotalPage(0);
+                        }}
+                    >
                         Khóa sản phẩm
                     </button>
                 ) : (
-                    <button className="" onClick={() => setState(1)}>
+                    <button
+                        className=""
+                        onClick={() => {
+                            setPage(0);
+                            setState(1);
+                            setTotalPage(0);
+                        }}
+                    >
                         Mở khóa sản phẩm
                     </button>
                 )}
@@ -212,7 +223,7 @@ const ProductAdmin = () => {
 
                         <div className="divproductB">
                             <button className="editproduct" onClick={() => handleConfirm(product)}>
-                            {state === 1 ? 'Mở' : 'Khóa'}
+                                {state === 1 ? 'Mở' : 'Khóa'}
                             </button>
                         </div>
                     </div>
@@ -229,19 +240,8 @@ const ProductAdmin = () => {
                 {isAddEventModalOpen && (
                     <AddEventModal onClose={handleCloseAddEventModal} onSaveEvent={handleSaveEvent} />
                 )}
+                {totalPage > 1 && <Pagination currentPage={page} totalPages={totalPage} onPageChange={setPage} />}
             </div>
-            {totalPage && (
-                <Pagination
-                    className="pagination"
-                    onChange={(e, value) => {
-                        setPage(value - 1);
-                    }}
-                    count={totalPage}
-                    defaultPage={page + 1}
-                    variant="outlined"
-                    color="secondary"
-                />
-            )}
         </>
     );
 };

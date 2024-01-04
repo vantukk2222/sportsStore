@@ -14,11 +14,8 @@ import BusinessTrack from '~/components/business/track/BusinessTrack';
 import Checkout from '~/components/checkout/Checkout';
 import Contact from '~/components/contact/Contact';
 import Order from '~/components/order/Order';
-import Admin from '~/components/pageAdmin/Admin';
-
 import AdminProduct from '~/components/pageAdmin/Product/AdminProduct';
 import AdminRevenue from '~/components/pageAdmin/Revenue/AdminRevenue';
-
 import AdminUser from '~/components/pageAdmin/UserAdmin/AdminUser';
 import ProductDetail from '~/components/productdetail/ProductDetail';
 import Profile from '~/components/profile/Profile';
@@ -56,12 +53,10 @@ const BRoutes = [
     { path: '/business/track', component: BusinessTrack, layout: layout_bussiness },
 ];
 const ARoutes = [
-    { path: '/', component: Admin, layout: layout_admin },
+    { path: '/', component: AdminUser, layout: layout_admin },
     { path: '/login', component: Login, layout: layout_login },
     { path: '/profile', component: Profile, layout: layout_admin },
     { path: '/register', component: Register, layout: layout_res },
-    { path: '/admin/user', component: AdminUser, layout: layout_admin },
-
     { path: '/admin/revenue', component: AdminRevenue, layout: layout_admin },
     { path: '/admin/product', component: AdminProduct, layout: layout_admin },
 ];

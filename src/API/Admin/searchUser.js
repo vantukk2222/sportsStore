@@ -16,7 +16,7 @@ const searchUser = async (name, page, pageSize, sort, desc, state) => {
                 'Content-Type': 'application/json',
             },
         });
-
+       
         return response.data;
     } catch (error) {
         throw error;
