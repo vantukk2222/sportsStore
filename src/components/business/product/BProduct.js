@@ -218,15 +218,37 @@ const BProduct = () => {
             >
                 Tìm kiếm
             </button>
-            <div className="menu">
+            <div className="menu" style={{ fontSize: '20px' }}>
                 <p className="menu-item" onClick={() => setState(0)}>
                     Sản phẩm bình thường
                 </p>
                 <p className="menu-item" onClick={() => setState(1)}>
-                    Sản phẩm bị khóa
+                    Sản phẩm bị khóa{' '}
+                    <span
+                        style={{
+                            marginBottom: '10px',
+                            marginLeft: '7px',
+                            fontWeight: 'bold',
+                            color: 'red',
+                            fontSize: '14px',
+                        }}
+                    >
+                        10
+                    </span>
                 </p>
                 <p className="menu-item" onClick={() => setState(2)}>
                     Sản phẩm bị ẩn
+                    <span
+                        style={{
+                            marginBottom: '10px',
+                            marginLeft: '5px',
+                            fontWeight: 'bold',
+                            color: 'red',
+                            fontSize: '14px',
+                        }}
+                    >
+                        10
+                    </span>
                 </p>
             </div>
             <button type="button" onClick={handleOpenAddModal}>

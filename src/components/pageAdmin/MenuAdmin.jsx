@@ -1,4 +1,4 @@
-import { faBox, faTachometerAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faChartLine, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
@@ -6,13 +6,13 @@ const MenuAdmin = () => {
     return (
         <>
             <div className="menu-admin">
-                <div className="menuadmin">
+                {/* <div className="menuadmin">
                     <label>
                         <FontAwesomeIcon icon={faTachometerAlt} />
                         &nbsp;&nbsp;
                         <Link to="/dashboard">Dashboard</Link>
                     </label>
-                </div>
+                </div> */}
                 <div className="menuadmin">
                     <label>
                         <FontAwesomeIcon icon={faUsers} />
@@ -41,13 +41,13 @@ const MenuAdmin = () => {
                         <Link to="/admin/product">Quản lý sản phẩm</Link>
                     </label>
                 </div>
-                {/* <div className="menuadmin">
+                <div className="menuadmin">
                     <label>
                         <FontAwesomeIcon icon={faChartLine} />
                         &nbsp;&nbsp;
-                        <Link to="/adminrevenue">Doanh thu</Link>
+                        <Link to="/admin/revenue">Doanh thu</Link>
                     </label>
-                </div> */}
+                </div>
             </div>
         </>
     );

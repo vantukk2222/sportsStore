@@ -1,50 +1,207 @@
-import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LineElement,
+    LinearScale,
+    PointElement,
+    Title,
+    Tooltip,
+} from 'chart.js';
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import revenueAdmin from '~/API/Admin/revenueAdmin';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const RevenueAdmin = () => {
-    const revenueData = [
-        { date: '2022-01', revenue: 100 },
-        { date: '2022-02', revenue: 150 },
-        { date: '2022-03', revenue: 120 },
+    const [revenueData, setRevenueData] = useState([]);
+    const [data, setData] = useState({
+        labels: ['0'],
+        datasets: [
+            {
+                label: 'First dataset',
+                fill: true,
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                borderColor: 'rgba(75,192,192,1)',
+                data: [0],
+            },
+        ],
+    });
+    const [dataBar, serDataBar] = useState({
+        labels: ['0'],
+        datasets: [
+            {
+                data: [0],
+            },
+        ],
+    });
+    const [startDate, setStartDate] = useState(new Date('2023-01-01'));
+    const [endDate, setEndDate] = useState(new Date('2024-01-01'));
+    const [selectedBusiness, setSelectedBusiness] = useState(null);
+
+    const businesses = [
+        { id: 1, name: 'Business A' },
+        { id: 2, name: 'Business B' },
     ];
 
-    const ordersData = [
-        { date: '2022-01', orders: 5 },
-        { date: '2022-02', orders: 8 },
-        { date: '2022-03', orders: 6 },
-    ];
+    const fetchData = async (start, end, businessId) => {
+        const user = JSON.parse(localStorage.getItem('User'));
+
+        try {
+            const responseRevenue = await revenueAdmin(businessId, user?.id, start, end);
+            setRevenueData(responseRevenue);
+            console.log(responseRevenue);
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
+    };
+
+    useEffect(() => {
+        const startFormatted = startDate.toISOString().split('T')[0];
+        const endFormatted = endDate.toISOString().split('T')[0];
+        fetchData(startFormatted, endFormatted, selectedBusiness);
+    }, [startDate, endDate, selectedBusiness]);
+
+    useEffect(() => {
+        const months = revenueData?.setStatistic?.map((item) => {
+            const data = `${item.month}/${item.year}`;
+            return data;
+        });
+
+        const dataValues = revenueData?.setStatistic?.map((item) => item.bill_total);
+        const dataBil = revenueData?.setStatistic?.map((item) => item.bill_count);
+
+        setData({
+            labels: months,
+            datasets: [
+                {
+                    fill: true,
+                    backgroundColor: 'rgba(75,192,192,0.2)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    data: dataValues,
+                    label: 'Tổng tiền',
+                },
+            ],
+        });
+
+        serDataBar({
+            labels: months,
+            datasets: [
+                {
+                    data: dataBil,
+                    fill: true,
+                    backgroundColor: 'rgba(75,192,192,0.2)',
+                    borderColor: '#742774',
+                    label: 'Tổng đơn',
+                },
+            ],
+        });
+    }, [revenueData]);
 
     return (
         <div className="chart-container">
-            <h2 className="chart-title">Biểu đồ Giá tiền thu được</h2>
-            <LineChart
-                width={1000}
-                height={350}
-                data={revenueData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                    dataKey="date"
-                    tickFormatter={(value) => new Date(value).toLocaleString('default', { month: 'short' })}
+            <div className="date-pickers">
+                <label>Chọn doanh nghiệp: </label>
+                <select onChange={(e) => setSelectedBusiness(e.target.value)}>
+                    <option value={null}>Tất cả</option>
+                    {businesses.map((business) => (
+                        <option key={business.id} value={business.id}>
+                            {business.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="date-pickers">
+                <div>
+                    <label>Ngày bắt đầu: </label>
+                    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                </div>
+                <div>
+                    <label>Ngày kết thúc: </label>
+                    <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+                </div>
+            </div>
+            <h2 className="chart-title">Biểu đồ Doanh thu của cửa hàng theo tháng</h2>
+            <div className="chart-table">
+                <Line
+                    data={data}
+                    options={{
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Tháng', // X-axis label
+                                },
+                                tooltips: {
+                                    callbacks: {
+                                        label: (context) => {
+                                            const label = context.dataset.label || '';
+                                            if (label) {
+                                                return `${label}: ${context.parsed.x}`;
+                                            }
+                                            return '';
+                                        },
+                                    },
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Giá trị (VNĐ)', // Y-axis label
+                                },
+                                tooltips: {
+                                    callbacks: {
+                                        label: (context) => {
+                                            return `Giá trị: ${context.parsed.y} VNĐ`;
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }}
                 />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="revenue" stroke="#41A0FF" activeDot={{ r: 8 }} />
-            </LineChart>
-
-            <h2 className="chart-title">Biểu đồ Đơn hàng</h2>
-            <BarChart width={1000} height={350} data={ordersData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                    dataKey="date"
-                    tickFormatter={(value) => new Date(value).toLocaleString('default', { month: 'short' })}
+                <h2 className="chart-title">Biểu đồ tổng số đơn bán được theo tháng</h2>
+                <Line
+                    data={dataBar}
+                    options={{
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Tháng', // X-axis label
+                                },
+                                tooltips: {
+                                    callbacks: {
+                                        label: (context) => {
+                                            const label = context.dataset.label || '';
+                                            if (label) {
+                                                return `${label}: ${context.parsed.x}`;
+                                            }
+                                            return '';
+                                        },
+                                    },
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Số đơn', // Y-axis label
+                                },
+                                tooltips: {
+                                    callbacks: {
+                                        label: (context) => {
+                                            return `Số đơn: ${context.parsed.y}`;
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }}
                 />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="orders" fill="#55D8FE" />
-            </BarChart>
+            </div>
         </div>
     );
 };
