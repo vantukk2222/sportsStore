@@ -48,10 +48,10 @@ const Shop = () => {
                         <div className="heading-left row  f_flex">
                             <h2>SẢN PHẨM</h2>
                         </div>
-                        <div className="heading-right row ">
+                        {/* <div className="heading-right row ">
                             <span>Xem tất cả</span>
                             <i className="fa-solid fa-caret-right"></i>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="product-content  grid1">
                         <ShopCart categoryItems={categoryItems || []} />
