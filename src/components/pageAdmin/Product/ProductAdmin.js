@@ -27,12 +27,14 @@ const ProductAdmin = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleCheckDislike = (numTotal, numDislike) => {
-
-        const dis = numDislike / numTotal
+        const dis = numDislike / numTotal;
         if (dis && Math.round(dis * 100) / 100 >= 0.5 && numDislike > 5) {
             return true;
         }
         return false;
+    };
+    function isInteger(value) {
+        return typeof value === 'number' && isFinite(value) && (value | 0) === value;
     }
     useEffect(() => {
         const fetchData = async () => {
@@ -54,12 +56,17 @@ const ProductAdmin = () => {
 
                 if (state === 0) {
                     //  console.log(listProduct);
+                    listProduct = listProduct.filter((item) =>
+                        handleCheckDislike(item.number_comment, item.number_dislike),
+                    );
+                    let totalPages = isInteger(listProduct.length / 10)
+                        ? parseInt(listProduct.length / 10)
+                        : parseInt(listProduct.length / 10) + 1;
 
-                    listProduct = listProduct.filter((item) => handleCheckDislike(item.number_comment, item.number_dislike));
+                    setTotalPage(totalPages);
                     console.log(listProduct);
                 }
                 setProducts(listProduct);
-
 
                 if (!response) {
                     throw new Error('Network response was not ok');
@@ -211,36 +218,45 @@ const ProductAdmin = () => {
                     <div className="divproductB">Thao tác</div>
                 </div>
 
-                {products.map((product, index) => (
-                    <div className="trackinginfo" key={index}>
-                        <div className="divproductB">{product?.name}</div>
-                        <div className="divproductB">
-                            <img
-                                src={product.imageSet?.find((e) => e.is_main === true)?.url || product.imageSet[0].url}
-                                alt={`Product ${index + 1}`}
-                            />
-                        </div>
-                        <div className="divproductB">{product.detail || 'Không có'}</div>
+                {products.length > 0 ? (
+                    products.map((product, index) => (
+                        <div className="trackinginfo" key={index}>
+                            <div className="divproductB">{product?.name}</div>
+                            <div className="divproductB">
+                                <img
+                                    src={
+                                        product.imageSet?.find((e) => e.is_main === true)?.url ||
+                                        product.imageSet[0].url
+                                    }
+                                    alt={`Product ${index + 1}`}
+                                />
+                            </div>
+                            <div className="divproductB">{product.detail || 'Không có'}</div>
 
-                        <div className="divproductC">
-                            {product?.productSet.map((sizeInfo, i) => (
-                                <div key={i}>
-                                    <span>{sizeInfo?.size}-</span>
-                                    <span>{sizeInfo?.price}vnđ-</span>
-                                    <span>{sizeInfo?.quantity}</span>
-                                </div>
-                            ))}
-                        </div>
+                            <div className="divproductC">
+                                {product?.productSet.map((sizeInfo, i) => (
+                                    <div key={i}>
+                                        <span>{sizeInfo?.size}-</span>
+                                        <span>{sizeInfo?.price}vnđ-</span>
+                                        <span>{sizeInfo?.quantity}</span>
+                                    </div>
+                                ))}
+                            </div>
 
-                        <div className="divproductB">{product.categorySet.reduce((a, e) => a + `${e.name},`, '')}</div>
+                            <div className="divproductB">
+                                {product.categorySet.reduce((a, e) => a + `${e.name},`, '')}
+                            </div>
 
-                        <div className="divproductB">
-                            <button className="editproduct" onClick={() => handleConfirm(product)}>
-                                {state === 1 ? 'Mở' : 'Khóa'}
-                            </button>
+                            <div className="divproductB">
+                                <button className="editproduct" onClick={() => handleConfirm(product)}>
+                                    {state === 1 ? 'Mở' : 'Khóa'}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                ) : (
+                    <h3>Không có sản phẩm </h3>
+                )}
 
                 {isAddModalOpen && <AddProductModal onClose={handleCloseAddModal} onSave={handleSaveProduct} />}
                 {isEditModalOpen && (
