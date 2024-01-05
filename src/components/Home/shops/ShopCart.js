@@ -81,12 +81,12 @@ const ShopCart = ({ categoryItems }) => {
                                         Đã bán:{value.number_buy}
                                     </p>
                                     <div className="price">
-                                        {givenTimeStr && <h4 className="crossedNumber">{value.price_min}đ </h4>}
+                                        {givenTimeStr && <h4 className="crossedNumber">{value.price_min}vnđ </h4>}
                                         <h4 className="">
                                             {value.sale
                                                 ? (value.price_min * (100 - value.sale?.discount)) / 100
                                                 : value.price_min}
-                                            đ
+                                            vnđ
                                         </h4>
                                     </div>
                                 </div>

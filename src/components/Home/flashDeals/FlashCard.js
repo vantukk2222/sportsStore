@@ -41,7 +41,7 @@ const FlashCard = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-             
+
                 setProductItems(response.content);
                 sessionStorage.setItem('flash_product', JSON.stringify(response.content));
             } catch (error) {
@@ -99,7 +99,7 @@ const FlashCard = () => {
                                             </p>
                                             <div className="price ">
                                                 {givenTimeStr && (
-                                                    <h4 className="crossedNumber">{productItems.price_min}đ </h4>
+                                                    <h4 className="crossedNumber">{productItems.price_min}vnđ </h4>
                                                 )}
                                                 <h4>
                                                     {productItems.sale
@@ -107,7 +107,7 @@ const FlashCard = () => {
                                                               (100 - productItems.sale?.discount)) /
                                                           100
                                                         : productItems.price_min}
-                                                    đ
+                                                    vnđ
                                                 </h4>
                                             </div>
                                         </div>

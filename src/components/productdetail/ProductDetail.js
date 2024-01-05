@@ -47,7 +47,6 @@ const ProductDetail = () => {
         setQuantity(e.quantity);
         setPrice(e.price);
         setSize(e.size);
-      
     };
     const addToCart = (product) => {
         const id2 = product.productSet?.find((e) => e.size == size).id;
@@ -115,7 +114,7 @@ const ProductDetail = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-              
+
                 response.productSet.sort((a, b) => a.id - b.id);
 
                 setProductItem(response);
@@ -138,7 +137,6 @@ const ProductDetail = () => {
         };
         fetchData();
     }, []);
-
 
     const calculateStarCount = () => {
         if (productItem.number_like !== undefined && productItem.number_dislike !== undefined) {
@@ -216,9 +214,9 @@ const ProductDetail = () => {
                                 </div>
                             )}
                             <div className="tdtable">
-                                {sale && <p className="product-price crossedNumber">{price}đ</p>}
+                                {sale && <p className="product-price crossedNumber">{price}vnđ</p>}
                                 <p className="product-price ">
-                                    {sale ? (price * (100 - productItem.sale?.discount)) / 100 : price}đ
+                                    {sale ? (price * (100 - productItem.sale?.discount)) / 100 : price}vnđ
                                 </p>
                             </div>
                             <p className="product-description">

@@ -26,7 +26,9 @@ const ListCheckout = ({ selectedItems }) => {
     };
 
     const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(amount)
+            .replace('₫', 'vnđ');
     };
 
     const getTotalPrice = (items) => {
@@ -131,16 +133,6 @@ const ListCheckout = ({ selectedItems }) => {
                             })}
                         </tbody>
                     </table>
-                    {/* <div className="ship-listcheckout">
-                        <p>Lời nhắn</p>
-                        <input type="text" name="message" value={message} onChange={handleInputChange} />
-                        <p>Mã giảm giá</p>
-                        <select name="shippingProvider" value={shippingProvider} onChange={handleInputChange}>
-                            <option value="">Phương thức thanh toán</option>
-                            <option value="shipping1">payWithATM</option>
-                            <option value="shipping2">captureWallet</option>
-                        </select>
-                    </div> */}
                     <div className="total-listCheckout">
                         <h4>Tổng cộng: {getTotalPrice(items) || 'N/A'}</h4>
                     </div>

@@ -23,14 +23,13 @@
 /*------head-----------*/
 /*------search-----------*/
 .search {
-    padding: 20px 0;
     padding-bottom: 70px;
 }
 
 .search .logo img {
     margin-top: 15px;
-    width: 230px;
-    height: 70px;
+    width: 250px;
+    height: 180px;
 }
 
 .search .width {

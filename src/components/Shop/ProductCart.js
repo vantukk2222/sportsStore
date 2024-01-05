@@ -39,12 +39,12 @@ const ProductCart = ({ productItems }) => {
                                     Đã bán:{product.number_buy}
                                 </p>
                                 <div className="price">
-                                    {givenTimeStr && <h4 className="crossedNumber">{product.price_min}đ </h4>}
+                                    {givenTimeStr && <h4 className="crossedNumber">{product.price_min}vnđ </h4>}
                                     <h4>
                                         {product.sale
                                             ? (product.price_min * (100 - product.sale?.discount)) / 100
                                             : product.price_min}
-                                        đ
+                                        vnđ
                                     </h4>
                                 </div>
                             </div>

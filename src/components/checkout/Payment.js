@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import postMomo from '~/API/postMomo';
 import { listCartByIdUser } from '~/redux/reducers/Cart/listCartReducer';
 
 const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', 'vnđ');
 };
 const Payment = ({ selectedItems }) => {
     const check = JSON.parse(localStorage.getItem('selectedItems'));
@@ -45,11 +45,10 @@ const Payment = ({ selectedItems }) => {
                 const list_id = [];
                 selectedItems.forEach((e) => list_id.push(e.id));
                 const authToken = JSON.parse(localStorage.getItem('authToken'));
-             
+
                 const response = await postMomo(list_id, shippingProvider, authToken).then((res) => {
-                   
                     const user = JSON.parse(localStorage.getItem('User'));
-                   
+
                     dispatch(listCartByIdUser(user.id));
                     return res;
                 });

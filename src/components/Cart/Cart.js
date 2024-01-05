@@ -20,7 +20,7 @@ const Cart = () => {
     const [check, setCheck] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer);
-  
+
     const totalPrice = dataCart?.reduce(
         (price, item) => {
             if (checkedItems.includes(item.id)) {
@@ -31,7 +31,7 @@ const Cart = () => {
                     if (givenTime > currentTime) givenTimeStr = true;
                     else givenTimeStr = false;
                 } else givenTimeStr = false;
-              
+
                 return (
                     price +
                     (givenTimeStr
@@ -109,7 +109,6 @@ const Cart = () => {
     };
 
     const handleAdd = (item) => {
-       
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
@@ -155,7 +154,6 @@ const Cart = () => {
         closeModal();
     };
     const handleRemove = (item) => {
-      
         localStorage.setItem('Item', JSON.stringify(item));
         setIsModalOpen(true);
     };
@@ -164,7 +162,6 @@ const Cart = () => {
         localStorage.removeItem('Item');
     };
     const handleMinus = (item) => {
-      
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const fetchData = async () => {
             try {
@@ -311,7 +308,7 @@ const Cart = () => {
                                                                                   (100 - item.product.sale?.discount)) /
                                                                               100
                                                                             : item.product.price}
-                                                                        đ
+                                                                        vnđ
                                                                     </span>
                                                                 }
                                                                 <span>x {item.quantity} </span>
@@ -323,7 +320,7 @@ const Cart = () => {
                                                                               100) *
                                                                           item.quantity
                                                                         : item.product.price * item.quantity}
-                                                                    đ
+                                                                    vnđ
                                                                 </span>
                                                             </h4>
                                                         </div>
