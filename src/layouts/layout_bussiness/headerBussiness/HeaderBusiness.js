@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { roleByUserName } from '~/redux/reducers/Role/role';
 import './headerbusiness.css';
 import logoImage from './logooo.png';
+import checkToken from '~/API/checkToken';
+import { useEffect } from 'react';
 const HeaderBusiness = () => {
     const user = JSON.parse(localStorage.getItem('User'));
-  
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleLogout = (e) => {
@@ -14,6 +16,22 @@ const HeaderBusiness = () => {
         dispatch(roleByUserName(false));
         navigate('/login');
     };
+    useEffect(() => {
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        const check = async () => {
+            try {
+                const response = await checkToken(authToken);
+                console.log(response);
+                if (response.status == 401 && authToken) {
+                    localStorage.clear();
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        check();
+    }, []);
     return (
         <>
             <section className="headlogin">

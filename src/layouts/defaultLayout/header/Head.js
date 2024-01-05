@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './head.css';
+import { useNavigate } from 'react-router';
+import checkToken from '~/API/checkToken';
+
 const Head = () => {
     const handleLogout = (e) => {
         e.preventDefault();
@@ -11,9 +14,25 @@ const Head = () => {
     };
     const user = JSON.parse(localStorage.getItem('User'));
     const [name, setName] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         setName(user?.name);
+        const authToken = JSON.parse(localStorage.getItem('authToken'));
+        const check = async () => {
+            try {
+                const response = await checkToken(authToken);
+                console.log(response);
+                if (response.status == 401 && authToken) {
+                    localStorage.clear();
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        check();
     }, [user]);
+
     return (
         <>
             <section className="head">
