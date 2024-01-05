@@ -14,7 +14,7 @@ const ShopInfo = (props) => {
         <TouchableOpacity style = {{backgroundColor:'white', padding:10}}
         onPress={() => {
             console.log("  123",buss);
-            //  navigation.navigate('Business', { business: buss })
+             navigation.navigate('Business', { business: buss })
               }}>
             <View style={styles.shopContainer}>
             

@@ -21,10 +21,23 @@ const getUserNameStorage = async()=>{
 
 }
 
+const setProductInfor = async(item)=>{
+    console.log("Item:", item);
+    await AsyncStorage.setItem("productInfor",JSON.stringify(item))
+}
+const getProductInfor = async()=>{
+    return await AsyncStorage.getItem("productInfor")
+}
+const removeProductInfor = async()=>{
+    await AsyncStorage.removeItem("productInfor")
+}
 export const  asyncStorage = {
     setAuthToken,
     getAuthToken,
     removeAuthToken,
     setUsername,
     getUserNameStorage,
+    setProductInfor,
+    getProductInfor,
+    removeProductInfor
 }
