@@ -64,7 +64,7 @@ const ProductAdmin = () => {
                         : parseInt(listProduct.length / 10) + 1;
 
                     setTotalPage(totalPages);
-                    console.log(listProduct);
+                    //  console.log(listProduct);
                 }
                 setProducts(listProduct);
 

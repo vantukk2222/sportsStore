@@ -19,7 +19,9 @@ const UserAdmin = () => {
     const [desc, setDesc] = useState(false);
     const [state, setState] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
-
+    function isInteger(value) {
+        return typeof value === 'number' && isFinite(value) && (value | 0) === value;
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -32,12 +34,17 @@ const UserAdmin = () => {
                     response = await getUser(page, pageSize, sort, desc, state);
                 }
                 if (!response.totalPage) {
-                    setTotalPage(response?.totalPages);
+                    //  console.log(response);
+                    let totalPages = isInteger((response.totalPages * 10 - 2) / 10)
+                        ? parseInt((response.totalPages * 10 - 2) / 10)
+                        : parseInt((response.totalPages * 10 - 2) / 10) + 1;
+                    setTotalPage(totalPages);
                 }
                 let listAcc = response.content;
                 listAcc = listAcc.filter(
                     (item) => item?.roles[0] === 'ROLE_BUSINESS' || item?.roles[0] === 'ROLE_CUSTOMER',
                 );
+
                 setTrackingInfo(listAcc);
                 if (!response) {
                     throw new Error('Network response was not ok');
@@ -172,37 +179,41 @@ const UserAdmin = () => {
                     <div>Action</div>
                 </div>
 
-                {trackingInfo.map((user, index) => (
-                    <div className="tracking-info" key={index} style={{ fontSize: '13px' }}>
-                        <div style={{ width: '150px' }}>{user.username}</div>
-                        <div>
-                            <img src={user.image_url} alt={`User ${index + 1}`} />
-                        </div>
-                        <div className="adminheader">{user.email}</div>
-                        <div style={{ width: '120px' }}>{user.name}</div>
-                        <div style={{ width: '130px' }}>{user.roles}</div>
+                {trackingInfo.length > 0 ? (
+                    trackingInfo.map((user, index) => (
+                        <div className="tracking-info" key={index} style={{ fontSize: '13px' }}>
+                            <div style={{ width: '150px' }}>{user.username}</div>
+                            <div>
+                                <img src={user.image_url} alt={`User ${index + 1}`} />
+                            </div>
+                            <div className="adminheader">{user.email}</div>
+                            <div style={{ width: '120px' }}>{user.name}</div>
+                            <div style={{ width: '130px' }}>{user.roles}</div>
 
-                        <div>{user.cic}</div>
-                        <div>{user.address}</div>
-                        <div>{user.state === 1 ? 'Chưa xác nhận' : 'Đang hoạt động'}</div>
+                            <div>{user.cic}</div>
+                            <div>{user.address}</div>
+                            <div>{user.state === 1 ? 'Chưa xác nhận' : 'Đang hoạt động'}</div>
 
-                        <div>
-                            <button
-                                className=""
-                                style={{
-                                    backgroundColor: state === 1 ? 'green' : 'red',
-                                    color: 'white',
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer',
-                                }}
-                                onClick={() => handleAccUser(user)}
-                            >
-                                {state === 1 ? 'Xác nhận' : 'Khóa'}
-                            </button>
+                            <div>
+                                <button
+                                    className=""
+                                    style={{
+                                        backgroundColor: state === 1 ? 'green' : 'red',
+                                        color: 'white',
+                                        padding: '10px',
+                                        borderRadius: '5px',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => handleAccUser(user)}
+                                >
+                                    {state === 1 ? 'Xác nhận' : 'Khóa'}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                ) : (
+                    <h2>Không có người dùng phù hợp</h2>
+                )}
                 {totalPage > 1 && <Pagination currentPage={page} totalPages={totalPage} onPageChange={setPage} />}
             </div>
         </>
