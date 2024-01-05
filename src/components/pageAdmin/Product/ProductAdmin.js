@@ -203,7 +203,7 @@ const ProductAdmin = () => {
                         <div className="divproductB">{product?.name}</div>
                         <div className="divproductB">
                             <img
-                                src={product.imageSet?.find((e) => e.is_main === true)?.url}
+                                src={product.imageSet?.find((e) => e.is_main === true)?.url || product.imageSet[0].url}
                                 alt={`Product ${index + 1}`}
                             />
                         </div>

@@ -252,6 +252,7 @@ const Cart = () => {
                                                 if (givenTime > currentTime) givenTimeStr = true;
                                                 else givenTimeStr = false;
                                             } else givenTimeStr = false;
+                                         
                                             return (
                                                 <div
                                                     className={`cart-item ${isNewBusiness ? 'new-business' : ''}`}
