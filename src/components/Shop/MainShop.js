@@ -1,4 +1,3 @@
-import React from 'react';
 import logoImage from './shop.png';
 
 const MainShop = ({ shopItem }) => {
@@ -18,17 +17,17 @@ const MainShop = ({ shopItem }) => {
                     </div>
                     <div className="shop-review">
                         <p>
-                            <span className="icon">&#128101;</span> Like: {shopItem.count_comment_like}
+                            <span className="icon">&#128101;</span> Lượt thích: {shopItem.count_comment_like}
                         </p>
                         <p>
-                            <span className="icon">&#128101;</span> Dislike: {shopItem.count_comment_dislike}
+                            <span className="icon">&#128101;</span> Lượt không thích: {shopItem.count_comment_dislike}
                         </p>
                         <p>
                             <span className="icon">&#9733;</span> Đánh giá: {shopItem.count_comment}
                         </p>
 
                         <p>
-                            <span className="icon">&#128100;</span> Products: {shopItem.count_product}
+                            <span className="icon">&#128100;</span> Sản phẩm: {shopItem.count_product}
                         </p>
                         <p>
                             <span className="icon">&#128100;</span> Tham gia: {d}

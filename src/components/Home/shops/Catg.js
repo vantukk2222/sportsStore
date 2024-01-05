@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import Loading from '~/components/loading/Loading';
 
 const Catg = ({ handleClick, categoryItems }) => {
@@ -6,7 +5,7 @@ const Catg = ({ handleClick, categoryItems }) => {
         <>
             <div className="category">
                 <div className="chead d_flex">
-                    <h1>Category </h1>
+                    <h1>DANH MỤC </h1>
                 </div>
                 {categoryItems ? (
                     categoryItems.map((value, index) => {

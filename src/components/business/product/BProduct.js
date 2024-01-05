@@ -41,7 +41,7 @@ const BProduct = () => {
             setSelectedProducts(Array(response.content.length).fill(false));
             response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
             setTotalPage(response.totalPages);
-           
+
             setProducts(response.content);
         } catch (error) {
             setError(error);
@@ -62,7 +62,7 @@ const BProduct = () => {
             setSelectedProducts(Array(response.content.length).fill(false));
             response.content.forEach((e) => e.productSet.sort((a, b) => a.id - b.id));
             setTotalPage(response.totalPages);
-          
+
             setProducts(response.content);
         } catch (error) {
             setError(error);
@@ -88,7 +88,6 @@ const BProduct = () => {
     };
 
     const handleSaveProduct = (id, editedProduct) => {
-       
         const authToken = JSON.parse(localStorage.getItem('authToken'));
 
         const t = () => {
@@ -97,7 +96,6 @@ const BProduct = () => {
 
             editedProduct.imageSet.forEach((e) => {
                 if (e.id == null) {
-                   
                     const promise = postImage(editedProduct.name, e.url, 'false', authToken)
                         .then((response) => (e.id = response.data))
                         .catch((error) => console.error('Error uploading image:', error));
@@ -154,7 +152,7 @@ const BProduct = () => {
             if (e) arr.push(products[index].id);
         });
         setAddEProduct(arr);
-       
+
         setSelectedProducts(updatedSelectedProducts);
     };
     const handleHide = (id, state) => {
@@ -178,7 +176,6 @@ const BProduct = () => {
     };
 
     const handleSaveEvent = (id) => {
-     
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         postSProductInformation(id, addEProduct, authToken)
             .then(() => {
@@ -188,7 +185,6 @@ const BProduct = () => {
             .then(handleCloseAddEventModal());
     };
     const handleDeleteEvent = () => {
-       
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         putRemoveSale(addEProduct, authToken).then(() => {
             if (sname) SearchData();
@@ -305,7 +301,7 @@ const BProduct = () => {
                             {product.productSet.map((sizeInfo, i) => (
                                 <div key={i}>
                                     <span>{sizeInfo.size || 'FreeSize'}-</span>
-                                    <span>{sizeInfo.price}đ-</span>
+                                    <span>{sizeInfo.price}vnđ-</span>
                                     <span>{sizeInfo.quantity}</span>
                                 </div>
                             ))}

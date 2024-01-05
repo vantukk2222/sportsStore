@@ -28,8 +28,8 @@
 
 .search .logo img {
     margin-top: 15px;
-    width: 250px;
-    height: 180px;
+    width: 200px;
+    height: 140px;
 }
 
 .search .width {
@@ -141,7 +141,7 @@ header ul li a:hover {
 }
 
 .search.active {
-    height: 12vh;
+    height: 150px;
     position: fixed;
     top: 0;
     z-index: 1000;

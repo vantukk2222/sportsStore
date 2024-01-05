@@ -3,10 +3,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import SearchProductAdmin from '~/API/Admin/product/SearchProductAdmin';
 import getProductInfor from '~/API/Admin/product/getProductInfor';
 import putChangeStateProduct from '~/API/Admin/product/putChangeStateProduct';
+import Pagination from '~/components/Shop/Pagination';
 import AddEventModal from './AddEventModalAdmin';
 import AddProductModal from './AddProductModalAdmin';
 import EditProductModal from './EditProductModalAdmin';
-import Pagination from '~/components/Shop/Pagination';
 
 const ProductAdmin = () => {
     const [products, setProducts] = useState([]);
@@ -213,7 +213,7 @@ const ProductAdmin = () => {
                             {product?.productSet.map((sizeInfo, i) => (
                                 <div key={i}>
                                     <span>{sizeInfo?.size}-</span>
-                                    <span>{sizeInfo?.price}đ-</span>
+                                    <span>{sizeInfo?.price}vnđ-</span>
                                     <span>{sizeInfo?.quantity}</span>
                                 </div>
                             ))}

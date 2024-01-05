@@ -1,34 +1,32 @@
 .headlogin {
     padding: 1px 0;
     text-align: center;
-  }
-  
-  .header-container {
+}
+
+.header-container {
     display: flex;
     align-items: center;
     padding-left: 30px;
-    
-  }
-  
-  .imgheaderlogin {
-    max-width: 200px; /* Đặt kích thước tối đa cho hình ảnh */
+}
+
+.imgheaderlogin {
+    max-width: 200px;
+    height: 100px;
     margin-top: 10px;
-  }
-  
-  .dn {
+}
+
+.dn {
     font-size: 18px;
-  }
-  
-  .lableheaderlogin {
+}
+
+.lableheaderlogin {
     text-decoration: none;
     color: #fff;
     margin: 0;
     padding-left: 60%;
+}
 
-  }
-  
-  .label-left {
+.label-left {
     margin-right: auto; /* Đẩy label này về bên trái */
     font-size: 20;
-  }
-  
+}

@@ -13,6 +13,7 @@
 .imgheaderlogin {
     max-width: 200px; /* Đặt kích thước tối đa cho hình ảnh */
     margin-top: 10px;
+    height: 100px;
 }
 
 .dn {
