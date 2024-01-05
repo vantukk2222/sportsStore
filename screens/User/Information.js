@@ -36,14 +36,15 @@ const Information = () => {
         await asyncStorage.setUsername('')
         dispatch(logout())
         dispatch(resetStateListCart())
-        dispatch(resetStateUser())
-        // const data = await AsyncStorage.getItem('persist:root')
-        // navigation.dispatch(
-        //     CommonActions.reset({
-        //         index: 0,
-        //         routes: [{ name: 'LoginBottomNavigator' }], // Thay 'Home' bằng màn hình bạn muốn quay về
-        //     })
-        // );
+        dispatch(resetStateUser()) 
+        await AsyncStorage.removeItem('persist:root')
+        await asyncStorage.removeProductInfor()
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'LoginBottomNavigator' }], // Thay 'Home' bằng màn hình bạn muốn quay về
+            })
+        );
         // console.log("data logout:", data);
     }
     if (loading) {

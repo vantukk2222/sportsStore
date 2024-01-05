@@ -56,7 +56,7 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
     dispatch(loginSuccess({ authToken: data, userName: username })); // Dispatch loginSuccess with received data
     await dispatch(fetchUserByUserName(username))
     // console.log("state reducerLogin: " + JSON.stringify(getState()));
-    return data
+    return data || 404
   } catch (error) {
     await AsyncStorage.removeItem('persist:root')
 
@@ -66,6 +66,7 @@ export const loginUser = (username, password) => async (dispatch, getState) => {
       errorMessage = error.response.data.message || errorMessage;
     }
     dispatch(loginSlice.actions.loginFailure({ error: errorMessage })); // Dispatch loginFailure with error message
+    return 404
   }
 };
 

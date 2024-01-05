@@ -23,6 +23,7 @@ import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import LoadingModal from '../../components/loading';
 import { ImageItem } from '../../components/ImageItem';
 import { SliderBox } from "react-native-image-slider-box";
+import { asyncStorage } from '../../utilies/asyncStorage';
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
@@ -81,7 +82,7 @@ const DetailProduct = ({ navigation, route }) => {
             return "⭐⭐⭐⭐⭐"; // 5 sao
         }
     }
-
+    // asyncStorage
 
     // }, [userName]);
     console.log("id: ", item?.id)
@@ -158,10 +159,11 @@ const DetailProduct = ({ navigation, route }) => {
         }
     }, [data[item?.id]])
     // console.log("product", item);
-    handleAddtocart = () => {
+    const handleAddtocart = async() => {
         dataUser?.id ? navigation.navigate('ModalBuyProduct', { product: product, id_user: dataUser?.id })
             : (
                 toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập"),
+                await asyncStorage.setProductInfor(item),
                 navigation.navigate("Login")
             )
         console.log("id_information: ", product?.id)
@@ -466,7 +468,7 @@ const DetailProduct = ({ navigation, route }) => {
                     }
                 }>
                 <TouchableOpacity
-                    onPress={() => { handleAddtocart() }}
+                    onPress={async() => { await handleAddtocart() }}
                     style={{
                         borderRadius: 2,
                         borderWidth: 1,

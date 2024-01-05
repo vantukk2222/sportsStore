@@ -42,6 +42,7 @@ function Login(props) {
   const [isLoading, setIsLoading] = useState(false);
   const errorLoad = loginState.error;
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [productInfor, setProductInfor] = useState('')
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
@@ -56,25 +57,74 @@ function Login(props) {
     }
     return false;
   };
-  // useEffect(() => {
+  useEffect(() => {
+    dispatch(fetchUserByUserName(valueEmail));
+    // return () => {
 
-  //   // return () => {
-
-  //   //   setValueEmail('')
-  //   //   setValuePassword('')
-  //   // }
-  // }, [token]);
+    //   setValueEmail('')
+    //   setValuePassword('')
+    // }
+  }, [token]);
 
   useEffect(() => {
-    console.log('efff', data);
-    if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
-      if (handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
-        console.log("Vào condition này!");
-        dispatch(listCartByIdUser(data?.id))
-        navigation.navigate("Home")
+    const fetchUserData = async () => {
+      try {
+        // Lấy dữ liệu từ AsyncStorage
+        const productData = await asyncStorage.getProductInfor();
+
+        // console.log("ProductData 1", productData);
+        if (productData) {
+          setProductInfor(JSON.parse(productData))
+        }
+      } catch (error) {
+        // Xử lý lỗi khi không thể lấy dữ liệu từ AsyncStorage
+        console.log('Error fetching user data: ', error);
       }
-    } else if (data && handleCheckArray(data?.roles, 'ROLE_BUSINESS')) {
+    };
+
+    fetchUserData(); // Gọi hàm fetchUserData trong useEffect
+
+  }, [])
+
+  useEffect(() => {
+
+    // console.log('efff', data);
+    // if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
+
+    //   const routeIndex = productInfor ? 1 : 0
+    //   console.log('route in login', routeIndex);
+    //   // const routeIndex = productInfor ? 1:0
+    //   // console.log('hereeeeee',routeIndex);
+    //   dispatch(listCartByIdUser(data?.id))
+    //   dispatch(setRole('ROLE_CUSTOMER'));
+
+    //   if (routeIndex === 1) {
+    //     navigation.dispatch(
+    //       CommonActions.reset({
+    //         index: 0,
+    //         routes: [
+    //           { name: 'LoginBottomNavigator' },
+    //           {
+    //             name: 'DetailProduct',
+    //             params: { item: productInfor },
+    //           }],
+    //       }),
+    //     );
+    //   }
+    //   if (routeIndex === 0) {
+    //     navigation.dispatch(
+    //       CommonActions.reset({
+    //         index: 0,
+    //         routes: [
+    //           { name: 'LoginBottomNavigator' },
+    //         ],
+    //       }),
+    //     );
+    //   }
+    // } else
+     if (data && handleCheckArray(data?.roles, 'ROLE_BUSINESS')) {
       dispatch(setRole('ROLE_BUSINESS'));
+
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -85,36 +135,90 @@ function Login(props) {
 
   }, [data]);
   const handlePress = async () => {
-    setIsLoading(true);
-    setButtonDisabled(true);
-    if (valueEmail !== '' && valuePassword !== '') {
-      loginUser(valueEmail, valuePassword).then(async dataToken => {
-        if (dataToken) {
-          await dispatch(fetchUserByUserName(valueEmail)).then((data) => {
-            if (handleCheckArray(data?.roles, 'ROLE_BUSINESS')) {
-              navigation.goBack()
-            }
-          })
-          await asyncStorage.setUsername(valueEmail);
-          console.log("user name: ", valueEmail);
-          toastsuccess(
-            'Đăng nhập thành công',
-            'Chào mừng bạn đến với SportStore',
-          );
-          console.log('token in login:', dataToken);
-          setIsLoading(false);
-          setToken(token);
-        } else {
-          setIsLoading(false);
+    try {
+      setIsLoading(true);
+      setButtonDisabled(true);
+      if (valueEmail !== '' && valuePassword !== '') {
+        loginUser(valueEmail, valuePassword).then(async dataToken => {
+          if (dataToken !== 404) {
+            console.log('token in login:', dataToken);
 
-          toastError('Lỗi đăng nhập', 'Không thể đăng nhập');
-        }
-      });
-    } else {
-      setIsLoading(false);
-      toastError('Xin lỗi', 'Vui lòng nhập đủ thông tin.');
+            await dispatch(fetchUserByUserName(valueEmail)).then(async (data) => {
+              if (data) {
+                // console.log(Data);
+                await asyncStorage.setUsername(valueEmail);
+                console.log("user name: ", valueEmail);
+
+                console.log('efff', data);
+                if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
+
+                  const routeIndex = productInfor ? 1 : 0
+                  console.log('route in login', routeIndex);
+                  // const routeIndex = productInfor ? 1:0
+                  // console.log('hereeeeee',routeIndex);
+                  dispatch(listCartByIdUser(data?.id))
+                  dispatch(setRole('ROLE_CUSTOMER'));
+
+                  if (routeIndex === 1) {
+                    navigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [
+                          { name: 'LoginBottomNavigator' },
+                          {
+                            name: 'DetailProduct',
+                            params: { item: productInfor },
+                          }],
+                      }),
+                    );
+                  }
+                  if (routeIndex === 0) {
+                    navigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [
+                          { name: 'LoginBottomNavigator' },
+                        ],
+                      }),
+                    );
+                  }
+                } else if (data && handleCheckArray(data?.roles, 'ROLE_BUSINESS')) {
+                  dispatch(setRole('ROLE_BUSINESS'));
+
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: 'BusinessBottomNavigator' }],
+                    }),
+                  );
+                }
+                toastsuccess(
+                  'Đăng nhập thành công',
+                  'Chào mừng bạn đến với SportStore',
+                );
+                setIsLoading(false);
+                setToken(token);
+              }
+            })
+
+          } else if (dataToken === 404) {
+            setIsLoading(false);
+            setToken('');
+            console.log('token in login else:', dataToken);
+
+            toastError('Lỗi đăng nhập', 'Không thể đăng nhập');
+          }
+        });
+      } else {
+        setIsLoading(false);
+        toastError('Xin lỗi', 'Vui lòng nhập đủ thông tin.');
+      }
+      setButtonDisabled(false);
+    } catch (error) {
+
+      toastError('Lỗi đăng nhập', error);
+
     }
-    setButtonDisabled(false);
   };
   //  if(!getToken()) return <Loading/>
   // if ((loginState?.isLoading)) return <LoadingModal isLoading={true}></LoadingModal>
@@ -200,7 +304,7 @@ function Login(props) {
               placeholderTextColor="gray"
               underlineColor="transparent"
               placeholder="Tên tài khoản"></TextInput>
-              <Text style={{paddingRight:24}}></Text>
+            <Text style={{ paddingRight: 24 }}></Text>
           </View>
 
           <View style={{
@@ -234,7 +338,7 @@ function Login(props) {
             <TouchableOpacity onPress={togglePasswordVisibility}>
               <Icon
                 name={!isPasswordVisible ? 'eye-slash' : 'eye'}
-                size={isPasswordVisible ? 20: 18}
+                size={isPasswordVisible ? 20 : 18}
                 color="gray"
                 style={{ alignItems: 'center' }} // Điều chỉnh vị trí của icon
               />
