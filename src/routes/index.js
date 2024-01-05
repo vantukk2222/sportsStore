@@ -1,4 +1,3 @@
-// Public routes
 import Cart from '~/components/Cart/Cart';
 import Home from '~/components/Home';
 import Login from '~/components/Login_Signup/Login';
@@ -19,6 +18,7 @@ import AdminRevenue from '~/components/pageAdmin/Revenue/AdminRevenue';
 import AdminUser from '~/components/pageAdmin/UserAdmin/AdminUser';
 import ProductDetail from '~/components/productdetail/ProductDetail';
 import Profile from '~/components/profile/Profile';
+import MyRevenue from '~/components/revenue/MyRevenue';
 import SearchProduct from '~/components/search/SearchProduct';
 import SearchallShop from '~/components/search/searchallShop/SearchallShop';
 import defaultLayout from '~/layouts/defaultLayout/defaultLayout';
@@ -41,6 +41,7 @@ const CRoutes = [
     { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/order', component: Order, layout: defaultLayout },
     { path: '/allproduct/:category', component: AllProduct, layout: defaultLayout },
+    { path: '/myrevenue', component: MyRevenue, layout: defaultLayout },
 ];
 const BRoutes = [
     { path: '/', component: Business, layout: layout_bussiness },
@@ -51,6 +52,7 @@ const BRoutes = [
     { path: '/business/revenue', component: BusinessRevenue, layout: layout_bussiness },
     { path: '/business/sale', component: BusinessSale, layout: layout_bussiness },
     { path: '/business/track', component: BusinessTrack, layout: layout_bussiness },
+    { path: '/myrevenue', component: MyRevenue, layout: defaultLayout },
 ];
 const ARoutes = [
     { path: '/', component: AdminUser, layout: layout_admin },

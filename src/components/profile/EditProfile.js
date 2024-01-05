@@ -270,18 +270,7 @@ const EditProfile = () => {
                 />{' '}
                 <div className="text">Ảnh của bạn </div>
                 <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} />
-                <p
-                    style={{
-                        fontSize: '16px',
-                        color: '#606eca',
-                        fontFamily: 'Arial, sans-serif',
-                        margin: '0',
-                        padding: '10px',
-                        fontWeight: 'bold',
-                    }}
-                >
-                    Ví của tôi 💳: 100000 VNĐ
-                </p>
+               
             </div>
             <ToastContainer position="top-center" style={{ top: '50%', transform: 'translateY(-50%)' }} />
         </div>
