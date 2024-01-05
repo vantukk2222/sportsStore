@@ -39,7 +39,6 @@ const UserAdmin = () => {
                     (item) => item?.roles[0] === 'ROLE_BUSINESS' || item?.roles[0] === 'ROLE_CUSTOMER',
                 );
                 setTrackingInfo(listAcc);
-
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
@@ -161,12 +160,12 @@ const UserAdmin = () => {
                     </button>
                 )}
 
-                <div className="tracking-header">
-                    <div>Username</div>
+                <div className="tracking-header" style={{ fontSize: '13px' }}>
+                    <div style={{ width: '150px' }}>Username</div>
                     <div>Hình ảnh</div>
                     <div className="adminheader">Email</div>
-                    <div>Họ và tên</div>
-                    <div>Phân quyền</div>
+                    <div style={{ width: '120px' }}>Họ và tên</div>
+                    <div style={{ width: '130px' }}>Phân quyền</div>
                     <div>CCCD</div>
                     <div>Địa chỉ</div>
                     <div>Trạng thái</div>
@@ -174,14 +173,14 @@ const UserAdmin = () => {
                 </div>
 
                 {trackingInfo.map((user, index) => (
-                    <div className="tracking-info" key={index}>
-                        <div>{user.username}</div>
+                    <div className="tracking-info" key={index} style={{ fontSize: '13px' }}>
+                        <div style={{ width: '150px' }}>{user.username}</div>
                         <div>
                             <img src={user.image_url} alt={`User ${index + 1}`} />
                         </div>
                         <div className="adminheader">{user.email}</div>
-                        <div>{user.name}</div>
-                        <div>{user.roles}</div>
+                        <div style={{ width: '120px' }}>{user.name}</div>
+                        <div style={{ width: '130px' }}>{user.roles}</div>
 
                         <div>{user.cic}</div>
                         <div>{user.address}</div>

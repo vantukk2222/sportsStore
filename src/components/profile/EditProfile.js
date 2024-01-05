@@ -18,6 +18,7 @@ const EditProfile = () => {
         cic: '',
         address: '',
         image_url: '',
+        revenue: '',
     });
 
     useEffect(() => {
@@ -28,11 +29,11 @@ const EditProfile = () => {
                 if (!response) {
                     throw new Error('Network response was not ok');
                 }
-             
+                console.log(response);
                 const date = new Date(response.dob);
                 const d = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
                 response.dob = d;
-               
+
                 setUser(response);
                 setEditedUser(response);
             } catch (error) {
@@ -107,7 +108,6 @@ const EditProfile = () => {
             if (response.ok) {
                 const data = await response.json();
                 setEditedUser({ ...editedUser, image_url: data.secure_url });
-              
             } else {
                 console.error('Error uploading image to Cloudinary');
             }
@@ -243,6 +243,18 @@ const EditProfile = () => {
                         onChange={handleInputChange}
                     />
                 </div>
+                <div className="label-input-container">
+                    <label className="lable-edit">
+                        <p>Địa chỉ:</p>
+                    </label>
+                    <input
+                        className="input-edit"
+                        type="text"
+                        name="address"
+                        value={editedUser.revenue}
+                        onChange={handleInputChange}
+                    />
+                </div>
                 <button className="edit-button" type="button" onClick={handleSave} disabled={validationError}>
                     Lưu
                 </button>
@@ -258,6 +270,18 @@ const EditProfile = () => {
                 />{' '}
                 <div className="text">Ảnh của bạn </div>
                 <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} />
+                <p
+                    style={{
+                        fontSize: '16px',
+                        color: '#606eca',
+                        fontFamily: 'Arial, sans-serif',
+                        margin: '0',
+                        padding: '10px',
+                        fontWeight: 'bold',
+                    }}
+                >
+                    Ví của tôi 💳: 100000 VNĐ
+                </p>
             </div>
             <ToastContainer position="top-center" style={{ top: '50%', transform: 'translateY(-50%)' }} />
         </div>
