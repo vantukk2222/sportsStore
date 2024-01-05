@@ -13,9 +13,11 @@ import { cancelBillByID } from "../redux/reducers/Bill/billCancelReducer";
 import { toastError, toastsuccess } from "./toastCustom";
 import addToCart from "../API/Cart/addToCart";
 import { addToCartUser } from "../redux/reducers/Cart/cartReducer";
+import { listCartByIdUser } from "../redux/reducers/Cart/listCartReducer";
 
 const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
     const { businessInfor, isLoading, error } = useSelector((state) => state.getBusinessByIDReducer)
+    const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
     // const [total, setTotal] = useState(0)
     const listIDRef = useRef([]);
 
@@ -106,6 +108,7 @@ const EachItemOrderComp = ({ item, setStateOrder, setIndex, total }) => {
                     // Đã hoàn thành tất cả các promises
                     console.log('All addToCartUser operations completed:', results);
                     toastsuccess("Xong", "Đã thêm lại vào giỏ hàng")
+                    dispatch(listCartByIdUser(dataUser?.id))
                     // Thực hiện công việc tiếp theo sau khi map và dispatch đã hoàn thành ở đây
                 })
                 .catch((error) => {

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, Image, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllSale, resetSale } from '../../redux/reducers/Sale/getAllSale';
-import Loading from '../../components/loading';
 import { useNavigation } from '@react-navigation/native';
 import { fetchSaleByDiscount } from '../../redux/reducers/Sale/getSaleByDiscount';
 import { colors } from '../../constants';
 import { toastError } from '../../components/toastCustom';
+import LoadingModal from '../../components/loading';
+import { isExpired } from '../../utilies/validation';
 
 
 const windowWidth = Dimensions.get('window').width;
 
 const SalesofBusiness = () => {
     const [page, setPage] = useState(0)
-    const [pageSize, setPageSize] = useState(1)
+    const [pageSize, setPageSize] = useState(10)
     const [sort, setSort] = useState('name')
     const [desc, setDesc] = useState(true)
     const [sales, setSales] = useState([]);
@@ -28,7 +29,6 @@ const SalesofBusiness = () => {
     useEffect(() => {
         console.log(pageSize)
         dispatch(fetchSaleByDiscount(discount[0], discount[1], page, pageSize, sort, desc));
-
     }, [discount, page, pageSize, sort, desc])
 
     useEffect(() => {
@@ -39,22 +39,31 @@ const SalesofBusiness = () => {
 
 
     if (errorSalebyDiscount) {
-        
+
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;
+        return <LoadingModal />;
     }
     if (loadingSalebyDiscount) {
-        return <Loading />
+        return <LoadingModal />
     }
 
-    const renderItem = ({ item }) => (
+    const renderItem = (item) => (
         < View style={styles.item} >
+            <Text style={{
+                 color: 'white',
+                 fontSize: 16,
+                 paddingLeft: 10,
+                 marginTop: 5,
+                 fontWeight: '300',
+                 textAlign: 'left',
+            }}>{"Business "+item?.businessResponse?.name}</Text>
+
             <Image source={{ uri: item.url }} style={styles.image} />
             <View style={{ marginLeft: 10 }}>
                 <TouchableOpacity
                     onPress={() => { navigation.navigate('ListProductofSale', { item }) }}>
-                    <Text style={styles.business}>{item.businessResponse.name}</Text>
-                    <Text style={styles.title}>{item.content}</Text>
+                    <Text style={styles.business}>{"Chương trình tri ân vì " + item?.content}</Text>
+                    <Text style={styles.title}>{"Khuyến mãi  " + item?.discount + "%"}</Text>
                 </TouchableOpacity>
 
             </View>
@@ -84,13 +93,26 @@ const SalesofBusiness = () => {
                 </TouchableOpacity>
             </View>
 
-            <FlatList
-                style={{ marginTop: 15, borderTopLeftRadius: 10, borderTopRightRadius: 10, borderWidth: 0.1, borderColor: 'black' }}
-                data={sales}
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-            />
+            <ScrollView
+                style={{
+                    marginBottom: 60,
+                    marginTop: 15,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                    borderWidth: 0.1,
+                    borderColor: 'black',
+                }}>
+                {sales?.map((item) => {
+                    if (!isExpired(item?.ended_at))
+                        return (<View
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
+                            {renderItem(item)}
+                        </View>)
+                })}
+            </ScrollView>
             <View style={styles.containerPage}>
                 <TouchableOpacity style={styles.button} onPress={() => {
                     if (page > 0) {
@@ -116,7 +138,8 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: 5,
         marginVertical: 5,
-        flex: 1
+        flex: 1,
+
 
     },
     buttonContainer: {

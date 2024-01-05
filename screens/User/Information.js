@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-na
 import { useEvent } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserByUserName, resetStateUser, resetUser } from "../../redux/reducers/User/userInfor";
-import Loading from "../../components/loading";
 import { colors } from "../../constants";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -15,6 +14,7 @@ import { isEqual } from 'lodash'
 import { toastError } from "../../components/toastCustom";
 import Toast from "react-native-toast-message";
 import { asyncStorage } from "../../utilies/asyncStorage";
+import LoadingModal from "../../components/loading";
 const Information = () => {
     const { userName } = useSelector((state) => state.login)
 
@@ -38,16 +38,16 @@ const Information = () => {
         dispatch(resetStateListCart())
         dispatch(resetStateUser())
         // const data = await AsyncStorage.getItem('persist:root')
-        navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'LoginBottomNavigator' }], // Thay 'Home' bằng màn hình bạn muốn quay về
-            })
-        );
+        // navigation.dispatch(
+        //     CommonActions.reset({
+        //         index: 0,
+        //         routes: [{ name: 'LoginBottomNavigator' }], // Thay 'Home' bằng màn hình bạn muốn quay về
+        //     })
+        // );
         // console.log("data logout:", data);
     }
     if (loading) {
-        <Loading />
+        <LoadingModal />
     }
     return (
         <View style={styles.container}>

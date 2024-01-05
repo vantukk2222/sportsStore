@@ -5,10 +5,10 @@ import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { fetchSalesByBusiness, resetSaleByBusiness } from '../../../redux/reducers/Sale/getSalesbyIdBusiness';
 import { colors } from '../../../constants';
 import { connect, useSelector } from 'react-redux';
-import Loading from '../../../components/loading';
 import ListSale from './ListSale';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { toastError } from '../../../components/toastCustom';
+import LoadingModal from '../../../components/loading';
 
 const Sale = (props) => {
 
@@ -71,7 +71,7 @@ const Sale = (props) => {
     // }
     if (loading) {
         console.log("load");
-        <Loading />
+        <LoadingModal />
     }
     return (
         <View style={styles.container}>
@@ -110,7 +110,7 @@ const Sale = (props) => {
             <View style={{ height: 1, backgroundColor: 'black' }}>
 
             </View>
-            {initialState?.loadingSalebyBusi === true ? <Loading /> :
+            {initialState?.loadingSalebyBusi === true ? <LoadingModal /> :
                 <ListSale
                     sales={sales}
                     onDetail={handleGetProductofSale}

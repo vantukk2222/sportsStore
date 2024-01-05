@@ -51,6 +51,23 @@ const DetailOrderScreen = ({ route }) => {
             return "Đơn hàng đã bị huỷ."
         }
     }
+    const getTextUpdated = () => {
+        if (orderByState?.state === 0) {
+            return "Thời gian xác nhận đơn"
+        }
+        if (orderByState?.state === 1) {
+            return "Thời gian nhận hàng"
+        }
+        if (orderByState?.state === 2) {
+            return "Thời gian cập nhật"
+        }
+        if (orderByState?.state === 3) {
+            return "Thời gian thanh toán"
+        }
+        if (orderByState?.state === 4) {
+            return "Thời gian huỷ"
+        }
+    }
     const cancelBillAgain = (transcationID)=>{
         dispatch(cancelBillByID(transcationID, "cancel")).then((status) => {
             if (status === 200 || status === 201 || status === 202 || status === 203 || status === 204) {
@@ -335,6 +352,20 @@ const DetailOrderScreen = ({ route }) => {
                             <Text style={{ fontSize: 16, color: 'black' }}>
                                 {moment(orderByState?.created_at).format('DD/MM/YYYY-HH:mm:ss')}
                             </Text>
+                            
+                        </View>
+                        <View style={{
+                            marginTop: 5,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            flex: 1,
+                            paddingHorizontal: 20,
+                        }}>
+                            <Text style={{ color: 'black' }}>{getTextUpdated()}</Text>
+                            <Text style={{ fontSize: 16, color: 'black' }}>
+                                {moment(orderByState?.updated_at).format('DD/MM/YYYY-HH:mm:ss')}
+                            </Text>
+                            
                         </View>
                     </View>
 

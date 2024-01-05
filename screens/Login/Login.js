@@ -21,15 +21,16 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 // import { loginUser } from '../../redux/reducers/Login/authActions';
 import { asyncStorage } from '../../utilies/asyncStorage';
 import { loginUser } from '../../redux/reducers/Login/signinReducer';
-import Loading from '../../components/loading';
 import { toastError, toastsuccess } from '../../components/toastCustom';
 import { decodeToken } from '../../utilies/decodeToken';
 import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
 import { setRole } from '../../redux/reducers/Role/roleReducer';
+// import LoadingModal from '../../components/loading';
+
 import LoadingModal from '../../components/loading';
 import Font from '../../constants_Tu/Font';
 import { store } from '../../redux/store';
-
+import { listCartByIdUser } from '../../redux/reducers/Cart/listCartReducer';
 // {loginUser}
 function Login(props) {
   const { navigation, loginState, loginUser } = props;
@@ -40,7 +41,10 @@ function Login(props) {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const errorLoad = loginState.error;
-
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
   //get user by username
   const { data, loading, error } = useSelector(state => state.userData);
   const dispatch = useDispatch();
@@ -64,14 +68,11 @@ function Login(props) {
   useEffect(() => {
     console.log('efff', data);
     if (data && handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
-      console.log('hereeeeee');
-      dispatch(setRole('ROLE_CUSTOMER'));
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'LoginBottomNavigator' }],
-        }),
-      );
+      if (handleCheckArray(data?.roles, 'ROLE_CUSTOMER')) {
+        console.log("Vào condition này!");
+        dispatch(listCartByIdUser(data?.id))
+        navigation.navigate("Home")
+      }
     } else if (data && handleCheckArray(data?.roles, 'ROLE_BUSINESS')) {
       dispatch(setRole('ROLE_BUSINESS'));
       navigation.dispatch(
@@ -89,8 +90,13 @@ function Login(props) {
     if (valueEmail !== '' && valuePassword !== '') {
       loginUser(valueEmail, valuePassword).then(async dataToken => {
         if (dataToken) {
-          await dispatch(fetchUserByUserName(valueEmail))
+          await dispatch(fetchUserByUserName(valueEmail)).then((data) => {
+            if (handleCheckArray(data?.roles, 'ROLE_BUSINESS')) {
+              navigation.goBack()
+            }
+          })
           await asyncStorage.setUsername(valueEmail);
+          console.log("user name: ", valueEmail);
           toastsuccess(
             'Đăng nhập thành công',
             'Chào mừng bạn đến với SportStore',
@@ -114,7 +120,7 @@ function Login(props) {
   // if ((loginState?.isLoading)) return <LoadingModal isLoading={true}></LoadingModal>
   // if (errorLoad) { return <Text style={{ color: 'red' }}>Error: {error}</Text>; }
   return (
-    <SafeAreaView>
+    <ScrollView>
       {isLoading && <LoadingModal isLoading={true}></LoadingModal>}
 
       <TouchableOpacity
@@ -165,40 +171,75 @@ function Login(props) {
           style={{
             marginVertical: Spacing * 3,
           }}>
-          <TextInput
-            value={valueEmail}
-            onChangeText={text => {
-              setErrorValueEmail(onValidUsername(text) ? '' : 'Sai định dạng');
-              setValueEmail(text);
-            }}
-            style={{
-              borderWidth: 1,
+          <View style={{
+            flexDirection: "row"
+            , width: '100%',
+            borderWidth: 1,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
 
-              marginTop: 10,
-              backgroundColor: '#f1f4ff',
-              borderRadius: 20,
-              color: '#616161',
-              fontSize: 16,
-            }}
-            placeholderTextColor="gray"
-            underlineColor="transparent" // Cho React Native Paper
-            placeholder="Tên tài khoản"></TextInput>
-          <TextInput
-            value={valuePassword}
-            onChangeText={text => setValuePassword(text)}
-            style={{
-              borderWidth: 1,
-              marginTop: 10,
-              backgroundColor: '#f1f4ff',
-              borderRadius: 20,
-              color: '#616161',
-              fontSize: 16,
-              textAlignVertical: 'center', // Đặt dấu nháy ở giữa khi focus
-            }}
-            secureTextEntry={true}
-            placeholder="Mật khẩu"
-            placeholderTextColor="gray"
-            underlineColor="transparent"></TextInput>
+            marginTop: 10,
+            backgroundColor: '#f1f4ff',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#616161'
+          }}>
+            <TextInput
+              value={valueEmail}
+              onChangeText={text => {
+                setErrorValueEmail(onValidUsername(text) ? '' : 'Sai định dạng');
+                setValueEmail(text);
+              }}
+              style={{
+                width: '90%',
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: '#616161',
+                fontSize: 16,
+              }}
+              placeholderTextColor="gray"
+              underlineColor="transparent"
+              placeholder="Tên tài khoản"></TextInput>
+              <Text style={{paddingRight:24}}></Text>
+          </View>
+
+          <View style={{
+            flexDirection: "row"
+            , width: '100%',
+            borderWidth: 1,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+
+            marginTop: 10,
+            backgroundColor: '#f1f4ff',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#616161'
+          }}>
+            <TextInput
+              value={valuePassword}
+              onChangeText={text => setValuePassword(text)}
+              style={{
+                width: '90%',
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: '#616161',
+                fontSize: 16,
+              }}
+              secureTextEntry={!isPasswordVisible}
+              placeholder="Mật khẩu"
+              placeholderTextColor="gray"
+              underlineColor="transparent">
+            </TextInput>
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Icon
+                name={!isPasswordVisible ? 'eye-slash' : 'eye'}
+                size={isPasswordVisible ? 20: 18}
+                color="gray"
+                style={{ alignItems: 'center' }} // Điều chỉnh vị trí của icon
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View>
@@ -256,7 +297,7 @@ function Login(props) {
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
   // return (
 

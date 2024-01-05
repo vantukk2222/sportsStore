@@ -3,11 +3,10 @@ import { Dimensions, FlatList, StyleSheet, Text, Image, TouchableOpacity, View, 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize, images } from '../../constants/index';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from "../../components/loading";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchProductbyId, resetProductDetail } from '../../redux/reducers/productReducer/getDetailProduct';
 
-import { formatMoneyVND } from '../../utilies/validation';
+import { findMainImage, formatMoneyVND } from '../../utilies/validation';
 import ShopInfo from '../Business/ShopInfo';
 import HeaderComp from '../../components/Header';
 import { toastError } from '../../components/toastCustom';
@@ -21,23 +20,33 @@ import { getCommentByIDProducInfor, resetCommentProduct } from '../../redux/redu
 import getCommentByID from '../../API/Comments/getComment';
 import { resetComment } from '../../redux/reducers/Comment/post_CommentReducer';
 import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
+import LoadingModal from '../../components/loading';
+import { ImageItem } from '../../components/ImageItem';
+import { SliderBox } from "react-native-image-slider-box";
 const SPACING = 8;
 export
     const CELL_WIDTH = 400 * 0.64;
 const CELL_HEIGHT = CELL_WIDTH * 1.4;
 
 const DetailProduct = ({ navigation, route }) => {
+    const { item } = route.params;
 
     const { data, loading, error } = useSelector((state) => state.productDetail);
-    const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
     const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
     const { data: dataCommentss, isLoading: loadingComment, error: errorComment } = useSelector((state) => state.getCommentReducer)
     const [dataComment, setDataComment] = useState(dataCommentss)
-    const { item } = route.params;
+    const [totalQuantity, setTotalQuantity] = useState(0)
     const [product, setProduct] = useState()
+    const [currentImageIndex, setCurrentImageIndex] = useState(0); // State để lưu chỉ số ảnh hiện tại
 
+    const [imageUrls, setImageURLs] =  useState()
+
+    const onImageChange = (index) => {
+        setCurrentImageIndex(index); // Cập nhật chỉ số ảnh hiện tại khi chuyển đổi ảnh
+    };
     const [images, setImages] = useState(null)
     const [sale, setSale] = useState(null)
+
     // console.log("id_User Detail:", id_user);
 
     const dispatch = useDispatch()
@@ -49,29 +58,33 @@ const DetailProduct = ({ navigation, route }) => {
     const priceAfterSale = (price, discount) => {
         return (price * (1 - discount / 100))
     }
-    const findMainImage = (Listimg) => {
-        for (let i = 0; i < Listimg?.length; i++) {
-            if (Listimg[i]?.is_main === true) {
-                //console.log(images[i].url)
-                var img = Listimg[i]?.url
-                //  setImages(im)
-                return Listimg[i]?.url;
-            }
+
+    const convertToStars = (like, dislike) => {
+        const totalVotes = like + dislike;
+        const percentage = (like / totalVotes) * 100;
+        console.log("% like", like);
+        console.log("% dislike", dislike);
+
+        console.log("% percent", percentage);
+
+        if (totalVotes === 0) {
+            return "☆☆☆☆☆";
+        } else if (percentage < 20) {
+            return "⭐☆☆☆☆"; // 1 sao
+        } else if (percentage < 40) {
+            return "⭐⭐☆☆☆"; // 2 sao
+        } else if (percentage < 60) {
+            return "⭐⭐⭐☆☆"; // 3 sao
+        } else if (percentage < 80) {
+            return "⭐⭐⭐⭐☆"; // 4 sao
+        } else {
+            return "⭐⭐⭐⭐⭐"; // 5 sao
         }
-        return Listimg?.length > 0 ? Listimg[0]?.url : null;
     }
 
-    // useEffect(() => {
-    //     if (userName) {
-    //         try {
-    //             dispatch(fetchUserByUserName(userName))
-    //         } catch (error) {
-    //             // dispatch(logout())
-    //         }
-    //     }
 
     // }, [userName]);
-    console.log("id: ",item?.id)
+    console.log("id: ", item?.id)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -90,7 +103,7 @@ const DetailProduct = ({ navigation, route }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                dispatch(getCommentByIDProducInfor(item?.id, 0))
+                await dispatch(getCommentByIDProducInfor(item?.id, 0))
             } catch (error) {
                 console.error('Lỗi khi gọi API:', error);
 
@@ -105,15 +118,36 @@ const DetailProduct = ({ navigation, route }) => {
     }, [item?.id])
     useEffect(() => {
         setDataComment(dataCommentss)
-        dataComment?.content?.map( async(eachItem)=>{
-            console.log("id: ", eachItem?.id_user);
-            await dispatch(fetchUserCommentByID(eachItem?.id_user))
-        })
+        const handleComment = async () => {
+            await dispatch(fetchUserCommentByID(product?.business?.id))
+            dataCommentss?.content?.map(async (eachItem) => {
+                console.log("id user comment: ", eachItem?.id_user);
+                await dispatch(fetchUserCommentByID(eachItem?.id_user))
+            })
+        }
+        handleComment()
 
     }, [dataCommentss])
 
     useEffect(() => {
-        setProduct(data[item?.id])
+
+
+        if (data[item?.id] && data[item?.id].imageSet) {
+            // Tạo một bản sao của product
+            const updatedProduct = { ...JSON.parse(JSON.stringify(data[item?.id])) };
+            // Sắp xếp lại mảng imageSet theo id
+            updatedProduct.imageSet.sort((a, b) => a.id - b.id);
+            // Cập nhật state product với mảng imageSet đã sắp xếp
+            setProduct(updatedProduct);
+            setImageURLs(updatedProduct?.imageSet?.map(item => item.url) || [])
+        }
+
+        // setProduct(data[item?.id])
+        let total_quantity = 0
+        data[item?.id]?.productSet?.map((eachProduct) => {
+            total_quantity += eachProduct?.quantity
+        })
+        setTotalQuantity(total_quantity)
         if (!isExpired(data[item?.id]?.sale?.ended_at)) {
             setSale(data[item?.id]?.sale)
         }
@@ -125,12 +159,16 @@ const DetailProduct = ({ navigation, route }) => {
     }, [data[item?.id]])
     // console.log("product", item);
     handleAddtocart = () => {
-        dataUser?.id ? navigation.navigate('ModalBuyProduct', { product: product, id_user: dataUser?.id }) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
+        dataUser?.id ? navigation.navigate('ModalBuyProduct', { product: product, id_user: dataUser?.id })
+            : (
+                toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập"),
+                navigation.navigate("Login")
+            )
         console.log("id_information: ", product?.id)
     }
     // Xử
     if (loading) {
-        return <Loading />;
+        return <LoadingModal />;
     }
     // Assume commentData is an array containing comment objects
     // const commentData = [
@@ -144,35 +182,55 @@ const DetailProduct = ({ navigation, route }) => {
     //     },
     //     // More comment objects...
     // ];
+    
 
     return (
         <SafeAreaView style={{ flex: 100 }}>
             <HeaderComp init="Chi tiết" />
+
             <ScrollView style={styles.container} nestedScrollEnabled={true}>
-                {product?.imageSet?.length > 0 ?
+
+                {/* {product?.imageSet?.length > 0 ?
+
                     images !== null ?
                         <Image source={{ uri: images }} style={styles.image} /> :
                         <Image source={{ uri: findMainImage(product?.imageSet) }} style={styles.image} />
-                    : <Text style={{ color: 'black' }}>No images</Text>}
-
+                    : <Text style={{ color: 'black' }}>No images</Text>} */}
                 <View style={styles.imageListContainer}>
-                    <FlatList
-                        data={product?.imageSet}
-                        keyExtractor={(item, index) => index.toString()}
-                        horizontal
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                style={{ borderRadius: 8, borderColor: 'black', borderWidth: 1, marginStart: 5 }}
-                                onPress={() => {
-                                    setImages(item.url)
-                                }}>
-                                <Image
-                                    source={{ uri: item.url }}
-                                    style={styles.thumbnailImage}
-                                />
-                            </TouchableOpacity>
-                        )}
-                    />
+                    {product?.imageSet &&
+                        <SliderBox
+                            images={imageUrls}
+                            dotStyle={{ display: 'none' }}
+                            firstItem={findMainImage(imageUrls)}
+                            currentImageEmitter={index => onImageChange(index)}
+                            imageLoadingColor="black"
+                            resizeMode="contain"
+                        />
+
+                        //  <ScrollView horizontal={true} removeClippedSubviews={true}>
+                        //     {product?.imageSet?.map((eachIMG, index) =>
+                        //     {
+                        //         return (<TouchableOpacity
+                        //         index={index}
+                        //             style={{ borderRadius: 8, borderColor: 'black', borderWidth: 1, marginStart: 5 }}
+                        //             onPress={() => {
+                        //                 console.log("Product:", product);
+                        //                 setImages(eachIMG?.url)
+                        //             }}>
+                        //             <Image style={{
+                        //                 resizeMode:'stretch',
+                        //                 width: 190,
+                        //                 height: 80,
+                        //                 borderRadius: 8,
+                        //             }} source={{ uri: eachIMG?.url }} />
+                        //         </TouchableOpacity>)
+                        //     })}
+                        //     </ScrollView>
+                    }
+                    <View style={{alignItems:'flex-end',justifyContent:'center', marginRight:10}}>
+                        <Text style={{ color: 'black', fontSize:16 }}>{`${currentImageIndex + 1}/${imageUrls?.length}`}</Text>
+
+                    </View>
                 </View>
                 <View style={styles.productContainer}>
                     <Text style={styles.name}>{product?.name}</Text>
@@ -198,9 +256,19 @@ const DetailProduct = ({ navigation, route }) => {
                     </View>
                     {sale && !isExpired(sale?.ended_at) ?
                         <TouchableOpacity onPress={() => {
-                            console.log("sale in detailProduct,", sale?.ended_at);
+                            console.log("sale in detailProduct,", convertToStars(product?.number_like, product?.number_dislike));
                         }}>
-                            <Text style={styles.priceSale}>{formatMoneyVND(product?.price_min)}</Text>
+
+                            <View style={{ flexDirection: 'row' }}><Text style={styles.priceSale}>{formatMoneyVND(product?.price_min)}</Text>
+                                <View>
+                                    {sale?.discount > 0 && (
+                                        <Text style={styles.discountPrice}>
+                                            Giảm {sale?.discount}%
+                                        </Text>
+                                    )}
+                                </View>
+
+                            </View>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
                                     color: 'red',
@@ -210,25 +278,75 @@ const DetailProduct = ({ navigation, route }) => {
                                     //marginVertical: 2,
                                     alignItems: 'flex-start'
                                 }}>{formatMoneyVND(priceAfterSale(product?.price_min, sale?.discount))}</Text>
-                                <View>
-                                    {sale?.discount > 0 && (
-                                        <Text style={styles.discountPrice}>
-                                            Giảm {sale?.discount}%
-                                        </Text>
-                                    )}
-                                </View>
+
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{
+                                    marginHorizontal: 10,
+
+                                }}>{convertToStars(product?.number_like, product?.number_dislike)}</Text>
+
+                                <Text style={{
+                                    color: 'red',
+                                    fontSize: 14,
+                                    marginHorizontal: 10,
+                                    alignItems: 'flex-start'
+                                }}>{"Số lượng " + totalQuantity}</Text>
+                                <Text style={{
+                                    color: 'red',
+                                    fontSize: 14,
+                                    marginHorizontal: 10,
+                                    alignItems: 'flex-start'
+                                }}>{"Đã bán " + product?.number_buy}</Text>
                             </View>
 
                         </TouchableOpacity>
-                        : <Text style={styles.priceNotSale}>{formatMoneyVND(product?.price_min)}</Text>}
+                        : <View>
+                            <Text style={styles.priceNotSale}>{formatMoneyVND(product?.price_min)}</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{
+                                    marginHorizontal: 10,
+
+                                }}>{convertToStars(product?.number_like, product?.number_dislike)}</Text>
+
+                                <Text style={{
+                                    color: 'red',
+                                    fontSize: 14,
+                                    marginHorizontal: 10,
+                                    alignItems: 'flex-start'
+                                }}>{"Số lượng " + totalQuantity}</Text>
+                                <Text style={{
+                                    color: 'red',
+                                    fontSize: 14,
+                                    marginHorizontal: 10,
+                                    alignItems: 'flex-start'
+                                }}>{"Đã bán " + product?.number_buy}</Text>
+
+
+                            </View>
+                        </View>}
 
 
 
                 </View>
-                <View style={styles.detailsContainer}>
+                <View style={{
+                    backgroundColor: 'white',
+                    // borderRadius: 8,
+                    // borderWidth:1,
+                    borderColor: 'gray',
+                    padding: 16,
+                    elevation: 3,
+                    marginTop: 5,
+                }}>
                     <ShopInfo business={product?.business} />
                 </View>
-                <View style={styles.detailsContainer}>
+                <View style={{
+                    backgroundColor: 'white',
+                    padding: 16,
+                    elevation: 3,
+                    marginTop: 5,
+                    // borderWidth:1
+                }}>
 
                     <Text style={{ color: 'black', fontSize: 18, fontWeight: 500, marginHorizontal: 10 }}>
                         Mô tả:
@@ -239,10 +357,16 @@ const DetailProduct = ({ navigation, route }) => {
                         marginHorizontal: 10,
                         marginVertical: 2,
                         alignItems: 'flex-start'
-                    }}>{product?.detail ||"Thông tin chi tiết của sản phẩm\n Sản phẩm của  "+product?.business?.name}</Text>
+                    }}>{product?.detail || "Thông tin chi tiết của sản phẩm\n Sản phẩm của  " + product?.business?.name}</Text>
                 </View>
 
-                <View style={styles.detailsContainer}>
+                <View style={{
+                    backgroundColor: 'white',
+                    borderRadius: 8,
+                    padding: 16,
+                    elevation: 3,
+                    marginTop: 5,
+                }}>
                     <Text style={{
                         color: 'black',
                         fontSize: 18,
@@ -252,16 +376,16 @@ const DetailProduct = ({ navigation, route }) => {
                         fontWeight: 500
                     }}>Bình luận:</Text>
                     <View style={styles.containerComment}>
-                        {dataComment?.content?.map((eachItem,index)=>(
+                        {dataComment?.content?.map((eachItem, index) => (
                             <CommentItem
-                            key = {index}
-                            avatar={"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" || null}
-                                    name={"Nguyễn Văn Tú" || null}
-                                    rating={eachItem?.is_like}
-                                    category="Size"
-                                    content={eachItem?.content}
-                                    listImg={eachItem?.imageSet}
-                                    id = {eachItem?.id_user}
+                                key={index}
+                                avatar={"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" || null}
+                                name={"Nguyễn Văn Tú" || null}
+                                rating={eachItem?.is_like}
+                                category="Size"
+                                content={eachItem?.content}
+                                listImg={eachItem?.imageSet}
+                                id={eachItem?.id_user}
                             ></CommentItem>
                         )
 
@@ -413,7 +537,6 @@ const styles = StyleSheet.create({
     priceSale: {
         color: 'black',
         fontSize: 24,
-        //fontWeight: 500,
         marginHorizontal: 10,
         textDecorationLine: 'line-through',
         alignItems: 'flex-start'
@@ -442,19 +565,18 @@ const styles = StyleSheet.create({
     imageListContainer: {
         marginTop: 10,
         marginBottom: 20,
+        flexDirection: 'column'
 
     },
     thumbnailImage: {
         width: 60,
         height: 60,
-        // marginRight: 10,
-
         borderRadius: 8,
     },
     image: {
         width: '100%',
         height: 300,
-        resizeMode: 'cover',
+        resizeMode: 'stretch',
         borderRadius: 8,
         marginBottom: 16,
     },

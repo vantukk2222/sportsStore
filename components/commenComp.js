@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from "react-redux";
 
@@ -9,8 +9,15 @@ export const CommentItem = ({ avatar, name, rating, category, content, listImg, 
 
     const [selectedImage, setSelectedImage] = useState(null);
     const {data:dataUser, loading:loadingUser, error:errorUser} = useSelector((state)=>state.listUserReducer)
-    const dataUserJson = JSON.parse(JSON.stringify(dataUser))
-    console.log("data user: ",id, dataUser);
+    const [dataUserJson, setDataUserJson] = useState(dataUser)
+    // const dataUserJson = JSON.parse(JSON.stringify(dataUser))
+    // useEffect(
+    useEffect(()=>{
+        
+        const dataUserJsonz = JSON.parse(JSON.stringify(dataUser))
+        setDataUserJson(dataUserJsonz)
+
+    },[dataUser])
     const handleImagePress = (url) => {
         setSelectedImage(url);
     };
@@ -32,10 +39,11 @@ export const CommentItem = ({ avatar, name, rating, category, content, listImg, 
         <Text style={styles.content}>{content}</Text>
         <View style={{flexDirection:'row', borderWidth:1, padding:8}}>
         <FlatList
+        style={{backgroundColor:'#F6F6F6'}}
             data={listImg}
             horizontal
             renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handleImagePress(item.url)}>
+                <TouchableOpacity onPress={() => handleImagePress(item.url)} style={{marginRight:10}}>
                     <Image source={{ uri: item.url }} style={styles.image} />
                 </TouchableOpacity>
             )}

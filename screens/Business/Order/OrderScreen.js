@@ -109,12 +109,15 @@ const OrderScreen = (props) => {
 
     return (
 <View style={{flex:100}}>
-<View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+<View style={{ flexDirection: 'row', backgroundColor: 'white', justifyContent: 'space-between' }}>
                 <TouchableOpacity
+                style={{
+                    alignItems:'center',
+                    justifyContent:'center'
+                }}
                     onPress={() => { navigation.goBack() }}>
                     <Icon name="angle-left" size={30} style={{
-                        color: 'white',
-                        alignItems: 'flex-end',
+                        color: 'black',
                         marginLeft: 15,
                     }}></Icon>
                 </TouchableOpacity>
@@ -122,7 +125,7 @@ const OrderScreen = (props) => {
                 <Text style={{
                     padding: 2,
                     paddingRight: 30,
-                    color: 'white',
+                    color: 'black',
                     fontWeight: '600',
                     fontSize: 24,
                     textAlign: 'center',

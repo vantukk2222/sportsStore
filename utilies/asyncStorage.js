@@ -14,7 +14,7 @@ const removeAuthToken = async ()=> {
     // console.log(getAuthToken())
 }
 const setUsername = async(username)=>{
-    await AsyncStorage.setItem("userName", String(username));
+    await AsyncStorage.setItem("userName", username);
 }
 const getUserNameStorage = async()=>{
     return await AsyncStorage.getItem("userName");

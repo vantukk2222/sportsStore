@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductsByBusiness } from '../../redux/reducers/Business/getProductByBusiness';
 import ProductItem from '../Product/ProductItem';
 import { colors, fontSize, images } from '../../constants/index';
-import Loading from '../../components/loading';
+// import Loading from '../../components/loading';
+import LoadingModal from '../../components/loading';
+import { findMainImage } from '../../utilies/validation';
 
 const Business = ({ navigation, route }) => {
     const { business } = route.params;
@@ -37,17 +39,7 @@ const Business = ({ navigation, route }) => {
 
     }, [dataProductbyBusi])
 
-    const findMainImage = (Listimg) => {
-        for (let i = 0; i < Listimg.length; i++) {
-            if (Listimg[i].is_main === true) {
-                //console.log(images[i].url)
-                var img = Listimg[i].url
-                //  setImages(im)
-                return Listimg[i].url;
-            }
-        }
-        return Listimg.length > 0 ? Listimg[0].url : null;
-    }
+    
     const renderButton = (iconName, text, index) => {
         const isSelected = selected === index;
         return (
@@ -67,11 +59,12 @@ const Business = ({ navigation, route }) => {
         });
     };
     if (loadingProductbyBusi) {
-        return <Loading />
+        return <LoadingModal />
     }
 
     return (
-        <View style={{ flex: 100, backgroundColor: 'white'} }>
+            
+            <ScrollView  style={{ flex: 100, backgroundColor: 'white'} } >
             <View style={styles.header}>
                 <View style={styles.headerTop}>
                     <TouchableOpacity style={styles.back} onPress={() => { navigation.goBack() }}>
@@ -82,7 +75,6 @@ const Business = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <ScrollView >
             
             <View style={styles.container}>
                 <View style={styles.body}>
@@ -198,7 +190,6 @@ const Business = ({ navigation, route }) => {
             </View >
 
         </ScrollView >
-        </View>
 
     );
 };

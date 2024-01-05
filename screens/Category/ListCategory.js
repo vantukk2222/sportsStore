@@ -6,8 +6,8 @@ import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native
 import { colors, fontSize } from '../../constants/index';
 import { fetchCategories } from '../../redux/reducers/Caregory/getAllCategories';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from "../../components/loading";
 import { useNavigation } from '@react-navigation/native';
+import LoadingModal from '../../components/loading';
 
 
 // faker.seed(10);
@@ -52,7 +52,7 @@ const ListCategory = () => {
 
     }, [index, categories, viewPosition]);
     if (loadingCate) {
-        return <Loading />
+        return <LoadingModal />
     }
 
     return (

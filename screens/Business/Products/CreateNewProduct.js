@@ -10,8 +10,8 @@ import { createImages, resetImage } from '../../../redux/reducers/Images/ImageRe
 import { toastError } from '../../../components/toastCustom';
 import { createProductInfor, resetProductInformation } from '../../../redux/reducers/productReducer/createProductInformation';
 import { useNavigation } from '@react-navigation/native';
-import Loading from '../../../components/loading';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import LoadingModal from '../../../components/loading';
 
 const CreateNewProduct = () => {
     const { data, loading, error } = useSelector((state) => state.userData)
@@ -162,7 +162,7 @@ const CreateNewProduct = () => {
     }
 
     if (loading || loadingCate || loadingImage || loadingProductInfor) {
-        <Loading />
+        <LoadingModal />
     }
     if (errorCate || errorImage || errorProductInfor || error) {
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
@@ -172,12 +172,15 @@ const CreateNewProduct = () => {
 
     return (
         <View style={{flex:100}}>
-         <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+         <View style={{ flexDirection: 'row', backgroundColor: 'white', justifyContent: 'space-between' }}>
                 <TouchableOpacity
+                style={{
+                    alignItems:'center',
+                    justifyContent:'center'
+                }}
                     onPress={() => { navigation.goBack() }}>
                     <Icon name="angle-left" size={30} style={{
-                        color: 'white',
-                        alignItems: 'flex-end',
+                        color: 'black',
                         marginLeft: 15,
                     }}></Icon>
                 </TouchableOpacity>
@@ -185,7 +188,7 @@ const CreateNewProduct = () => {
                 <Text style={{
                     padding: 2,
                     paddingRight: 30,
-                    color: 'white',
+                    color: 'black',
                     fontWeight: '600',
                     fontSize: 24,
                     textAlign: 'center',
@@ -197,7 +200,6 @@ const CreateNewProduct = () => {
 
             </View>
         <ScrollView style={styles.container}>
-            <Text style={styles.header}>Thêm sản phẩm</Text>
             <View style={{ height: 1, backgroundColor: 'gray' }}></View>
             <View style={styles.inputView}>
                 <Text style={{ color: 'black', fontSize: 20, fontWeight: '500' }}>Tên sản phẩm:</Text>

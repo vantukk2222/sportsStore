@@ -9,9 +9,9 @@ import { createSale } from '../../../redux/reducers/Sale/createNewSale';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../../constants';
-import Loading from '../../../components/loading';
 import { isValidInteger } from '../../../utilies/validation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import LoadingModal from '../../../components/loading';
 
 const ProductForm = (props) => {
     const {
@@ -81,7 +81,7 @@ const ProductForm = (props) => {
         console.log('Form data submitted:', formData);
     };
     if (loading) {
-        <Loading />
+        <LoadingModal />
     }
     if (error) {
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
@@ -90,12 +90,15 @@ const ProductForm = (props) => {
     // console.log(data?.id);
     return (
         <View style={{flex:100}}>
-             <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+             <View style={{ flexDirection: 'row', backgroundColor: 'white', justifyContent: 'space-between' }}>
                 <TouchableOpacity
+                style={{
+                    alignItems:'center',
+                    justifyContent:'center'
+                }}
                     onPress={() => { navigation.goBack() }}>
                     <Icon name="angle-left" size={30} style={{
-                        color: 'white',
-                        alignItems: 'flex-end',
+                        color: 'black',
                         marginLeft: 15,
                     }}></Icon>
                 </TouchableOpacity>
@@ -103,7 +106,7 @@ const ProductForm = (props) => {
                 <Text style={{
                     padding: 2,
                     paddingRight: 30,
-                    color: 'white',
+                    color: 'black',
                     fontWeight: '600',
                     fontSize: 24,
                     textAlign: 'center',

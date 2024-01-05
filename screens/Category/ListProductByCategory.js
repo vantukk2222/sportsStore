@@ -6,24 +6,16 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize, images } from '../../constants/index';
 import { fetchProductsByCategories } from '../../redux/reducers/Caregory/getProductByCategory';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from "../../components/loading";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
-import { formatMoneyVND } from '../../utilies/validation';
+import { findMainImage, formatMoneyVND } from '../../utilies/validation';
+import LoadingModal from '../../components/loading';
 
 const SPACING = 28;
 const CELL_WIDTH = 400 * 0.64;
 const CELL_HEIGHT = CELL_WIDTH * 1.4;
 const FULLSIZE = CELL_WIDTH + SPACING * 2;
-export const findMainImage = (images) => {
-    for (let i = 0; i < images.length; i++) {
-        if (images[i].is_main === true) {
-            // console.log(images[i].url)
-            return images[i].url;
-        }
-    }
-    return images.length > 0 ? images[0].url : null;
-}
+
 
 
 const ListProductByCategory = ({ route, navigation }) => {
@@ -90,7 +82,7 @@ const ListProductByCategory = ({ route, navigation }) => {
                     }}
                 />
                 {loadingProductbyCateCate === true ? <View style={{ flex: 1 }}>
-                    <Loading />
+                    <LoadingModal />
                 </View> : products && products.length > 0 ?
                     <View>
                         <FlatList

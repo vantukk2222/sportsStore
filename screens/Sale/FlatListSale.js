@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, Image, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllSale, resetSale } from '../../redux/reducers/Sale/getAllSale';
-import Loading from '../../components/loading';
 import { useNavigation } from '@react-navigation/native';
+import LoadingModal from '../../components/loading';
+import moment from 'moment';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -17,7 +18,11 @@ const FlatListSale = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-        dispatch(fetchAllSale(page, pageSize));
+        const getSale = async () => {
+
+            await dispatch(fetchAllSale(page, pageSize));
+        }
+        getSale()
         return () => {
             dispatch(resetSale());
         }
@@ -27,6 +32,11 @@ const FlatListSale = () => {
         //console.log('getALlSale : ', dataSale)
         setSale(dataSale.content)
     }, [dataSale])
+    const isExpired = (endDate) => {
+        const currentDate = moment();
+        const expirationDate = moment(endDate);
+        return expirationDate.isBefore(currentDate);
+    };
 
     if (errorSale) {
         return <View style={{ flex: 1, backgroundColor: 'gray' }}>
@@ -34,7 +44,7 @@ const FlatListSale = () => {
         </View>
     }
     if (loadingSale) {
-        return <Loading />
+        return <LoadingModal />
     }
 
     const renderItem = ({ item }) => (
@@ -56,7 +66,7 @@ const FlatListSale = () => {
             <View style={styles.viewsale}>
                 <Text style={styles.textTitle}>Sale</Text>
                 <TouchableOpacity
-                
+
                     onPress={() => { navigation.navigate('Sale') }}
                 >
                     <Text style={styles.viewAll}>Xem</Text>
@@ -70,20 +80,23 @@ const FlatListSale = () => {
                 renderItem={renderItem}
             /> */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {sale?.map((item) => (
-                    <View key={item.id} style={styles.item}>
-                        <Image source={{ uri: item?.url }} style={styles.image} />
-                        <View style={{ marginLeft: 10 }}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate('ListProductofSale', { item });
-                                }}>
-                                <Text style={styles.business}>{item?.businessResponse.name}</Text>
-                                <Text style={styles.title}>{item?.content}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                ))}
+                {sale?.map((item) => {
+                    if (!isExpired(item?.ended_at)) {
+                        return (<View key={item.id} style={styles.item}>
+                            <Image source={{ uri: item?.url }} style={styles.image} />
+                            <View style={{ marginLeft: 10 }}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        console.log("item: ", item);
+                                        navigation.navigate('ListProductofSale', { item });
+                                    }}>
+                                    <Text style={styles.business}>{item?.businessResponse.name}</Text>
+                                    <Text style={styles.title}>{item?.content}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>)
+                    }
+                })}
             </ScrollView>
 
         </View>

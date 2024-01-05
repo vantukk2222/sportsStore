@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { colors } from '../../../constants';
-import { findMainImage } from '../../Category/ListProductByCategory';
 import moment from 'moment';
 import CheckBox from '@react-native-community/checkbox';
 import { useNavigation } from '@react-navigation/native';
+import { findMainImage } from '../../../utilies/validation';
 
 const ListOrder = ({ bills = [], isConfirm = false, stateBill = 3, onConfirm, onDelete }) => {
     const formattedDate = (originalDateString) => {

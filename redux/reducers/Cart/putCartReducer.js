@@ -42,10 +42,8 @@ export const putCartByID = (id_cart, id_user, id_size, quantity) => async (dispa
     await putCart(id_cart, id_user, id_size, quantity, authToken); // Call putCartPage API
     console.log("data in PutcartReducer: ", data.response); // Log received data
     // dispatch
-    dispatch(putCartSlice.actions.putCartSuccess()).then(async() => {
-      await dispatch(listCartByIdUser(id_user))
-
-    })
+    dispatch(putCartSlice.actions.putCartSuccess())
+    await dispatch(listCartByIdUser(id_user))
     // console.log("state reducerputCart: " + JSON.stringify(getState()));
     return true
   } catch (error) {

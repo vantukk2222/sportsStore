@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { colors } from '../../../constants';
-import { findMainImage } from '../../Category/ListProductByCategory';
+import { findMainImage } from '../../../utilies/validation';
 
 const ListProduct = ({ products, onEdit, onDelete, removeState, onRecover }) => {
     const renderItem = ({ item }) => (

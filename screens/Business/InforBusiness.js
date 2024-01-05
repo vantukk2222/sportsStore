@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-na
 import { useEvent } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserByUserName, resetStateUser, resetUser } from "../../redux/reducers/User/userInfor";
-import Loading from "../../components/loading";
 import { colors } from "../../constants";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -17,6 +16,7 @@ import Toast from "react-native-toast-message";
 import { setRole } from "../../redux/reducers/Role/roleReducer";
 import { asyncStorage } from "../../utilies/asyncStorage";
 import MoneyDisplay from "./Money/MoneyDisplay";
+import LoadingModal from "../../components/loading";
 const Information = () => {
     const { userName, isLoading, error: errorUser } = useSelector((state) => state.login)
 
@@ -59,7 +59,7 @@ const Information = () => {
     //     // return <Loading />;
     // }
     if (loading) {
-        return <Loading />
+        return <LoadingModal />
     }
     return (
         <View style={styles.container}>

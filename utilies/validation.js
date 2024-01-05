@@ -18,6 +18,11 @@ export const isValidName = (val) => {
   const regex = /^[\p{L}\s'-]{5,49}$/u;
   return regex.test(val)
 }
+export const isValidCIC = (val) =>{
+  const regex = /^\d{9,11}$/;
+  return regex.test(val)
+}
+
 export const isValidPhone = (val) => {
   const regex = /^(84|0)\d{9,11}$/;
   return regex.test(val)

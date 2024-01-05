@@ -4,23 +4,17 @@ import ProductItem from '../Product/ProductItem'; // Đảm bảo đường dẫ
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducers/productReducer/product';
 import { fetchProductbySearch } from '../../redux/reducers/productReducer/searchProducts';
-import Loading from "../../components/loading";
 import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
 import { fetchProductbySale, resetProductbySale } from '../../redux/reducers/productReducer/getProductBySale';
 import { fetchProductInSale } from '../../redux/reducers/productReducer/searchProductInSale';
+import LoadingModal from '../../components/loading';
+import { findMainImage, isExpired } from '../../utilies/validation';
+import moment from 'moment';
 
-export const findMainImage = (images) => {
-    for (let i = 0; i < images.length; i++) {
-        if (images[i].is_main === true) {
-            // console.log(images[i].url)
-            return images[i].url;
-        }
-    }
-    return images.length > 0 ? images[0].url : null;
-}
+
 
 const ListProductofSale = ({ route }) => {
     //sale 
@@ -71,7 +65,9 @@ const ListProductofSale = ({ route }) => {
         setProducts(dataProductbySale.content);
     }
 
-
+    handleChangeTimeType = (time) => {
+        return moment(time).format("DD/MM/YYYY");
+    }
     //Call API when starting
     useEffect(() => {
         dispatch(fetchProductbySale(item.id, page, pageSize, sort, desc, state));
@@ -102,15 +98,21 @@ const ListProductofSale = ({ route }) => {
     }, [dataSearchProductInSale])
 
     if (loadingProductbySale || loadingSearchProductInSale) {
-        return <Loading />;
+        return <LoadingModal />;
     }
 
     if (errorProductbySale || errorSearchProductInSale) {
         return <Text style={{ color: 'red' }}>Error: {errorProductbySale}</Text>;
     }
     return (
-        <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
-            <View style={styles.containerTop}>
+        <View style={{ backgroundColor: 'white', flex: 1 }}>
+            <View style={{
+                flexDirection: 'row',
+                marginBottom: 10,
+                marginTop: 15,
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            }}>
                 <View style={styles.iconBack}>
                     <Icon
                         onPress={() => navigation.goBack('Start')}
@@ -120,54 +122,63 @@ const ListProductofSale = ({ route }) => {
                         style={{ marginTop: 5 }}
                     />
                 </View>
+                {!isExpired(item?.ended_at) ?  <Text style={{ color: 'red', fontSize: 18, fontWeight: 600, marginRight: 50 }}>{handleChangeTimeType(item?.started_at) + " - " + handleChangeTimeType(item?.ended_at)}</Text>
+                :<Text style={{ color: 'red', fontSize: 18, fontWeight: 600, marginRight: 50 }}>Chương trình đã kết thúc</Text>}
+                <Text></Text>
             </View>
-            <View style={styles.line}></View>
-            {/* Search tab */}
-            <View style={styles.containerSearch}>
-                <TextInput
-                    onChangeText={(text) => { textInputSearch.current = text }}
-                    style={styles.input}
-                    placeholder={`Search in ${item?.businessResponse.name}`}
-                    placeholderTextColor="gray"
-                    underlineColorAndroid={colors.alert}
-                />
-                <View style={styles.filter} onTouchEnd={handleSearch}>
-                    <Icon
-                        style={{ color: 'white', textAlign: 'center' }}
-                        name="search"
-                        size={24}
+            <ScrollView >
+
+                <View style={styles.line}></View>
+                {/* Search tab */}
+                <View style={styles.containerSearch}>
+                    <TextInput
+                        onChangeText={(text) => { textInputSearch.current = text }}
+                        style={styles.input}
+                        placeholder={`Tìm kiếm trong ${item?.businessResponse.name}`}
+                        placeholderTextColor="gray"
+                        underlineColorAndroid={colors.alert}
                     />
-                </View>
-            </View>
-            {isAll === false &&
-
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={
-                        handleSetAll
-                    }>
-                    <Text style={styles.buttonText}>All</Text>
-                </TouchableOpacity>
-
-            }
-            <View style={styles.line}></View>
-
-            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.trangXam }}>
-                {products?.map((item) => (
-                    <TouchableOpacity
-                        key={item.id}
-                        onPress={() => handleGoDetail(item)}
-                        style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
-                        <ProductItem
-                            imageSource={findMainImage(item?.imageSet)}
-                            productName={item.name}
-                            productPrice={item.price_min}
-                            sale={item?.sale}
+                    <View style={styles.filter} onTouchEnd={handleSearch}>
+                        <Icon
+                            style={{ color: 'white', textAlign: 'center' }}
+                            name="search"
+                            size={24}
                         />
+                    </View>
+                </View>
+               <View>
+               <Text style={{ color: 'red', fontSize: 18, fontWeight: 600, marginLeft: 18 }}>{"Giảm giá  " +item?.discount+"%"}</Text>
+
+               </View>
+                {isAll === false &&
+
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={
+                            handleSetAll
+                        }>
+                        <Text style={styles.buttonText}>All</Text>
                     </TouchableOpacity>
-                ))}
-            </ScrollView>
-            {/* <FlatList style={{
+
+                }
+                <View style={styles.line}></View>
+
+                <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.trangXam }}>
+                    {products?.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            onPress={() => handleGoDetail(item)}
+                            style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}>
+                            <ProductItem
+                                imageSource={findMainImage(item?.imageSet)}
+                                productName={item.name}
+                                productPrice={item.price_min}
+                                sale={item?.sale}
+                            />
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+                {/* <FlatList style={{
                 flexDirection: 'row',
                 margin: 5,
                 backgroundColor: colors.trangXam,
@@ -190,39 +201,40 @@ const ListProductofSale = ({ route }) => {
 
                 )}
             /> */}
-            {isAll === true && <View style={styles.containerPages}>
-                <View style={styles.iconBackPage}>
-                    <Icon
-                        onPress={() => {
-                            if (page > 0) {
-                                setPage(page - 1);
-                            }
-                        }}
-                        name="chevron-left"
-                        size={25}
-                        color={colors.denNhe}
-                        style={{ marginTop: 5 }}
-                    />
-                </View>
+                {isAll === true && <View style={styles.containerPages}>
+                    <View style={styles.iconBackPage}>
+                        <Icon
+                            onPress={() => {
+                                if (page > 0) {
+                                    setPage(page - 1);
+                                }
+                            }}
+                            name="chevron-left"
+                            size={25}
+                            color={colors.denNhe}
+                            style={{ marginTop: 5 }}
+                        />
+                    </View>
 
-                <Text style={styles.buttonText}>{page < totalPages - 1 ? page : 'Hết'}</Text>
+                    <Text style={styles.buttonText}>{page < totalPages - 1 ? page : 'Hết'}</Text>
 
-                <View style={styles.iconNextPage}>
-                    <Icon
-                        onPress={() => {
-                            console.log(page)
-                            if (page < totalPages - 1) {
-                                setPage(page + 1);
-                            }
-                        }}
-                        name="chevron-right"
-                        size={25}
-                        color={colors.denNhe}
-                        style={{ marginTop: 5 }}
-                    />
-                </View>
-            </View>}
-        </ScrollView>
+                    <View style={styles.iconNextPage}>
+                        <Icon
+                            onPress={() => {
+                                console.log(page)
+                                if (page < totalPages - 1) {
+                                    setPage(page + 1);
+                                }
+                            }}
+                            name="chevron-right"
+                            size={25}
+                            color={colors.denNhe}
+                            style={{ marginTop: 5 }}
+                        />
+                    </View>
+                </View>}
+            </ScrollView>
+        </View>
 
     );
 };

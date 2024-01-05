@@ -8,7 +8,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { colors } from '../../../../constants';
 import { toastError, toastsuccess } from '../../../../components/toastCustom';
 import ImagePickerComponent from '../UploadImages';
-import Loading from '../../../../components/loading';
+import LoadingModal from '../../../../components/loading';
 
 const EditandDelete = (props) => {
     const route = useRoute()
@@ -256,7 +256,7 @@ const EditandDelete = (props) => {
 
             </ScrollView>
 
-            {productinforState?.loading ? <Loading /> :
+            {productinforState?.loading ? <LoadingModal /> :
                 <TouchableOpacity
                     onPress={() => handleSubmit()}
                     style={{

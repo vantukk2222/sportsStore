@@ -11,7 +11,11 @@ const ShopInfo = (props) => {
     //console.log(buss);
     const navigation = useNavigation();
     return (
-        <View style = {{backgroundColor:'white'}}>
+        <TouchableOpacity style = {{backgroundColor:'white', padding:10}}
+        onPress={() => {
+            console.log("  123",buss);
+            //  navigation.navigate('Business', { business: buss })
+              }}>
             <View style={styles.shopContainer}>
             
                 <Image source={{ uri: 'https://endlessicons.com/wp-content/uploads/2012/12/female-avatar-icon-614x460.png' }} style={styles.shopImage} />
@@ -20,11 +24,11 @@ const ShopInfo = (props) => {
                     {inCart ? "": <Text style={styles.shopDescription}>{buss?.about}</Text>}
                 </View>
                 <View>
-                    <TouchableOpacity
+                    <View
                         style={{ borderRadius: 4, height: 35, padding: 5, borderWidth: 1, borderColor: 'red' }}
-                        onPress={() => { navigation.navigate('Business', { business: buss }) }}>
+                        >
                         <Text style={styles.shopButton}>Xem shop</Text>
-                    </TouchableOpacity>
+                    </View>
                 </View>
             </View>
             {inCart ? "": <View style={styles.moreContainer}>
@@ -33,9 +37,9 @@ const ShopInfo = (props) => {
                 <Text style={styles.shopDescription}>
                     < Text style={{ color: 'red' }}>{buss?.count_comment_like}</Text> Lượt thích</Text>
                 <Text style={styles.shopDescription}>
-                    < Text style={{ color: 'red' }}>{buss?.count_comment}</Text> Bình luận</Text>
+                    < Text style={{ color: 'red' }}>{buss?.count_comment}</Text> Đánh giá</Text>
             </View>}
-        </View>
+        </TouchableOpacity>
     );
 };
 

@@ -10,8 +10,9 @@ import Loading from '../../components/loading';
 import { formatMoneyVND, isExpired } from '../../utilies/validation';
 import addToCart from '../../API/Cart/addToCart';
 import { addToCartUser } from '../../redux/reducers/Cart/cartReducer';
-import { toastsuccess } from '../../components/toastCustom';
+import { toastError, toastsuccess } from '../../components/toastCustom';
 import Toast from 'react-native-toast-message';
+import { listCartByIdUser } from '../../redux/reducers/Cart/listCartReducer';
 const ModalBuyProduct = ({ route }) => {
 
     const { product, id_user } = route.params;
@@ -27,7 +28,11 @@ const ModalBuyProduct = ({ route }) => {
     const dispatch = useDispatch()
     console.log('buy:\n', id_user)
     useEffect(() => {
-        dispatch(fetchSizeProduct(selectedSizeId))
+        const fetchData = async () => {
+            await dispatch(fetchSizeProduct(selectedSizeId))
+
+        }
+        fetchData()
     }, [selectedSizeId])
     useEffect(() => {
         setTotal(dataSizeProduct.quantity)
@@ -50,10 +55,22 @@ const ModalBuyProduct = ({ route }) => {
     };
     const handleBuyPress = () => {
         // console.log("ID_User: ",id_user + "\t" + "ID_Product: ", selectedID_Product + "\t" +"Quantity: ", quantity);
-        dispatch(addToCartUser(id_user, selectedID_Product, quantity))
-        navigation.goBack()
-        toastsuccess("Thành công", "Bạn đã thêm sản phẩm vào giỏ hàng", 1000)
+        const handleBuy = async () => {
+            await dispatch(addToCartUser(id_user, selectedID_Product, quantity)).then(async() => {
+                await dispatch(listCartByIdUser(id_user))
 
+            })
+
+        }
+        try {
+            handleBuy()
+            navigation.goBack()
+            toastsuccess("Thành công", "Bạn đã thêm sản phẩm vào giỏ hàng", 1000)
+
+        } catch (error) {
+            toastError("Xin lỗi", "Đã có lỗi xảy ra, vui lòng thử lại")
+
+        }
     };
     const handleTotalBefore = (sl, gia) => {
         // return formatMoneyVND(sl*gia)
@@ -103,7 +120,7 @@ const ModalBuyProduct = ({ route }) => {
                                 selectedSizeId === eachSize.id && styles.selectedButton,
                             ]}
                             onPress={() => { handleSizeSelect(eachSize.id, eachSize.id) }}>
-                            <Text style={styles.buttonText}>{eachSize.size}</Text>
+                            <Text style={styles.buttonText}>{eachSize.size||"Freesize"}</Text>
                         </TouchableOpacity>
                     )) : <Text style={styles.buttonText}>FreeSize</Text>}
                 </View>
@@ -126,7 +143,7 @@ const ModalBuyProduct = ({ route }) => {
                 {selectedSizeId === null ? <Text /> :
                     loadingSizeProduct === true ? <Text /> :
                         <View>
-                            <Text style={styles.label}>Số lượng :</Text>
+                            <Text style={styles.label}>Số lượng : {dataSizeProduct?.quantity}</Text>
                             <View style={styles.quantityContainer}>
 
                                 <TouchableOpacity
@@ -150,7 +167,7 @@ const ModalBuyProduct = ({ route }) => {
                             {product?.sale && <View style={{ flexDirection: 'row' }}>
                                 <Text style={{
                                     paddingVertical: 10,
-                                    
+
                                     fontSize: 15,
                                     fontWeight: 'bold',
                                     color: 'red'
@@ -171,7 +188,7 @@ const ModalBuyProduct = ({ route }) => {
 
             </View>
             <TouchableOpacity style={styles.buyButton} onPress={handleBuyPress}>
-                <Text style={styles.buyButtonText}>Mua</Text>
+                <Text style={styles.buyButtonText}>Thêm</Text>
             </TouchableOpacity>
         </View >
     );

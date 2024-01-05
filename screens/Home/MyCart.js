@@ -88,6 +88,7 @@ const MyCart = ({ route, navigation }, props) => {
         }
       });
     }
+
     if (key === "uncheck") {
       value?.products?.forEach((eachProduct) => {
         // setID_Buy(prevState => prevState.filter(item => item !== eachProduct?.id));
@@ -96,6 +97,7 @@ const MyCart = ({ route, navigation }, props) => {
     }
 
   };
+
 
   const handleSalePress = (key, value) => {
     // Xử lý giá trị từ component con ở đây
@@ -173,13 +175,13 @@ const MyCart = ({ route, navigation }, props) => {
     }
   }, [product]);
 
-  useEffect(()=>{
+  useEffect(() => {
 
     const getProductInfoByBusinessId = (dataCart) => {
       const result = {};
 
       // Lặp qua từng item trong data để lấy thông tin cần thiết
-      dataCart.forEach((item) => {
+      dataCart?.forEach((item) => {
         const businessId = item.business.id;
         const productInfoId = item.product.id;
 
@@ -196,7 +198,7 @@ const MyCart = ({ route, navigation }, props) => {
     };
     const productInfoByBusinessId = getProductInfoByBusinessId(dataCart);
     setlist_business_id_product(productInfoByBusinessId)
-  },[dataCart])
+  }, [dataCart])
   // console.log("data cart:", groupedProducts);
 
   const getidCart = (id_product_information_list) => {
@@ -212,13 +214,16 @@ const MyCart = ({ route, navigation }, props) => {
 
   }
   const updateCartAPI = useCallback(async () => {
-    // Gọi API hoặc dispatch action để cập nhật giỏ hàng trước khi rời khỏi màn hình
-    try {
-      // Gọi API cập nhật giỏ hàng với product và id_user
-      dispatch(listCartByIdUser(id_user)).then(() => {
+    const getCart = async () => {
+      await dispatch(listCartByIdUser(id_user)).then(() => {
         // After the cart data is updated, setProduct can be called
         setProduct(dataCart);
       });
+    }
+    // Gọi API hoặc dispatch action để cập nhật giỏ hàng trước khi rời khỏi màn hình
+    try {
+      // Gọi API cập nhật giỏ hàng với product và id_user
+      getCart()
       // Ví dụ: dispatch(updateCartAction(id_user, product));
     } catch (error) {
       console.error("Error updating cart:", error);
@@ -263,10 +268,11 @@ const MyCart = ({ route, navigation }, props) => {
       // currentState[eachproductItem?.business?.id] = id_buy.includes(list_business_id_product[eachproductItem?.business?.id])
       // console.log("curen state: ", eachproductItem?.business?.id, JSON.stringify(id_buy), JSON.stringify(list_business_id_product[eachproductItem?.business?.id]));
     })
+
     setToggleCheckBox(currentState)
 
   }, [id_buy])
-  
+
   // console.log("list toggle: ", toggleCheckBox);
 
   useEffect(() => {
@@ -323,19 +329,26 @@ const MyCart = ({ route, navigation }, props) => {
     const list_id_cart = getidCart(id_buy)
     console.log("cart list id", list_id_cart);
     try {
-      const method = selectedOption === "QR MOMO" ? "captureWallet" : "payWithATM"
+      if (dataUser?.address) {
+        const method = selectedOption === "QR MOMO" ? "captureWallet" : "payWithATM"
 
-      console.log("Method payment: ", method);
-      const getlink = await dispatch(savePayment(method, list_id_cart));
-      console.log("Momo Link previous:", getlink);
-      setlink(getlink)
-      await Linking.openURL(getlink).then(() => {
-        navigation.goBack()
-        toastsuccess("Thành công", "Thanh toán thành công");
-        dispatch(listCartByIdUser(id_user))
-        dispatch(getAllBillByIDUser(id_user))
-        setProduct(dataCart)
-      })
+        console.log("Method payment: ", method);
+        const getlink = await dispatch(savePayment(method, list_id_cart));
+        console.log("Momo Link previous:", getlink);
+        setlink(getlink)
+        await Linking.openURL(getlink).then(() => {
+          navigation.goBack()
+          toastsuccess("Thành công", "Thanh toán thành công");
+          dispatch(listCartByIdUser(id_user))
+          dispatch(getAllBillByIDUser(id_user))
+          setProduct(dataCart)
+        })
+      }
+      else {
+        toastError("Xin lỗi", "Vui lòng điền thông tin.")
+        navigation.navigate('setInfor', { infor: dataUser })
+
+      }
     } catch (error) {
       toastError("Xin lỗi", "Đã có lỗi xảy ra với máy chủ");
       return error;
@@ -533,9 +546,9 @@ const MyCart = ({ route, navigation }, props) => {
               <TouchableOpacity
                 onPress={() => {
 
-                  
+
                   // console.log("data:", dataCart);
-                  navigation.navigate('setInfor', {infor: dataUser })
+                  navigation.navigate('setInfor', { infor: dataUser })
                 }}
                 style={{
                   flexDirection: 'row',

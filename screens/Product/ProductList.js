@@ -4,12 +4,13 @@ import ProductItem from './ProductItem'; // Đảm bảo đường dẫn đến 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducers/productReducer/product';
 import { fetchProductbySearch } from '../../redux/reducers/productReducer/searchProducts';
-import Loading from "../../components/loading";
 import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, fontSize } from '../../constants';
 import { toastError } from '../../components/toastCustom';
+import LoadingModal from '../../components/loading';
+import { findMainImage } from '../../utilies/validation';
 const ProductList = (props) => {
 
     const dispatch = useDispatch();
@@ -55,10 +56,16 @@ const ProductList = (props) => {
         setIsAll(true);
         setProducts(data?.content);
     }
+    
 
     //Call API when starting
     useEffect(() => {
-        dispatch(fetchProducts(page, pageSize, sort, desc));
+        const dispatchGet = async () =>{
+
+            dispatch(fetchProducts(page, pageSize, sort, desc));
+        }
+        dispatchGet()
+
     }, [page, pageSize, sort, desc]);
     //set products = data
     useEffect(() => {
@@ -71,9 +78,14 @@ const ProductList = (props) => {
     //Call API, when search Product by name 
     useEffect(() => {
 
+        const dispatchGet = async () => {
+            await dispatch(fetchProductbySearch(searchText));
+            
+        }
         if (searchText.length > 0) {
             console.log("get data search", searchText);
-            dispatch(fetchProductbySearch(searchText));
+            dispatchGet()
+            // dispatch(fetchProductbySearch(searchText));
         }
     }, [searchText])
     //set products = dataSearch
@@ -83,13 +95,13 @@ const ProductList = (props) => {
     }, [dataSearch])
 
     if (loading || loadingSearch) {
-        return <Loading />;
+        return <LoadingModal />;
     }
 
     if (error || errorSearch) {
 
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;    }
+        return <LoadingModal />;    }
     return (
 
 
@@ -171,10 +183,10 @@ const ProductList = (props) => {
                         key={item.id.toString()}
                         style={{ width: '50%', paddingHorizontal: 5, marginBottom: 10 }}
                         onPress={() => {
-                            navigation.navigate('DetailProduct', { item });
+                            handleGoDetail(item)
                         }}>
                         <ProductItem
-                            imageSource={item?.imageSet[0]?.url}
+                            imageSource={findMainImage(item?.imageSet)}
                             productName={item?.name}
                             productPrice={item?.price_min}
                             sale={item?.sale}
@@ -197,7 +209,7 @@ const ProductList = (props) => {
                     />
                 </View>
 
-                <Text style={styles.buttonText}>{page < totalPages - 1 ? page : 'Hết'}</Text>
+                <Text style={styles.buttonText}>{page < totalPages - 1 ? page+1 : 'Hết'}</Text>
 
                 <View style={styles.iconNextPage}>
                     <Icon

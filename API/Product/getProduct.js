@@ -6,6 +6,7 @@ const getProduct = async (page, pageSize, sort, desc) => {
     //console.log(authToken);
 
     try {
+        console.log("page: ", page,pageSize, sort, desc);
         const response = await axios.get(urlAPI+'/api/v1/product-information', {
             params: {
                 page: page,

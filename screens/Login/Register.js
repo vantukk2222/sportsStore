@@ -12,7 +12,7 @@ import {
 import fontSizes from '../../constants_Tu/fontSizes';
 import { images } from '../../constants_Tu';
 import { TextInput } from 'react-native-paper';
-import { isValidEmail, isValidName, isValidPassword, isValidPhone, onValidUsername } from '../../utilies/validation'
+import { isValidCIC, isValidEmail, isValidName, isValidPassword, isValidPhone, onValidUsername } from '../../utilies/validation'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { combineTransition } from 'react-native-reanimated';
 import { signupUser } from '../../redux/reducers/Register/signupReducer';
@@ -21,6 +21,7 @@ import { toastError, toastsuccess } from '../../components/toastCustom';
 import { Dropdown } from 'react-native-element-dropdown';
 import Font from '../../constants_Tu/Font';
 import HeaderComp from '../../components/Header';
+import LoadingModal from '../../components/loading';
 
 
 function Register(props) {
@@ -32,6 +33,8 @@ function Register(props) {
   const Spacing = 10;
   const [valueUserName, setValueUserName] = useState('')
   const [valueName, setValueName] = useState('')
+  const [valueCIC, setValueCIC] = useState('')
+  const [valueAddress, setValueAddress] = useState('')
   const [valuePhone, setValuePhone] = useState('')
   const [valueEmail, setValueEmail] = useState('');
   const [valuePassword, setValuePassword] = useState('');
@@ -42,57 +45,107 @@ function Register(props) {
   const [errorUserName, setErrorUserName] = useState('')
   const [errorPhone, setErrorPhone] = useState('')
   const [errorName, setErrorName] = useState('')
-  const [errorValue, seterrorValue] = useState(null);
+  const [errorValueCIC, setErrorValueCIC] = useState('')
+  const [errorValueAddress, setErrorValueAddress] = useState('')
+  const [value, setValue] = useState(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+
+  const [errorValue, seterrorValue] = useState("Vui lòng lựa chọn kiểu tài khoản");
 
   const [isButtonDisabled, setButtonDisabled] = React.useState(false);
-  const userData = {
-    username: valueEmail,
+  const userData = value === "customer" ? {
+    username: valueUserName,
     password: valuePassword,
     name: valueName,
     phone: valuePhone,
     email: valueEmail,
-  };
-  const [value, setValue] = useState(null);
+  } : {
+    username: valueUserName,
+    password: valuePassword,
+    name: valueName,
+    phone: valuePhone,
+    email: valueEmail,
+    cic: valueCIC,
+    address: valueAddress
+  }
 
 
   const data = [
     { label: 'Khách hàng', value: 'customer' },
     { label: 'Người bán hàng', value: 'business' },
   ];
-  const handlePressOrError = () => {
-    if (value === null || errorName !== '' || errorPhone !== '' || errorUserName !== '' || errorValueEmail !== '' || errorValuePassword !== '') {
-      seterrorValue("Vui lòng lựa chọn kiểu tài khoản")
-
-      toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
-    }
-    else if (valueName === '' || valueUserName === '' || valuePassword === '' || retypevaluePassword === '' || valueEmail === '' || valuePhone === '') {
+  const handlePressOrError = async () => {
+    if (!value) {
       toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
 
     }
-    else {
-      handlePress();
+    if (value === "business") {
+      if (errorValueAddress !== '' || errorValueCIC !== '' || value === null || errorName !== '' || errorPhone !== '' || errorUserName !== '' || errorValueEmail !== '' || errorValuePassword !== '') {
+
+        toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
+      }
+      else if (valueAddress !== '' || valueCIC !== '' || valueName === '' || valueUserName === '' || valuePassword === '' || retypevaluePassword === '' || valueEmail === '' || valuePhone === '') {
+        toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
+
+      }
+      else {
+        await handlePress();
+      }
+    }
+    else if (value === "customer") {
+      if (value === null || errorName !== '' || errorPhone !== '' || errorUserName !== '' || errorValueEmail !== '' || errorValuePassword !== '') {
+
+        toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
+      }
+      else if (valueName === '' || valueUserName === '' || valuePassword === '' || retypevaluePassword === '' || valueEmail === '' || valuePhone === '') {
+        toastError("Xin lỗi", "Vui lòng nhập đầy đủ thông tin");
+
+      }
+      else {
+        await handlePress();
+      }
     }
   };
-  const handlePress = () => {
+  const handlePress = async () => {
     setButtonDisabled(true);
-    setTimeout(() => {
-      setButtonDisabled(false);
-      signupUser(userData, value).then(data => {
-        if (data.includes("Error") || data.includes("failed")) {
-          toastError("Xin lôi", JSON.stringify(data))
-        }
-        else {
-          setValueEmail('')
-          setValueName('')
-          setValuePassword('')
-          setValuePhone('')
-          setValueUserName('')
-          retypevaluePassword('')
-          toastsuccess("Cảm ơn", "Bạn đã đăng ký tài khoản thành công!")
-        }
-      })
+    setIsLoading(true);
 
-    }, 1000);
+    await signupUser(userData, value).then(data => {
+      console.log("data in reg: ", data.token);
+      if (data?.token) {
+        setValueName('')
+        setValueUserName('')
+        setValuePassword('')
+        setRetypevaluePassword('')
+        setValueEmail('')
+        setValuePhone('')
+        setButtonDisabled(false);
+        setIsLoading(false);
+
+        console.log(("Vào OK "));
+        toastsuccess("Cảm ơn", "Bạn đã đăng ký tài khoản thành công!")
+        navigation.navigate("Login")
+      }
+      if (data.includes("Error") || data.includes("failed")) {
+        setIsLoading(false);
+
+        toastError("Xin lôi", JSON.stringify(data))
+        console.log(("Vào lỗi"));
+        setButtonDisabled(false);
+      }
+      setButtonDisabled(false)
+      setIsLoading(false);
+    })
+
+
   };
   useEffect(() => {
     console.log(userData)
@@ -126,6 +179,8 @@ function Register(props) {
         }}></Icon>
 
       </TouchableOpacity>
+      {isLoading && <LoadingModal isLoading={true}></LoadingModal>}
+
       <ScrollView
         keyboardShouldPersistTaps='always'
         style={{
@@ -187,11 +242,20 @@ function Register(props) {
           placeholder="Lựa chọn kiểu tài khoản"
           value={value}
           onChange={item => {
-            setValue(item.value);
+            setValue(item.value),
+              seterrorValue("")
+
           }}
 
         />
-        {value !== '' && < Text style={{ color: 'red', marginHorizontal: 15, }}>{errorValue}</Text>}
+        {value !== '' && errorValue !== '' ? < Text style={{ color: 'red', marginHorizontal: 15, }}>{errorValue}</Text> : null}
+
+
+
+
+
+
+
         <View
           style={{
             marginHorizontal: 15,
@@ -225,6 +289,75 @@ function Register(props) {
             placeholder="Họ và tên"></TextInput>
           {valueName !== '' && < Text style={{ color: 'red' }}>{errorName}</Text>}
         </View>
+        {value === 'business' && (<View>
+          <View
+            style={{
+              marginHorizontal: 15,
+              marginTop: 10
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: fontSizes.h3,
+                marginBottom: 5,
+              }}>
+              CIC
+            </Text>
+
+            <TextInput
+              value={valueCIC}
+              keyboardType='phone-pad'
+              onChangeText={text => {
+                setErrorValueCIC(isValidCIC(text) ? '' : 'CIC không hợp lệ.')
+                setValueCIC(text)
+              }}
+
+              style={{
+                marginTop: 10,
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: "#616161",
+                fontSize: 16,
+              }}
+              placeholderTextColor="gray"
+              underlineColor="transparent"
+              placeholder="1234567890"></TextInput>
+            {valueCIC !== '' && < Text style={{ color: 'red' }}>{errorValueCIC}</Text>}
+          </View>
+
+          <View
+            style={{
+              marginHorizontal: 15,
+              marginTop: 10
+            }}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: fontSizes.h3,
+                marginBottom: 5,
+              }}>
+              Địa chỉ
+            </Text>
+
+            <TextInput
+              value={valueAddress}
+              onChangeText={text => {
+                setErrorValueAddress(isValidCIC(text) ? '' : '')
+                setValueAddress(text)
+              }}
+
+              style={{
+                marginTop: 10,
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: "#616161",
+                fontSize: 16,
+              }}
+              placeholderTextColor="gray"
+              underlineColor="transparent"
+              placeholder="Địa chỉ của bạn"></TextInput>
+          </View>
+        </View>)}
         <View
           style={{
             marginHorizontal: 15,
@@ -270,27 +403,42 @@ function Register(props) {
               color: 'black',
               fontSize: fontSizes.h3,
               marginBottom: 5,
-              marginTop: 10
+              marginTop: 10,
             }}>
             Mật khẩu
           </Text>
-          <TextInput
-            value={valuePassword}
-            onChangeText={text => {
-              setErrorValuePassword(isValidPassword(text) == true ? '' : 'Mật khẩu bao gồm 1 chữ cái in đậm, số và 1 ký tự đặc biệt\n')
-              setValuePassword(text)
-            }}
-            style={{
-              marginTop: 10,
-              backgroundColor: '#f1f4ff',
-              borderRadius: 20,
-              color: "#616161",
-              fontSize: 16,
-            }}
-            placeholderTextColor="gray"
-            underlineColor="transparent"
-            secureTextEntry={true}
-            placeholder="Nhập mật khẩu của bạn"></TextInput>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TextInput
+              value={valuePassword}
+              onChangeText={(text) => {
+                setErrorValuePassword(
+                  isValidPassword(text) ? '' : 'Mật khẩu bao gồm 1 chữ cái in đậm, số và 1 ký tự đặc biệt\n'
+                );
+                setValuePassword(text);
+              }}
+              style={{
+                flex: 1,
+                marginTop: 10,
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: '#616161',
+                fontSize: 16,
+                paddingRight: 40, // Để tạo không gian cho icon
+              }}
+              placeholderTextColor="gray"
+              underlineColor="transparent"
+              secureTextEntry={!isPasswordVisible} // Hiển thị hoặc ẩn mật khẩu tùy thuộc vào trạng thái của biến isPasswordVisible
+              placeholder="Nhập mật khẩu của bạn"
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Icon
+                name={!isPasswordVisible ? 'eye-slash' : 'eye'}
+                size={20}
+                color="gray"
+                style={{ position: 'absolute', right: 10 }} // Điều chỉnh vị trí của icon
+              />
+            </TouchableOpacity>
+          </View>
           {valuePassword !== '' && < Text style={{ color: 'red', paddingBottom: 10 }}>{errorValuePassword}</Text>}
 
           <Text
@@ -302,20 +450,33 @@ function Register(props) {
             }}>
             Nhập lại mật khẩu
           </Text>
-          <TextInput
-            value={retypevaluePassword}
-            onChangeText={text => setRetypevaluePassword(text)}
-            style={{
-              marginTop: 10,
-              backgroundColor: '#f1f4ff',
-              borderRadius: 20,
-              color: "#616161",
-              fontSize: 16,
-            }}
-            placeholderTextColor="gray"
-            underlineColor="transparent"
-            secureTextEntry={true}
-            placeholder="Nhập lại mật khẩu của bạn"></TextInput>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TextInput
+              value={retypevaluePassword}
+              onChangeText={text => setRetypevaluePassword(text)}
+              style={{
+                flex: 1,
+                marginTop: 10,
+                backgroundColor: '#f1f4ff',
+                borderRadius: 20,
+                color: '#616161',
+                fontSize: 16,
+                paddingRight: 40, // Để tạo không gian cho icon
+              }}
+              placeholderTextColor="gray"
+              underlineColor="transparent"
+              secureTextEntry={!isPasswordVisible} // Hiển thị hoặc ẩn mật khẩu tùy thuộc vào trạng thái của biến isPasswordVisible
+              placeholder="Nhập lại mật khẩu của bạn"
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <Icon
+                name={!isPasswordVisible ? 'eye-slash' : 'eye'}
+                size={20}
+                color="gray"
+                style={{ position: 'absolute', right: 10 }} // Điều chỉnh vị trí của icon
+              />
+            </TouchableOpacity>
+          </View>
           {valuePassword !== '' && retypevaluePassword !== '' && valuePassword !== retypevaluePassword && (
             <Text style={{ color: 'red' }}>Mật khẩu không trùng nhau</Text>
           )}
@@ -365,7 +526,9 @@ function Register(props) {
             </Text>
             <TextInput
               value={valuePhone}
+              keyboardType="phone-pad"
               onChangeText={text => {
+                setButtonDisabled(false)
                 setErrorPhone(isValidPhone(text) == true ? '' : 'Sai định dạng số điện thoại')
                 setValuePhone(text)
               }}
@@ -385,11 +548,13 @@ function Register(props) {
 
         </View>
         <View
-        style={{padding:20}}>
+          style={{ padding: 20 }}>
           <TouchableOpacity
-            onPress={handlePressOrError}
+            onPress={async () => {
+              handlePressOrError()
+            }}
             disabled={
-              isButtonDisabled
+              false
             }
             style={{
               paddingVertical: Spacing * 2,

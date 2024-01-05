@@ -36,7 +36,8 @@ export const signupUser = (userData,role) => async (dispatch) => {
     const data = await registerPage(userData,role); // Call registerPage API
     console.log("data: ", data); // Log received data
 
-    dispatch(registerSlice.actions.signupSuccess({ token: data })); // Dispatch registerSuccess with received data
+    dispatch(registerSlice.actions.signupSuccess({ token: data.token })); // Dispatch registerSuccess with received data
+    console.log("Hể đky");
     return data
   } catch (error) {
     let errorMessage = 'Error fetching data';

@@ -8,11 +8,11 @@ import { colors } from '../../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { fetchProductsByBusiness, resetProductByBusiness } from '../../../redux/reducers/Business/getProductByBusiness';
 import { toastsuccess } from '../../../components/toastCustom';
-import { findMainImage } from '../../Category/ListProductByCategory';
 import { addProductSale, resetProductInSale } from '../../../redux/reducers/Sale/addProductInSale';
 import Loading from '../../../components/loading';
 import { ActivityIndicator } from 'react-native-paper';
 import { removeProInSale, resetRemoveProductinforSale } from '../../../redux/reducers/Sale/removeProduct';
+import { findMainImage } from '../../../utilies/validation';
 
 { }
 const setProductinSale = (props) => {
@@ -178,12 +178,15 @@ const setProductinSale = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={{ flexDirection: 'row', backgroundColor: '#2196F5', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', backgroundColor: 'white', justifyContent: 'space-between' }}>
                 <TouchableOpacity
+                style={{
+                    alignItems:'center',
+                    justifyContent:'center'
+                }}
                     onPress={() => { navigation.goBack() }}>
                     <Icon name="angle-left" size={30} style={{
-                        color: 'white',
-                        alignItems: 'flex-end',
+                        color: 'black',
                         marginLeft: 15,
                     }}></Icon>
                 </TouchableOpacity>
@@ -191,7 +194,7 @@ const setProductinSale = (props) => {
                 <Text style={{
                     padding: 2,
                     paddingRight: 30,
-                    color: 'white',
+                    color: 'black',
                     fontWeight: '600',
                     fontSize: 24,
                     textAlign: 'center',

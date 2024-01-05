@@ -18,9 +18,10 @@ const HeaderComp = ({ init = "Start" }) => {
   // const dispatch = useDispatch();
   // const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
   const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
-  const [userName, setUserName] = useState(dataUser?.username)
+  const [userName, setUserName] = useState('')
   const { dataCart, loadingCart, errorCart } = useSelector((state) => state.listCartReducer)
   const [dataCartNe, setDataCart] = useState(dataCart)
+
 
 
   const navigation = useNavigation();
@@ -49,7 +50,7 @@ const HeaderComp = ({ init = "Start" }) => {
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
-      navigation.navigate('Start');
+      navigation.navigate('Home');
     }
   };
   const goBack = () => {
@@ -62,30 +63,39 @@ const HeaderComp = ({ init = "Start" }) => {
 
 
   useEffect(() => {
-
     const fetchUserName = async () => {
       const uname = await asyncStorage.getUserNameStorage('userName')
-      setUserName(uname)
+      setUserName(dataUser?.username)
     }
     fetchUserName()
+    // const uname=dataUser?.username
+    //   setUserName(uname)
 
-    console.log("Username in Header: ", userName);
+    console.log("Username in Header: ", dataUser?.username);
 
     try {
       dispatch(fetchUserByUserName(userName))
     }
     catch (error) { }
   }, [userName])
+  // console.log("Username in Header: ", userName);
+
   useEffect(() => {
-    try {
-      if (userName) {
-        dispatch(listCartByIdUser(dataUser?.id))
+    setDataCart(dataCart)
+  }, [dataCart])
+  // useEffect(() => {
+  //   const fetchCart = () => {
 
-      }
-    } catch (error) {
+  //     dispatch(listCartByIdUser(dataUser?.id))
+  //   }
+  //   try {
+  //     if (userName) {
+  //       fetchCart()
+  //     }
+  //   } catch (error) {
 
-    }
-  }, [dataUser?.id])
+  //   }
+  // }, [])
   return (
     <View style={styles.headerContainer}>
       {init === "Start" ? <View style={{ width: 30 }} /> : (
@@ -103,10 +113,18 @@ const HeaderComp = ({ init = "Start" }) => {
       {init === "Rating" ? <Icon style={{ marginRight: 45 }} /> : (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Icon name="shopping-cart" size={30} style={styles.iconShopping} onPress={() => {
-            userName ? navigation.navigate("Cart", { id_user: dataUser?.id }) : toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập")
+            if (userName) {
+              // Nếu đã đăng nhập, điều hướng đến trang Cart
+              navigation.navigate("Cart", { id_user: dataUser?.id });
+            } else {
+              // Nếu chưa đăng nhập, hiển thị thông báo
+              toastError("Bạn chưa đăng nhập", "Xin vui lòng đăng nhập");
+              // Điều hướng đến màn hình đăng nhập hoặc xử lý khác
+              // Example: navigation.navigate("Login");
+            }
           }} />
-          {dataCart && <View style={styles.cartBadge}>
-            <Text style={styles.cartBadgeText}>{dataCart.length}</Text>
+          {dataCartNe && <View style={styles.cartBadge}>
+            <Text style={styles.cartBadgeText}>{dataCartNe.length}</Text>
           </View>}
         </View>
       )}

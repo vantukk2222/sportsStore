@@ -18,8 +18,7 @@ import { colors, fontSize, images } from '../../constants/index';
 import ProductItem from '../Product/ProductItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../redux/reducers/productReducer/product';
-import Loading from "../../components/loading";
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ProductList from '../Product/ProductList';
 import { asyncStorage } from '../../utilies/asyncStorage';
 
@@ -30,38 +29,57 @@ import ListCategory from '../Category/ListCategory';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // =======
 import { fetchUserByUserName } from '../../redux/reducers/User/userInfor';
-import { formatMoneyVND } from '../../utilies/validation';
+import { findMainImage, formatMoneyVND } from '../../utilies/validation';
 import { logout } from '../../redux/reducers/Login/signinReducer';
 import { listCartByIdUser, listCartByUserName } from '../../redux/reducers/Cart/listCartReducer';
 import FlatListSale from '../Sale/FlatListSale';
 import { toastError } from '../../components/toastCustom';
+import LoadingModal from '../../components/loading';
+import { SliderBox } from "react-native-image-slider-box";
+
 // import { fetchUserByID } from '../../redux/reducers/User/userInfor';
 // >>>>>>> NewD
 
 
+
 const Start = () => {
+
     // const { navigation, route } = props
     // const { navigate, goBack } = navigation
     // const userName = route.params
     // Alert.alert("username: ", userName)
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    // const [userName, setUserName] = useState('')
+    const [userName, setUserName] = useState('')
 
     const { data, loading, error } = useSelector((state) => state.product);
-    const { authToken, userName, isLoading, error: errorLogin } = useSelector((state) => state.login)
+    const { authToken, userName:UNAME, isLoading, error: errorLogin } = useSelector((state) => state.login)
     const { data: dataUser, loading: loadingUser, error: errorUser } = useSelector((state) => state.userData)
     // const {dataUsre, loading}
     const [products, setProducts] = useState([]);
 
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const [sort, setSort] = useState('id');
+    const [sort, setSort] = useState('name');
     const [desc, setDesc] = useState(false);
 
     const { dataCate, loadingCate, errorCate } = useSelector((state) => state.categories);
     const [categories, setCategories] = useState([])
 
+    // useEffect(() => {
+    //     setUserName(UNAME)
+    //     const dispatchGet = async () => {
+    //         await dispatch(fetchUserByUserName(userName))
+    //         await dispatch(fetchCategories());
+    //     }
+    //     if (userName) {
+    //         try {
+    //             dispatchGet()
+    //         } catch (error) {
+    //             // dispatch(logout())
+    //         }
+    //     }
+    // }, [userName]);
     useEffect(() => {
         if (userName) {
             try {
@@ -72,7 +90,14 @@ const Start = () => {
             }
         }
     }, [userName]);
-
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         // Đoạn code bạn muốn thực hiện khi màn hình Start được focus
+    //         // Ví dụ: load lại dữ liệu, hoặc thực hiện các tác vụ cần thiết
+    //         // Ví dụ:
+    //         dispatch(fetchProducts(page, pageSize, sort, desc));
+    //     }, [])
+    // );
 
     // useEffect(()=>{
     //     console.log("Data User in Start: ", dataUser.id);
@@ -99,6 +124,18 @@ const Start = () => {
     };
 
 
+    // useEffect(() => {
+    //     const dispatchGet = async () => {
+    //         await dispatch(fetchProducts(page, pageSize, sort, desc));
+    //     }
+
+    //     try {
+    //         dispatchGet()
+    //     }
+    //     catch (error) {
+    //         // dispatch(logout())
+    //     }
+    // }, [page, pageSize, sort, desc]);
     useEffect(() => {
         try { dispatch(fetchProducts(page, pageSize, sort, desc)); }
         catch (error) {
@@ -116,26 +153,27 @@ const Start = () => {
         }
     }, [data]);
 
-    const findMainImage = (Listimg) => {
-        for (let i = 0; i < Listimg.length; i++) {
-            if (Listimg[i].is_main === true) {
-                //console.log(images[i].url)
-                var img = Listimg[i].url
-                //  setImages(im)
-                return Listimg[i].url;
-            }
-        }
-        return Listimg.length > 0 ? Listimg[0].url : null;
-    }
+
 
     if (loading) {
-        return <Loading />;
+        return <LoadingModal />;
     }
 
     if (error) {
         toastError("Xin lỗi", "Đã có lỗi xảy ra với kết nối")
-        return <Loading />;
+        return <LoadingModal />;
     }
+    const imagePaths = [
+        require('../../assets/images/banner1.jpg'),
+        require('../../assets/images/banner2.jpg'),
+        require('../../assets/images/banner3.jpeg'),
+        require('../../assets/images/banner4.jpg'),
+        require('../../assets/images/banner5.jpeg'),
+        require('../../assets/images/banner6.jpeg'),
+        require('../../assets/images/banner7.jpeg'),
+
+        // Thêm các đường dẫn tới các ảnh khác trong thư mục tương tự ở đây
+    ];
 
     return (
         // <<<<<<< categoryDat
@@ -145,37 +183,32 @@ const Start = () => {
             <Header />
             <ScrollView>
 
-               {/* Categories */}
+                {/* Categories */}
                 <View style={styles.categoriesContainer}>
-                    {/* <View
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            flexDirection: 'row',
-                            paddingRight: 18,
-                            paddingLeft: 18,
-                            marginTop: 10,
-                        }}>
-                    </View> */}
+
                     <ListCategory />
                 </View>
 
-                
+
                 {/* Sale */}
-                    
-                <View style={styles.container}  >
-                    <Image
-                    onPress={()=>{ console.log(1) }}
-                        source={require('../../assets/images/banner3.jpeg')}
-                        style={styles.backgroundImage}
-                    />
-                    {/* <View style={styles.contentContainer}>
-                        <Text style={styles.textSmall}>Giảm giá lên đến 50%</Text>
-                        <TouchableOpacity style={styles.touchableOpacity}>
-                            <Text style={styles.buttonText}>Mua ngay!</Text>
-                        </TouchableOpacity>
-                    </View> */}
-                </View>
+
+                <SliderBox
+                    images={imagePaths}
+                    ImageComponent={Image}
+                    ImageComponentStyle={{
+                        resizeMode: 'stretch', // or 'stretch' or 'contain'
+                        width: '90%',
+                        height: 500,
+                        borderRadius: 8,
+                    }}
+                    dotColor="red"
+                    inactiveDotColor="black"
+                    dotStyle={{ height: 10, width: 10, borderRadius: 50 }}
+                    imageLoadingColor="black"
+                    resizeMode="stretch"
+                    autoplay={true}
+                    circleLoop={true}
+                />
 
                 {/* Danh sach san pham sale */}
                 <FlatListSale />
@@ -183,13 +216,12 @@ const Start = () => {
 
                 {/* Danh sach san pham */}
                 {/* Go product */}
-                <View style={styles.container}>
+                {/* <View style={styles.container}>
 
-                    {/* Hình ảnh */}
                     <Image
                         source={require('../../assets/images/banner1.jpg')}
                         style={styles.backgroundImage} />
-                </View>
+                </View> */}
                 <View
                     style={{
                         backgroundColor: "#FCFCFC",

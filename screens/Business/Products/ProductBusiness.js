@@ -13,7 +13,7 @@ import { setHireProduct } from '../../../redux/reducers/productReducer/hireProdu
 import { colors } from '../../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
-import Loading from '../../../components/loading';
+import LoadingModal from '../../../components/loading';
 
 
 const ProductBusiness = (props) => {
@@ -177,7 +177,7 @@ const ProductBusiness = (props) => {
 
 
             </View>
-            {loadingProductbyBusi === true ? <Loading /> :
+            {loadingProductbyBusi === true ? <LoadingModal /> :
                 <ListProduct
                     products={products}
                     onEdit={handleEdit}
