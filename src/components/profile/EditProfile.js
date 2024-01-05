@@ -243,18 +243,6 @@ const EditProfile = () => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div className="label-input-container">
-                    <label className="lable-edit">
-                        <p>Địa chỉ:</p>
-                    </label>
-                    <input
-                        className="input-edit"
-                        type="text"
-                        name="address"
-                        value={editedUser.revenue}
-                        onChange={handleInputChange}
-                    />
-                </div>
                 <button className="edit-button" type="button" onClick={handleSave} disabled={validationError}>
                     Lưu
                 </button>
@@ -270,7 +258,6 @@ const EditProfile = () => {
                 />{' '}
                 <div className="text">Ảnh của bạn </div>
                 <input className="input-img" type="file" id="profileImage" onChange={handleFileChange} />
-               
             </div>
             <ToastContainer position="top-center" style={{ top: '50%', transform: 'translateY(-50%)' }} />
         </div>

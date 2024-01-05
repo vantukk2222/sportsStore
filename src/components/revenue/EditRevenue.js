@@ -1,10 +1,34 @@
 // EditRevenue.jsx
 
+import { useEffect, useState } from 'react';
+import getUnAuth from '~/API/get';
+
 const EditRevenue = () => {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [wallet, setWallet] = useState(0);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const user = JSON.parse(localStorage.getItem('User'));
+                const response = await getUnAuth(`business/${user.id}`);
+                setWallet(response.revenue);
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
     return (
         <div style={styles.container}>
             <h1 style={styles.heading}>Ví của tôi </h1>
-            <p style={styles.amountLarge}>Số tiền 💳: 100,000 VNĐ</p>
+            <p style={styles.amountLarge}>Số tiền 💳:{wallet} VNĐ</p>
         </div>
     );
 };

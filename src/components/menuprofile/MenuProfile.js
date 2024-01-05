@@ -8,14 +8,15 @@ const MenuProfile = () => {
         <>
             <div className="category">
                 <div className="menu-profile">
-                    <h3>Bussienss</h3>
                     <label className="lableprofile">
                         <Link to="/profile">👤Hồ sơ</Link>
                     </label>
-                    <label className="lableprofile">
-                        <Link to="/myrevenue">💳Ví của tôi</Link>
-                    </label>
-                    {dataRole[0] != 'ROLE_BUSINESS' && (
+                    {dataRole[0] == 'ROLE_BUSINESS' && (
+                        <label className="lableprofile">
+                            <Link to="/myrevenue">💳Ví của tôi</Link>
+                        </label>
+                    )}
+                    {dataRole[0] == 'ROLE_CUSTOMER' && (
                         <label className="lableprofile">
                             <Link to="/order">🔔Đơn hàng</Link>
                         </label>

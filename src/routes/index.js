@@ -41,7 +41,6 @@ const CRoutes = [
     { path: '/profile', component: Profile, layout: defaultLayout },
     { path: '/order', component: Order, layout: defaultLayout },
     { path: '/allproduct/:category', component: AllProduct, layout: defaultLayout },
-    { path: '/myrevenue', component: MyRevenue, layout: defaultLayout },
 ];
 const BRoutes = [
     { path: '/', component: Business, layout: layout_bussiness },
@@ -52,7 +51,7 @@ const BRoutes = [
     { path: '/business/revenue', component: BusinessRevenue, layout: layout_bussiness },
     { path: '/business/sale', component: BusinessSale, layout: layout_bussiness },
     { path: '/business/track', component: BusinessTrack, layout: layout_bussiness },
-    { path: '/myrevenue', component: MyRevenue, layout: defaultLayout },
+    { path: '/myrevenue', component: MyRevenue, layout: layout_bussiness },
 ];
 const ARoutes = [
     { path: '/', component: AdminUser, layout: layout_admin },
