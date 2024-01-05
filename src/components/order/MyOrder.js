@@ -97,8 +97,9 @@ const MyOrder = ({ orders }) => {
             newProduct.id_bill = selectedOrder.id;
             return Promise.all(promises);
         };
-        t().then(() => postComment(newProduct, authToken))
-        .then(() => window.location.reload());
+        t()
+            .then(() => postComment(newProduct, authToken))
+            .then(() => window.location.reload());
     };
     const hanldeRePay = (id) => {
         const authToken = JSON.parse(localStorage.getItem('authToken'));
@@ -162,7 +163,7 @@ const MyOrder = ({ orders }) => {
                 orders?.map((orders) => {
                     let date = new Date(orders[0].updated_at);
                     date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-                  
+
                     return (
                         <div key={orders[0].id} className="order-container">
                             {orders.map((order) => (
