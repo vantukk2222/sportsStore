@@ -13,7 +13,6 @@ import RatingModal from './RatingModal';
 import putConfirm_cancel from '~/API/putConfirm_cancel';
 import putConfirm_buy from '~/API/putConfirm_buy';
 const MyOrder = ({ orders }) => {
-  
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
@@ -30,7 +29,6 @@ const MyOrder = ({ orders }) => {
 
     const [isRatingModalOpen, setRatingModalOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
-   
 
     const openRatingModal = (order) => {
         setSelectedOrder(order);
@@ -39,11 +37,10 @@ const MyOrder = ({ orders }) => {
 
     const closeRatingModal = () => {
         setSelectedOrder(null);
-    
+
         setRatingModalOpen(false);
     };
     const handleReBuy = (order) => {
-      
         order.bill_detailSet.forEach((bill) => {
             const id2 = bill.product.id;
             const id_product_information = bill.product.id_product_information;
@@ -83,14 +80,12 @@ const MyOrder = ({ orders }) => {
         });
     };
     const submitRating = (newProduct) => {
-      
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         const t = () => {
             // Create an array to hold all the promises
             const promises = [];
             newProduct.id_imageSet.forEach((e) => {
                 if (e.id == null) {
-                   
                     const promise = postImage(newProduct.name, e.url, 'false', authToken)
                         .then((response) => (e.id = response.data))
                         .catch((error) => console.error('Error uploading image:', error));
@@ -111,9 +106,9 @@ const MyOrder = ({ orders }) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-              
+
                 const response = await getUnAuth(`bill/get_refresh_payment/${id}`);
-            
+
                 window.location.href = response;
                 if (!response) {
                     throw new Error('Network response was not ok');
@@ -130,7 +125,6 @@ const MyOrder = ({ orders }) => {
         let i = 0;
         let t = 0;
         let result = orders.reduce((a, e) => {
-          
             if (a.length > 0) {
                 if (t === e.transaction.id && e.state == 2) {
                     a[i] = [...a[i], e];
@@ -151,7 +145,6 @@ const MyOrder = ({ orders }) => {
         if (id) navigate(`/product/${id}`);
     };
     const handleDelete = (order) => {
-      
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         if (order.state == 2) {
             putConfirm_cancel(order.transaction.id, authToken).then(() => window.location.reload());
@@ -162,7 +155,7 @@ const MyOrder = ({ orders }) => {
     const handleBusiness = (id) => {
         navigate(`/shop/${id}`);
     };
- 
+
     const state = ['Đang giao hàng', 'Giao thành công', 'Chưa thanh toán', 'Chờ xác nhận', 'Đã hủy đơn'];
     return (
         <div className="order-list">
@@ -170,7 +163,7 @@ const MyOrder = ({ orders }) => {
                 orders?.map((orders) => {
                     let date = new Date(orders[0].updated_at);
                     date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-                   
+
                     return (
                         <div key={orders[0].id} className="order-container">
                             {orders.map((order) => (

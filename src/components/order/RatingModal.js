@@ -6,7 +6,7 @@ const RatingModal = ({ isOpen, onClose, onSubmit }) => {
     const [newProduct, setNewProduct] = useState({
         content: '',
         id_imageSet: [],
-        is_like: null, 
+        is_like: true,
     });
 
     const handleInputChange = (e) => {
