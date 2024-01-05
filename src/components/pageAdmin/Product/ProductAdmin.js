@@ -18,7 +18,7 @@ const ProductAdmin = () => {
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
 
-    const [totalPage, setTotalPage] = useState(null);
+    const [totalPage, setTotalPage] = useState(0);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [sort, setSort] = useState('id');
@@ -26,6 +26,14 @@ const ProductAdmin = () => {
     const [state, setState] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
 
+    const handleCheckDislike = (numTotal, numDislike) => {
+
+        const dis = numDislike / numTotal
+        if (dis && Math.round(dis * 100) / 100 >= 0.5 && numDislike > 5) {
+            return true;
+        }
+        return false;
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -38,15 +46,20 @@ const ProductAdmin = () => {
                     response = await getProductInfor(page, pageSize, sort, desc, state);
                 }
 
-                if (!response.totalPage) {
+                if (response.totalPages != totalPage) {
+                    //  console.log(response.totalPages);
                     setTotalPage(response?.totalPages);
                 }
                 let listProduct = response.content;
-                if (response.state === 0) {
-                    listProduct = listProduct.filter((item) => item.number_dislike > 3);
-                }
 
+                if (state === 0) {
+                    //  console.log(listProduct);
+
+                    listProduct = listProduct.filter((item) => handleCheckDislike(item.number_comment, item.number_dislike));
+                    console.log(listProduct);
+                }
                 setProducts(listProduct);
+
 
                 if (!response) {
                     throw new Error('Network response was not ok');
