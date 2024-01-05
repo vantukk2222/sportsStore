@@ -46,6 +46,7 @@ import RatingOrder from "../screens/Cart/ratingOrder"
 import HomeBusiness from "../screens/Business/HomeBusiness";
 import InforBusiness from "../screens/Business/InforBusiness";
 import ProductBusiness from "../screens/Business/Products/ProductBusiness";
+import ListProductBlock from "../screens/Business/Products/Block/ListProductBlock"
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
     console.log("vodayyyyy business: ");
@@ -74,6 +75,7 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="StatisticBottomNavigator" component={StatisticBottomNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="SetMain" component={SetMain} options={{ headerShown: false }} />
             <Stack.Screen name="setInforBusiness" component={setInforBusiness} options={{ headerShown: false }} />
+            <Stack.Screen name="ListProductBlock" component={ListProductBlock} options={{ headerShown: false }} />
 
 
 

@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reset, setUserInformation } from "../../redux/reducers/User/setInforUser";
 import { fetchUserByUserName } from "../../redux/reducers/User/userInfor";
 import { useNavigation } from "@react-navigation/native";
-import { toastsuccess } from "../../components/toastCustom";
+import { toastError, toastsuccess } from "../../components/toastCustom";
+import LoadingModal from "../../components/loading";
 const SetInfor = ({ route }) => {
 
     const TxtName = useRef();
@@ -27,12 +28,12 @@ const SetInfor = ({ route }) => {
     const goBack = () => {
         navigation.goBack();
         // console.log("Log number id: ", 111);
-      };
+    };
     useEffect(() => {
         setUser(infor)
     }, [infor])
 
-    const handleSaveChanges = async() => {
+    const handleSaveChanges = async () => {
         const newUser = ({
             ...user
             , name: TxtName.current || user.name,
@@ -55,11 +56,12 @@ const SetInfor = ({ route }) => {
         console.log("status", dataInfor)
         if (dataInfor === 202) {
             console.log("hi")
-            dispatch(fetchUserByUserName(infor?.username)).then(()=>{
+            dispatch(fetchUserByUserName(infor?.username)).then(() => {
                 toastsuccess("Thành công", "Chỉnh sửa thông tin xong.")
                 navigation.goBack()
             })
         }
+        if (errorInfor) { toastError("Xin lỗi", "Đã xảy ra lỗi") }
         return (() => {
             dispatch(reset())
         })
@@ -67,78 +69,80 @@ const SetInfor = ({ route }) => {
     }, [dataInfor, dispatch]);
 
     return (
-        <View style={{flex:100}}>
-        <ScrollView style={styles.container}>
-            <View style={styles.headerContainer}>
-            <TouchableOpacity onPress={()=>{goBack()}}>
-                <Icon name="angle-left" size={30} style={styles.iconBuffer}></Icon>
-            </TouchableOpacity>
-            {/* {init == "Start"? "":(<Icon name="angle-left" size={30} style={styles.iconBuffer} onPress={() => { goBack}} />)} */}
-            <Text style={styles.heading}>Chỉnh sửa thông tin cá nhân</Text>
-            </View>
-            
+        <View style={{ flex: 100 }}>
+            {loadingInfor && <LoadingModal />}
+            <ScrollView style={styles.container}>
+                <View style={styles.headerContainer}>
+                    <TouchableOpacity onPress={() => { goBack() }}>
+                        <Icon name="angle-left" size={30} style={styles.iconBuffer}></Icon>
+                    </TouchableOpacity>
+                    {/* {init == "Start"? "":(<Icon name="angle-left" size={30} style={styles.iconBuffer} onPress={() => { goBack}} />)} */}
+                    <Text style={styles.heading}>Chỉnh sửa thông tin cá nhân</Text>
+                </View>
 
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Họ và tên:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={user?.name}
-                    placeholderTextColor="gray"
-                    onChangeText={(text) => { TxtName.current = text }}
-                />
-            </View>
 
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Email:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={user?.email}
-                    placeholderTextColor="gray"
-                    onChangeText={(text) => { TxtEmail.current = text }}
-                    keyboardType="email-address"
-                />
-            </View>
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Căn cước công dân:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={user?.cic}
-                    placeholderTextColor="gray"
-                    onChangeText={(text) => { TxtCic.current = text }}
-                    keyboardType="phone-pad"
-                />
-            </View>
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Số điện thoại:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder={user?.phone}
-                    placeholderTextColor="gray"
-                    onChangeText={(text) => { TxtPhone.current = text }}
-                    keyboardType="phone-pad"
-                />
-            </View>
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Địa chỉ hiện tại:</Text>
-                <TextInput
-                    style={styles.input}
-                    // placeholder={user?.address}
-                    placeholderTextColor="gray"
-                    value={address || user?.address}
-                    onChangeText={(text) => { 
-                        setAdress(text)
-                        TxtAdress.current = text }}
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Họ và tên:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder={user?.name}
+                        placeholderTextColor="gray"
+                        onChangeText={(text) => { TxtName.current = text }}
+                    />
+                </View>
 
-                />
-            </View>
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Email:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder={user?.email}
+                        placeholderTextColor="gray"
+                        onChangeText={(text) => { TxtEmail.current = text }}
+                        keyboardType="email-address"
+                    />
+                </View>
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Căn cước công dân:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder={user?.cic}
+                        placeholderTextColor="gray"
+                        onChangeText={(text) => { TxtCic.current = text }}
+                        keyboardType="phone-pad"
+                    />
+                </View>
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Số điện thoại:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder={user?.phone}
+                        placeholderTextColor="gray"
+                        onChangeText={(text) => { TxtPhone.current = text }}
+                        keyboardType="phone-pad"
+                    />
+                </View>
+                <View style={styles.fieldContainer}>
+                    <Text style={styles.label}>Địa chỉ hiện tại:</Text>
+                    <TextInput
+                        style={styles.input}
+                        // placeholder={user?.address}
+                        placeholderTextColor="gray"
+                        value={address || user?.address}
+                        onChangeText={(text) => {
+                            setAdress(text)
+                            TxtAdress.current = text
+                        }}
 
-        </ScrollView>
-            <TouchableOpacity style={styles.saveButton} onPress={async()=>{
+                    />
+                </View>
+
+            </ScrollView>
+            <TouchableOpacity style={styles.saveButton} onPress={async () => {
                 handleSaveChanges()
             }}>
                 <Text style={styles.saveButtonText}>Lưu thay đổi</Text>
             </TouchableOpacity>
-            </View>
+        </View>
     );
 };
 
@@ -147,8 +151,8 @@ const styles = StyleSheet.create({
         padding: 16,
         paddingTop: 20
     },
-     headerContainer: {
-        backgroundColor:"#EEEEEE",
+    headerContainer: {
+        backgroundColor: "#EEEEEE",
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
@@ -159,7 +163,7 @@ const styles = StyleSheet.create({
     {
         // backgroundColor:"green",
         // witd:30,
-        color:'#4873E0',
+        color: '#4873E0',
         alignItems: 'flex-end',
         marginLeft: 5
 
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
     },
     saveButton: {
         // position: 'absolute',
-        marginTop:15,
+        marginTop: 15,
 
         bottom: 0,
         left: 1,

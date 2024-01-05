@@ -101,12 +101,12 @@ const MoneyDisplay = ({ inforUser }, props) => {
                     style={styles.infoItem}
                     onPress={() => {
                         inforUser?.id
-                            ? navigation.navigate('setInforBusiness', {
+                            ? navigation.navigate('ListProductBlock', {
                                 businessInfor: businessInfor[inforUser.id],
                             })
                             : toastError('Bạn chưa đăng nhập', 'Xin vui lòng đăng nhập');
                     }}>
-                    <Text style={styles.infoText}>Chỉnh sửa thông tin cá nhân</Text>
+                    <Text style={styles.infoText}>Xem sản phẩm bị khóa</Text>
                     <Icon
                         name="chevron-circle-right"
                         size={24}
