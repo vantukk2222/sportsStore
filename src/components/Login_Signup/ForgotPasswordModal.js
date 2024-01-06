@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { postforgotpassword } from '~/API/postforgotpassword';
 const ForgotPasswordModal = ({ onClose }) => {
     const [email, setEmail] = useState('');
 
@@ -45,7 +46,14 @@ const ForgotPasswordModal = ({ onClose }) => {
         cursor: 'pointer',
     };
 
-    const handleForgotPassword = () => {};
+    const handleForgotPassword = async () => {
+        try {
+            const response = await postforgotpassword(email);
+            //  console.log(response);
+            if (response?.status === 404) alert('Kiểm tra lại email');
+            else onClose();
+        } catch (error) {}
+    };
 
     return (
         <div className="modal-overlay">
@@ -62,11 +70,11 @@ const ForgotPasswordModal = ({ onClose }) => {
                     />
                 </div>
                 <button style={buttonStyle} onClick={handleForgotPassword}>
-                    Submit
+                    Gửi
                 </button>
                 &nbsp;&nbsp;&nbsp;
                 <button style={buttonStylee} onClick={onClose}>
-                    Close
+                    Đóng
                 </button>
             </div>
         </div>
