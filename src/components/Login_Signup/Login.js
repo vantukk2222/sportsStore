@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import './style.css';
-import { Link, useNavigate } from 'react-router-dom';
-import loginPage from '~/API/postAuth';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { roleByUserName } from '~/redux/reducers/Role/role';
+import { Link, useNavigate } from 'react-router-dom';
 import getUnAuth from '~/API/get';
+import loginPage from '~/API/postAuth';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
+import { roleByUserName } from '~/redux/reducers/Role/role';
+import './style.css';
 const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -45,7 +45,6 @@ const Login = () => {
                                 name: response.name,
                             }),
                         );
-                    
                     } catch (error) {
                         setError(error);
                     } finally {
@@ -97,7 +96,7 @@ const Login = () => {
                         onClick={() => setIsShowPassword(!isShowPassword)}
                     ></i>
                 </div>
-                {/* <p className="p">forgot password?</p> */}
+                <p className="p">Quên mật khẩu ?</p>
 
                 <button
                     className={username && password ? 'button-1' : ''}
