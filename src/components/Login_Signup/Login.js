@@ -5,6 +5,7 @@ import getUnAuth from '~/API/get';
 import loginPage from '~/API/postAuth';
 import { listBillById } from '~/redux/reducers/Bill/listBillReducer';
 import { roleByUserName } from '~/redux/reducers/Role/role';
+import ForgotPasswordModal from './ForgotPasswordModal';
 import './style.css';
 const Login = () => {
     const navigate = useNavigate();
@@ -14,6 +15,9 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const store = JSON.parse(localStorage.getItem('authToken'));
+
+    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+
     const { dataRole, loadingRole, errorRole } = useSelector((state) => state.roleReducer);
     const dispatch = useDispatch();
     useEffect(() => {
@@ -96,7 +100,9 @@ const Login = () => {
                         onClick={() => setIsShowPassword(!isShowPassword)}
                     ></i>
                 </div>
-                <p className="p">Quên mật khẩu ?</p>
+                <p className="p" onClick={() => setShowForgotPasswordModal(true)}>
+                    Quên mật khẩu ?
+                </p>
 
                 <button
                     className={username && password ? 'button-1' : ''}
@@ -122,6 +128,7 @@ const Login = () => {
                     </span>
                 </div>
             </div>
+            {showForgotPasswordModal && <ForgotPasswordModal onClose={() => setShowForgotPasswordModal(false)} />}
         </div>
     );
 };
