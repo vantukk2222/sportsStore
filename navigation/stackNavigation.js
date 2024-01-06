@@ -44,9 +44,10 @@ import SetMain from "../screens/Business/Products/SetImage/SetMain"
 import setInforBusiness from "../screens/Business/Me/setInforBusiness"
 import RatingOrder from "../screens/Cart/ratingOrder"
 import HomeBusiness from "../screens/Business/HomeBusiness";
+import ListProductBlock from "../screens/Business/Products/Block/ListProductBlock"
 import InforBusiness from "../screens/Business/InforBusiness";
-import ProductBusiness from "../screens/Business/Products/ProductBusiness";
 import ResetPassword from "../screens/Login/ResetPassword"
+import ProductBusiness from "../screens/Business/Products/ProductBusiness";
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
     console.log("vodayyyyy business: ");
@@ -58,7 +59,7 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="Me" component={InforBusiness} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-            <Stack.Screen name="ResetPass" component={ResetPassword} options={{ headerShown: false }} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
 
             <Stack.Screen name="CreateNewProduct" component={CreateNewProduct} options={{ headerShown: false }} />
             <Stack.Screen name="CreateSize" component={CreateSize} options={{ headerShown: false }} />
@@ -76,6 +77,7 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="StatisticBottomNavigator" component={StatisticBottomNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="SetMain" component={SetMain} options={{ headerShown: false }} />
             <Stack.Screen name="setInforBusiness" component={setInforBusiness} options={{ headerShown: false }} />
+            <Stack.Screen name="ListProductBlock" component={ListProductBlock} options={{ headerShown: false }} />
 
 
 
