@@ -346,7 +346,9 @@ function Login(props) {
           </View>
         </View>
 
-        <View>
+        <TouchableOpacity onPress={()=>{
+          navigation.navigate("ResetPassword")
+        }}>
           <Text
             style={{
               fontFamily: Font['poppins-semiBold'],
@@ -356,10 +358,10 @@ function Login(props) {
             }}>
             Quên mật khẩu?
           </Text>
-        </View>
+        </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={handlePress}
+          onPress={async()=> await handlePress()}
           disabled={isButtonDisabled}
           style={{
             padding: Spacing * 2,

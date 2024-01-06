@@ -46,6 +46,7 @@ import RatingOrder from "../screens/Cart/ratingOrder"
 import HomeBusiness from "../screens/Business/HomeBusiness";
 import InforBusiness from "../screens/Business/InforBusiness";
 import ProductBusiness from "../screens/Business/Products/ProductBusiness";
+import ResetPassword from "../screens/Login/ResetPassword"
 const Stack = createStackNavigator();
 export const BusinessScreenNavigator = () => {
     console.log("vodayyyyy business: ");
@@ -57,6 +58,7 @@ export const BusinessScreenNavigator = () => {
             <Stack.Screen name="Me" component={InforBusiness} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+            <Stack.Screen name="ResetPass" component={ResetPassword} options={{ headerShown: false }} />
 
             <Stack.Screen name="CreateNewProduct" component={CreateNewProduct} options={{ headerShown: false }} />
             <Stack.Screen name="CreateSize" component={CreateSize} options={{ headerShown: false }} />
@@ -92,6 +94,7 @@ export const LoginScreenNavigator = () => {
             <Stack.Screen name='ProductList' component={ProductList} options={{ headerShown: false }} />
             <Stack.Screen name='ProductItem' component={ProductItem} options={{ headerShown: false }} />
             <Stack.Screen name='Information' component={Information} options={{ headerShown: false }} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
 
             <Stack.Screen name='setInfor' component={SetInfor} options={{ headerShown: false }} />
             <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} options={{ headerShown: false }} />
