@@ -21,7 +21,7 @@ const Head = () => {
         const check = async () => {
             try {
                 const response = await checkToken(authToken);
-                console.log(response);
+             //   console.log(response);
                 if (response.status == 401 && authToken) {
                     localStorage.clear();
                     window.location.reload();
